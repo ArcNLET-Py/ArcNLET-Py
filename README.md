@@ -1,5 +1,5 @@
 # SourceCode
-This folder contains Python souce codes of ArcNLET for ArcGIS Pro
+This folder contains Python source codes of ArcNLET for ArcGIS Pro
 
 
 
