@@ -229,11 +229,9 @@ class ParticleTracking:
                 query = "FID = {}".format(water_bodies_id)
                 arcpy.SelectLayerByAttribute_management(self.temp_layer_name, "NEW_SELECTION", query)
 
-                intersect_output = 'intersect'
-                if not intersect_output.endswith(".shp"):
-                    intersect_output = intersect_output + ".shp"
-                    if arcpy.Exists(intersect_output):
-                        arcpy.Delete_management(intersect_output)
+                intersect_output = r'memory\intersect'
+                if arcpy.Exists(intersect_output):
+                    arcpy.Delete_management(intersect_output)
 
                 index = 0
                 with arcpy.da.SearchCursor(self.water_bodies, ["SHAPE@"], where_clause=query) as cursor:
@@ -245,6 +243,7 @@ class ParticleTracking:
                                                           "ALL", "", "LINE")
                                 delete_index = len(segments) + i
                                 segments = segments[: delete_index + 1]
+                                segments[-1][-2] = water_bodies_id
                                 index = 1
                                 break
                 if index == 1:
