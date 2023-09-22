@@ -65,7 +65,7 @@ class InterfaceParticleTracking(object):
                                   )
 
         option = arcpy.Parameter(name="ClippingOption",
-                                 displayName="Clipping and alignment option",
+                                 displayName="Precise truncation",
                                  datatype="GPBoolean",
                                  parameterType="Required",  # Required|Optional|Derived
                                  direction="Input",  # Input|Output
