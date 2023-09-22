@@ -7,8 +7,7 @@ to be included in an ArcGIS Python Toolbox.
 
 import os
 import arcpy
-
-# This is for development, so that you can edit code while running in ArcGIS Pro.
+import time
 import importlib
 import tool2_particle_tracking
 
@@ -192,18 +191,12 @@ class InterfaceParticleTracking(object):
     def execute(self, parameters, messages) -> None:
         """This is the code that executes when you click the "Run" button."""
 
-        # Let's dump out what we know here.
-        messages.addMessage("Particle Tracking based on velocity and velocity direction.")
+        current_time = time.strftime("%H:%M:%S", time.localtime())
+        arcpy.AddMessage(f"{current_time} Particle Tracking: START")
+
         for param in parameters:
             self.describeParameter(messages, param)
 
-        # Get the parameters from our parameters list,
-        # then call a generic python function.
-        #
-        # This separates the code doing the work from all
-        # the crazy code required to talk to ArcGIS.
-
-        # See http://resources.arcgis.com/en/help/main/10.2/index.html#//018z00000063000000
         source_location = parameters[0].valueAsText
         water_bodies = parameters[1].valueAsText
         velocity = parameters[2].valueAsText
@@ -217,34 +210,29 @@ class InterfaceParticleTracking(object):
 
         output_fc = parameters[9].valueAsText
 
-        # Okay finally go ahead and do the work.
         try:
             PT = ParticleTracking(source_location, water_bodies, velocity, velocity_dir, poro, option,
                                   resolution, step_size, max_steps, output_fc)
             PT.track()
-            messages.addMessage("Success.")
+            # messages.addMessage("Success.")
+            current_time = time.strftime("%H:%M:%S", time.localtime())
+            arcpy.AddMessage(f"{current_time} Particle Tracking: FINISH")
         except Exception as e:
-            arcpy.AddError("Fail. %s" % e)
+            current_time = time.strftime("%H:%M:%S", time.localtime())
+            arcpy.AddError(f"{current_time} Fail. {e}")
         return
 
     def describeParameter(self, m, p):
-        m.addMessage("===Parameter=== %s \"%s\"" % (p.name, p.displayName))
-        m.addMessage("  altered? %s" % p.altered)
-        m.addMessage("  value \"%s\"" % p.valueAsText)
-        m.addMessage("  datatype %s" % p.datatype)
-        m.addMessage("  filter %s" % p.filter)
+        m.addMessage("Parameter: %s \"%s\"" % (p.name, p.displayName))
+        m.addMessage("  Value \"%s\"" % p.valueAsText)
 
 
 # =============================================================================
 if __name__ == "__main__":
-    # This is an example of how you could set up a unit test for this tool.
-    # You can run this tool from a debugger or from the command line
-    # to check it for errors before you try it in ArcGIS.
 
     class Messenger(object):
         def addMessage(self, message):
             print(message)
-
 
     # Get an instance of the tool.
     update_datestamp = InterfaceParticleTracking()
@@ -260,8 +248,5 @@ if __name__ == "__main__":
     params[4] = os.path.join(arcpy.env.workspace, "porosity.img")
 
     params[9] = "C:\\path.shp"
-    # Run it.
     update_datestamp.updateParameters(params)
     update_datestamp.execute(params, Messenger())
-
-# That's all

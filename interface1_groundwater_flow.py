@@ -10,7 +10,7 @@ https://pro.arcgis.com/en/pro-app/latest/arcpy/geoprocessing_and_python/defining
 
 import os
 import arcpy
-
+import time
 import importlib
 import tool1_groundwater_flow
 
@@ -239,18 +239,12 @@ class InterfaceGroundwaterFlow(object):
     def execute(self, parameters, messages) -> None:
         """This is the code that executes when you click the "Run" button."""
 
-        # Let's dump out what we know here.
-        messages.addMessage("Smoothing DEM to obtain an approximation of the groundwater table.")
+        current_time = time.strftime("%H:%M:%S", time.localtime())
+        arcpy.AddMessage(f"{current_time} Compute Darcy Flow: START")
+
         for param in parameters:
             self.describeParameter(messages, param)
 
-        # Get the parameters from our parameters list,
-        # then call a generic python function.
-        #
-        # This separates the code doing the work from all
-        # the crazy code required to talk to ArcGIS.
-
-        # See http://resources.arcgis.com/en/help/main/10.2/index.html#//018z00000063000000
         dem  = parameters[0].valueAsText
         ks   = parameters[1].valueAsText
         wb   = parameters[2].valueAsText
@@ -275,24 +269,20 @@ class InterfaceGroundwaterFlow(object):
                            smthf1, smthc, fsink, merge, smthf2, zfact,
                            velo, veld, grad, smth)
             GF.calculateDarcyFlow()
-            messages.addMessage("Success.")
+            current_time = time.strftime("%H:%M:%S", time.localtime())
+            arcpy.AddMessage(f"{current_time} Compute Darcy Flow: FINISH")
         except Exception as e:
-            arcpy.AddError("Fail. %s" % e)
+            current_time = time.strftime("%H:%M:%S", time.localtime())
+            arcpy.AddError(f"{current_time} Fail. %s" % e)
         return
 
     def describeParameter(self, m, p):
-        m.addMessage("===Parameter=== %s \"%s\"" % (p.name, p.displayName))
-        m.addMessage("  altered? %s" % p.altered)
-        m.addMessage("  value \"%s\"" % p.valueAsText)
-        m.addMessage("  datatype %s" % p.datatype)
-        m.addMessage("  filter %s" % p.filter)
+        m.addMessage("Parameter: %s \"%s\"" % (p.name, p.displayName))
+        m.addMessage("  Value \"%s\"" % p.valueAsText)
 
 
 # =============================================================================
 if __name__ == "__main__":
-    # This is an example of how you could set up a unit test for this tool.
-    # You can run this tool from a debugger or from the command line
-    # to check it for errors before you try it in ArcGIS.
 
     class Messenger(object):
         def addMessage(self, message):
@@ -313,8 +303,5 @@ if __name__ == "__main__":
     params[10].value = os.path.join(arcpy.env.workspace, "veldemo")
     params[11].value = os.path.join(arcpy.env.workspace, "veldirdemo")
 
-    # Run it.
     update_datestamp.updateParameters(params)
     update_datestamp.execute(params, Messenger())
-
-# That's all

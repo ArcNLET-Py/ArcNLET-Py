@@ -10,6 +10,7 @@ import arcpy
 import os
 import sys
 import math
+import time
 import datetime
 import pandas as pd
 import numpy as np
@@ -46,12 +47,13 @@ class ParticleTracking:
         desc = arcpy.Describe(self.source_location)
         crs = desc.spatialReference
         self.crs = crs
+        self.index = 0
 
         # Convert water bodies to raster
         if arcpy.Exists("water_bodies"):
             arcpy.Delete_management("water_bodies")
-        self.waterbody_raster = "water_bodies"
-        arcpy.conversion.FeatureToRaster(self.water_bodies, "FID", "water_bodies", self.resolution)
+        self.waterbody_raster = r"memory\water_bodies"
+        arcpy.conversion.FeatureToRaster(self.water_bodies, "FID", self.waterbody_raster, self.resolution)
 
         self.waterbody_array = arcpy.RasterToNumPyArray(self.waterbody_raster, nodata_to_value=-9999)
         self.velocity_array = arcpy.RasterToNumPyArray(self.velocity)
@@ -110,6 +112,10 @@ class ParticleTracking:
     def track(self):
         """ Track the particles """
         # Create a new feature class
+        current_time = time.strftime("%H:%M:%S", time.localtime())
+        arcpy.AddMessage('')
+        arcpy.AddMessage(f"{current_time} START CALCULATING...")
+
         self.create_shapefile()
 
         count = arcpy.management.GetCount(self.source_location)
@@ -125,11 +131,8 @@ class ParticleTracking:
                 for row in cursor:
                     oid = row[0]
                     point = row[1]
-                    segment = self.track_point(point, oid)
+                    segment = self.track_point(point, oid, count)
                     segments.extend(segment)
-
-        if arcpy.Exists("intersect.shp"):
-            arcpy.Delete_management("intersect.shp")
 
         with arcpy.da.InsertCursor(self.output_fc,
                                    ["SHAPE@", "PathID", "SegID", "TotDist", "TotTime", "SegPrsity", "SegVel",
@@ -143,10 +146,13 @@ class ParticleTracking:
         return self.output_fc
 
     # @jit
-    def track_point(self, point, oid):
+    def track_point(self, point, oid, count):
         """ Track the particles from a point source """
-        print("Tracking the {} source point...".format(oid))
+        self.index += 1
         cur_x, cur_y = point
+        current_time = time.strftime("%H:%M:%S", time.localtime())
+        arcpy.AddMessage(
+            "{}  {} of {}   FID:{:04} - x:{:.8f}   y:{:.8f}".format(current_time, self.index, count, oid, cur_x, cur_y))
 
         steps = 0
         total_dist = 0
@@ -240,7 +246,7 @@ class ParticleTracking:
                         for i in range(-1, -len(segments) - 1, -1):
                             if segments[i][0].crosses(polygon):
                                 arcpy.analysis.Intersect([self.temp_layer_name, segments[i][0]], intersect_output,
-                                                          "ALL", "", "LINE")
+                                                         "ALL", "", "LINE")
                                 delete_index = len(segments) + i
                                 segments = segments[: delete_index + 1]
                                 segments[-1][-2] = water_bodies_id
@@ -250,8 +256,8 @@ class ParticleTracking:
                     with arcpy.da.SearchCursor(intersect_output, ["SHAPE@"]) as cursor:
                         row_count = sum(1 for _ in cursor)
                         if row_count != 0:
-                            with arcpy.da.SearchCursor(intersect_output, ["SHAPE@"]) as cursor:
-                                for row in cursor:
+                            with arcpy.da.SearchCursor(intersect_output, ["SHAPE@"]) as cursorr:
+                                for row in cursorr:
                                     intersect_polyline = row[0]
                                     first_x = intersect_polyline.firstPoint.X
                                     first_y = intersect_polyline.firstPoint.Y
@@ -278,7 +284,7 @@ class ParticleTracking:
                     if arcpy.Exists(intersect_output):
                         arcpy.Delete_management(intersect_output)
                     arcpy.analysis.Intersect([self.temp_layer_name, intersect_polyline], intersect_output,
-                                              "ALL", "", "LINE")
+                                             "ALL", "", "LINE")
 
                     with arcpy.da.SearchCursor(intersect_output, ["SHAPE@"]) as cursor:
                         for row in cursor:
@@ -320,9 +326,8 @@ if __name__ == '__main__':
     step_size = 10
     max_steps = 1000
 
-    output_fc = os.path.join(arcpy.env.workspace, "Path3.shp")
+    output_fc = os.path.join(arcpy.env.workspace, "Path11.shp")
 
-    arcpy.AddMessage("starting geoprocessing")
     start_time = datetime.datetime.now()
 
     PT = ParticleTracking(source_location, water_bodies, velocity, velocity_dir, porosity, option,

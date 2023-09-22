@@ -7,6 +7,7 @@ For detailed algorithms, please see https://atmos.eoas.fsu.edu/~mye/ArcNLET/Tech
 """
 
 import os
+import time
 import arcpy
 import shutil
 import numpy as np
@@ -52,26 +53,55 @@ class DarcyFlow:
         os.mkdir(self.temp_output_dir)
 
         # first, smooth DEM, then fill sinks if flag_fsink is True
+        current_time = time.strftime("%H:%M:%S", time.localtime())
+        arcpy.AddMessage("{}     Smoothing DEM".format(current_time))
         smoothed_filled_dem = self.smoothDEM(self.dem, self.smthf1, self.flag_fsink)
+        current_time = time.strftime("%H:%M:%S", time.localtime())
+        arcpy.AddMessage("{}         Smoothing finished".format(current_time))
 
         if self.flag_merge:
             # first, merge DEM and waterbody, then smooth the merged dem
+            current_time = time.strftime("%H:%M:%S", time.localtime())
+            arcpy.AddMessage("{}     Merging and Smoothing DEM".format(current_time))
             smoothed_merge_dem = self.mergeDEM(self.dem, self.wb, self.smthf2, smoothed_filled_dem, self.flag_fsink)
+            current_time = time.strftime("%H:%M:%S", time.localtime())
+            arcpy.AddMessage("{}         Merging and smoothing finished".format(current_time))
         else:
             smoothed_merge_dem = smoothed_filled_dem
 
         # calculate slope
+        current_time = time.strftime("%H:%M:%S", time.localtime())
+        arcpy.AddMessage("{}     Calculating Slope".format(current_time))
         gx, gy = self.slope(smoothed_merge_dem)
+        current_time = time.strftime("%H:%M:%S", time.localtime())
+        arcpy.AddMessage("{}         Calculating slope finished".format(current_time))
 
         # calculate flow direction
         # flowdir is the flow direction in degree, while flowdir_d8 is the flow direction in D8 format
+        current_time = time.strftime("%H:%M:%S", time.localtime())
+        arcpy.AddMessage("{}     Calculating Flow Directions".format(current_time))
         flowdrop, flowdir_d8 = self.flowdirection(smoothed_merge_dem)
+        current_time = time.strftime("%H:%M:%S", time.localtime())
+        arcpy.AddMessage("{}         Calculating flow directions finished".format(current_time))
 
+        current_time = time.strftime("%H:%M:%S", time.localtime())
+        arcpy.AddMessage("{}     Processing Flow Directions".format(current_time))
         flowdir_d8 = self.convertFD(flowdir_d8)
         flowdir_raster = self.flowdir2cal(gx, gy, flowdir_d8)
+        current_time = time.strftime("%H:%M:%S", time.localtime())
+        arcpy.AddMessage("{}         Processing flow directions finished".format(current_time))
 
+        current_time = time.strftime("%H:%M:%S", time.localtime())
+        arcpy.AddMessage("{}     Calculating Gradient Magnitude".format(current_time))
         gradient = self.gradient(gx, gy, flowdrop)
+        current_time = time.strftime("%H:%M:%S", time.localtime())
+        arcpy.AddMessage("{}         Calculating gradient magnitude finished".format(current_time))
+
+        current_time = time.strftime("%H:%M:%S", time.localtime())
+        arcpy.AddMessage("{}     Calculating Velocity Magnitude".format(current_time))
         velocity = self.velocity(gradient)
+        current_time = time.strftime("%H:%M:%S", time.localtime())
+        arcpy.AddMessage("{}         Calculating velocity magnitude finished".format(current_time))
 
         # save the output
         if arcpy.Exists(self.velname):
@@ -89,8 +119,6 @@ class DarcyFlow:
                 arcpy.Delete_management(self.smthname)
             smoothed_merge_dem.save(self.smthname)
 
-        if arcpy.Exists('flowdrop'):
-            arcpy.Delete_management('flowdrop')
         return
 
     def smoothDEM(self, raster, factor, flag_fsink=False):
@@ -139,7 +167,7 @@ class DarcyFlow:
         return gx, gy
 
     def flowdirection(self, dem_raster):
-        flowdrop = 'flowdrop'
+        flowdrop = r'memory\flowdrop'
         if arcpy.Exists(flowdrop):
             arcpy.Delete_management(flowdrop)
         flow_dir_d8_raster = arcpy.sa.FlowDirection(dem_raster, out_drop_raster=flowdrop, flow_direction_type="D8")
