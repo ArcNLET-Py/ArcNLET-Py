@@ -69,7 +69,7 @@ class InterfaceGroundwaterFlow(object):
                                  )
         param0.value = 20
 
-        param1 = arcpy.Parameter(name="Smoothing cell",
+        param1 = arcpy.Parameter(name="Number of Smoothing Cells",
                                  displayName="Smoothing Cell",
                                  datatype="GPLong",
                                  parameterType="Required",  # Required|Optional|Derived
