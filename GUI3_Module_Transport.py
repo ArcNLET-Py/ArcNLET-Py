@@ -19,7 +19,7 @@ class InterfaceTransport(object):
 
     def __init__(self) -> None:
         """Define the tool. """
-        self.label = "Transport"
+        self.label = "3 Transport"
         self.description = """Transport module."""
         self.category = "ArcNLET"
 

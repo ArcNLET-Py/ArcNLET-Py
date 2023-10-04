@@ -22,7 +22,7 @@ class InterfaceLoadEstimation(object):
 
     def __init__(self) -> None:
         """Define the tool. """
-        self.label = "Load Estimation"
+        self.label = "4 Load Estimation"
         self.description = """Smoothing DEM to obtain an approximation of the groundwater table."""
         self.canRunInBackground = False
         self.category = "ArcNLET"

@@ -21,7 +21,7 @@ class InterfaceParticleTracking(object):
 
     def __init__(self) -> None:
         """Define the tool. """
-        self.label = "Particle Tracking"
+        self.label = "2 Particle Tracking"
         self.description = """Particle Tracking module."""
         self.category = "ArcNLET"
 
@@ -31,35 +31,35 @@ class InterfaceParticleTracking(object):
 
         infile0 = arcpy.Parameter(name="Source locations (point)",
                                   displayName="Input Source locations (point)",
-                                  datatype=["DEFeatureClass"],
-                                  parameterType="Required",  # Required|Optional|Derived
-                                  direction="Input",  # Input|Output
-                                  )
+                                  datatype="GPFeatureLayer",
+                                  parameterType="Required",
+                                  direction="Input")
+        infile0.filter.list = ["Point"]
 
         infile1 = arcpy.Parameter(name="Waterbodies",
                                   displayName="Input Water bodies (polygon)",
-                                  datatype=["DEFeatureClass"],
-                                  parameterType="Required",  # Required|Optional|Derived
-                                  direction="Input",  # Input|Output
-                                  )
+                                  datatype="GPFeatureLayer",
+                                  parameterType="Required",
+                                  direction="Input")
+        infile1.filter.list = ["Polygon"]
 
         infile2 = arcpy.Parameter(name="Velocity",
                                   displayName="Input Velocity Magnitude [L/T] (raster)",
-                                  datatype=["DERasterDataset"],
+                                  datatype=["GPRasterLayer"],
                                   parameterType="Required",  # Required|Optional|Derived
                                   direction="Input",  # Input|Output
                                   )
 
         infile3 = arcpy.Parameter(name="Velocity Direction",
                                   displayName="Input Velocity Direction [°wrt N] (raster)",
-                                  datatype=["DERasterDataset"],
+                                  datatype=["GPRasterLayer"],
                                   parameterType="Required",  # Required|Optional|Derived
                                   direction="Input",  # Input|Output
                                   )
 
         infile4 = arcpy.Parameter(name="Porosity",
                                   displayName="Input Soil porosity (raster)",
-                                  datatype=["DERasterDataset"],
+                                  datatype=["GPRasterLayer"],
                                   parameterType="Required",  # Required|Optional|Derived
                                   direction="Input",  # Input|Output
                                   )
@@ -104,7 +104,7 @@ class InterfaceParticleTracking(object):
 
         outfile = arcpy.Parameter(name="Particlepath",
                                   displayName="Output Particle Paths (Polyline)",
-                                  datatype=["DEFeatureClass"],
+                                  datatype=["GPFeatureLayer"],
                                   parameterType="Required",  # Required|Optional|Derived
                                   direction="Output",  # Input|Output
                                   )
@@ -123,68 +123,64 @@ class InterfaceParticleTracking(object):
         if parameters[0].altered:
             source_location = parameters[0].value
             if not arcpy.Exists(source_location):
-                raise arcpy.ParameterError("The specified source location does not exist.")
+                arcpy.AddMessage("The specified source location does not exist.")
             desc = arcpy.Describe(source_location)
             crs1 = desc.spatialReference
-            if desc.shapeType != "Point":
-                raise arcpy.ParameterError("Input source location must be a point feature.")
 
         if parameters[1].altered:
             wb = parameters[1].value
             if not arcpy.Exists(wb):
-                raise arcpy.ParameterError("The specified shapefile does not exist.")
+                arcpy.AddMessage("The specified shapefile does not exist.")
             desc = arcpy.Describe(wb)
             crs2 = desc.spatialReference
-            if desc.shapeType != "Polygon":
-                raise arcpy.ParameterError("Input waterbodies must be a polygon feature.")
 
         if parameters[2].altered:
             velo = parameters[2].value
             if not arcpy.Exists(velo):
-                raise arcpy.ParameterError("The specified raster does not exist.")
+                arcpy.AddMessage("The specified raster does not exist.")
             desc = arcpy.Describe(velo)
             band_count = desc.bandCount
             crs3 = desc.spatialReference
             if band_count != 1:
-                raise arcpy.ParameterError("Input velocity must have only one band.")
+                arcpy.AddMessage("Input velocity must have only one band.")
 
         if parameters[3].altered:
             veld = parameters[3].value
             if not arcpy.Exists(veld):
-                raise arcpy.ParameterError("The specified raster does not exist.")
+                arcpy.AddMessage("The specified raster does not exist.")
             desc = arcpy.Describe(veld)
             band_count = desc.bandCount
             xsize = desc.meanCellWidth
             crs4 = desc.spatialReference
             if band_count != 1:
-                raise arcpy.ParameterError("Input porosity must have only one band.")
+                arcpy.AddMessage("Input porosity must have only one band.")
             parameters[6].value = xsize / 2
             # parameters[6].value = xsize / 2
 
         if parameters[4].altered:
             poro = parameters[4].value
             if not arcpy.Exists(poro):
-                raise arcpy.ParameterError("The specified raster does not exist.")
+                arcpy.AddMessage("The specified raster does not exist.")
             desc = arcpy.Describe(poro)
             band_count = desc.bandCount
             crs5 = desc.spatialReference
             if band_count != 1:
-                raise arcpy.ParameterError("Input porosity must have only one band.")
+                arcpy.AddMessage("Input porosity must have only one band.")
 
         if parameters[0].altered and parameters[1].altered and parameters[2].altered and parameters[3].altered and \
                 parameters[4].altered:
             if crs1.name != crs2.name or crs1.name != crs3.name or crs1.name != crs4.name or crs1.name != crs5.name:
-                raise arcpy.ParameterError("All input files must have the same coordinate system.")
+                arcpy.AddMessage("All input files must have the same coordinate system.")
 
         if parameters[6].altered:
             if parameters[6].value is not None and parameters[6].value < 0:
-                raise arcpy.ParameterError("The WB Raster Res. must be greater than 0.")
+                arcpy.AddMessage("The WB Raster Res. must be greater than 0.")
         if parameters[7].altered:
             if parameters[7].value is not None and parameters[7].value < 0:
-                raise arcpy.ParameterError("The Step Size must be greater than 0.")
+                arcpy.AddMessage("The Step Size must be greater than 0.")
         if parameters[8].altered:
             if parameters[8].value is not None and parameters[8].value < 0:
-                raise arcpy.ParameterError("The Max Steps must be greater than 0.")
+                arcpy.AddMessage("The Max Steps must be greater than 0.")
 
         return
 
@@ -193,6 +189,17 @@ class InterfaceParticleTracking(object):
 
         current_time = time.strftime("%H:%M:%S", time.localtime())
         arcpy.AddMessage(f"{current_time} Particle Tracking: START")
+
+        if not self.is_file_path(parameters[0].valueAsText):
+            parameters[0].value = arcpy.Describe(parameters[0].valueAsText).catalogPath
+        if not self.is_file_path(parameters[1].valueAsText):
+            parameters[1].value = arcpy.Describe(parameters[1].valueAsText).catalogPath
+        if not self.is_file_path(parameters[2].valueAsText):
+            parameters[2].value = arcpy.Describe(parameters[2].valueAsText).catalogPath
+        if not self.is_file_path(parameters[3].valueAsText):
+            parameters[3].value = arcpy.Describe(parameters[3].valueAsText).catalogPath
+        if not self.is_file_path(parameters[4].valueAsText):
+            parameters[4].value = arcpy.Describe(parameters[4].valueAsText).catalogPath
 
         for param in parameters:
             self.describeParameter(messages, param)
@@ -223,8 +230,13 @@ class InterfaceParticleTracking(object):
         return
 
     def describeParameter(self, m, p):
-        m.addMessage("Parameter: %s \"%s\"" % (p.name, p.displayName))
-        m.addMessage("  Value \"%s\"" % p.valueAsText)
+        if p.enabled:
+            m.addMessage("Parameter: %s \"%s\"" % (p.name, p.displayName))
+            m.addMessage("  Value \"%s\"" % p.valueAsText)
+
+    @staticmethod
+    def is_file_path(input_string):
+        return os.path.sep in input_string
 
 
 # =============================================================================

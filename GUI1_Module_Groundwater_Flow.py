@@ -25,7 +25,7 @@ class InterfaceGroundwaterFlow(object):
     def __init__(self) -> None:
         """Define the tool.
         """
-        self.label = "Groundwater Flow"
+        self.label = "1 Groundwater Flow"
         self.description = """Groundwater flow module."""
         self.category = "ArcNLET"
 
@@ -35,27 +35,27 @@ class InterfaceGroundwaterFlow(object):
 
         infile0 = arcpy.Parameter(name="DEM",
                                   displayName="Input DEM surface elevation map [L] (raster)",  # shown in Geoprocessing pane
-                                  datatype=["DERasterDataset"],
+                                  datatype=["GPRasterLayer"],  # data type
                                   parameterType="Required",  # Required|Optional|Derived
                                   direction="Input")  # Input|Output
 
-        infile1 = arcpy.Parameter(name="Hydraulic Conductivity",
-                                  displayName="Input Hydraulic conductivity [L/T] (raster)",
-                                  datatype=["DERasterDataset"],
-                                  parameterType="Required",  # Required|Optional|Derived
-                                  direction="Input",  # Input|Output
-                                  )
-
-        infile2 = arcpy.Parameter(name="Waterbodies",
+        infile1 = arcpy.Parameter(name="Waterbodies",
                                   displayName="Input Water bodies (polygon)",
-                                  datatype=["DEFeatureClass"],
+                                  datatype="GPFeatureLayer",
+                                  parameterType="Required",
+                                  direction="Input")
+        infile1.filter.list = ["Polygon"]
+
+        infile2 = arcpy.Parameter(name="Hydraulic Conductivity",
+                                  displayName="Input Hydraulic conductivity [L/T] (raster)",
+                                  datatype=["GPRasterLayer"],
                                   parameterType="Required",  # Required|Optional|Derived
                                   direction="Input",  # Input|Output
                                   )
 
         infile3 = arcpy.Parameter(name="Porosity",
                                   displayName="Input Soil porosity (raster)",
-                                  datatype=["DERasterDataset"],
+                                  datatype=["GPRasterLayer"],
                                   parameterType="Required",  # Required|Optional|Derived
                                   direction="Input",  # Input|Output
                                   )
@@ -69,7 +69,7 @@ class InterfaceGroundwaterFlow(object):
                                  )
         param0.value = 20
 
-        param1 = arcpy.Parameter(name="Number of Smoothing Cells",
+        param1 = arcpy.Parameter(name="Smoothing Cell",
                                  displayName="Smoothing Cell",
                                  datatype="GPLong",
                                  parameterType="Required",  # Required|Optional|Derived
@@ -103,7 +103,7 @@ class InterfaceGroundwaterFlow(object):
                                  category="Parameters",
                                  multiValue=True,
                                  )
-        param4.value = 2
+        param4.value = 0
         param4.parameterDependencies = [param3.name]
 
         param5 = arcpy.Parameter(name="Z-Factor",
@@ -117,7 +117,7 @@ class InterfaceGroundwaterFlow(object):
 
         outfile0 = arcpy.Parameter(name="Velocity",
                                    displayName="Output Velocity Magnitude [L/T]",
-                                   datatype=["DERasterDataset"],
+                                   datatype=["GPRasterLayer"],
                                    parameterType="Required",  # Required|Optional|Derived
                                    direction="Output",  # Input|Output
                                    )
@@ -126,21 +126,21 @@ class InterfaceGroundwaterFlow(object):
 
         outfile1 = arcpy.Parameter(name="Velocity Direction",
                                    displayName="Output Velocity Direction [°wrt N]",
-                                   datatype=["DERasterDataset"],
+                                   datatype=["GPRasterLayer"],
                                    parameterType="Required",  # Required|Optional|Derived
                                    direction="Output",  # Input|Output
                                    )
 
         outfile2 = arcpy.Parameter(name="Gradient",
-                                   displayName="Output Hydraulic Gradient",
-                                   datatype=["DERasterDataset"],
+                                   displayName="(Optional) Output Hydraulic Gradient",
+                                   datatype=["GPRasterLayer"],
                                    parameterType="Optional",  # Required|Optional|Derived
                                    direction="Output",  # Input|Output
                                    )
 
         outfile3 = arcpy.Parameter(name="Smoothed DEM",
-                                   displayName="Output Smoothed DEM",
-                                   datatype=["DERasterDataset"],
+                                   displayName="(Optional) Output Smoothed DEM",
+                                   datatype=["GPRasterLayer"],
                                    parameterType="Optional",  # Required|Optional|Derived
                                    direction="Output",  # Input|Output
                                    )
@@ -167,59 +167,57 @@ class InterfaceGroundwaterFlow(object):
         if parameters[0].altered:
             dem = parameters[0].value
             if not arcpy.Exists(dem):
-                raise arcpy.ParameterError("The specified raster does not exist.")
+                arcpy.AddMessage("The specified raster does not exist.")
             desc = arcpy.Describe(dem)
             band_count = desc.bandCount
             crs1 = desc.spatialReference
             xsize = desc.meanCellWidth
             ysize = desc.meanCellHeight
             if band_count != 1:
-                raise arcpy.ParameterError("Input DEM must have only one band.")
+                arcpy.AddMessage("Input DEM must have only one band.")
             if xsize != ysize:
-                raise arcpy.ParameterError("Input DEM must be square cells.")
+                arcpy.AddMessage("Input DEM must be square cells.")
 
         if parameters[1].altered:
-            ks = parameters[1].value
+            wb = parameters[1].value
+            if not arcpy.Exists(wb):
+                arcpy.AddMessage("The specified shapefile does not exist.")
+            desc = arcpy.Describe(wb)
+            crs3 = desc.spatialReference
+
+        if parameters[2].altered:
+            ks = parameters[2].value
             if not arcpy.Exists(ks):
-                raise arcpy.ParameterError("The specified raster does not exist.")
+                arcpy.AddMessage("The specified raster does not exist.")
             desc = arcpy.Describe(ks)
             band_count = desc.bandCount
             crs2 = desc.spatialReference
             if band_count != 1:
-                raise arcpy.ParameterError("Input Hydraulic conductivity must have only one band.")
-
-        if parameters[2].altered:
-            wb = parameters[2].value
-            if not arcpy.Exists(wb):
-                raise arcpy.ParameterError("The specified shapefile does not exist.")
-            desc = arcpy.Describe(wb)
-            crs3 = desc.spatialReference
-            if desc.shapeType != "Polygon":
-                raise arcpy.ParameterError("Input shapefile must be a polygon feature.")
+                arcpy.AddMessage("Input Hydraulic conductivity must have only one band.")
 
         if parameters[3].altered:
             poro = parameters[3].value
             if not arcpy.Exists(poro):
-                raise arcpy.ParameterError("The specified raster does not exist.")
+                arcpy.AddMessage("The specified raster does not exist.")
             desc = arcpy.Describe(poro)
             band_count = desc.bandCount
             crs4 = desc.spatialReference
             if band_count != 1:
-                raise arcpy.ParameterError("Input porosity must have only one band.")
+                arcpy.AddMessage("Input porosity must have only one band.")
 
         if parameters[0].altered and parameters[1].altered and parameters[2].altered and parameters[3].altered:
             if crs1.name != crs2.name or crs1.name != crs3.name or crs1.name != crs4.name:
-                raise arcpy.ParameterError("All input files must have the same coordinate system.")
+                arcpy.AddMessage("All input files must have the same coordinate system.")
 
         if parameters[4].altered:
             if parameters[4].value is not None and parameters[4].value < 0:
-                raise arcpy.ParameterError("The Smoothing Factor must be greater than 0.")
+                arcpy.AddMessage("The Smoothing Factor must be greater than 0.")
         if parameters[5].altered:
             if parameters[5].value is not None and parameters[5].value < 0:
-                raise arcpy.ParameterError("The Smoothing Cell must be greater than 0.")
+                arcpy.AddMessage("The Smoothing Cell must be greater than 0.")
         if parameters[9].altered:
             if parameters[9].value is not None and parameters[9].value < 0:
-                raise arcpy.ParameterError("The Z-Factor must be greater than 0.")
+                arcpy.AddMessage("The Z-Factor must be greater than 0.")
 
         if parameters[7].value:
             parameters[8].enabled = True
@@ -231,7 +229,7 @@ class InterfaceGroundwaterFlow(object):
                 except ValueError:
                     values_greater_than_zero = False
                 if not values_greater_than_zero:
-                    raise arcpy.ParameterError("The Smoothing Cell must be greater than 0.")
+                    arcpy.AddMessage("The Smoothing Cell must be greater than 0.")
         else:
             parameters[8].enabled = False
         return
@@ -242,12 +240,21 @@ class InterfaceGroundwaterFlow(object):
         current_time = time.strftime("%H:%M:%S", time.localtime())
         arcpy.AddMessage(f"{current_time} Compute Darcy Flow: START")
 
+        if not self.is_file_path(parameters[0].valueAsText):
+            parameters[0].value = arcpy.Describe(parameters[0].valueAsText).catalogPath
+        if not self.is_file_path(parameters[1].valueAsText):
+            parameters[1].value = arcpy.Describe(parameters[1].valueAsText).catalogPath
+        if not self.is_file_path(parameters[2].valueAsText):
+            parameters[2].value = arcpy.Describe(parameters[2].valueAsText).catalogPath
+        if not self.is_file_path(parameters[3].valueAsText):
+            parameters[3].value = arcpy.Describe(parameters[3].valueAsText).catalogPath
+
         for param in parameters:
             self.describeParameter(messages, param)
 
         dem  = parameters[0].valueAsText
-        ks   = parameters[1].valueAsText
-        wb   = parameters[2].valueAsText
+        wb   = parameters[1].valueAsText
+        ks   = parameters[2].valueAsText
         poro = parameters[3].valueAsText
 
         smthf1 = parameters[4].value
@@ -265,7 +272,7 @@ class InterfaceGroundwaterFlow(object):
 
         # Okay finally go ahead and do the work.
         try:
-            GF = DarcyFlow(dem, ks, wb, poro,
+            GF = DarcyFlow(dem, wb, ks, poro,
                            smthf1, smthc, fsink, merge, smthf2, zfact,
                            velo, veld, grad, smth)
             GF.calculateDarcyFlow()
@@ -277,8 +284,13 @@ class InterfaceGroundwaterFlow(object):
         return
 
     def describeParameter(self, m, p):
-        m.addMessage("Parameter: %s \"%s\"" % (p.name, p.displayName))
-        m.addMessage("  Value \"%s\"" % p.valueAsText)
+        if p.enabled:
+            m.addMessage("Parameter: %s \"%s\"" % (p.name, p.displayName))
+            m.addMessage("  Value \"%s\"" % p.valueAsText)
+
+    @staticmethod
+    def is_file_path(input_string):
+        return os.path.sep in input_string
 
 
 # =============================================================================
