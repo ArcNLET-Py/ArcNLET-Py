@@ -11,20 +11,20 @@ import arcpy
 
 # This is for development, so that you can edit code while running in ArcGIS Pro.
 import importlib
-import interface1_groundwater_flow
-import interface2_particle_tracking
-import interface3_transport
-import interface4_load_estimation
-importlib.reload(interface1_groundwater_flow)
-importlib.reload(interface2_particle_tracking)
-importlib.reload(interface3_transport)
-importlib.reload(interface4_load_estimation)
+import GUI1_Module_Groundwater_Flow
+import GUI2_Module_Particle_Tracking
+import GUI3_Module_Transport
+import GUI4_Module_Load_Estimation
+importlib.reload(GUI1_Module_Groundwater_Flow)
+importlib.reload(GUI2_Module_Particle_Tracking)
+importlib.reload(GUI3_Module_Transport)
+importlib.reload(GUI4_Module_Load_Estimation)
 
 # Import all the tool classes that will be included in this toolbox.
-from interface1_groundwater_flow  import InterfaceGroundwaterFlow
-from interface2_particle_tracking import InterfaceParticleTracking
-from interface3_transport         import InterfaceTransport
-from interface4_load_estimation   import InterfaceLoadEstimation
+from GUI1_Module_Groundwater_Flow  import InterfaceGroundwaterFlow
+from GUI2_Module_Particle_Tracking import InterfaceParticleTracking
+from GUI3_Module_Transport         import InterfaceTransport
+from GUI4_Module_Load_Estimation   import InterfaceLoadEstimation
 
 
 class Toolbox(object):
