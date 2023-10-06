@@ -12,3 +12,5 @@ build:
     python: "3.9"
   commands:
     - pip install recommonmark
+    - python -m sphinx -T -E -W --keep-going -b html -d _build/doctrees -D language=en . _readthedocs/html
+
