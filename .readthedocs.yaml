@@ -6,9 +6,11 @@ sphinx:
   builder: html
   fail_on_warning: true
 
+<<<<<<< HEAD
 build:
   os: ubuntu-22.04
   tools:
     python: "3.9"
   commands:
     - pip install recommonmark
+
