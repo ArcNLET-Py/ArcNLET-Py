@@ -1,4 +1,4 @@
-# SourceCode
+# ArcNLET
 This folder contains Python source codes of ArcNLET for ArcGIS Pro. 
 
 The older version of ArcNLET can be find on https://atmos.eoas.fsu.edu/~mye/ArcNLET/. The training videos can be find on https://www.youtube.com/@mingye9168/videos.
