@@ -13,25 +13,38 @@ import shutil
 import numpy as np
 
 __version__ = "V1.0.0"
+arcpy.env.parallelProcessingFactor = "100%"
 
 
 class DarcyFlow:
-    def __init__(self, dem, ks, wb, poro,
-                 smthf1, smthc, fsink, merge, smthf2, zfact,
+    def __init__(self, c_dem, c_wb, c_ks, c_poro,
+                 c_smthf1, c_smthc, c_fsink, c_merge, c_smthf2, c_zfact,
                  velname, veldname, gradname=None, smthname=None):
         # input files
-        self.dem = dem
-        self.ks = ks
-        self.wb = wb
-        self.poro = poro
+        if not self.is_file_path(c_dem):
+            self.dem = arcpy.Describe(c_dem).catalogPath
+        else:
+            self.dem = c_dem
+        if not self.is_file_path(c_wb):
+            self.wb = arcpy.Describe(c_wb).catalogPath
+        else:
+            self.wb = c_wb
+        if not self.is_file_path(c_ks):
+            self.ks = arcpy.Describe(c_ks).catalogPath
+        else:
+            self.ks = c_ks
+        if not self.is_file_path(c_poro):
+            self.poro = arcpy.Describe(c_poro).catalogPath
+        else:
+            self.poro = c_poro
 
         # input parameters
-        self.smthf1 = smthf1
-        self.smthc = smthc
-        self.flag_fsink = fsink
-        self.flag_merge = merge
-        self.smthf2 = smthf2
-        self.zfact = zfact
+        self.smthf1 = c_smthf1
+        self.smthc = c_smthc
+        self.flag_fsink = c_fsink
+        self.flag_merge = c_merge
+        self.smthf2 = c_smthf2
+        self.zfact = c_zfact
 
         # output file names
         self.velname = velname
@@ -40,11 +53,12 @@ class DarcyFlow:
         self.smthname = smthname
 
         self.zero_threshold = 1E-8
+        self.temp_output_dir = None
 
     def calculateDarcyFlow(self):
         """main calculation function
         """
-        workspace = os.path.dirname(self.velname)
+        workspace = os.path.dirname(self.dem)
         arcpy.env.workspace = os.path.abspath(workspace)
 
         self.temp_output_dir = os.path.join(workspace, 'temp')
@@ -209,30 +223,34 @@ class DarcyFlow:
         velocity = self.ks * gradient / self.poro
         return velocity
 
+    @staticmethod
+    def is_file_path(input_string):
+        return os.path.sep in input_string
+
 
 # ======================================================================
 # Main program for debugging
 if __name__ == '__main__':
     arcpy.env.workspace = ".\\test_pro"
-    dem = os.path.join(arcpy.env.workspace, "lakeshore")
-    ks = os.path.join(arcpy.env.workspace, "hydr_cond.img")
+    dem = os.path.join(arcpy.env.workspace, "Demodem.tif")
     wb = os.path.join(arcpy.env.workspace, "waterbodies")
+    ks = os.path.join(arcpy.env.workspace, "hydr_cond.img")
     poro = os.path.join(arcpy.env.workspace, "porosity.img")
 
-    smthf1 = 20
+    smthf1 = 1
     smthc = 7
     fsink = 0
-    merge = 1
-    smthf2 = [2]
+    merge = 0
+    smthf2 = [0]
     zfact = 1
 
-    vel = os.path.join(arcpy.env.workspace, "11vel")
-    veld = os.path.join(arcpy.env.workspace, "11veld")
-    grad = os.path.join(arcpy.env.workspace, "11grad")
-    smthd = os.path.join(arcpy.env.workspace, "11smthd")
+    vel = os.path.join(arcpy.env.workspace, "demovel")
+    veld = os.path.join(arcpy.env.workspace, "demoveld")
+    grad = os.path.join(arcpy.env.workspace, "demograd")
+    smthd = os.path.join(arcpy.env.workspace, "demosmthd")
 
     arcpy.AddMessage("starting geoprocessing")
-    GF = DarcyFlow(dem, ks, wb, poro,
+    GF = DarcyFlow(dem, wb, ks, poro,
                    smthf1, smthc, fsink, merge, smthf2, zfact,
                    vel, veld, grad, smthd)
     GF.calculateDarcyFlow()

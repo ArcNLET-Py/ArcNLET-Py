@@ -17,31 +17,47 @@ import numpy as np
 import cProfile
 
 __version__ = "V1.0.0"
-
-import pandas as pd
-
 arcpy.env.parallelProcessingFactor = "100%"
 
 
 class ParticleTracking:
     """ Update the named field in every row of the input feature class with the given value. """
 
-    def __init__(self, source_location, water_bodies, velocity, velocity_dir, poro, option,
-                 resolution, step_size, max_steps, output, start_point=None, start_point_fc=None):
-        self.source_location = source_location
-        self.water_bodies = water_bodies
-        self.velocity = velocity
-        self.velocity_dir = velocity_dir
-        self.poro = poro
+    def __init__(self, c_source_location, c_water_bodies, c_velocity, c_velocity_dir, c_poro, c_option,
+                 c_resolution, c_step_size, c_max_steps, c_output):
+        if not self.is_file_path(c_source_location):
+            self.source_location = arcpy.Describe(c_source_location).catalogPath
+        else:
+            self.source_location = c_source_location
+        if not self.is_file_path(c_water_bodies):
+            self.water_bodies = arcpy.Describe(c_water_bodies).catalogPath
+        else:
+            self.water_bodies = c_water_bodies
+        if not self.is_file_path(c_velocity):
+            self.velocity = arcpy.Describe(c_velocity).catalogPath
+        else:
+            self.velocity = c_velocity
+        if not self.is_file_path(c_velocity_dir):
+            self.velocity_dir = arcpy.Describe(c_velocity_dir).catalogPath
+        else:
+            self.velocity_dir = c_velocity_dir
+        if not self.is_file_path(c_poro):
+            self.poro = arcpy.Describe(c_poro).catalogPath
+        else:
+            self.poro = c_poro
 
-        self.resolution = resolution
-        self.step_size = step_size
-        self.max_steps = max_steps
+        self.resolution = c_resolution
+        self.step_size = c_step_size
+        self.max_steps = c_max_steps
 
-        output = os.path.abspath(output)
-        self.output_dir = os.path.dirname(output)
-        self.output_name = os.path.basename(output)
-        self.output_fc = output
+        if self.is_file_path(c_output):
+            self.output_dir = os.path.dirname(c_output)
+            self.output_name = os.path.basename(c_output)
+            self.output_fc = c_output
+        else:
+            self.output_dir = os.path.dirname(self.velocity)
+            self.output_name = c_output
+            self.output_fc = os.path.join(self.output_dir, self.output_name)
         self.output_exist = False
 
         desc = arcpy.Describe(self.source_location)
@@ -50,8 +66,8 @@ class ParticleTracking:
         self.index = 0
 
         # Convert water bodies to raster
-        if arcpy.Exists("water_bodies"):
-            arcpy.Delete_management("water_bodies")
+        if arcpy.Exists(r"memory\water_bodies"):
+            arcpy.Delete_management(r"memory\water_bodies")
         self.waterbody_raster = r"memory\water_bodies"
         arcpy.conversion.FeatureToRaster(self.water_bodies, "FID", self.waterbody_raster, self.resolution)
 
@@ -80,7 +96,7 @@ class ParticleTracking:
         self.poroy = desc.extent.YMax
         self.poro_cell_size = desc.meanCellWidth
 
-        self.modify_seg = option
+        self.modify_seg = c_option
         self.temp_layer_name = "temp_layer"
 
     def create_shapefile(self):
@@ -115,6 +131,9 @@ class ParticleTracking:
         current_time = time.strftime("%H:%M:%S", time.localtime())
         arcpy.AddMessage('')
         arcpy.AddMessage(f"{current_time} START CALCULATING...")
+        workspace = os.path.dirname(self.velocity)
+        arcpy.env.workspace = os.path.abspath(workspace)
+        arcpy.AddMessage(f"Workspace: {arcpy.env.workspace}")
 
         self.create_shapefile()
 
@@ -246,7 +265,7 @@ class ParticleTracking:
                         for i in range(-1, -len(segments) - 1, -1):
                             if segments[i][0].crosses(polygon):
                                 arcpy.analysis.Intersect([self.temp_layer_name, segments[i][0]], intersect_output,
-                                                         "ALL", "", "LINE")
+                                                         "ALL", "", "POINT")
                                 delete_index = len(segments) + i
                                 segments = segments[: delete_index + 1]
                                 segments[-1][-2] = water_bodies_id
@@ -310,15 +329,19 @@ class ParticleTracking:
             except Exception as e:
                 print(e)
 
+    @staticmethod
+    def is_file_path(input_string):
+        return os.path.sep in input_string
+
 
 # ======================================================================
 # Main program for debugging
 if __name__ == '__main__':
     arcpy.env.workspace = ".\\test_pro"
-    source_location = os.path.join(arcpy.env.workspace, "PotentialSepticTankLocations.shp")
+    source_location = os.path.join(arcpy.env.workspace, "OneSepticTank.shp")
     water_bodies = os.path.join(arcpy.env.workspace, "waterbodies")
-    velocity = os.path.join(arcpy.env.workspace, "00vel")
-    velocity_dir = os.path.join(arcpy.env.workspace, "00veld")
+    velocity = os.path.join(arcpy.env.workspace, "demovel")
+    velocity_dir = os.path.join(arcpy.env.workspace, "demoveld")
     porosity = os.path.join(arcpy.env.workspace, "porosity.img")
 
     option = True
@@ -326,7 +349,7 @@ if __name__ == '__main__':
     step_size = 10
     max_steps = 1000
 
-    output_fc = os.path.join(arcpy.env.workspace, "Path11.shp")
+    output_fc = os.path.join(arcpy.env.workspace, "demoPath.shp")
 
     start_time = datetime.datetime.now()
 
