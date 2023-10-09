@@ -6,8 +6,9 @@ The structure of the manual is as follows: the manual begins with an abbreviated
 The measurement units used in this manual may vary between metric and imperial units. However required units will always be explicitly stated.
 
 In order to make this manual easier to read, a certain typographic convention has been adopted:
-• Model inputs and parameters always appear in bold font.
-• Names of attributes in a shapefile’s attribute table are always shown in a typewriter font.
+
+* Model inputs and parameters always appear in bold font.
+* Names of attributes in a shapefile’s attribute table are always shown in a typewriter font.
 
 1.2 Acronyms and Abbreviations
 =========================================
