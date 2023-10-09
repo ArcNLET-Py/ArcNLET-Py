@@ -1,0 +1,4 @@
+# This file specifies requirements of a reproducible environment for
+# testing rasterio. It is used in the project's CI builds.
+
+sphinx_rtd_theme
