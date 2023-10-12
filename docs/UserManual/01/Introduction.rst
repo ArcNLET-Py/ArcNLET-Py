@@ -27,3 +27,21 @@ NHD                                National Hydrography dataset
 OWTS                               Onsite Wastewater Treatment System. A septic tank is an example of an OWTS
 SA                                 Spatial Analyst (extension for ArcGIS)         
 ===============================   =================================================================================================
+
+1.3 Acronyms and Abbreviations
+=========================================
+
+In this manual, acronyms or terms that are abbreviated are spelled out in full the first time they appear. The following is a list of acronyms and abbreviations used in this manual:
+
+===============================   =================================================================================================
+ Acronyms and abbreviations       Description
+===============================   =================================================================================================
+DEM                                Digital Elevation Model                                                   
+GIS                                Geographic Information System                                             
+FDEP                               Florida Department of Environmental Protection                            
+GUI                                Graphical User Interface                                                  
+NED                                National Elevation Dataset                                                
+NHD                                National Hydrography dataset                                              
+OWTS                               Onsite Wastewater Treatment System. A septic tank is an example of an OWTS
+SA                                 Spatial Analyst (extension for ArcGIS)         
+===============================   =================================================================================================
