@@ -6,14 +6,12 @@ to be included in an ArcGIS Python Toolbox.
 """
 
 import os
+import time
 import arcpy
-from datetime import datetime
 
-# This is for development, so that you can edit code while running in ArcGIS Pro.
 import importlib
 import tool4_load_estimation
 importlib.reload(tool4_load_estimation)
-
 from tool4_load_estimation import LoadEstimation
 
 
@@ -23,31 +21,44 @@ class InterfaceLoadEstimation(object):
     def __init__(self) -> None:
         """Define the tool. """
         self.label = "4 Load Estimation"
-        self.description = """Smoothing DEM to obtain an approximation of the groundwater table."""
-        self.canRunInBackground = False
+        self.description = """Load Estimation."""
         self.category = "ArcNLET"
 
     def getParameterInfo(self) -> list:
         """Define parameter definitions.
-Refer to https://pro.arcgis.com/en/pro-app/latest/arcpy/geoprocessing_and_python/defining-parameters-in-a-python-toolbox.htm
-        """       
-
-        infile0 = arcpy.Parameter(name="dem",
-                                  displayName="DEM surface elevation map [L] (raster)",
-                                  datatype=["DERasterDataset"],
-                                  parameterType="Required", # Required|Optional|Derived
-                                  direction="Input", # Input|Output
-                                  )
-
-        param0 = arcpy.Parameter(name="smthf",
-                                 displayName="Smoothing factor",
-                                 datatype="GPLong",
+        """
+        param0 = arcpy.Parameter(name="whether NH4",
+                                 displayName="Consideration of NH\u2084",
+                                 datatype="GPBoolean",
                                  parameterType="Required",  # Required|Optional|Derived
-                                 direction="Input", # Input|Output
-                                  )
-        param0.value = 20
+                                 direction="Input",  # Input|Output
+                                 )
+        param0.value = 0
 
-        return [infile0, param0]
+        param1 = arcpy.Parameter(name="RiskFactor",
+                                 displayName="Risk Factor",
+                                 datatype="GPDouble",
+                                 parameterType="Required",  # Required|Optional|Derived
+                                 direction="Input",  # Input|Output
+                                 )
+        param1.value = 1.0
+
+        infile1 = arcpy.Parameter(name="PlumesNO3",
+                                  displayName="Plumes NO\u2083 info (Point)",
+                                  datatype="GPFeatureLayer",
+                                  parameterType="Required",
+                                  direction="Input")
+        infile1.filter.list = ["Point"]
+
+        infile2 = arcpy.Parameter(name="PlumesNH4",
+                                  displayName="Plumes NH\u2084 info (Point)",
+                                  datatype="GPFeatureLayer",
+                                  parameterType="Required",
+                                  direction="Optional")
+        infile2.filter.list = ["Point"]
+        infile2.parameterDependencies = [param0.name]
+
+        return [param0, param1, infile1, infile2]
 
     def isLicensed(self) -> bool:
         """Set whether tool is licensed to execute."""
@@ -58,73 +69,64 @@ Refer to https://pro.arcgis.com/en/pro-app/latest/arcpy/geoprocessing_and_python
         validation is performed.  This method is called whenever a parameter
         has been changed."""
         if parameters[0].altered:
-            if not arcpy.Exists(parameters[0].value):
-                parameters[0].setErrorMessage("Feature class could not be opened.")
+            if parameters[0].value:
+                parameters[3].enabled = True
+            else:
+                parameters[3].enabled = False
+
+        if parameters[1].altered:
+            if parameters[1].value < 0:
+                arcpy.AddMessage("Risk Factor should be greater than 0.")
         return
 
     def execute(self, parameters, messages) -> None:
         """This is the code that executes when you click the "Run" button."""
-        
-        # Let's dump out what we know here.
-        messages.addMessage("This is a test of your tool.")
+
+        messages.addMessage("Load Estimation Module.")
+
+        current_time = time.strftime("%H:%M:%S", time.localtime())
+        arcpy.AddMessage(f"{current_time} Load Estimation: START")
+
+        if not self.is_file_path(parameters[2].valueAsText):
+            parameters[2].value = arcpy.Describe(parameters[2].valueAsText).catalogPath
+        if parameters[0].value:
+            if not self.is_file_path(parameters[3].valueAsText):
+                parameters[3].value = arcpy.Describe(parameters[3].valueAsText).catalogPath
+
         for param in parameters:
-            self.describeParameter(messages,param)
+            self.describeParameter(messages, param)
         
-        # Get the parameters from our parameters list,
-        # then call a generic python function.
-        #
-        # This separates the code doing the work from all
-        # the crazy code required to talk to ArcGIS.
-        
-        # See http://resources.arcgis.com/en/help/main/10.2/index.html#//018z00000063000000
-        input_fc  = parameters[0].valueAsText
-        # fieldname = parameters[1].valueAsText
-        # datestamp = parameters[2].valueAsText
-        # number    = parameters[3].value
-        # depnumber = parameters[4].value
-        # output_fc = parameters[5].valueAsText
-        
-        # Okay finally go ahead and do the work.
+        whethernh4 = parameters[0].valueAsText
+        riskfactor = parameters[1].valueAsText
+        plumesno3 = parameters[2].valueAsText
+        if parameters[0].value:
+            plumesnh4 = parameters[3].valueAsText
+        else:
+            plumesnh4 = None
+
         try:
-            LoadEstimationTool(input_fc)
-            messages.addMessage("Success.")
+            LE = LoadEstimation(whethernh4, riskfactor, plumesno3, plumesnh4)
+            LE.calculate_load_estimation()
+            current_time = time.strftime("%H:%M:%S", time.localtime())
+            arcpy.AddMessage(f"{current_time} Load Estimation: FINISH")
         except Exception as e:
-            arcpy.AddError("Fail. %s" % e)
+            current_time = time.strftime("%H:%M:%S", time.localtime())
+            arcpy.AddMessage(f"{current_time} Fail. {e}")
         return
 
     def describeParameter(self, m, p):
-        m.addMessage("===Parameter=== %s \"%s\"" % (p.name, p.displayName))
-        m.addMessage("  altered? %s" % p.altered)
-        m.addMessage("  value \"%s\"" % p.valueAsText)
-        m.addMessage("  datatype %s" % p.datatype)
-        m.addMessage("  filter %s" % p.filter)
+        if p.enabled:
+            m.addMessage("Parameter: %s \"%s\"" % (p.name, p.displayName))
+            m.addMessage("  Path \"%s\"" % p.valueAsText)
+
+    @staticmethod
+    def is_file_path(input_string):
+        return os.path.sep in input_string
 
     
 # =============================================================================
 if __name__ == "__main__":
-    # This is an example of how you could set up a unit test for this tool.
-    # You can run this tool from a debugger or from the command line
-    # to check it for errors before you try it in ArcGIS.
-    
+
     class Messenger(object):
         def addMessage(self, message):
             print(message)
-
-    # Get an instance of the tool.
-    update_datestamp = Tool_Interface()
-    # Read its default parameters.
-    params = update_datestamp.getParameterInfo()
-
-    # Set some test values into the instance
-    arcpy.env.workspace = '.\\test_pro\\demo.gdb'
-    params[0].value = os.path.join(arcpy.env.workspace, "lakeshore")
-    # params[1].value = os.path.join(arcpy.env.workspace, "hydr_cond")
-    # params[2].value = os.path.join(arcpy.env.workspace, "waterbodies")
-    # params[3].value = os.path.join(arcpy.env.workspace, "porosity")
-    # params[8].value = os.path.join(arcpy.env.workspace, "veldemo")
-    # params[9].value = os.path.join(arcpy.env.workspace, "veldirdemo")
-    
-    # Run it.
-    update_datestamp.execute(params, Messenger())
-
-# That's all

@@ -89,7 +89,7 @@ class Transport:
         self.multiplier = 1.2
 
         if self.whether_nh4:
-            self.nh4_output = os.path.basename(nh4output) if self.is_file_path(c_nh4output) else c_nh4output
+            self.nh4_output = os.path.basename(c_nh4output) if self.is_file_path(c_nh4output) else c_nh4output
             self.nh4_output_info = os.path.basename(self.nh4_output) + "_info.shp"
             if not any(field.name.lower() == "nh4_conc" for field in field_list):
                 self.nh4_init = float(c_nh4param0) if isinstance(c_nh4param0, str) else c_nh4param0  # Initial NH4
@@ -311,11 +311,11 @@ class Transport:
 
                 edge = 500
                 while True:
-                    xlist = np.arange(1, nx + 1) * self.plume_cell_size - self.plume_cell_size / 2
+                    xlist = np.arange(1, nx + 1) * self.plume_cell_size  # - self.plume_cell_size / 2
                     if ny % 2 != 0:
                         ylist = np.arange(-edge, edge + 1) * self.plume_cell_size
                     else:
-                        ylist = np.arange(-edge, edge) * self.plume_cell_size + self.plume_cell_size / 2
+                        ylist = np.arange(-edge, edge) * self.plume_cell_size  # + self.plume_cell_size / 2
 
                     nh4result = dr4.eval(xlist, ylist, 0)
                     no3result = dr3.eval(xlist, ylist, 0)
@@ -475,18 +475,28 @@ class Transport:
         elif self.warp_method == "polyorder2":
             warp_method = 2
 
+        if no3plumelen < max_dist:
+            no3wbid = -1
+        else:
+            no3wbid = wbid
+
         no3segment = [point, pathid, 1, dombdy, self.kno3, mean_velo, mean_poro, self.no3_dispx,
                       self.no3_dispyz, 0, self.Y, self.no3_Z, self.plume_cell_size, self.plume_cell_size, self.no3_Z,
                       -1, maxtime, no3plumelen, max_dist, no3plumearea, no3massinratemt3d, no3massin, no3mdn,
                       mean_angle, warp_method, processes, self.no3_init, self.vol_conversion_factor, no3nextconc,
-                      self.threshold, wbid, path_wbid]
+                      self.threshold, no3wbid, path_wbid]
         nh4segment = []
         if self.whether_nh4:
+            if nh4plumelen < max_dist:
+                nh4wbid = -1
+            else:
+                nh4wbid = wbid
+
             nh4segment = [point, pathid, 1, dombdy, self.knh4, mean_velo, mean_poro, self.nh4_dispx,
                           self.nh4_dispyz, 0, self.Y, self.nh4_Z, self.plume_cell_size, self.plume_cell_size,
                           self.nh4_Z, -1, maxtime, nh4plumelen, max_dist, nh4plumearea, nh4massinratemt3d, nh4massin,
                           nh4mdn, mean_angle, warp_method, processes, self.nh4_init, self.vol_conversion_factor,
-                          nh4nextconc, self.threshold, wbid, path_wbid]
+                          nh4nextconc, self.threshold, nh4wbid, path_wbid]
 
         return no3segment, nh4segment
 
@@ -760,6 +770,9 @@ class Transport:
                     self.no3_init = no3_conc
                     nh4_conc = self.nh4_init
                 else:
+                    cursor = arcpy.da.SearchCursor(self.source_location, ["SHAPE@", "FID"], query)
+                    row = cursor.next()
+                    point = row[0]
                     no3_conc = self.no3_init
                     nh4_conc = self.nh4_init
             else:
@@ -771,6 +784,9 @@ class Transport:
                     nh4_conc = 0
                     self.no3_init = no3_conc
                 else:
+                    cursor = arcpy.da.SearchCursor(self.source_location, ["SHAPE@", "FID"], query)
+                    row = cursor.next()
+                    point = row[0]
                     no3_conc = self.no3_init
                     nh4_conc = 0
             return point, no3_conc, nh4_conc
@@ -1064,13 +1080,13 @@ def find_perpendicular_point(x1, y1, x2, y2, distance, x0, y0):
 # Main program for debugging
 if __name__ == '__main__':
     arcpy.env.workspace = ".\\test_pro"
-    whethernh4 = False
-    source_location = os.path.join(arcpy.env.workspace, "PotentialSepticTankLocations.shp")
+    whethernh4 = True
+    source_location = os.path.join(arcpy.env.workspace, "OneSepticTank.shp")
     water_bodies = os.path.join(arcpy.env.workspace, "waterbodies")
-    particlepath = os.path.join(arcpy.env.workspace, "Path3.shp")
+    particlepath = os.path.join(arcpy.env.workspace, "demopath.shp")
 
-    no3output = os.path.join(arcpy.env.workspace, "7no3")
-    nh4output = os.path.join(arcpy.env.workspace, "7nh4")
+    no3output = os.path.join(arcpy.env.workspace, "demo1no3")
+    nh4output = os.path.join(arcpy.env.workspace, "demo1nh4")
 
     option0 = "DomenicoRobbinsSSDecay2D"
     option1 = 48
@@ -1080,23 +1096,23 @@ if __name__ == '__main__':
     option5 = "Specified z"  # input mass rate or z
 
     param1 = 20000
-    param2 = 12
-    param3 = 1.5
+    param2 = 6
+    param3 = 1
     param4 = False
     param5 = 3.0
-    param6 = 0.8
+    param6 = 0.4
 
     no3param0 = 40
     no3param1 = 2.113
     no3param2 = 0.234
     no3param3 = 0.008
     no3param4 = 1000.0
-    nh4param0 = 10
-    nh4param1 = 4.226
+    nh4param0 = 5
+    nh4param1 = 2.113
     nh4param2 = 0.234
-    nh4param3 = 0.001
+    nh4param3 = 0.0008
     nh4param4 = 1.42
-    nh4param5 = 2
+    nh4param5 = 4
 
     arcpy.AddMessage("starting geoprocessing")
     start_time = datetime.datetime.now()

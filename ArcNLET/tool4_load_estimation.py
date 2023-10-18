@@ -5,129 +5,105 @@ For detailed algorithms, please see https://atmos.eoas.fsu.edu/~mye/ArcNLET/Tech
 
 @author: Wei Mao <wm23@@fsu.edu>
 """
-from collections import namedtuple
+
 import datetime
 import arcpy
 import os
-import sys
 import numpy as np
+import pandas as pd
 
 __version__ = "V1.0.0"
 
 
-def LoadEstimation(dem, ks=None, wb=None, poro=None, smthf1=None, smthc=None, fsink=None,
-              zfact=None, velname=None, veldname=None, gradname=None, smthname=None):
-    """ Update the named field in every row of the input feature class with the given value. """
+class LoadEstimation:
+    def __init__(self, c_whethernh4, riskf, c_plumesno3, c_plumesnh4=None):
+        """Initialize the load estimation module.
+        """
+        if isinstance(c_whethernh4, str):
+            self.whether_nh4 = True if c_whethernh4.lower() == 'true' else False
+        elif isinstance(c_whethernh4, bool):
+            self.whether_nh4 = c_whethernh4
+        else:
+            arcpy.AddMessage("Error: format of whether to calculate NH4 is wrong.")
 
-    arcpy.AddMessage("Groundwater Flow {}".format(__version__))
+        self.risk_factor = riskf if isinstance(riskf, float) else float(riskf)
+        self.plumesno3 = arcpy.Describe(c_plumesno3).catalogPath if not self.is_file_path(c_plumesno3) else c_plumesno3
+        if self.whether_nh4:
+            self.plumesnh4 = arcpy.Describe(c_plumesnh4).catalogPath if not self.is_file_path(
+                c_plumesnh4) else c_plumesnh4
 
-    try:
-        arcpy.CheckOutExtension("Spatial")
-    except RuntimeError as e:
-        print("Unable to apply for Spatial Analyst Extension license: {}".format(e))
-        return
+    def calculate_load_estimation(self):
 
-    zero_threshold = 1E-8
+        data = []
+        with arcpy.da.SearchCursor(self.plumesno3, ["massInRate", "massDNRate", "WBId_plume"]) as cursor:
+            for row in cursor:
+                data.append(row)
+        segments = pd.DataFrame(data, columns=["massInRate", "massDNRate", "WBId_plume"])
+        no3_load = segments.groupby("WBId_plume").sum()
+        no3_load = no3_load.reset_index()
+        no3_load = no3_load.assign(Massoutput=no3_load["massInRate"] - no3_load["massDNRate"])
+        no3_load = no3_load.assign(Massoutputrisk=no3_load["Massoutput"] * self.risk_factor)
+        no3_load = no3_load.rename(columns={"WBId_plume": "Waterbody FID", "Massoutput": "Mass Output Load [M/T]",
+                                            "Massoutputrisk": "Mass Output Load * Risk Factor [M/T]",
+                                            "massInRate": "Mass Input Load [M/T]",
+                                            "massDNRate": "Mass Removal Rate [M/T]"})
+        no3_load = no3_load[["Waterbody FID", "Mass Output Load [M/T]", "Mass Output Load * Risk Factor [M/T]",
+                             "Mass Input Load [M/T]", "Mass Removal Rate [M/T]"]]
+        arcpy.AddMessage(no3_load)
+        name = os.path.basename(self.plumesno3).split(".")[0] + ".csv"
+        dirname = os.path.join(os.path.dirname(self.plumesno3), name)
+        if os.path.exists(dirname):
+            try:
+                os.remove(dirname)
+            except PermissionError:
+                arcpy.AddMessage("Please close the file: " + dirname)
+                return
+        no3_load.to_csv(dirname, index=False)
 
-    # Smoothing calculation
-    neighborhood = arcpy.sa.NbrRectangle(smthc, smthc, "CELL")
-    # Smoothing smthf1 times
-    for i in range(smthf1):
-        smthdem = arcpy.sa.FocalStatistics(dem, neighborhood, "MEAN", "DATA")
-        dem = smthdem
+        if self.whether_nh4:
+            data = []
+            with arcpy.da.SearchCursor(self.plumesnh4, ["massInRate", "massDNRate", "WBId_plume"]) as cursor:
+                for row in cursor:
+                    data.append(row)
+            segments = pd.DataFrame(data, columns=["massInRate", "massDNRate", "WBId_plume"])
+            nh4_load = segments.groupby("WBId_plume").sum()
+            nh4_load = nh4_load.reset_index()
+            nh4_load = nh4_load.assign(Massoutput=nh4_load["massInRate"] - nh4_load["massDNRate"])
+            nh4_load = nh4_load.assign(Massoutputrisk=nh4_load["Massoutput"] * self.risk_factor)
+            nh4_load = nh4_load.rename(columns={"WBId_plume": "Waterbody FID", "Massoutput": "Mass Output Load [M/T]",
+                                                "Massoutputrisk": "Mass Output Load * Risk Factor [M/T]",
+                                                "massInRate": "Mass Input Load [M/T]",
+                                                "massDNRate": "Mass Removal Rate [M/T]"})
+            nh4_load = nh4_load[["Waterbody FID", "Mass Output Load [M/T]", "Mass Output Load * Risk Factor [M/T]",
+                                 "Mass Input Load [M/T]", "Mass Removal Rate [M/T]"]]
+            arcpy.AddMessage(nh4_load)
+            name = os.path.basename(self.plumesnh4).split(".")[0] + ".csv"
+            dirname = os.path.join(os.path.dirname(self.plumesnh4), name)
+            if os.path.exists(dirname):
+                try:
+                    os.remove(dirname)
+                except PermissionError:
+                    arcpy.AddMessage("Please close the file: " + dirname)
+                    return
+            nh4_load.to_csv(dirname, index=False)
 
-    # Filling sinks if fsink is True
-    if fsink:
-        smoothed_filled_dem = arcpy.sa.Fill(smthdem)
-    else:
-        smoothed_filled_dem = smthdem
-
-    # Calculation of Gx and Gy
-    desc = arcpy.Describe(dem)
-    cell_size_x = abs(desc.meanCellWidth)
-    cell_size_y = abs(desc.meanCellHeight)
-    gx = arcpy.sa.Convolution(smoothed_filled_dem, 18) / cell_size_x / 8 * zfact
-    gy = arcpy.sa.Convolution(smoothed_filled_dem, 17) / cell_size_y / 8 * zfact
-    # calculation of gradient
-    gradient = arcpy.sa.SquareRoot(gx ** 2 + gy ** 2)
-
-    # If gradient is less than zero_threshold, set it to zero_threshold
-    gradient = arcpy.sa.Con(gradient < zero_threshold, zero_threshold, gradient)
-
-    # Calculation of velocity, velocity = hydraulic conductivity / porosity * gradient
-    velo = arcpy.sa.Raster(ks) / arcpy.sa.Raster(poro) * arcpy.sa.Raster(gradient)
-
-    # calculate velocity direction
-    gx_array = arcpy.RasterToNumPyArray(gx)
-    gy_array = arcpy.RasterToNumPyArray(gy)
-    tand_array = np.arctan2(gy_array, gx_array)
-    # convert the radian to degree
-    theta_array = np.degrees(tand_array)
-
-    # Starting from north, and calculate the angle counter-clockwise
-    nrows = desc.height
-    ncols = desc.width
-    for i in range(nrows):
-        for j in range(ncols):
-            if gx[i, j] < 0 < gy[i, j]:
-                theta_array[i, j] = theta_array[i, j] - 90
-            else:
-                theta_array[i, j] = 270 + theta_array[i, j]
-
-    # If the angle is 270, that means gx = gy = 0. Set the angle to the mean value of the surrounding values,
-    # which are the values within the square of size smthc * smthc
-    r0 = smthc // 2
-    theta_array[theta_array == 270] = -1
-    negative_indices = np.where(theta_array < 0)
-    for row, col in zip(*negative_indices):
-        surrounding_values = theta_array[row - r0:row + r0 + 1, col - r0:col + r0 + 1]
-        valid_values = surrounding_values[surrounding_values >= 0]
-        if valid_values.size > 0:
-            theta_array[row, col] = np.mean(valid_values)
-
-    # convert the numpy array back to raster
-    tand = arcpy.NumPyArrayToRaster(theta_array, arcpy.Point(gx.extent.XMin, gx.extent.YMin),
-                                    gx.meanCellWidth, gx.meanCellHeight)
-
-    # save the output
-    if arcpy.Exists(velname):
-        arcpy.Delete_management(velname)
-    velo.save(velname)
-    if arcpy.Exists(veldname):
-        arcpy.Delete_management(veldname)
-    tand.save(veldname)
-    if gradname is not None:
-        if arcpy.Exists(gradname):
-            arcpy.Delete_management(gradname)
-        gradient.save(gradname)
-    if smthname is not None:
-        if arcpy.Exists(smthname):
-            arcpy.Delete_management(smthname)
-        smthdem.save(smthname)
-    return
+    @staticmethod
+    def is_file_path(input_string):
+        return os.path.sep in input_string
 
 
 # ======================================================================
 # Main program for debugging
 if __name__ == '__main__':
-    arcpy.env.workspace = ".\\test_pro"
-    dem = os.path.join(arcpy.env.workspace, "test.tif")
-    ks = os.path.join(arcpy.env.workspace, "hydr_cond.img")
-    wb = os.path.join(arcpy.env.workspace, "waterbodies")
-    poro = os.path.join(arcpy.env.workspace, "porosity.img")
+    # arcpy.env.workspace = ".\\test_pro"
+    arcpy.env.workspace = "C:\\Users\\Wei\\Downloads\\llake\\lakeshore_example\\lakeshore_example"
 
-    smthf1 = 1
-    smthc = 3
-    fsink = 0
-    zfact = 1
+    whether_nh4 = False
+    risk_factor = 1
+    plumesno3 = os.path.join(arcpy.env.workspace, "pyno3_info.shp")
+    plumesnh4 = ""
 
-    vel = os.path.join(arcpy.env.workspace, "2vel")
-    veld = os.path.join(arcpy.env.workspace, "2veld")
-    grad = os.path.join(arcpy.env.workspace, "2grad")
-    smthd = os.path.join(arcpy.env.workspace, "2smthd")
-
-    arcpy.AddMessage("starting geoprocessing")
-    GroundwaterFlow(dem, ks, wb, poro, smthf1, smthc, fsink, zfact,
-                    vel, veld, grad, smthd)
+    LE = LoadEstimation(whether_nh4, risk_factor, plumesno3, plumesnh4)
+    LE.calculate_load_estimation()
 
     print("Tests successful!")

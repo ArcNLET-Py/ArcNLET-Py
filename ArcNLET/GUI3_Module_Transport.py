@@ -376,6 +376,12 @@ class InterfaceTransport(object):
             if crs1.name != crs2.name or crs1.name != crs3.name:
                 arcpy.AddMessage("All input files must have the same coordinate system.")
 
+        if parameters[6].altered:
+            if parameters[6].value == "DomenicoRobbinsSS2D":
+                parameters[21].enabled = False
+            elif parameters[6].value == "DomenicoRobbinsSSDecay2D":
+                parameters[21].enabled = True
+
         if parameters[7].altered:
             if parameters[7].value < 0:
                 arcpy.AddMessage("Plume warping control points must be a positive integer.")
@@ -412,7 +418,11 @@ class InterfaceTransport(object):
         if parameters[13].altered:
             if parameters[13].value < 0:
                 arcpy.AddMessage("Y must be a positive number.")
-            parameters[17].value = parameters[13].value / 15
+
+        if parameters[17].altered:
+            if parameters[17].value < 0:
+                arcpy.AddMessage("Plume cell size must be a positive number.")
+        # parameters[17].value = parameters[13].value / 15
 
         if parameters[19].altered:
             if parameters[19].value < 0:
@@ -444,8 +454,7 @@ class InterfaceTransport(object):
 
     def execute(self, parameters, messages) -> None:
         """This is the code that executes when you click the "Run" button."""
-        
-        # Let's dump out what we know here.
+
         messages.addMessage("Solute transport module.")
 
         current_time = time.strftime("%H:%M:%S", time.localtime())
@@ -503,7 +512,7 @@ class InterfaceTransport(object):
             arcpy.AddMessage(f"{current_time} Transport: FINISH")
         except Exception as e:
             current_time = time.strftime("%H:%M:%S", time.localtime())
-            arcpy.AddError(f"{current_time} Fail. {e}")
+            arcpy.AddMessage(f"{current_time} Fail. {e}")
         return
 
     def describeParameter(self, m, p):
