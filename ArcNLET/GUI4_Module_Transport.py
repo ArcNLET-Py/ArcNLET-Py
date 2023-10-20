@@ -9,9 +9,9 @@ import importlib
 import os
 import time
 import arcpy
-import tool3_transport
-importlib.reload(tool3_transport)
-from tool3_transport import Transport
+import tool4_transport
+importlib.reload(tool4_transport)
+from tool4_transport import Transport
 
 
 class InterfaceTransport(object):
@@ -19,7 +19,7 @@ class InterfaceTransport(object):
 
     def __init__(self) -> None:
         """Define the tool. """
-        self.label = "3 Transport"
+        self.label = "4 Transport"
         self.description = """Transport module."""
         self.category = "ArcNLET"
 
@@ -324,57 +324,21 @@ class InterfaceTransport(object):
 
         if parameters[1].altered:
             source_location = parameters[1].value
-            if not arcpy.Exists(source_location):
-                arcpy.AddMessage("The specified source location does not exist.")
             desc = arcpy.Describe(source_location)
             crs1 = desc.spatialReference
-
             field_list = desc.fields
             no3_exists = any(field.name.lower() == "no3_conc" for field in field_list)
-            parameters[18].enabled = True
             if not no3_exists:
-                if parameters[18].altered:
-                    if parameters[18].value < 0:
-                        arcpy.AddMessage("NO3 initial concentration must be a positive number.")
+                parameters[18].enabled = True
             else:
                 parameters[18].enabled = False
-                with arcpy.da.SearchCursor(source_location, ["NO3_Conc"]) as cursor:
-                    for row in cursor:
-                        no3 = float(row[0])
-                        if no3 < 0:
-                            arcpy.AddMessage("NO3 initial concentration must be a positive number.")
+
             if parameters[0].value:
                 nh4_exists = any(field.name.lower() == "nh4_conc" for field in field_list)
-                parameters[23].enabled = True
                 if not nh4_exists:
-                    if parameters[23].altered:
-                        if parameters[23].value < 0:
-                            arcpy.AddMessage("NH4 initial concentration must be a positive number.")
+                    parameters[23].enabled = True
                 else:
                     parameters[23].enabled = False
-                    with arcpy.da.SearchCursor(source_location, ["NH4_Conc"]) as cursor:
-                        for row in cursor:
-                            nh4 = float(row[0])
-                            if nh4 < 0:
-                                arcpy.AddMessage("NH4 initial concentration must be a positive number.")
-
-        if parameters[2].altered:
-            wb = parameters[2].value
-            if not arcpy.Exists(wb):
-                arcpy.AddMessage("The specified shapefile does not exist.")
-            desc = arcpy.Describe(wb)
-            crs2 = desc.spatialReference
-
-        if parameters[3].altered:
-            ppath = parameters[3].value
-            if not arcpy.Exists(ppath):
-                arcpy.AddMessage("The specified shapefile does not exist.")
-            desc = arcpy.Describe(ppath)
-            crs3 = desc.spatialReference
-
-        if parameters[1].altered and parameters[2].altered and parameters[3].altered:
-            if crs1.name != crs2.name or crs1.name != crs3.name:
-                arcpy.AddMessage("All input files must have the same coordinate system.")
 
         if parameters[6].altered:
             if parameters[6].value == "DomenicoRobbinsSS2D":
@@ -382,75 +346,109 @@ class InterfaceTransport(object):
             elif parameters[6].value == "DomenicoRobbinsSSDecay2D":
                 parameters[21].enabled = True
 
-        if parameters[7].altered:
-            if parameters[7].value < 0:
-                arcpy.AddMessage("Plume warping control points must be a positive integer.")
-        if parameters[9].altered:
-            if parameters[9].value < 0:
-                arcpy.AddMessage("Threshold concentration must be a positive number.")
-            elif parameters[9].value > 0.1:
-                arcpy.AddMessage("Threshold concentration is large than 0.1. Maybe it is too large.")
-
         if parameters[11].altered:
             if parameters[11].value == 'Specified Z':
                 parameters[12].enabled = False
                 parameters[14].enabled = True
                 parameters[15].enabled = False
                 parameters[16].enabled = False
-                if parameters[14].altered:
-                    if parameters[14].value < 0:
-                        arcpy.AddMessage("Z must be a positive number.")
+
             else:
                 parameters[12].enabled = True
                 parameters[14].enabled = False
                 parameters[15].enabled = True
-                if parameters[12].altered:
-                    if parameters[12].value < 0:
-                        arcpy.AddMessage("Mass input must be a positive number.")
                 if parameters[15].altered:
                     if parameters[15].value == 0:
                         parameters[16].enabled = False
                     else:
                         parameters[16].enabled = True
-                if parameters[16].value < 0:
-                    arcpy.AddMessage("Zmax must be a positive number.")
 
         if parameters[13].altered:
-            if parameters[13].value < 0:
-                arcpy.AddMessage("Y must be a positive number.")
+            if not parameters[13].hasBeenValidated:
+                parameters[17].value = parameters[13].value / 15
+        return
 
-        if parameters[17].altered:
-            if parameters[17].value < 0:
-                arcpy.AddMessage("Plume cell size must be a positive number.")
-        # parameters[17].value = parameters[13].value / 15
+    def updateMessages(self, parameters) -> None:
+        """Modify the messages created by internal validation for each tool
+        parameter.  This method is called after internal validation."""
+        if parameters[1].altered:
+            source_location = parameters[1].value
+            desc = arcpy.Describe(source_location)
+            crs1 = desc.spatialReference
+            field_list = desc.fields
+            no3_exists = any(field.name.lower() == "no3_conc" for field in field_list)
+            if no3_exists:
+                with arcpy.da.SearchCursor(source_location, ["NO3_Conc"]) as cursor:
+                    for row in cursor:
+                        no3 = float(row[0])
+                        if no3 < 0:
+                            parameters[1].setErrorMessage("NO3 initial concentration must be a positive number.")
+            if parameters[0].value:
+                nh4_exists = any(field.name.lower() == "nh4_conc" for field in field_list)
+                if nh4_exists:
+                    with arcpy.da.SearchCursor(source_location, ["NH4_Conc"]) as cursor:
+                        for row in cursor:
+                            nh4 = float(row[0])
+                            if nh4 < 0:
+                                parameters[1].setErrorMessage("NH4 initial concentration must be a positive number.")
 
-        if parameters[19].altered:
-            if parameters[19].value < 0:
-                arcpy.AddMessage("NO3 dispersivity alphaL must be a positive number.")
-        if parameters[20].altered:
-            if parameters[20].value < 0:
-                arcpy.AddMessage("NO3 dispersivity alphaTH must be a positive number.")
-        if parameters[21].altered:
-            if parameters[21].value < 0:
-                arcpy.AddMessage("NO3 decay rate must be a positive number.")
-        if parameters[22].altered:
-            if parameters[22].value < 0:
-                arcpy.AddMessage("NO3 volume conversion factor must be a positive number.")
-        if parameters[24].altered:
-            if parameters[24].value < 0:
-                arcpy.AddMessage("NH4 dispersivity alphaL must be a positive number.")
-        if parameters[25].altered:
-            if parameters[25].value < 0:
-                arcpy.AddMessage("NH4 dispersivity alphaTH must be a positive number.")
-        if parameters[26].altered:
-            if parameters[26].value < 0:
-                arcpy.AddMessage("NH4 decay rate must be a positive number.")
-        if parameters[27].altered:
-            if parameters[27].value < 0:
-                arcpy.AddMessage("Bulk density must be a positive number.")
-        if parameters[28].altered:
-            if parameters[28].value < 0:
-                arcpy.AddMessage("NH4 adsorption coefficient must be a positive number.")
+        if parameters[2].altered:
+            wb = parameters[2].value
+            desc = arcpy.Describe(wb)
+            crs2 = desc.spatialReference
+        if parameters[3].altered:
+            ppath = parameters[3].value
+            desc = arcpy.Describe(ppath)
+            crs3 = desc.spatialReference
+
+        if parameters[1].altered and parameters[2].altered and parameters[3].altered:
+            if crs1.name != crs2.name or crs1.name != crs3.name:
+                parameters[1].setErrorMessage("All input files must have the same coordinate system.")
+                parameters[2].setErrorMessage("All input files must have the same coordinate system.")
+                parameters[3].setErrorMessage("All input files must have the same coordinate system.")
+
+        if parameters[7].value is not None and parameters[7].value < 0:
+            parameters[7].setErrorMessage("Plume warping control points must be a positive integer.")
+        if parameters[9].value is not None:
+            if parameters[9].value < 0:
+                parameters[9].setErrorMessage("Threshold concentration must be a positive number.")
+            elif parameters[9].value > 0.1:
+                parameters.setErrorMessage("Threshold concentration is large than 0.1. Maybe it is too large.")
+
+        if parameters[12].value is not None and parameters[12].value < 0:
+            parameters[12].setErrorMessage("Mass input must be a positive number.")
+        if parameters[13].value is not None and parameters[13].value < 0:
+            parameters[13].setErrorMessage("Y must be a positive number.")
+        if parameters[14].value is not None and parameters[14].value < 0:
+            parameters[14].setErrorMessage("Z must be a positive number.")
+        if parameters[16].value is not None and parameters[16].value < 0:
+            parameters[16].setErrorMessage("Zmax must be a positive number.")
+        if parameters[17].value is not None and parameters[17].value < 0:
+            parameters[17].setErrorMessage("Plume cell size must be a positive number.")
+
+        if parameters[18].value is not None and parameters[18].value < 0:
+            parameters[18].setErrorMessage("NO3 initial concentration must be a positive number.")
+        if parameters[19].value is not None and parameters[19].value < 0:
+            parameters[19].setErrorMessage("NO3 dispersivity alphaL must be a positive number.")
+        if parameters[20].value is not None and parameters[20].value < 0:
+            parameters[20].setErrorMessage("NO3 dispersivity alphaTH must be a positive number.")
+        if parameters[21].value is not None and parameters[21].value < 0:
+            parameters[21].setErrorMessage("NO3 decay rate must be a positive number.")
+        if parameters[22].value is not None and parameters[22].value < 0:
+            parameters[22].setErrorMessage("NO3 volume conversion factor must be a positive number.")
+        if parameters[23].value is not None and parameters[18].value < 0:
+            parameters[23].setErrorMessage("NH4 initial concentration must be a positive number.")
+        if parameters[24].value is not None and parameters[24].value < 0:
+            parameters[24].setErrorMessage("NH4 dispersivity alphaL must be a positive number.")
+        if parameters[25].value is not None and parameters[25].value < 0:
+            parameters[25].setErrorMessage("NH4 dispersivity alphaTH must be a positive number.")
+        if parameters[26].value is not None and parameters[26].value < 0:
+            parameters[26].setErrorMessage("NH4 decay rate must be a positive number.")
+        if parameters[27].value is not None and parameters[27].value < 0:
+            parameters[27].setErrorMessage("Bulk density must be a positive number.")
+        if parameters[28].value is not None and parameters[28].value < 0:
+            parameters[28].setErrorMessage("NH4 adsorption coefficient must be a positive number.")
+        return
 
     def execute(self, parameters, messages) -> None:
         """This is the code that executes when you click the "Run" button."""

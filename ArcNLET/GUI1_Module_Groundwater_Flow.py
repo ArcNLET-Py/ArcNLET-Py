@@ -77,6 +77,7 @@ class InterfaceGroundwaterFlow(object):
                                  category="Parameters",
                                  )
         param1.value = 7
+
         param2 = arcpy.Parameter(name="Fill Sinks",
                                  displayName="Fill Sinks",
                                  datatype="GPBoolean",
@@ -121,8 +122,6 @@ class InterfaceGroundwaterFlow(object):
                                    parameterType="Required",  # Required|Optional|Derived
                                    direction="Output",  # Input|Output
                                    )
-        # outfile0.symbology = os.path.join(os.path.dirname(__file__),
-        #                                   'Aspect_out_raster.lyrx')
 
         outfile1 = arcpy.Parameter(name="Velocity Direction",
                                    displayName="Output Velocity Direction [°wrt N]",
@@ -164,75 +163,71 @@ class InterfaceGroundwaterFlow(object):
         """Modify the values and properties of parameters before internal
         validation is performed. This method is called whenever a parameter
         has been changed."""
+        if parameters[7].value:
+            parameters[8].enabled = True
+        else:
+            parameters[8].enabled = False
+        return
+
+    def updateMessages(self, parameters):
+        """Modify the messages created by internal validation for each tool
+        parameter.  This method is called after internal validation."""
         if parameters[0].altered:
             dem = parameters[0].value
-            if not arcpy.Exists(dem):
-                arcpy.AddMessage("The specified raster does not exist.")
             desc = arcpy.Describe(dem)
             band_count = desc.bandCount
             crs1 = desc.spatialReference
             xsize = desc.meanCellWidth
             ysize = desc.meanCellHeight
             if band_count != 1:
-                arcpy.AddMessage("Input DEM must have only one band.")
+                parameters[0].setErrorMessage("Input DEM must have only one band.")
             if xsize != ysize:
-                arcpy.AddMessage("Input DEM must be square cells.")
+                parameters[0].setErrorMessage("Input DEM must be square cells.")
 
         if parameters[1].altered:
             wb = parameters[1].value
-            if not arcpy.Exists(wb):
-                arcpy.AddMessage("The specified shapefile does not exist.")
             desc = arcpy.Describe(wb)
             crs3 = desc.spatialReference
 
         if parameters[2].altered:
             ks = parameters[2].value
-            if not arcpy.Exists(ks):
-                arcpy.AddMessage("The specified raster does not exist.")
             desc = arcpy.Describe(ks)
             band_count = desc.bandCount
             crs2 = desc.spatialReference
             if band_count != 1:
-                arcpy.AddMessage("Input Hydraulic conductivity must have only one band.")
+                parameters[2].setErrorMessage("Input Hydraulic conductivity must have only one band.")
 
         if parameters[3].altered:
             poro = parameters[3].value
-            if not arcpy.Exists(poro):
-                arcpy.AddMessage("The specified raster does not exist.")
             desc = arcpy.Describe(poro)
             band_count = desc.bandCount
             crs4 = desc.spatialReference
             if band_count != 1:
-                arcpy.AddMessage("Input porosity must have only one band.")
+                parameters[3].setErrorMessage("Input porosity must have only one band.")
 
         if parameters[0].altered and parameters[1].altered and parameters[2].altered and parameters[3].altered:
             if crs1.name != crs2.name or crs1.name != crs3.name or crs1.name != crs4.name:
-                arcpy.AddMessage("All input files must have the same coordinate system.")
+                parameters[0].setErrorMessage("All input files must have the same coordinate system.")
+                parameters[1].setErrorMessage("All input files must have the same coordinate system.")
+                parameters[2].setErrorMessage("All input files must have the same coordinate system.")
+                parameters[3].setErrorMessage("All input files must have the same coordinate system.")
 
-        if parameters[4].altered:
-            if parameters[4].value is not None and parameters[4].value < 0:
-                arcpy.AddMessage("The Smoothing Factor must be greater than 0.")
-        if parameters[5].altered:
-            if parameters[5].value is not None and parameters[5].value < 0:
-                arcpy.AddMessage("The Smoothing Cell must be greater than 0.")
-        if parameters[9].altered:
-            if parameters[9].value is not None and parameters[9].value < 0:
-                arcpy.AddMessage("The Z-Factor must be greater than 0.")
+        if parameters[4].value is not None and parameters[4].value < 0:
+            parameters[4].setErrorMessage("The Smoothing Factor must be greater than 0.")
+        if parameters[5].value is not None and parameters[5].value < 0:
+            parameters[5].setErrorMessage("The Smoothing Cell must be greater than 0.")
+        if parameters[9].value is not None and parameters[9].value < 0:
+            parameters[9].setErrorMessage("The Z-Factor must be greater than 0.")
 
-        if parameters[7].value:
-            parameters[8].enabled = True
-            if parameters[8].altered:
-                values_list = parameters[8].valueAsText.split(";")
-                try:
-                    values_list = [int(i) for i in values_list]
-                    values_greater_than_zero = all(val >= 0 for val in values_list)
-                except ValueError:
-                    values_greater_than_zero = False
-                if not values_greater_than_zero:
-                    arcpy.AddMessage("The Smoothing Cell must be greater than 0.")
-        else:
-            parameters[8].enabled = False
-        return
+        if parameters[8].value is not None:
+            values_list = parameters[8].valueAsText.split(";")
+            try:
+                values_list = [int(i) for i in values_list]
+                values_greater_than_zero = all(val >= 0 for val in values_list)
+            except ValueError:
+                values_greater_than_zero = False
+            if not values_greater_than_zero:
+                parameters[8].setErrorMessage("The Smoothing Cell must be greater than 0.")
 
     def execute(self, parameters, messages) -> None:
         """This is the code that executes when you click the "Run" button."""

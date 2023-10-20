@@ -10,9 +10,9 @@ import time
 import arcpy
 
 import importlib
-import tool4_load_estimation
-importlib.reload(tool4_load_estimation)
-from tool4_load_estimation import LoadEstimation
+import tool5_load_estimation
+importlib.reload(tool5_load_estimation)
+from tool5_load_estimation import LoadEstimation
 
 
 class InterfaceLoadEstimation(object):
@@ -20,7 +20,7 @@ class InterfaceLoadEstimation(object):
 
     def __init__(self) -> None:
         """Define the tool. """
-        self.label = "4 Load Estimation"
+        self.label = "5 Load Estimation"
         self.description = """Load Estimation."""
         self.category = "ArcNLET"
 
@@ -73,10 +73,13 @@ class InterfaceLoadEstimation(object):
                 parameters[3].enabled = True
             else:
                 parameters[3].enabled = False
+        return
 
-        if parameters[1].altered:
-            if parameters[1].value < 0:
-                arcpy.AddMessage("Risk Factor should be greater than 0.")
+    def updateMessages(self, parameters) -> None:
+        """Modify the messages created by internal validation for each tool
+        parameter.  This method is called after internal validation."""
+        if parameters[1].value is not None and parameters[1].value < 0:
+            parameters[1].setErrorMessage("Risk Factor should be greater than 0.")
         return
 
     def execute(self, parameters, messages) -> None:

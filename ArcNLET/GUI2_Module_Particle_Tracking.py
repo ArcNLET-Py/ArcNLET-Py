@@ -120,69 +120,66 @@ class InterfaceParticleTracking(object):
         """Modify the values and properties of parameters before internal
         validation is performed.  This method is called whenever a parameter
         has been changed."""
+        if parameters[3].altered:
+            if not parameters[3].hasBeenValidated:
+                veld = parameters[3].value
+                desc = arcpy.Describe(veld)
+                xsize = desc.meanCellWidth
+                parameters[6].value = xsize / 2
+        return
+
+    def updateMessages(self, parameters) -> None:
+        """Modify the messages created by internal validation for each tool
+        parameter.  This method is called after internal validation."""
         if parameters[0].altered:
             source_location = parameters[0].value
-            if not arcpy.Exists(source_location):
-                arcpy.AddMessage("The specified source location does not exist.")
             desc = arcpy.Describe(source_location)
             crs1 = desc.spatialReference
 
         if parameters[1].altered:
             wb = parameters[1].value
-            if not arcpy.Exists(wb):
-                arcpy.AddMessage("The specified shapefile does not exist.")
             desc = arcpy.Describe(wb)
             crs2 = desc.spatialReference
 
         if parameters[2].altered:
             velo = parameters[2].value
-            if not arcpy.Exists(velo):
-                arcpy.AddMessage("The specified raster does not exist.")
             desc = arcpy.Describe(velo)
             band_count = desc.bandCount
             crs3 = desc.spatialReference
             if band_count != 1:
-                arcpy.AddMessage("Input velocity must have only one band.")
+                parameters[2].setErrorMessage("Input velocity must have only one band.")
 
         if parameters[3].altered:
             veld = parameters[3].value
-            if not arcpy.Exists(veld):
-                arcpy.AddMessage("The specified raster does not exist.")
             desc = arcpy.Describe(veld)
             band_count = desc.bandCount
-            xsize = desc.meanCellWidth
             crs4 = desc.spatialReference
             if band_count != 1:
-                arcpy.AddMessage("Input porosity must have only one band.")
-            parameters[6].value = xsize / 2
-            # parameters[6].value = xsize / 2
+                parameters[3].setErrorMessage("Input porosity must have only one band.")
 
         if parameters[4].altered:
             poro = parameters[4].value
-            if not arcpy.Exists(poro):
-                arcpy.AddMessage("The specified raster does not exist.")
             desc = arcpy.Describe(poro)
             band_count = desc.bandCount
             crs5 = desc.spatialReference
             if band_count != 1:
-                arcpy.AddMessage("Input porosity must have only one band.")
+                parameters[4].setErrorMessage("Input porosity must have only one band.")
 
         if parameters[0].altered and parameters[1].altered and parameters[2].altered and parameters[3].altered and \
                 parameters[4].altered:
             if crs1.name != crs2.name or crs1.name != crs3.name or crs1.name != crs4.name or crs1.name != crs5.name:
-                arcpy.AddMessage("All input files must have the same coordinate system.")
+                parameters[0].setErrorMessage("All input files must have the same coordinate system.")
+                parameters[1].setErrorMessage("All input files must have the same coordinate system.")
+                parameters[2].setErrorMessage("All input files must have the same coordinate system.")
+                parameters[3].setErrorMessage("All input files must have the same coordinate system.")
+                parameters[4].setErrorMessage("All input files must have the same coordinate system.")
 
-        if parameters[6].altered:
-            if parameters[6].value is not None and parameters[6].value < 0:
-                arcpy.AddMessage("The WB Raster Res. must be greater than 0.")
-        if parameters[7].altered:
-            if parameters[7].value is not None and parameters[7].value < 0:
-                arcpy.AddMessage("The Step Size must be greater than 0.")
-        if parameters[8].altered:
-            if parameters[8].value is not None and parameters[8].value < 0:
-                arcpy.AddMessage("The Max Steps must be greater than 0.")
-
-        return
+        if parameters[6].value is not None and parameters[6].value < 0:
+            parameters[6].setErrorMessage("The WB Raster Res. must be greater than 0.")
+        if parameters[7].value is not None and parameters[7].value < 0:
+            parameters[7].setErrorMessage("The Step Size must be greater than 0.")
+        if parameters[8].value is not None and parameters[8].value < 0:
+            parameters[8].setErrorMessage("The Max Steps must be greater than 0.")
 
     def execute(self, parameters, messages) -> None:
         """This is the code that executes when you click the "Run" button."""
