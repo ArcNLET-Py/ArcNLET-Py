@@ -214,20 +214,49 @@ class InterfaceGroundwaterFlow(object):
 
         if parameters[4].value is not None and parameters[4].value < 0:
             parameters[4].setErrorMessage("The Smoothing Factor must be greater than 0.")
+        if parameters[4].value is not None and parameters[4].value > 200:
+            parameters[4].setWarningMessage("The Smoothing Factor may be too large.")
         if parameters[5].value is not None and parameters[5].value < 0:
             parameters[5].setErrorMessage("The Smoothing Cell must be greater than 0.")
+        if parameters[5].value is not None and parameters[5].value % 2 == 0:
+            parameters[5].setWarningMessage("The Smoothing Cell is recommended to be an odd number.")
         if parameters[9].value is not None and parameters[9].value < 0:
             parameters[9].setErrorMessage("The Z-Factor must be greater than 0.")
 
-        if parameters[8].value is not None:
-            values_list = parameters[8].valueAsText.split(";")
-            try:
-                values_list = [int(i) for i in values_list]
-                values_greater_than_zero = all(val >= 0 for val in values_list)
-            except ValueError:
-                values_greater_than_zero = False
-            if not values_greater_than_zero:
-                parameters[8].setErrorMessage("The Smoothing Cell must be greater than 0.")
+        if parameters[7].value:
+            if parameters[8].altered and parameters[8].value is not None:
+                values_list = parameters[8].valueAsText.split(";")
+                try:
+                    values_list = [int(i) for i in values_list]
+                    values_greater_than_zero = all(val >= 0 for val in values_list)
+                except ValueError:
+                    values_greater_than_zero = False
+                if not values_greater_than_zero:
+                    parameters[8].setErrorMessage("The Smoothing Factor must be greater than 0.")
+                try:
+                    values_list = [int(i) for i in values_list]
+                    values_smaller_than_2h = all(val <= 200 for val in values_list)
+                except ValueError:
+                    values_smaller_than_2h = False
+                if not values_smaller_than_2h:
+                    parameters[8].setWarningMessage("The Smoothing Factor may be too large.")
+
+        if parameters[10].altered and parameters[10].value is not None:
+            filename, fileext = os.path.splitext(parameters[10].valueAsText)
+            if fileext:
+                parameters[10].setWarningMessage("Suffixes are not recommended for output file.")
+        if parameters[11].altered and parameters[11].value is not None:
+            filename, fileext = os.path.splitext(parameters[11].valueAsText)
+            if fileext:
+                parameters[11].setWarningMessage("Suffixes are not recommended for output file.")
+        if parameters[12].altered and parameters[12].value is not None:
+            filename, fileext = os.path.splitext(parameters[12].valueAsText)
+            if fileext:
+                parameters[12].setWarningMessage("Suffixes are not recommended for output file.")
+        if parameters[13].altered and parameters[13].value is not None:
+            filename, fileext = os.path.splitext(parameters[13].valueAsText)
+            if fileext:
+                parameters[13].setWarningMessage("Suffixes are not recommended for output file.")
 
     def execute(self, parameters, messages) -> None:
         """This is the code that executes when you click the "Run" button."""
@@ -267,9 +296,11 @@ class InterfaceGroundwaterFlow(object):
 
         # Okay finally go ahead and do the work.
         try:
+            arcpy.AddMessage("Compute Darcy Flow: START")
             GF = DarcyFlow(dem, wb, ks, poro,
                            smthf1, smthc, fsink, merge, smthf2, zfact,
                            velo, veld, grad, smth)
+            arcpy.AddMessage("Compute Darcy Flow: FINISH")
             GF.calculateDarcyFlow()
             current_time = time.strftime("%H:%M:%S", time.localtime())
             arcpy.AddMessage(f"{current_time} Compute Darcy Flow: FINISH")

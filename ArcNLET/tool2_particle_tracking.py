@@ -25,26 +25,14 @@ class ParticleTracking:
 
     def __init__(self, c_source_location, c_water_bodies, c_velocity, c_velocity_dir, c_poro, c_option,
                  c_resolution, c_step_size, c_max_steps, c_output):
-        if not self.is_file_path(c_source_location):
-            self.source_location = arcpy.Describe(c_source_location).catalogPath
-        else:
-            self.source_location = c_source_location
-        if not self.is_file_path(c_water_bodies):
-            self.water_bodies = arcpy.Describe(c_water_bodies).catalogPath
-        else:
-            self.water_bodies = c_water_bodies
-        if not self.is_file_path(c_velocity):
-            self.velocity = arcpy.Describe(c_velocity).catalogPath
-        else:
-            self.velocity = c_velocity
-        if not self.is_file_path(c_velocity_dir):
-            self.velocity_dir = arcpy.Describe(c_velocity_dir).catalogPath
-        else:
-            self.velocity_dir = c_velocity_dir
-        if not self.is_file_path(c_poro):
-            self.poro = arcpy.Describe(c_poro).catalogPath
-        else:
-            self.poro = c_poro
+        self.source_location = arcpy.Describe(c_source_location).catalogPath if not self.is_file_path(
+            c_source_location) else c_source_location
+        self.water_bodies = arcpy.Describe(c_water_bodies).catalogPath if not self.is_file_path(
+            c_water_bodies) else c_water_bodies
+        self.velocity = arcpy.Describe(c_velocity).catalogPath if not self.is_file_path(c_velocity) else c_velocity
+        self.velocity_dir = arcpy.Describe(c_velocity_dir).catalogPath if not self.is_file_path(
+            c_velocity_dir) else c_velocity_dir
+        self.poro = arcpy.Describe(c_poro).catalogPath if not self.is_file_path(c_poro) else c_poro
 
         self.resolution = c_resolution
         self.step_size = c_step_size

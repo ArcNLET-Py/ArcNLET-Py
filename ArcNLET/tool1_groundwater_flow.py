@@ -21,22 +21,11 @@ class DarcyFlow:
                  c_smthf1, c_smthc, c_fsink, c_merge, c_smthf2, c_zfact,
                  velname, veldname, gradname=None, smthname=None):
         # input files
-        if not self.is_file_path(c_dem):
-            self.dem = arcpy.Describe(c_dem).catalogPath
-        else:
-            self.dem = c_dem
-        if not self.is_file_path(c_wb):
-            self.wb = arcpy.Describe(c_wb).catalogPath
-        else:
-            self.wb = c_wb
-        if not self.is_file_path(c_ks):
-            self.ks = arcpy.Describe(c_ks).catalogPath
-        else:
-            self.ks = c_ks
-        if not self.is_file_path(c_poro):
-            self.poro = arcpy.Describe(c_poro).catalogPath
-        else:
-            self.poro = c_poro
+
+        self.dem = arcpy.Describe(c_dem).catalogPath if not self.is_file_path(c_dem) else c_dem
+        self.wb = arcpy.Describe(c_wb).catalogPath if not self.is_file_path(c_wb) else c_wb
+        self.ks = arcpy.Describe(c_ks).catalogPath if not self.is_file_path(c_ks) else c_ks
+        self.poro = arcpy.Describe(c_poro).catalogPath if not self.is_file_path(c_poro) else c_poro
 
         # input parameters
         self.smthf1 = c_smthf1
@@ -47,10 +36,16 @@ class DarcyFlow:
         self.zfact = c_zfact
 
         # output file names
-        self.velname = velname
-        self.veldname = veldname
-        self.gradname = gradname
-        self.smthname = smthname
+        self.velname = arcpy.Describe(velname).catalogPath if not self.is_file_path(velname) else velname
+        self.veldname = arcpy.Describe(veldname).catalogPath if not self.is_file_path(veldname) else veldname
+        if gradname is not None:
+            self.gradname = arcpy.Describe(gradname).catalogPath if not self.is_file_path(gradname) else gradname
+        else:
+            self.gradname = None
+        if smthname is not None:
+            self.smthname = arcpy.Describe(smthname).catalogPath if not self.is_file_path(smthname) else smthname
+        else:
+            self.smthname = None
 
         self.zero_threshold = 1E-8
         self.temp_output_dir = None

@@ -14,6 +14,7 @@ import pandas as pd
 
 __version__ = "V1.0.0"
 
+Nlayer = 100
 
 class VZMOD:
     def __init__(self, soiltypes, hlr, alpha, ks, thetar, thetas, n, knit, toptnit, beltanit, e2, e3, fs, fwp, Swp,
@@ -71,9 +72,69 @@ class VZMOD:
 
         self.output_folder = output_folder
 
-    def simulations(self):
+    def runVZMOD(self):
 
         pass
+
+    def singlflow(self, para):
+
+        head = [0]
+        theta = [para['θs']]
+        if para['newWTD'] < 0.0:
+            para['newWTD'] = 0.1
+        thickness = para['newWTD'] / Nlayer
+        for layer in range(1, Nlayer + 1):
+            z = -para['newWTD'] + thickness * layer
+            if head[-1] < 0.0:
+                se0 = pow((1.0 + pow(abs(para['ɑ'] * head[-1]), para['n'])), -para['m'])
+                k0 = para['Ks'] * pow(se0, 0.5) * pow((1 - pow((1 - pow(se0, 1 / para['m'])), para['m'])), 2)
+            else:
+                se0 = 1.0
+                k0 = para['Ks']
+
+            h = -0.1
+            nn = 0
+            while True:
+                if nn > 100:
+                    break
+                    print("can't converge")
+                nn = nn + 1
+                if h < 0.0:
+                    se1 = 1 / pow((1.0 + pow(-para['ɑ'] * h, para['n'])), para['m'])
+                    k1 = para['Ks'] * pow(se1, 0.5) * pow((1 - pow((1 - pow(se1, 1 / para['m'])), para['m'])), 2)
+                    fh = 0.5 * (k0 + k1) * (h - head[-1] + thickness) / thickness - para['HLR']
+                    dse = para['m'] * pow((1.0 + pow(abs(para['ɑ'] * h), para['n'])), -para['m'] - 1) * para['n'] * pow(
+                        abs(para['ɑ'] * h), para['n'] - 1) * para['ɑ']
+                    temp0 = 1 - pow(se1, 1 / para['m'])
+                    temp1 = 1 - pow(temp0, para['m'])
+                    dk = para['Ks'] * pow(se1, -0.5) * dse * (
+                                0.5 * pow(temp1, 2) + 2 * temp1 * pow(temp0, para['m'] - 1) * pow(se1, (1 - para['m']) /
+                                                                                                  para['m']))
+                    dfh = 0.5 * (k0 + k1) / thickness + 0.5 * (h - head[-1] + thickness) / thickness * dk
+                    h2 = h - fh / dfh
+                    if abs((h2 - h) / h) < 0.01:
+                        thetaz = para['θr'] + (para['θs'] - para['θr']) / pow(
+                            (1.0 + pow(abs(para['ɑ'] * h), para['n'])), para['m'])
+                        h = h2
+                        break
+                    else:
+                        h = h2
+                else:
+                    k1 = para['Ks']
+                    h2 = thickness * para['HLR'] * 2.0 / (k0 + k1) + head[-1] - thickness
+                    if h2 > 0.0:
+                        thetaz = para['θs']
+                        h = h2
+                        break
+                    else:
+                        h = -0.1 * pow(10, -nn)
+            theta.append(thetaz)
+            head.append(h)
+        theta.reverse()
+        head.reverse()
+        # print theta
+        # print head
+        return theta
 
     @staticmethod
     def is_file_path(input_string):

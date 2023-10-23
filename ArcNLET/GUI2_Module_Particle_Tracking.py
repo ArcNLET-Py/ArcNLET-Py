@@ -181,6 +181,11 @@ class InterfaceParticleTracking(object):
         if parameters[8].value is not None and parameters[8].value < 0:
             parameters[8].setErrorMessage("The Max Steps must be greater than 0.")
 
+        if parameters[9].altered and parameters[9].value is not None:
+            filename, fileext = os.path.splitext(parameters[9].valueAsText)
+            if fileext:
+                parameters[9].setWarningMessage("Suffixes are not recommended for output file.")
+
     def execute(self, parameters, messages) -> None:
         """This is the code that executes when you click the "Run" button."""
 

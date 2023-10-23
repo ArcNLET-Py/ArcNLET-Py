@@ -667,7 +667,7 @@ class InterfaceVZMOD(object):
                           Sl, Sh, kdnt, toptdnt, beltadnt, e1, Sdnt, kd, rho, Temp, Tran, NH4, NO3, DTW, dist,
                           multi_sources, output_folder, hetero_Ks_thetas, calc_DTW, multi_soil_type,
                           septic_tank, hydraulic_conductivity, soil_porosity, DEM, smoothed_DEM, soil_type)
-            vzmod.simulations()
+            vzmod.runVZMOD()
             current_time = time.strftime("%H:%M:%S", time.localtime())
             arcpy.AddMessage(f"{current_time} Load Estimation: FINISH")
         except Exception as e:
@@ -678,7 +678,7 @@ class InterfaceVZMOD(object):
     def describeParameter(self, m, p):
         if p.enabled:
             m.addMessage("Parameter: %s \"%s\"" % (p.name, p.displayName))
-            m.addMessage("  Path \"%s\"" % p.valueAsText)
+            m.addMessage("  Value \"%s\"" % p.valueAsText)
 
     @staticmethod
     def is_file_path(input_string):

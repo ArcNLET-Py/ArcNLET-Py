@@ -22,10 +22,11 @@ import cProfile
 import pstats
 
 __version__ = "V1.0.0"
-
+os.environ['CRYPTOGRAPHY_OPENSSL_NO_LEGACY'] = '1'
 
 class Transport:
-    def __init__(self, c_whethernh4, c_source_location, c_waterbodies, c_particlepath, c_no3output, c_nh4output,
+    def __init__(self, c_whethernh4, c_source_location, c_waterbodies, c_particlepath,
+                 c_no3output, c_nh4output, c_no3output_info, c_nh4output_info,
                  c_option0, c_option1, c_option2, c_option3, c_option4, c_option5,
                  c_param1, c_param2, c_param3, c_param4, c_param5, c_param6,
                  c_no3param0, c_no3param1, c_no3param2, c_no3param3, c_no3param4,
@@ -47,59 +48,59 @@ class Transport:
         self.particle_path = arcpy.Describe(c_particlepath).catalogPath if not self.is_file_path(
             c_particlepath) else c_particlepath
         self.no3_output = os.path.basename(c_no3output) if self.is_file_path(c_no3output) else c_no3output
+        self.no3_output, ext = os.path.splitext(self.no3_output)
 
-        self.working_dir = os.path.abspath(os.path.dirname(self.source_location))
-        self.no3_output_info = os.path.basename(self.no3_output) + "_info.shp"
+        if self.is_file_path(c_no3output):
+            self.working_dir = os.path.abspath(os.path.dirname(c_no3output))
+        else:
+            self.working_dir = os.path.abspath(os.path.dirname(self.source_location))
+        self.no3_output_info = c_no3output_info
         desc = arcpy.Describe(self.source_location)
         self.crs = desc.spatialReference
         field_list = desc.fields
 
         self.solution_type = c_option0  # solution type, DomenicoRobbinsSS2D or DomenicoRobbinsSSDecay2D
-        self.warp_ctrl_pt_spacing = int(c_option1) if isinstance(c_option1, str) else c_option1
+        self.warp_ctrl_pt_spacing = c_option1
         self.warp_method = c_option2.lower()  # Plume warping method, spline, polynomial1, polynomial2
-        self.threshold = float(c_option3) if isinstance(c_option3, str) else c_option3  # Threshold concentration
+        self.threshold = c_option3  # Threshold concentration
         self.post_process = c_option4.lower()  # Post process, none, medium, and full
         self.solute_mass_type = c_option5  # Solute mass type, specified input mass rate, or specified Z
 
-        self.Y = float(c_param2) if isinstance(c_param2, str) else c_param2  # Y of the source plane
+        self.Y = c_param2  # Y of the source plane
         if self.solute_mass_type.lower() == 'specified z':
-            self.Z = float(c_param3) if isinstance(c_param3, str) else c_param3  # Z of the source plane
+            self.Z = c_param3  # Z of the source plane
         else:
-            self.mass_in = float(c_param1) if isinstance(c_param1, str) else c_param1  # mass in
-            if isinstance(c_param4, str):
-                self.zmax_option = True if c_param4.lower() == 'true' else False
-            elif isinstance(c_param4, bool):
-                self.zmax_option = c_param4
-            else:
-                arcpy.AddMessage("Error: whether to use Zmax is not specified.")
+            self.mass_in = c_param1  # mass in
+            self.zmax_option = c_param4
             if self.zmax_option:
-                self.zmax = float(c_param5) if isinstance(c_param5, str) else c_param5  # Max Z of the source plane
+                self.zmax = c_param5  # Max Z of the source plane
         # Plume cell size of the output raster
-        self.plume_cell_size = float(c_param6) if isinstance(c_param6, str) else c_param6
+        self.plume_cell_size = c_param6
         if not any(field.name.lower() == "no3_conc" for field in field_list):
-            self.no3_init = float(c_no3param0) if isinstance(c_no3param0, str) else c_no3param0  # NO3 concentration
+            self.no3_init = c_no3param0  # NO3 concentration
         else:
             self.no3_init = None
-        self.no3_dispx = float(c_no3param1) if isinstance(c_no3param1, str) else c_no3param1  # NO3 dispersion X
-        self.no3_dispyz = float(c_no3param2) if isinstance(c_no3param2, str) else c_no3param2  # NO3 dispersion Y and Z
-        self.denitrification_rate = float(c_no3param3) if isinstance(c_no3param3, str) else c_no3param3
-        self.vol_conversion_factor = float(c_no3param4) if isinstance(c_no3param4, str) else c_no3param4
+        self.no3_dispx = c_no3param1  # NO3 dispersion X
+        self.no3_dispyz = c_no3param2  # NO3 dispersion Y and Z
+        self.denitrification_rate = c_no3param3
+        self.vol_conversion_factor = c_no3param4
 
         self.warp_option = False
         self.multiplier = 1.2
 
         if self.whether_nh4:
             self.nh4_output = os.path.basename(c_nh4output) if self.is_file_path(c_nh4output) else c_nh4output
-            self.nh4_output_info = os.path.basename(self.nh4_output) + "_info.shp"
+            self.nh4_output, ext = os.path.splitext(self.nh4_output)
+            self.nh4_output_info = c_nh4output_info
             if not any(field.name.lower() == "nh4_conc" for field in field_list):
-                self.nh4_init = float(c_nh4param0) if isinstance(c_nh4param0, str) else c_nh4param0  # Initial NH4
+                self.nh4_init = c_nh4param0  # Initial NH4
             else:
                 self.nh4_init = None
-            self.nh4_dispx = float(c_nh4param1) if isinstance(c_nh4param1, str) else c_nh4param1
-            self.nh4_dispyz = float(c_nh4param2) if isinstance(c_nh4param2, str) else c_nh4param2
-            self.nitrification_rate = float(c_nh4param3) if isinstance(c_nh4param3, str) else c_nh4param3
-            self.bulk_density = float(c_nh4param4) if isinstance(c_nh4param4, str) else c_nh4param4
-            self.nh4_adsorption = float(c_nh4param5) if isinstance(c_nh4param5, str) else c_nh4param5
+            self.nh4_dispx = c_nh4param1
+            self.nh4_dispyz = c_nh4param2
+            self.nitrification_rate = c_nh4param3
+            self.bulk_density = c_nh4param4
+            self.nh4_adsorption = c_nh4param5
 
         self.ano3 = 0.0
         self.kno3 = 0.0
@@ -240,6 +241,7 @@ class Transport:
                                        ) as cursor:
                 for row in nh4segments:
                     cursor.insertRow(row)
+
         return
 
     def calculate_single_plume(self, pathid, mean_poro, mean_velo, max_dist):
@@ -1079,14 +1081,14 @@ def find_perpendicular_point(x1, y1, x2, y2, distance, x0, y0):
 # ======================================================================
 # Main program for debugging
 if __name__ == '__main__':
-    arcpy.env.workspace = ".\\test_pro"
+    arcpy.env.workspace = "C:\\Users\\Wei\\Downloads\\test_pro\\test_pro"
     whethernh4 = True
-    source_location = os.path.join(arcpy.env.workspace, "OneSepticTank.shp")
+    source_location = os.path.join(arcpy.env.workspace, "PotentialSepticTankLocations.shp")
     water_bodies = os.path.join(arcpy.env.workspace, "waterbodies")
     particlepath = os.path.join(arcpy.env.workspace, "demopath.shp")
 
-    no3output = os.path.join(arcpy.env.workspace, "demo1no3")
-    nh4output = os.path.join(arcpy.env.workspace, "demo1nh4")
+    no3output = os.path.join(arcpy.env.workspace, "demono3")
+    nh4output = os.path.join(arcpy.env.workspace, "demonh4")
 
     option0 = "DomenicoRobbinsSSDecay2D"
     option1 = 48

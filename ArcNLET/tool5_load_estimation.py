@@ -16,7 +16,7 @@ __version__ = "V1.0.0"
 
 
 class LoadEstimation:
-    def __init__(self, c_whethernh4, riskf, c_plumesno3, c_plumesnh4=None):
+    def __init__(self, c_whethernh4, riskf, c_plumesno3, c_outfileno3, c_plumesnh4=None, c_outfilenh4=None):
         """Initialize the load estimation module.
         """
         if isinstance(c_whethernh4, str):
@@ -26,11 +26,13 @@ class LoadEstimation:
         else:
             arcpy.AddMessage("Error: format of whether to calculate NH4 is wrong.")
 
-        self.risk_factor = riskf if isinstance(riskf, float) else float(riskf)
+        self.risk_factor = riskf
         self.plumesno3 = arcpy.Describe(c_plumesno3).catalogPath if not self.is_file_path(c_plumesno3) else c_plumesno3
+        self.outfileno3 = c_outfileno3
         if self.whether_nh4:
             self.plumesnh4 = arcpy.Describe(c_plumesnh4).catalogPath if not self.is_file_path(
                 c_plumesnh4) else c_plumesnh4
+            self.outfilenh4 = c_outfilenh4
 
     def calculate_load_estimation(self):
 
@@ -50,15 +52,13 @@ class LoadEstimation:
         no3_load = no3_load[["Waterbody FID", "Mass Output Load [M/T]", "Mass Output Load * Risk Factor [M/T]",
                              "Mass Input Load [M/T]", "Mass Removal Rate [M/T]"]]
         arcpy.AddMessage(no3_load)
-        name = os.path.basename(self.plumesno3).split(".")[0] + ".csv"
-        dirname = os.path.join(os.path.dirname(self.plumesno3), name)
-        if os.path.exists(dirname):
+        if os.path.exists(self.outfileno3):
             try:
-                os.remove(dirname)
+                os.remove(self.outfileno3)
             except PermissionError:
-                arcpy.AddMessage("Please close the file: " + dirname)
+                arcpy.AddMessage("Please close the file: " + self.outfileno3)
                 return
-        no3_load.to_csv(dirname, index=False)
+        no3_load.to_csv(self.outfileno3, index=False)
 
         if self.whether_nh4:
             data = []
@@ -77,15 +77,13 @@ class LoadEstimation:
             nh4_load = nh4_load[["Waterbody FID", "Mass Output Load [M/T]", "Mass Output Load * Risk Factor [M/T]",
                                  "Mass Input Load [M/T]", "Mass Removal Rate [M/T]"]]
             arcpy.AddMessage(nh4_load)
-            name = os.path.basename(self.plumesnh4).split(".")[0] + ".csv"
-            dirname = os.path.join(os.path.dirname(self.plumesnh4), name)
-            if os.path.exists(dirname):
+            if os.path.exists(self.outfilenh4):
                 try:
-                    os.remove(dirname)
+                    os.remove(self.outfilenh4)
                 except PermissionError:
-                    arcpy.AddMessage("Please close the file: " + dirname)
+                    arcpy.AddMessage("Please close the file: " + self.outfilenh4)
                     return
-            nh4_load.to_csv(dirname, index=False)
+            nh4_load.to_csv(self.outfilenh4, index=False)
 
     @staticmethod
     def is_file_path(input_string):

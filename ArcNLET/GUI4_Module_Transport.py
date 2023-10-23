@@ -56,19 +56,36 @@ class InterfaceTransport(object):
         infile2.filter.list = ["Polyline"]
 
         outfile0 = arcpy.Parameter(name="Plumes_NO3",
-                                   displayName="Plumes of NO\u2083 (raster)",
+                                   displayName="Output Plumes of NO\u2083 (raster)",
                                    datatype=["GPRasterLayer"],
                                    parameterType="Required",  # Required|Optional|Derived
                                    direction="Output",  # Input|Output
                                    )
 
         outfile1 = arcpy.Parameter(name="Plumes_NH4",
-                                   displayName="Plumes of NH\u2084 (raster)",
+                                   displayName="Output Plumes of NH\u2084 (raster)",
                                    datatype=["GPRasterLayer"],
                                    parameterType="Optional",  # Required|Optional|Derived
                                    direction="Output",  # Input|Output
                                    )
         outfile1.parameterDependencies = [param0.name]
+
+        outfile2 = arcpy.Parameter(name="Plumes_info_NO3",
+                                   displayName="Output Plumes info of NO\u2083 (point)",
+                                   datatype=["GPFeatureLayer"],
+                                   parameterType="Optional",  # Required|Optional|Derived
+                                   direction="Output",  # Input|Output
+                                   )
+        outfile2.enabled = False
+
+        outfile3 = arcpy.Parameter(name="Plumes_info_NH4",
+                                   displayName="Output Plumes info of NH\u2084 (point)",
+                                   datatype=["GPFeatureLayer"],
+                                   parameterType="Optional",  # Required|Optional|Derived
+                                   direction="Output",  # Input|Output
+                                   )
+        outfile3.enabled = False
+        outfile3.parameterDependencies = [param0.name]
 
         option0 = arcpy.Parameter(name="Solution_type",
                                   displayName="Solution type",
@@ -290,11 +307,11 @@ class InterfaceTransport(object):
                                     )
         nh4param5.value = 2
 
-        return [param0, infile0, infile1, infile2, outfile0, outfile1,  # 0 - 5
-                option0, option1, option2, option3, option4, option5,  # 6 - 11
-                param1, param2, param3, param4, param5, param6,  # 12 - 17
-                no3param0, no3param1, no3param2, no3param3, no3param4,  # 18 - 22
-                nh4param0, nh4param1, nh4param2, nh4param3, nh4param4, nh4param5]  # 23 - 28
+        return [param0, infile0, infile1, infile2, outfile0, outfile1, outfile2, outfile3,  # 0 - 7
+                option0, option1, option2, option3, option4, option5,  # 8 - 13
+                param1, param2, param3, param4, param5, param6,  # 14 - 19
+                no3param0, no3param1, no3param2, no3param3, no3param4,  # 20 - 24
+                nh4param0, nh4param1, nh4param2, nh4param3, nh4param4, nh4param5]  # 25 - 30
 
     def isLicensed(self) -> bool:
         """Set whether tool is licensed to execute."""
@@ -307,20 +324,20 @@ class InterfaceTransport(object):
         if parameters[0].altered:
             if parameters[0].value:
                 parameters[5].enabled = True
-                parameters[23].enabled = True
-                parameters[24].enabled = True
                 parameters[25].enabled = True
                 parameters[26].enabled = True
                 parameters[27].enabled = True
                 parameters[28].enabled = True
+                parameters[29].enabled = True
+                parameters[30].enabled = True
             else:
                 parameters[5].enabled = False
-                parameters[23].enabled = False
-                parameters[24].enabled = False
                 parameters[25].enabled = False
                 parameters[26].enabled = False
                 parameters[27].enabled = False
                 parameters[28].enabled = False
+                parameters[29].enabled = False
+                parameters[30].enabled = False
 
         if parameters[1].altered:
             source_location = parameters[1].value
@@ -329,43 +346,43 @@ class InterfaceTransport(object):
             field_list = desc.fields
             no3_exists = any(field.name.lower() == "no3_conc" for field in field_list)
             if not no3_exists:
-                parameters[18].enabled = True
+                parameters[20].enabled = True
             else:
-                parameters[18].enabled = False
+                parameters[20].enabled = False
 
             if parameters[0].value:
                 nh4_exists = any(field.name.lower() == "nh4_conc" for field in field_list)
                 if not nh4_exists:
-                    parameters[23].enabled = True
+                    parameters[25].enabled = True
                 else:
-                    parameters[23].enabled = False
+                    parameters[25].enabled = False
 
-        if parameters[6].altered:
-            if parameters[6].value == "DomenicoRobbinsSS2D":
-                parameters[21].enabled = False
-            elif parameters[6].value == "DomenicoRobbinsSSDecay2D":
-                parameters[21].enabled = True
-
-        if parameters[11].altered:
-            if parameters[11].value == 'Specified Z':
-                parameters[12].enabled = False
-                parameters[14].enabled = True
-                parameters[15].enabled = False
-                parameters[16].enabled = False
-
-            else:
-                parameters[12].enabled = True
-                parameters[14].enabled = False
-                parameters[15].enabled = True
-                if parameters[15].altered:
-                    if parameters[15].value == 0:
-                        parameters[16].enabled = False
-                    else:
-                        parameters[16].enabled = True
+        if parameters[8].altered:
+            if parameters[8].value == "DomenicoRobbinsSS2D":
+                parameters[23].enabled = False
+            elif parameters[8].value == "DomenicoRobbinsSSDecay2D":
+                parameters[23].enabled = True
 
         if parameters[13].altered:
-            if not parameters[13].hasBeenValidated:
-                parameters[17].value = parameters[13].value / 15
+            if parameters[13].value == 'Specified Z':
+                parameters[14].enabled = False
+                parameters[16].enabled = True
+                parameters[17].enabled = False
+                parameters[18].enabled = False
+
+            else:
+                parameters[14].enabled = True
+                parameters[16].enabled = False
+                parameters[17].enabled = True
+                if parameters[17].altered:
+                    if parameters[17].value == 0:
+                        parameters[18].enabled = False
+                    else:
+                        parameters[18].enabled = True
+
+        if parameters[15].altered:
+            if not parameters[15].hasBeenValidated:
+                parameters[19].value = parameters[15].value / 15
         return
 
     def updateMessages(self, parameters) -> None:
@@ -407,47 +424,58 @@ class InterfaceTransport(object):
                 parameters[2].setErrorMessage("All input files must have the same coordinate system.")
                 parameters[3].setErrorMessage("All input files must have the same coordinate system.")
 
-        if parameters[7].value is not None and parameters[7].value < 0:
-            parameters[7].setErrorMessage("Plume warping control points must be a positive integer.")
-        if parameters[9].value is not None:
-            if parameters[9].value < 0:
-                parameters[9].setErrorMessage("Threshold concentration must be a positive number.")
-            elif parameters[9].value > 0.1:
+        if parameters[4].altered and parameters[4].value is not None:
+            filename, fileext = os.path.splitext(parameters[4].valueAsText)
+            if fileext:
+                parameters[4].setWarningMessage("Suffixes are not recommended for output file.")
+            parameters[6].value = os.path.basename(filename) + "_info.shp"
+        if parameters[5].altered and parameters[5].value is not None:
+            filename, fileext = os.path.splitext(parameters[5].valueAsText)
+            if fileext:
+                parameters[5].setWarningMessage("Suffixes are not recommended for output file.")
+            parameters[7].value = os.path.basename(filename) + "_info.shp"
+
+        if parameters[9].value is not None and parameters[9].value < 0:
+            parameters[9].setErrorMessage("Plume warping control points must be a positive integer.")
+        if parameters[11].value is not None:
+            if parameters[11].value < 0:
+                parameters[11].setErrorMessage("Threshold concentration must be a positive number.")
+            elif parameters[11].value > 0.1:
                 parameters.setErrorMessage("Threshold concentration is large than 0.1. Maybe it is too large.")
 
-        if parameters[12].value is not None and parameters[12].value < 0:
-            parameters[12].setErrorMessage("Mass input must be a positive number.")
-        if parameters[13].value is not None and parameters[13].value < 0:
-            parameters[13].setErrorMessage("Y must be a positive number.")
         if parameters[14].value is not None and parameters[14].value < 0:
-            parameters[14].setErrorMessage("Z must be a positive number.")
+            parameters[14].setErrorMessage("Mass input must be a positive number.")
+        if parameters[15].value is not None and parameters[15].value < 0:
+            parameters[15].setErrorMessage("Y must be a positive number.")
         if parameters[16].value is not None and parameters[16].value < 0:
-            parameters[16].setErrorMessage("Zmax must be a positive number.")
-        if parameters[17].value is not None and parameters[17].value < 0:
-            parameters[17].setErrorMessage("Plume cell size must be a positive number.")
-
+            parameters[16].setErrorMessage("Z must be a positive number.")
         if parameters[18].value is not None and parameters[18].value < 0:
-            parameters[18].setErrorMessage("NO3 initial concentration must be a positive number.")
+            parameters[18].setErrorMessage("Zmax must be a positive number.")
         if parameters[19].value is not None and parameters[19].value < 0:
-            parameters[19].setErrorMessage("NO3 dispersivity alphaL must be a positive number.")
+            parameters[19].setErrorMessage("Plume cell size must be a positive number.")
+
         if parameters[20].value is not None and parameters[20].value < 0:
-            parameters[20].setErrorMessage("NO3 dispersivity alphaTH must be a positive number.")
+            parameters[20].setErrorMessage("NO3 initial concentration must be a positive number.")
         if parameters[21].value is not None and parameters[21].value < 0:
-            parameters[21].setErrorMessage("NO3 decay rate must be a positive number.")
+            parameters[21].setErrorMessage("NO3 dispersivity alphaL must be a positive number.")
         if parameters[22].value is not None and parameters[22].value < 0:
-            parameters[22].setErrorMessage("NO3 volume conversion factor must be a positive number.")
-        if parameters[23].value is not None and parameters[18].value < 0:
-            parameters[23].setErrorMessage("NH4 initial concentration must be a positive number.")
+            parameters[22].setErrorMessage("NO3 dispersivity alphaTH must be a positive number.")
+        if parameters[23].value is not None and parameters[23].value < 0:
+            parameters[23].setErrorMessage("NO3 decay rate must be a positive number.")
         if parameters[24].value is not None and parameters[24].value < 0:
-            parameters[24].setErrorMessage("NH4 dispersivity alphaL must be a positive number.")
+            parameters[24].setErrorMessage("NO3 volume conversion factor must be a positive number.")
         if parameters[25].value is not None and parameters[25].value < 0:
-            parameters[25].setErrorMessage("NH4 dispersivity alphaTH must be a positive number.")
+            parameters[25].setErrorMessage("NH4 initial concentration must be a positive number.")
         if parameters[26].value is not None and parameters[26].value < 0:
-            parameters[26].setErrorMessage("NH4 decay rate must be a positive number.")
+            parameters[26].setErrorMessage("NH4 dispersivity alphaL must be a positive number.")
         if parameters[27].value is not None and parameters[27].value < 0:
-            parameters[27].setErrorMessage("Bulk density must be a positive number.")
+            parameters[27].setErrorMessage("NH4 dispersivity alphaTH must be a positive number.")
         if parameters[28].value is not None and parameters[28].value < 0:
-            parameters[28].setErrorMessage("NH4 adsorption coefficient must be a positive number.")
+            parameters[28].setErrorMessage("NH4 decay rate must be a positive number.")
+        if parameters[29].value is not None and parameters[29].value < 0:
+            parameters[29].setErrorMessage("Bulk density must be a positive number.")
+        if parameters[30].value is not None and parameters[30].value < 0:
+            parameters[30].setErrorMessage("NH4 adsorption coefficient must be a positive number.")
         return
 
     def execute(self, parameters, messages) -> None:
@@ -474,33 +502,36 @@ class InterfaceTransport(object):
         particlepath = parameters[3].valueAsText
         no3output = parameters[4].valueAsText
         nh4output = parameters[5].valueAsText
-        option0 = parameters[6].valueAsText
-        option1 = parameters[7].valueAsText
-        option2 = parameters[8].valueAsText
-        option3 = parameters[9].valueAsText
-        option4 = parameters[10].valueAsText
-        option5 = parameters[11].valueAsText
-        param1 = parameters[12].valueAsText
-        param2 = parameters[13].valueAsText
-        param3 = parameters[14].valueAsText
-        param4 = parameters[15].valueAsText
-        param5 = parameters[16].valueAsText
-        param6 = parameters[17].valueAsText
-        no3param0 = parameters[18].valueAsText
-        no3param1 = parameters[19].valueAsText
-        no3param2 = parameters[20].valueAsText
-        no3param3 = parameters[21].valueAsText
-        no3param4 = parameters[22].valueAsText
-        nh4param0 = parameters[23].valueAsText
-        nh4param1 = parameters[24].valueAsText
-        nh4param2 = parameters[25].valueAsText
-        nh4param3 = parameters[26].valueAsText
-        nh4param4 = parameters[27].valueAsText
-        nh4param5 = parameters[28].valueAsText
+        no3outputinfo = parameters[6].valueAsText
+        nh4outputinfo = parameters[7].valueAsText
+        option0 = parameters[8].valueAsText
+        option1 = parameters[9].value
+        option2 = parameters[10].valueAsText
+        option3 = parameters[11].value
+        option4 = parameters[12].valueAsText
+        option5 = parameters[13].valueAsText
+        param1 = parameters[14].value
+        param2 = parameters[15].value
+        param3 = parameters[16].value
+        param4 = parameters[17].value
+        param5 = parameters[18].value
+        param6 = parameters[19].value
+        no3param0 = parameters[20].value
+        no3param1 = parameters[21].value
+        no3param2 = parameters[22].value
+        no3param3 = parameters[23].value
+        no3param4 = parameters[24].value
+        nh4param0 = parameters[25].value
+        nh4param1 = parameters[26].value
+        nh4param2 = parameters[27].value
+        nh4param3 = parameters[28].value
+        nh4param4 = parameters[29].value
+        nh4param5 = parameters[30].value
 
         # Okay finally go ahead and do the work.
         try:
-            TP = Transport(whethernh4, sourcelocation, waterbodies, particlepath, no3output, nh4output,
+            TP = Transport(whethernh4, sourcelocation, waterbodies, particlepath,
+                           no3output, nh4output, no3outputinfo, nh4outputinfo,
                            option0, option1, option2, option3, option4, option5,
                            param1, param2, param3, param4, param5, param6,
                            no3param0, no3param1, no3param2, no3param3, no3param4,
@@ -516,7 +547,7 @@ class InterfaceTransport(object):
     def describeParameter(self, m, p):
         if p.enabled:
             m.addMessage("Parameter: %s \"%s\"" % (p.name, p.displayName))
-            m.addMessage("  Path \"%s\"" % p.valueAsText)
+            m.addMessage("  Value \"%s\"" % p.valueAsText)
 
     @staticmethod
     def is_file_path(input_string):
