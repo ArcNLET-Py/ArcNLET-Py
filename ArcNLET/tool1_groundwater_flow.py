@@ -36,14 +36,48 @@ class DarcyFlow:
         self.zfact = c_zfact
 
         # output file names
-        self.velname = arcpy.Describe(velname).catalogPath if not self.is_file_path(velname) else velname
-        self.veldname = arcpy.Describe(veldname).catalogPath if not self.is_file_path(veldname) else veldname
+        if self.is_file_path(velname):
+            self.velname = os.path.basename(velname)
+            self.veldir = os.path.dirname(velname)
+            if os.path.isabs(self.veldir):
+                self.veldir = os.path.abspath(self.veldir)
+        else:
+            self.velname = velname
+            if self.is_file_path(veldname):
+                self.veldir = os.path.dirname(veldname)
+            else:
+                self.veldir = os.path.dirname(self.dem)
+        if self.is_file_path(veldname):
+            self.veldname = os.path.basename(veldname)
+            self.velddir = os.path.dirname(veldname)
+            if os.path.isabs(self.velddir):
+                self.velddir = os.path.abspath(self.velddir)
+        else:
+            self.veldname = veldname
+            if self.is_file_path(velname):
+                self.velddir = os.path.dirname(veldname)
+            else:
+                self.velddir = os.path.dirname(self.dem)
         if gradname is not None:
-            self.gradname = arcpy.Describe(gradname).catalogPath if not self.is_file_path(gradname) else gradname
+            if self.is_file_path(gradname):
+                self.gradname = os.path.basename(gradname)
+                self.graddir = os.path.dirname(gradname)
+                if os.path.isabs(self.graddir):
+                    self.graddir = os.path.abspath(self.graddir)
+            else:
+                self.gradname = gradname
+                self.graddir = os.path.dirname(self.dem)
         else:
             self.gradname = None
         if smthname is not None:
-            self.smthname = arcpy.Describe(smthname).catalogPath if not self.is_file_path(smthname) else smthname
+            if self.is_file_path(smthname):
+                self.smthname = os.path.basename(smthname)
+                self.smthdir = os.path.dirname(smthname)
+                if os.path.isabs(self.smthdir):
+                    self.velddir = os.path.abspath(self.smthdir)
+            else:
+                self.smthname = smthname
+                self.smthdir = os.path.dirname(self.dem)
         else:
             self.smthname = None
 
@@ -113,20 +147,20 @@ class DarcyFlow:
         arcpy.AddMessage("{}         Calculating velocity magnitude finished".format(current_time))
 
         # save the output
-        if arcpy.Exists(self.velname):
-            arcpy.Delete_management(self.velname)
-        velocity.save(self.velname)
-        if arcpy.Exists(self.veldname):
-            arcpy.Delete_management(self.veldname)
-        flowdir_raster.save(self.veldname)
+        if arcpy.Exists(os.path.join(self.veldir, self.velname)):
+            arcpy.Delete_management(os.path.join(self.veldir, self.velname))
+        velocity.save(os.path.join(self.veldir, self.velname))
+        if arcpy.Exists(os.path.join(self.velddir, self.veldname)):
+            arcpy.Delete_management(os.path.join(self.velddir, self.veldname))
+        flowdir_raster.save(os.path.join(self.velddir, self.veldname))
         if self.gradname is not None:
-            if arcpy.Exists(self.gradname):
-                arcpy.Delete_management(self.gradname)
-            gradient.save(self.gradname)
+            if arcpy.Exists(os.path.join(self.graddir, self.gradname)):
+                arcpy.Delete_management(os.path.join(self.graddir, self.gradname))
+            gradient.save(os.path.join(self.graddir, self.gradname))
         if self.smthname is not None:
-            if arcpy.Exists(self.smthname):
-                arcpy.Delete_management(self.smthname)
-            smoothed_merge_dem.save(self.smthname)
+            if arcpy.Exists(os.path.join(self.smthdir, self.smthname)):
+                arcpy.Delete_management(os.path.join(self.smthdir, self.smthname))
+            smoothed_merge_dem.save(os.path.join(self.smthdir, self.smthname))
 
         return
 

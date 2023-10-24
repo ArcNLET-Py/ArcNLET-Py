@@ -242,21 +242,30 @@ class InterfaceGroundwaterFlow(object):
                     parameters[8].setWarningMessage("The Smoothing Factor may be too large.")
 
         if parameters[10].altered and parameters[10].value is not None:
-            filename, fileext = os.path.splitext(parameters[10].valueAsText)
-            if fileext:
-                parameters[10].setWarningMessage("Suffixes are not recommended for output file.")
+            if ".img" in parameters[10].valueAsText and (
+                    ".gdb" in parameters[10].valueAsText or ".mdb" in parameters[10].valueAsText):
+                parameters[10].setErrorMessage(
+                    "When storing a raster dataset in a geodatabase, "
+                    "do not add a file extension to the name of the raster dataset.")
         if parameters[11].altered and parameters[11].value is not None:
-            filename, fileext = os.path.splitext(parameters[11].valueAsText)
-            if fileext:
-                parameters[11].setWarningMessage("Suffixes are not recommended for output file.")
+            if ".img" in parameters[11].valueAsText and (
+                    ".gdb" in parameters[11].valueAsText or ".mdb" in parameters[11].valueAsText):
+                parameters[11].setErrorMessage(
+                    "When storing a raster dataset in a geodatabase, "
+                    "do not add a file extension to the name of the raster dataset.")
         if parameters[12].altered and parameters[12].value is not None:
-            filename, fileext = os.path.splitext(parameters[12].valueAsText)
-            if fileext:
-                parameters[12].setWarningMessage("Suffixes are not recommended for output file.")
+            if ".img" in parameters[12].valueAsText and (
+                    ".gdb" in parameters[12].valueAsText or ".mdb" in parameters[12].valueAsText):
+                parameters[12].setErrorMessage(
+                    "When storing a raster dataset in a geodatabase, "
+                    "do not add a file extension to the name of the raster dataset.")
         if parameters[13].altered and parameters[13].value is not None:
-            filename, fileext = os.path.splitext(parameters[13].valueAsText)
-            if fileext:
-                parameters[13].setWarningMessage("Suffixes are not recommended for output file.")
+            if ".img" in parameters[13].valueAsText and (
+                    ".gdb" in parameters[13].valueAsText or ".mdb" in parameters[13].valueAsText):
+                parameters[13].setErrorMessage(
+                    "When storing a raster dataset in a geodatabase, "
+                    "do not add a file extension to the name of the raster dataset.")
+        return
 
     def execute(self, parameters, messages) -> None:
         """This is the code that executes when you click the "Run" button."""

@@ -367,8 +367,8 @@ class InterfaceVZMOD(object):
                                      )
         inputfile0.value = 0
 
-        inputfile1 = arcpy.Parameter(name="Heterogeneous Ks and thetas",
-                                     displayName="Heterogeneous Ks and \u03B8s",
+        inputfile1 = arcpy.Parameter(name="Distributed Ks and thetas",
+                                     displayName="Distributed Ks and \u03B8s",
                                      datatype="GPBoolean",
                                      parameterType="Optional",  # Required|Optional|Derived
                                      direction="Input"  # Input|Output
@@ -438,14 +438,14 @@ class InterfaceVZMOD(object):
                                      direction="Input"  # Input|Output
                                      )
 
-        return [Option, hydroparam0, hydroparam1, hydroparam2, hydroparam3, hydroparam4, hydroparam5,  # 0 - 6
+        return [inputfile0, inputfile1, inputfile2, inputfile3, inputfile4,                            # 31 - 35
+                inputfile5, inputfile6, inputfile7, inputfile8, inputfile9,
+                Option, hydroparam0, hydroparam1, hydroparam2, hydroparam3, hydroparam4, hydroparam5,  # 0 - 6
                 nitriparam0, nitriparam1, nitriparam2, nitriparam3, nitriparam4,                       # 7 - 11
                 nitriparam5, nitriparam6, nitriparam7, nitriparam8, nitriparam9,                       # 12 - 16
                 denitparam0, denitparam1, denitparam2, denitparam3, denitparam4,                       # 17 - 21
                 adsorparam0, adsorparam1, Tempparam0, Tempparam1,                                      # 22 - 25
-                Initparam0, Initparam1, Initparam2, Initparam3, outputfile0,                           # 26 - 30
-                inputfile0, inputfile1, inputfile2, inputfile3, inputfile4,                            # 31 - 35
-                inputfile5, inputfile6, inputfile7, inputfile8, inputfile9]                            # 36 - 40
+                Initparam0, Initparam1, Initparam2, Initparam3, outputfile0]
 
     def isLicensed(self) -> bool:
         """Set whether tool is licensed to execute."""
@@ -455,42 +455,32 @@ class InterfaceVZMOD(object):
         """Modify the values and properties of parameters before internal
         validation is performed.  This method is called whenever a parameter
         has been changed."""
-        if parameters[0].altered:
-            if not parameters[0].hasBeenValidated:
-                parameters[1].value = hydraulic_default[parameters[0].valueAsText][0]
-                parameters[2].value = hydraulic_default[parameters[0].valueAsText][1]
-                parameters[3].value = hydraulic_default[parameters[0].valueAsText][2]
-                parameters[4].value = hydraulic_default[parameters[0].valueAsText][3]
-                parameters[5].value = hydraulic_default[parameters[0].valueAsText][4]
-                parameters[6].value = hydraulic_default[parameters[0].valueAsText][5]
-                parameters[7].value = nitrification_default[parameters[0].valueAsText][0]
-                parameters[8].value = nitrification_default[parameters[0].valueAsText][1]
-                parameters[9].value = nitrification_default[parameters[0].valueAsText][2]
-                parameters[10].value = nitrification_default[parameters[0].valueAsText][3]
-                parameters[11].value = nitrification_default[parameters[0].valueAsText][4]
-                parameters[12].value = nitrification_default[parameters[0].valueAsText][5]
-                parameters[13].value = nitrification_default[parameters[0].valueAsText][6]
-                parameters[14].value = nitrification_default[parameters[0].valueAsText][7]
-                parameters[15].value = nitrification_default[parameters[0].valueAsText][8]
-                parameters[16].value = nitrification_default[parameters[0].valueAsText][9]
-                parameters[17].value = denitrification_default[parameters[0].valueAsText][0]
-                parameters[18].value = denitrification_default[parameters[0].valueAsText][1]
-                parameters[19].value = denitrification_default[parameters[0].valueAsText][2]
-                parameters[20].value = denitrification_default[parameters[0].valueAsText][3]
-                parameters[21].value = denitrification_default[parameters[0].valueAsText][4]
-                parameters[22].value = adsorption_default[parameters[0].valueAsText][0]
-                parameters[23].value = adsorption_default[parameters[0].valueAsText][1]
+        if parameters[10].altered:
+            if not parameters[10].hasBeenValidated:
+                parameters[11].value = hydraulic_default[parameters[10].valueAsText][0]
+                parameters[12].value = hydraulic_default[parameters[10].valueAsText][1]
+                parameters[13].value = hydraulic_default[parameters[10].valueAsText][2]
+                parameters[14].value = hydraulic_default[parameters[10].valueAsText][3]
+                parameters[15].value = hydraulic_default[parameters[10].valueAsText][4]
+                parameters[16].value = hydraulic_default[parameters[10].valueAsText][5]
+                parameters[17].value = nitrification_default[parameters[10].valueAsText][0]
+                parameters[18].value = nitrification_default[parameters[10].valueAsText][1]
+                parameters[19].value = nitrification_default[parameters[10].valueAsText][2]
+                parameters[20].value = nitrification_default[parameters[10].valueAsText][3]
+                parameters[21].value = nitrification_default[parameters[10].valueAsText][4]
+                parameters[22].value = nitrification_default[parameters[10].valueAsText][5]
+                parameters[23].value = nitrification_default[parameters[10].valueAsText][6]
+                parameters[24].value = nitrification_default[parameters[10].valueAsText][7]
+                parameters[25].value = nitrification_default[parameters[10].valueAsText][8]
+                parameters[26].value = nitrification_default[parameters[10].valueAsText][9]
+                parameters[27].value = denitrification_default[parameters[10].valueAsText][0]
+                parameters[28].value = denitrification_default[parameters[10].valueAsText][1]
+                parameters[29].value = denitrification_default[parameters[10].valueAsText][2]
+                parameters[30].value = denitrification_default[parameters[10].valueAsText][3]
+                parameters[31].value = denitrification_default[parameters[10].valueAsText][4]
+                parameters[32].value = adsorption_default[parameters[10].valueAsText][0]
+                parameters[33].value = adsorption_default[parameters[10].valueAsText][1]
         else:
-            parameters[1].value = None
-            parameters[2].value = None
-            parameters[3].value = None
-            parameters[4].value = None
-            parameters[5].value = None
-            parameters[6].value = None
-            parameters[7].value = None
-            parameters[8].value = None
-            parameters[9].value = None
-            parameters[10].value = None
             parameters[11].value = None
             parameters[12].value = None
             parameters[13].value = None
@@ -504,54 +494,83 @@ class InterfaceVZMOD(object):
             parameters[21].value = None
             parameters[22].value = None
             parameters[23].value = None
+            parameters[24].value = None
+            parameters[25].value = None
+            parameters[26].value = None
+            parameters[27].value = None
+            parameters[28].value = None
+            parameters[29].value = None
+            parameters[30].value = None
+            parameters[31].value = None
+            parameters[32].value = None
+            parameters[33].value = None
 
-        if parameters[31].altered:
-            if parameters[31].value:
-                parameters[32].enabled = True
-                parameters[33].enabled = True
-                parameters[34].enabled = True
-                parameters[35].enabled = True
-                if parameters[32].altered and parameters[32].value:
-                    parameters[36].enabled = True
-                    parameters[37].enabled = True
-                    parameters[3].enabled = False
-                    parameters[5].enabled = False
-                else:
-                    parameters[36].enabled = False
-                    parameters[37].enabled = False
-                    parameters[3].enabled = True
+        if parameters[0].altered:
+            if parameters[0].value:
+                parameters[1].enabled = True
+                parameters[2].enabled = True
+                parameters[3].enabled = True
+                parameters[4].enabled = True
+                if parameters[1].altered and parameters[1].value:
                     parameters[5].enabled = True
-                if parameters[33].altered and parameters[33].value:
-                    parameters[38].enabled = True
-                    parameters[39].enabled = True
-                    parameters[28].enabled = False
-                    parameters[29].enabled = True
+                    parameters[6].enabled = True
+                    parameters[13].enabled = False
+                    parameters[15].enabled = False
                 else:
-                    parameters[38].enabled = False
-                    parameters[39].enabled = False
-                    parameters[28].enabled = True
-                    parameters[29].enabled = False
-                if parameters[34].altered and parameters[34].value:
-                    parameters[40].enabled = True
-                    parameters[2].enabled = False
-                    parameters[3].enabled = False
-                    parameters[4].enabled = False
                     parameters[5].enabled = False
                     parameters[6].enabled = False
-                    parameters[20].enabled = False
-                    parameters[22].enabled = False
+                    parameters[13].enabled = True
+                    parameters[15].enabled = True
+                if parameters[2].altered and parameters[2].value:
+                    parameters[7].enabled = True
+                    parameters[8].enabled = True
+                    parameters[38].enabled = False
+                    parameters[39].enabled = True
                 else:
-                    parameters[40].enabled = False
+                    parameters[7].enabled = False
+                    parameters[8].enabled = False
+                    parameters[38].enabled = True
+                    parameters[39].enabled = False
+                if parameters[3].altered and parameters[3].value:
+                    parameters[9].enabled = True
+                    parameters[10].enabled = False
+                    parameters[12].enabled = False
+                    parameters[13].enabled = False
+                    parameters[14].enabled = False
+                    parameters[15].enabled = False
+                    parameters[16].enabled = False
+                    parameters[30].enabled = False
+                    parameters[32].enabled = False
+                else:
+                    parameters[9].enabled = False
+                    parameters[10].enabled = True
+                    parameters[12].enabled = True
+                    parameters[13].enabled = True
+                    parameters[14].enabled = True
+                    parameters[15].enabled = True
+                    parameters[16].enabled = True
+                    parameters[30].enabled = True
+                    parameters[32].enabled = True
             else:
-                parameters[32].enabled = False
-                parameters[33].enabled = False
-                parameters[34].enabled = False
-                parameters[35].enabled = False
-                parameters[36].enabled = False
-                parameters[37].enabled = False
-                parameters[38].enabled = False
-                parameters[39].enabled = False
-                parameters[40].enabled = False
+                parameters[1].enabled = False
+                parameters[2].enabled = False
+                parameters[3].enabled = False
+                parameters[4].enabled = False
+                parameters[5].enabled = False
+                parameters[6].enabled = False
+                parameters[7].enabled = False
+                parameters[8].enabled = False
+                parameters[9].enabled = False
+                parameters[10].enabled = True
+                parameters[12].enabled = True
+                parameters[13].enabled = True
+                parameters[14].enabled = True
+                parameters[15].enabled = True
+                parameters[16].enabled = True
+                parameters[30].enabled = True
+                parameters[32].enabled = True
+                parameters[38].enabled = True
+                parameters[39].enabled = True
         return
 
     def updateMessages(self, parameters) -> None:

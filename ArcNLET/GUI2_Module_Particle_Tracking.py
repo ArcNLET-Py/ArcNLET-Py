@@ -182,9 +182,23 @@ class InterfaceParticleTracking(object):
             parameters[8].setErrorMessage("The Max Steps must be greater than 0.")
 
         if parameters[9].altered and parameters[9].value is not None:
-            filename, fileext = os.path.splitext(parameters[9].valueAsText)
-            if fileext:
-                parameters[9].setWarningMessage("Suffixes are not recommended for output file.")
+            if self.is_file_path(parameters[9].valueAsText):
+                filename, fileext = os.path.splitext(parameters[9].valueAsText)
+                if (".gdb" in filename or 'mdb' in filename) and fileext:
+                    parameters[9].setErrorMessage(
+                            "When storing a shapefile in a geodatabase, "
+                            "do not add a file extension to the name of the shapefile.")
+                elif fileext and fileext != ".shp":
+                    parameters[9].setWarningMessage("Suffixes '.shp' will used for output file.")
+                    parameters[9].value = filename
+            else:
+                ppath = os.path.dirname(arcpy.Describe(parameters[2].valueAsText).catalogPath)
+                if (".gdb" in ppath or 'mdb' in ppath) and "." in parameters[9].valueAsText:
+                    parameters[9].setErrorMessage(
+                        "If not specified, paths will be saved at the same location as the velocity magnitude raster. "
+                        "When storing a shapefile in a geodatabase (where the velocity magnitude raster is), "
+                        "do not add a file extension to the name of the shapefile.")
+        return
 
     def execute(self, parameters, messages) -> None:
         """This is the code that executes when you click the "Run" button."""

@@ -3,6 +3,9 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+ArcNLET / test.py
+ArcNLET / tool2_particle_tracking_multi.py
+
 # C extensions
 *.so
 

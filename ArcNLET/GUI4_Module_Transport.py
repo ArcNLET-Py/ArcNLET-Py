@@ -425,15 +425,19 @@ class InterfaceTransport(object):
                 parameters[3].setErrorMessage("All input files must have the same coordinate system.")
 
         if parameters[4].altered and parameters[4].value is not None:
-            filename, fileext = os.path.splitext(parameters[4].valueAsText)
-            if fileext:
-                parameters[4].setWarningMessage("Suffixes are not recommended for output file.")
-            parameters[6].value = os.path.basename(filename) + "_info.shp"
+            if ".gdb" in parameters[4].valueAsText or ".mdb" in parameters[4].valueAsText:
+                parameters[4].setErrorMessage(
+                    "Storing the results in a geodatabase will cause an error during calculation")
+            else:
+                filename, fileext = os.path.splitext(parameters[4].valueAsText)
+                parameters[6].value = os.path.basename(filename) + "_info.shp"
         if parameters[5].altered and parameters[5].value is not None:
-            filename, fileext = os.path.splitext(parameters[5].valueAsText)
-            if fileext:
-                parameters[5].setWarningMessage("Suffixes are not recommended for output file.")
-            parameters[7].value = os.path.basename(filename) + "_info.shp"
+            if ".gdb" in parameters[5].valueAsText or ".mdb" in parameters[5].valueAsText:
+                parameters[5].setErrorMessage(
+                    "Storing the results in a geodatabase will cause an error during calculation")
+            else:
+                filename, fileext = os.path.splitext(parameters[5].valueAsText)
+                parameters[7].value = os.path.basename(filename) + "_info.shp"
 
         if parameters[9].value is not None and parameters[9].value < 0:
             parameters[9].setErrorMessage("Plume warping control points must be a positive integer.")

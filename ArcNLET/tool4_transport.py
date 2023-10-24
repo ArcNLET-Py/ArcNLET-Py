@@ -48,12 +48,12 @@ class Transport:
         self.particle_path = arcpy.Describe(c_particlepath).catalogPath if not self.is_file_path(
             c_particlepath) else c_particlepath
         self.no3_output = os.path.basename(c_no3output) if self.is_file_path(c_no3output) else c_no3output
-        self.no3_output, ext = os.path.splitext(self.no3_output)
 
         if self.is_file_path(c_no3output):
-            self.working_dir = os.path.abspath(os.path.dirname(c_no3output))
+            self.no3_dir = os.path.abspath(os.path.dirname(c_no3output))
         else:
-            self.working_dir = os.path.abspath(os.path.dirname(self.source_location))
+            self.no3_dir = os.path.abspath(os.path.dirname(self.source_location))
+        self.working_dir = self.no3_dir
         self.no3_output_info = c_no3output_info
         desc = arcpy.Describe(self.source_location)
         self.crs = desc.spatialReference
@@ -90,8 +90,11 @@ class Transport:
 
         if self.whether_nh4:
             self.nh4_output = os.path.basename(c_nh4output) if self.is_file_path(c_nh4output) else c_nh4output
-            self.nh4_output, ext = os.path.splitext(self.nh4_output)
             self.nh4_output_info = c_nh4output_info
+            if self.is_file_path(c_nh4output):
+                self.nh4_dir = os.path.abspath(os.path.dirname(c_nh4output))
+            else:
+                self.nh4_dir = os.path.abspath(os.path.dirname(self.no3_dir))
             if not any(field.name.lower() == "nh4_conc" for field in field_list):
                 self.nh4_init = c_nh4param0  # Initial NH4
             else:
@@ -135,19 +138,15 @@ class Transport:
             arcpy.Delete_management(self.waterbody_raster)
         arcpy.conversion.FeatureToRaster(self.waterbodies, "FID", self.waterbody_raster, max(self.plume_cell_size, 1))
 
-        # if not self.no3_output.endswith('.img'):
-        #     self.no3_output = self.no3_output + '.img'
-        if arcpy.Exists(self.no3_output):
-            arcpy.Delete_management(self.no3_output)
-        arcpy.management.CreateRasterDataset(self.working_dir, self.no3_output, self.plume_cell_size,
+        if arcpy.Exists(os.path.join(self.no3_dir, self.no3_output)):
+            arcpy.Delete_management(os.path.join(self.no3_dir, self.no3_output))
+        arcpy.management.CreateRasterDataset(self.no3_dir, self.no3_output, self.plume_cell_size,
                                              "32_BIT_FLOAT", self.crs, 1)
 
         if self.whether_nh4:
-            # if not self.nh4_output.endswith('.img'):
-            #     self.nh4_output = self.nh4_output + '.img'
-            if arcpy.Exists(self.nh4_output):
-                arcpy.Delete_management(self.nh4_output)
-            arcpy.management.CreateRasterDataset(self.working_dir, self.nh4_output, self.plume_cell_size,
+            if arcpy.Exists(os.path.join(self.nh4_dir, self.nh4_output)):
+                arcpy.Delete_management(os.path.join(self.nh4_dir, self.nh4_output))
+            arcpy.management.CreateRasterDataset(self.nh4_dir, self.nh4_output, self.plume_cell_size,
                                                  "32_BIT_FLOAT", self.crs, 1)
 
         no3segments = []
@@ -801,15 +800,15 @@ class Transport:
         """
         try:
             # Create a list to hold field information
-            if arcpy.Exists(self.no3_output_info):
-                arcpy.Delete_management(self.no3_output_info)
+            if arcpy.Exists(os.path.join(self.no3_dir, self.no3_output_info)):
+                arcpy.Delete_management(os.path.join(self.no3_dir, self.no3_output_info))
 
-            create_shapefile(save_path, self.no3_output_info, self.crs)
+            create_shapefile(self.no3_dir, self.no3_output_info, self.crs)
 
             if self.whether_nh4:
-                if arcpy.Exists(self.nh4_output_info):
-                    arcpy.Delete_management(self.nh4_output_info)
-                create_shapefile(save_path, self.nh4_output_info, self.crs)
+                if arcpy.Exists(os.path.join(self.nh4_dir, self.nh4_output_info)):
+                    arcpy.Delete_management(os.path.join(self.nh4_dir, self.nh4_output_info))
+                create_shapefile(self.nh4_dir, self.nh4_output_info, self.crs)
 
         except Exception as e:
             print(self.no3_output_info)
