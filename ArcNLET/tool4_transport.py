@@ -24,6 +24,7 @@ import cProfile
 import pstats
 
 __version__ = "V1.0.0"
+arcpy.env.parallelProcessingFactor = "100%"
 
 
 class Transport:
@@ -196,9 +197,16 @@ class Transport:
                 warped_no3, target_body_pts = self.warp_arcgis(filtered_no3, pathid, xvalue, yvalue, seg)
             post_no3 = self.post_process_plume(warped_no3, pathid, seg, target_body_pts)
             try:
-                while is_file_locked(os.path.join(self.no3_dir, self.no3_output)):
-                    arcpy.AddMessage("The output raster is used by other software, waiting for 1 second...")
-                    time.sleep(1)
+                _, file_extension = os.path.splitext(self.no3_output)
+                wait_time = 0
+                if bool(file_extension):
+                    while is_file_locked(os.path.join(self.no3_dir, self.no3_output)):
+                        arcpy.AddMessage("The output raster is used by other software, waiting for 1 second...")
+                        time.sleep(1)
+                        wait_time += 1
+                        if wait_time > 60:
+                            arcpy.AddMessage("The output raster is used by other software, exit the program.")
+                            sys.exit(0)
                 arcpy.Mosaic_management(post_no3, self.no3_output, "SUM")
             except Exception as e:
                 arcpy.AddMessage("[Error]: Failed to mosaic plume {}: ".format(pathid) + str(e))
@@ -218,9 +226,16 @@ class Transport:
                     warped_nh4, target_body_pts = self.warp_arcgis(filtered_nh4, pathid, xvalue, yvalue, seg)
                 post_nh4 = self.post_process_plume(warped_nh4, pathid, seg, target_body_pts)
                 try:
-                    while is_file_locked(os.path.join(self.nh4_dir, self.nh4_output)):
-                        arcpy.AddMessage("The output raster is used by other software, waiting for 1 second...")
-                        time.sleep(1)
+                    _, file_extension = os.path.splitext(self.nh4_output)
+                    wait_time = 0
+                    if bool(file_extension):
+                        while is_file_locked(os.path.join(self.nh4_dir, self.nh4_output)):
+                            arcpy.AddMessage("The output raster is used by other software, waiting for 1 second...")
+                            time.sleep(1)
+                            wait_time += 1
+                            if wait_time > 60:
+                                arcpy.AddMessage("The output raster is used by other software, exit the program.")
+                                sys.exit(0)
                     arcpy.Mosaic_management(post_nh4, self.nh4_output, "SUM")
                 except Exception as e:
                     arcpy.AddMessage("[Error]: Failed to mosaic plume {}: ".format(pathid) + str(e))
@@ -1137,8 +1152,8 @@ if __name__ == '__main__':
     water_bodies = os.path.join(arcpy.env.workspace, "waterbodies")
     particlepath = os.path.join(arcpy.env.workspace, "Path3.shp")
 
-    no3output = os.path.join(arcpy.env.workspace, "no13.img")
-    nh4output = os.path.join(arcpy.env.workspace, "nh14.img")
+    no3output = os.path.join(arcpy.env.workspace, "no13")
+    nh4output = os.path.join(arcpy.env.workspace, "nh14")
     no3output_info = "no13_info.shp"
     nh4output_info = "nh14_info.shp"
 
