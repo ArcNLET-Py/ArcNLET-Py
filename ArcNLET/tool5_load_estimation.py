@@ -1,5 +1,5 @@
 """
-This script contains the Groundwater Flow module of ArcNLET model in the ArcGIS Python Toolbox.
+This script contains the Load Estimation module of ArcNLET model in the ArcGIS Python Toolbox.
 
 For detailed algorithms, please see https://atmos.eoas.fsu.edu/~mye/ArcNLET/Techican_manual.pdf
 

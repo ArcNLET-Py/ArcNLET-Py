@@ -500,7 +500,7 @@ class InterfaceTransport(object):
         for param in parameters:
             self.describeParameter(messages, param)
 
-        whethernh4 = parameters[0].valueAsText
+        whethernh4 = parameters[0].value
         sourcelocation = parameters[1].valueAsText
         waterbodies = parameters[2].valueAsText
         particlepath = parameters[3].valueAsText
