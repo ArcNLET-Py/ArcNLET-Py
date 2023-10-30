@@ -134,7 +134,7 @@ class Transport:
         try:
             self.waterbody_raster = r"memory\water_bodies"
             if arcpy.Exists(self.waterbody_raster):
-                arcpy.Delete_management(self.waterbody_raster)
+                arcpy.management.Delete(self.waterbody_raster)
             arcpy.conversion.FeatureToRaster(self.waterbodies, "FID", self.waterbody_raster,
                                              max(self.plume_cell_size, 1))
         except Exception as e:
@@ -143,13 +143,13 @@ class Transport:
 
         try:
             if arcpy.Exists(os.path.join(self.no3_dir, self.no3_output)):
-                arcpy.Delete_management(os.path.join(self.no3_dir, self.no3_output))
+                arcpy.management.Delete(os.path.join(self.no3_dir, self.no3_output))
             arcpy.management.CreateRasterDataset(self.no3_dir, self.no3_output, self.plume_cell_size,
                                                  "32_BIT_FLOAT", self.crs, 1)
 
             if self.whether_nh4:
                 if arcpy.Exists(os.path.join(self.nh4_dir, self.nh4_output)):
-                    arcpy.Delete_management(os.path.join(self.nh4_dir, self.nh4_output))
+                    arcpy.management.Delete(os.path.join(self.nh4_dir, self.nh4_output))
                 arcpy.management.CreateRasterDataset(self.nh4_dir, self.nh4_output, self.plume_cell_size,
                                                      "32_BIT_FLOAT", self.crs, 1)
         except Exception as e:
@@ -241,20 +241,20 @@ class Transport:
                     arcpy.AddMessage("[Error]: Failed to mosaic plume {}: ".format(pathid) + str(e))
                     sys.exit(-1)
 
-        arcpy.Delete_management(post_no3)
+        arcpy.management.Delete(post_no3)
         if self.whether_nh4:
-            arcpy.Delete_management(post_nh4)
+            arcpy.management.Delete(post_nh4)
 
         out_raster = arcpy.sa.SetNull(self.no3_output, self.no3_output, "VALUE < {}".format(self.threshold))
         if arcpy.Exists(os.path.join(self.no3_dir, self.no3_output)):
-            arcpy.Delete_management(os.path.join(self.no3_dir, self.no3_output))
+            arcpy.management.Delete(os.path.join(self.no3_dir, self.no3_output))
         # # set_nodata_value(os.path.join(self.no3_dir, self.no3_output))
         out_raster.save(os.path.join(self.no3_dir, self.no3_output))
 
         if self.whether_nh4:
             out_raster = arcpy.sa.SetNull(self.nh4_output, self.nh4_output, "VALUE < {}".format(self.threshold))
             if arcpy.Exists(os.path.join(self.nh4_dir, self.nh4_output)):
-                arcpy.Delete_management(os.path.join(self.nh4_dir, self.nh4_output))
+                arcpy.management.Delete(os.path.join(self.nh4_dir, self.nh4_output))
             out_raster.save(os.path.join(self.nh4_dir, self.nh4_output))
 
         if self.post_process == "medium":
@@ -609,7 +609,7 @@ class Transport:
 
         name = r'memory\plume_raster'
         if arcpy.Exists(name):
-            arcpy.Delete_management(name)
+            arcpy.management.Delete(name)
         # warped_raster = arcpy.NumPyArrayToRaster(modified_warped_array[::-1], arcpy.Point(new_xvalue, new_yvalue),
         #                                          self.plume_cell_size, self.plume_cell_size)
         # arcpy.management.DefineProjection(warped_raster, self.crs)
@@ -639,7 +639,7 @@ class Transport:
 
             name = r'memory\plume_raster'
             if arcpy.Exists(name):
-                arcpy.Delete_management(name)
+                arcpy.management.Delete(name)
             arcpy.management.Warp(plume_raster, source_control_points, target_control_points, name,
                                   self.warp_method.upper(), "BILINEAR")
 
@@ -664,7 +664,7 @@ class Transport:
         """
         fname = r'memory\Resample'
         if arcpy.Exists(fname):
-            arcpy.Delete_management(fname)
+            arcpy.management.Delete(fname)
         if pathid != 0:
             try:
                 arcpy.env.snapRaster = self.no3_output
@@ -691,22 +691,22 @@ class Transport:
                         point_list.append(point)
                     polyline = arcpy.Polyline(arcpy.Array(point_list), self.crs)
                     if arcpy.Exists(r'memory\polyline'):
-                        arcpy.Delete_management(r'memory\polyline')
+                        arcpy.management.Delete(r'memory\polyline')
                     arcpy.CopyFeatures_management(polyline, r'memory\polyline')
 
                     inFeatures = [r'memory\polyline', self.waterbodies]
                     outFeatures = r'memory\polygon'
                     if arcpy.Exists(outFeatures):
-                        arcpy.Delete_management(outFeatures)
+                        arcpy.management.Delete(outFeatures)
                     arcpy.FeatureToPolygon_management(inFeatures, outFeatures, "", "NO_ATTRIBUTES")
                     Erase_polygon = r'memory\Erase_polygon'
                     if arcpy.Exists(Erase_polygon):
-                        arcpy.Delete_management(Erase_polygon)
+                        arcpy.management.Delete(Erase_polygon)
                     arcpy.Erase_analysis(outFeatures, self.waterbodies, Erase_polygon)
 
                     save_name = name.split('.')[0] + '_full' + '.tif'
                     if arcpy.Exists(save_name):
-                        arcpy.Delete_management(save_name)
+                        arcpy.management.Delete(save_name)
                     try:
                         arcpy.sa.ExtractByMask(fname, Erase_polygon).save(save_name)
 
@@ -739,7 +739,7 @@ class Transport:
                                     cursor.updateRow(row)
 
                             if arcpy.Exists(r'memory\Intersect'):
-                                arcpy.Delete_management(r'memory\Intersect')
+                                arcpy.management.Delete(r'memory\Intersect')
                             arcpy.analysis.Intersect([r'memory\polyline', self.waterbodies], r'memory\Intersect')
                             ppp = arcpy.da.SearchCursor(r'memory\Intersect', ["SHAPE@"]).next()[0]
                             if ppp.isMultipart:
@@ -748,16 +748,16 @@ class Transport:
                         inFeatures = [r'memory\polyline', self.waterbodies]
                         outFeatures = r'memory\polygon'
                         if arcpy.Exists(outFeatures):
-                            arcpy.Delete_management(outFeatures)
+                            arcpy.management.Delete(outFeatures)
                         arcpy.FeatureToPolygon_management(inFeatures, outFeatures, "", "NO_ATTRIBUTES")
                         Erase_polygon = r'memory\Erase_polygon'
                         if arcpy.Exists(Erase_polygon):
-                            arcpy.Delete_management(Erase_polygon)
+                            arcpy.management.Delete(Erase_polygon)
                         arcpy.Erase_analysis(outFeatures, self.waterbodies, Erase_polygon)
 
                         save_name = name.split('.')[0] + '_full' + '.tif'
                         if arcpy.Exists(save_name):
-                            arcpy.Delete_management(save_name)
+                            arcpy.management.Delete(save_name)
                         arcpy.sa.ExtractByMask(fname, Erase_polygon).save(save_name)
 
                     return save_name
@@ -774,7 +774,7 @@ class Transport:
         try:
             no3 = arcpy.sa.ExtractByMask(no3_output, self.waterbodies, "OUTSIDE")
             if arcpy.Exists(self.no3_output):
-                arcpy.Delete_management(self.no3_output)
+                arcpy.management.Delete(self.no3_output)
             arcpy.env.snapRaster = None
             no3 = arcpy.sa.SetNull(no3, no3, "VALUE < {}".format(self.threshold))
             no3.save(self.no3_output)
@@ -784,7 +784,7 @@ class Transport:
                     arcpy.AddMessage("The nh4_output is None!")
                 nh4 = arcpy.sa.ExtractByMask(nh4_output, self.waterbodies, "OUTSIDE")
                 if arcpy.Exists(self.nh4_output):
-                    arcpy.Delete_management(self.nh4_output)
+                    arcpy.management.Delete(self.nh4_output)
                 nh4 = arcpy.sa.SetNull(nh4, nh4, "VALUE < {}".format(self.threshold))
                 nh4.save(self.nh4_output)
             return
@@ -858,7 +858,7 @@ class Transport:
         try:
             # Create a list to hold field information
             if arcpy.Exists(os.path.join(self.no3_dir, self.no3_output_info)):
-                arcpy.Delete_management(os.path.join(self.no3_dir, self.no3_output_info))
+                arcpy.management.Delete(os.path.join(self.no3_dir, self.no3_output_info))
             create_shapefile(self.no3_dir, self.no3_output_info, self.crs)
         except Exception as e:
             arcpy.AddMessage("[Error] Create_new_plume_data_shapefile for NO3: " + str(e))
@@ -867,7 +867,7 @@ class Transport:
         if self.whether_nh4:
             try:
                 if arcpy.Exists(os.path.join(self.nh4_dir, self.nh4_output_info)):
-                    arcpy.Delete_management(os.path.join(self.nh4_dir, self.nh4_output_info))
+                    arcpy.management.Delete(os.path.join(self.nh4_dir, self.nh4_output_info))
                 create_shapefile(self.nh4_dir, self.nh4_output_info, self.crs)
             except Exception as e:
                 arcpy.AddMessage("[Error] Create_new_plume_data_shapefile for NH4: " + str(e))
@@ -1191,12 +1191,12 @@ if __name__ == '__main__':
                    param1, param2, param3, param4, param5, param6,
                    no3param0, no3param1, no3param2, no3param3, no3param4,
                    nh4param0, nh4param1, nh4param2, nh4param3, nh4param4, nh4param5)
-    # cProfile.run('Tr.calculate_plumes()', 'transport.bin')
-    # profile_stats = pstats.Stats('transport.bin')
-    # with open('transport.txt', 'w') as output_file:
-    #     profile_stats.strip_dirs().sort_stats('cumulative').print_stats(output_file)
+    cProfile.run('Tr.calculate_plumes()', 'transport.bin')
+    profile_stats = pstats.Stats('transport.bin')
+    with open('transport.txt', 'w') as output_file:
+        profile_stats.strip_dirs().sort_stats('cumulative').print_stats(output_file)
 
-    Tr.calculate_plumes()
+    # Tr.calculate_plumes()
     end_time = datetime.datetime.now()
     print("Total time: {}".format(end_time - start_time))
     print("Tests successful!")

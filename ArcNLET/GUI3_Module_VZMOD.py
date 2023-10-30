@@ -8,12 +8,11 @@ to be included in an ArcGIS Python Toolbox.
 import os
 import time
 import arcpy
-
 import importlib
 import tool3_VZMOD
-
 importlib.reload(tool3_VZMOD)
 from tool3_VZMOD import VZMOD
+
 
 hydraulic_default = {"Clay":            [2.0, 0.015, 14.75,  0.098, 0.459, 1.260],
                      "Clay Loam":       [2.0, 0.016, 8.180,  0.079, 0.442, 1.415],
@@ -438,18 +437,25 @@ class InterfaceVZMOD(object):
                                      direction="Input"  # Input|Output
                                      )
 
-        return [inputfile0, inputfile1, inputfile2, inputfile3, inputfile4,                            # 31 - 35
-                inputfile5, inputfile6, inputfile7, inputfile8, inputfile9,
-                Option, hydroparam0, hydroparam1, hydroparam2, hydroparam3, hydroparam4, hydroparam5,  # 0 - 6
-                nitriparam0, nitriparam1, nitriparam2, nitriparam3, nitriparam4,                       # 7 - 11
-                nitriparam5, nitriparam6, nitriparam7, nitriparam8, nitriparam9,                       # 12 - 16
-                denitparam0, denitparam1, denitparam2, denitparam3, denitparam4,                       # 17 - 21
-                adsorparam0, adsorparam1, Tempparam0, Tempparam1,                                      # 22 - 25
-                Initparam0, Initparam1, Initparam2, Initparam3, outputfile0]
+        return [inputfile0, inputfile1, inputfile2, inputfile3, inputfile4,                            # 0 - 4
+                inputfile5, inputfile6, inputfile7, inputfile8, inputfile9,                            # 5 - 9
+                Option, hydroparam0, hydroparam1, hydroparam2, hydroparam3, hydroparam4, hydroparam5,  # 10 - 16
+                nitriparam0, nitriparam1, nitriparam2, nitriparam3, nitriparam4,                       # 17 - 21
+                nitriparam5, nitriparam6, nitriparam7, nitriparam8, nitriparam9,                       # 22 - 26
+                denitparam0, denitparam1, denitparam2, denitparam3, denitparam4,                       # 27 - 31
+                adsorparam0, adsorparam1, Tempparam0, Tempparam1,                                      # 32 - 35
+                Initparam0, Initparam1, Initparam2, Initparam3, outputfile0]                           # 36 - 40
 
     def isLicensed(self) -> bool:
-        """Set whether tool is licensed to execute."""
-        return True
+        """Set whether tool is licensed to execute.
+        Allow the tool to run, only if the ArcGIS pro spatial analyst extension is available.
+        """
+        try:
+            if arcpy.CheckExtension("Spatial") != "Available":
+                raise Exception
+        except Exception:
+            return False  # tool cannot be executed
+        return True  # tool can be executed
 
     def updateParameters(self, parameters) -> None:
         """Modify the values and properties of parameters before internal
@@ -570,56 +576,56 @@ class InterfaceVZMOD(object):
                 parameters[30].enabled = True
                 parameters[32].enabled = True
                 parameters[38].enabled = True
-                parameters[39].enabled = True
+                parameters[39].enabled = False
         return
 
     def updateMessages(self, parameters) -> None:
         """Modify the messages created by internal validation for each tool
         parameter.  This method is called after internal validation."""
-        if parameters[1].value is not None and parameters[1].value < 0:
-            parameters[1].setErrorMessage("Hydraulic loading rate must be greater than 0.")
-        if parameters[2].value is not None and parameters[2].value < 0:
-            parameters[2].setErrorMessage("Alpha must be greater than 0.")
-        if parameters[3].value is not None and parameters[3].value < 0:
-            parameters[3].setErrorMessage("Ks must be greater than 0.")
-        if parameters[4].value is not None:
-            if parameters[4].value < 0:
-                parameters[4].setErrorMessage("Theta_r must be greater than 0.")
-            elif parameters[4].value > 1:
-                parameters[4].setErrorMessage("Theta_r must be less than 1.")
-        if parameters[5].value is not None:
-            if parameters[5].value < 0:
-                parameters[5].setErrorMessage("Theta_s must be greater than 0.")
-            elif parameters[5].value > 1:
-                parameters[5].setErrorMessage("Theta_s must be less than 1.")
-        if parameters[6].value is not None and parameters[6].value < 0:
-            parameters[6].setErrorMessage("n must be greater than 0.")
-
-        if parameters[7].value is not None and parameters[7].value < 0:
-            parameters[7].setErrorMessage("Knit must be greater than 0.")
-        if parameters[14].value is not None and parameters[14].value < 0:
-            parameters[14].setErrorMessage("Swp must be greater than 0.")
-        if parameters[15].value is not None and parameters[15].value < 0:
-            parameters[15].setErrorMessage("Sl must be greater than 0.")
+        if parameters[11].value is not None and parameters[11].value < 0:
+            parameters[11].setErrorMessage("Hydraulic loading rate must be greater than 0.")
+        if parameters[12].value is not None and parameters[12].value < 0:
+            parameters[12].setErrorMessage("Alpha must be greater than 0.")
+        if parameters[13].value is not None and parameters[13].value < 0:
+            parameters[13].setErrorMessage("Ks must be greater than 0.")
+        if parameters[14].value is not None:
+            if parameters[14].value < 0:
+                parameters[14].setErrorMessage("Theta_r must be greater than 0.")
+            elif parameters[14].value > 1:
+                parameters[14].setErrorMessage("Theta_r must be less than 1.")
+        if parameters[15].value is not None:
+            if parameters[15].value < 0:
+                parameters[15].setErrorMessage("Theta_s must be greater than 0.")
+            elif parameters[15].value > 1:
+                parameters[15].setErrorMessage("Theta_s must be less than 1.")
         if parameters[16].value is not None and parameters[16].value < 0:
-            parameters[16].setErrorMessage("Sh must be greater than 0.")
+            parameters[16].setErrorMessage("n must be greater than 0.")
 
         if parameters[17].value is not None and parameters[17].value < 0:
-            parameters[17].setErrorMessage("Kdnt must be greater than 0.")
-        if parameters[21].value is not None and parameters[21].value < 0:
-            parameters[21].setErrorMessage("Sdnt must be greater than 0.")
-
-        if parameters[22].value is not None and parameters[22].value < 0:
-            parameters[22].setErrorMessage("kd must be greater than 0.")
-        if parameters[23].value is not None and parameters[23].value < 0:
-            parameters[23].setErrorMessage("rho must be greater than 0.")
+            parameters[17].setErrorMessage("Knit must be greater than 0.")
+        if parameters[24].value is not None and parameters[24].value < 0:
+            parameters[24].setErrorMessage("Swp must be greater than 0.")
         if parameters[25].value is not None and parameters[25].value < 0:
-            parameters[25].setErrorMessage("Transport parameter must be greater than 0.")
-
+            parameters[25].setErrorMessage("Sl must be greater than 0.")
         if parameters[26].value is not None and parameters[26].value < 0:
-            parameters[26].setErrorMessage("NH4 must be greater than 0.")
+            parameters[26].setErrorMessage("Sh must be greater than 0.")
+
         if parameters[27].value is not None and parameters[27].value < 0:
-            parameters[27].setErrorMessage("NO3 must be greater than 0.")
+            parameters[27].setErrorMessage("Kdnt must be greater than 0.")
+        if parameters[31].value is not None and parameters[31].value < 0:
+            parameters[31].setErrorMessage("Sdnt must be greater than 0.")
+
+        if parameters[32].value is not None and parameters[32].value < 0:
+            parameters[32].setErrorMessage("kd must be greater than 0.")
+        if parameters[33].value is not None and parameters[33].value < 0:
+            parameters[33].setErrorMessage("rho must be greater than 0.")
+        if parameters[35].value is not None and parameters[35].value < 0:
+            parameters[35].setErrorMessage("Transport parameter must be greater than 0.")
+
+        if parameters[36].value is not None and parameters[36].value < 0:
+            parameters[36].setErrorMessage("NH4 must be greater than 0.")
+        if parameters[37].value is not None and parameters[37].value < 0:
+            parameters[37].setErrorMessage("NO3 must be greater than 0.")
 
     def execute(self, parameters, messages) -> None:
         """This is the code that executes when you click the "Run" button."""
@@ -632,60 +638,61 @@ class InterfaceVZMOD(object):
         for param in parameters:
             self.describeParameter(messages, param)
 
-        soiltypes = parameters[0].valueAsText
-        hlr = parameters[1].valueAsText
-        alpha = parameters[2].valueAsText
-        ks = parameters[3].valueAsText
-        thetar = parameters[4].valueAsText
-        thetas = parameters[5].valueAsText
-        n = parameters[6].valueAsText
+        multi_sources = parameters[0].value
+        hetero_Ks_thetas = parameters[1].value
+        calc_DTW = parameters[2].value
+        multi_soil_type = parameters[3].value
 
-        knit = parameters[7].valueAsText
-        toptnit = parameters[8].valueAsText
-        beltanit = parameters[9].valueAsText
-        e2 = parameters[10].valueAsText
-        e3 = parameters[11].valueAsText
-        fs = parameters[12].valueAsText
-        fwp = parameters[13].valueAsText
-        Swp = parameters[14].valueAsText
-        Sl = parameters[15].valueAsText
-        Sh = parameters[16].valueAsText
+        septic_tank = parameters[4].valueAsText
+        hydraulic_conductivity = parameters[5].valueAsText
+        soil_porosity = parameters[6].valueAsText
+        DEM = parameters[7].valueAsText
+        smoothed_DEM = parameters[8].valueAsText
+        soiltypefile = parameters[9].valueAsText
 
-        kdnt = parameters[17].valueAsText
-        toptdnt = parameters[18].valueAsText
-        beltadnt = parameters[19].valueAsText
-        e1 = parameters[20].valueAsText
-        Sdnt = parameters[21].valueAsText
+        soiltype = parameters[10].valueAsText
+        hlr = parameters[11].value
+        alpha = parameters[12].value
+        ks = parameters[13].value
+        thetar = parameters[14].value
+        thetas = parameters[15].value
+        n = parameters[16].value
 
-        kd = parameters[22].valueAsText
-        rho = parameters[23].valueAsText
-        Temp = parameters[24].valueAsText
-        Tran = parameters[25].valueAsText
+        knit = parameters[17].value
+        toptnit = parameters[18].value
+        beltanit = parameters[19].value
+        e2 = parameters[20].value
+        e3 = parameters[21].value
+        fs = parameters[22].value
+        fwp = parameters[23].value
+        Swp = parameters[24].value
+        Sl = parameters[25].value
+        Sh = parameters[26].value
 
-        NH4 = parameters[26].valueAsText
-        NO3 = parameters[27].valueAsText
-        DTW = parameters[28].valueAsText
-        dist = parameters[29].valueAsText
+        kdnt = parameters[27].value
+        toptdnt = parameters[28].value
+        beltadnt = parameters[29].value
+        e1 = parameters[30].value
+        Sdnt = parameters[31].value
 
-        output_folder = parameters[30].valueAsText
+        kd = parameters[32].value
+        rho = parameters[33].value
 
-        multi_sources = parameters[31].valueAsText
-        hetero_Ks_thetas = parameters[32].valueAsText
-        calc_DTW = parameters[33].valueAsText
-        multi_soil_type = parameters[34].valueAsText
+        Temp = parameters[34].value
+        Tran = parameters[35].value
 
-        septic_tank = parameters[35].valueAsText
-        hydraulic_conductivity = parameters[36].valueAsText
-        soil_porosity = parameters[37].valueAsText
-        DEM = parameters[38].valueAsText
-        smoothed_DEM = parameters[39].valueAsText
-        soil_type = parameters[40].valueAsText
+        NH4 = parameters[36].value
+        NO3 = parameters[37].value
+        DTW = parameters[38].value
+        dist = parameters[39].value
+
+        output_folder = parameters[40].valueAsText
 
         try:
-            vzmod = VZMOD(soiltypes, hlr, alpha, ks, thetar, thetas, n, knit, toptnit, beltanit, e2, e3, fs, fwp, Swp,
+            vzmod = VZMOD(soiltype, hlr, alpha, ks, thetar, thetas, n, knit, toptnit, beltanit, e2, e3, fs, fwp, Swp,
                           Sl, Sh, kdnt, toptdnt, beltadnt, e1, Sdnt, kd, rho, Temp, Tran, NH4, NO3, DTW, dist,
                           multi_sources, output_folder, hetero_Ks_thetas, calc_DTW, multi_soil_type,
-                          septic_tank, hydraulic_conductivity, soil_porosity, DEM, smoothed_DEM, soil_type)
+                          septic_tank, hydraulic_conductivity, soil_porosity, DEM, smoothed_DEM, soiltypefile)
             vzmod.runVZMOD()
             current_time = time.strftime("%H:%M:%S", time.localtime())
             arcpy.AddMessage(f"{current_time} Load Estimation: FINISH")
