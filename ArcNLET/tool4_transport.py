@@ -11,6 +11,7 @@ import sys
 
 import arcpy
 import os
+import gc
 import math
 import time
 import numpy as np
@@ -286,6 +287,7 @@ class Transport:
                 for row in nh4segments:
                     cursor.insertRow(row)
 
+        self.clear_memory()
         return
 
     def calculate_single_plume(self, pathid, mean_poro, mean_velo, max_dist):
@@ -1075,6 +1077,22 @@ class Transport:
         array[array < self.threshold] = np.nan
         array[array > max_value] = max_value
         return array
+
+    def clear_memory(self):
+        if arcpy.Exists(r'memory\water_bodies'):
+            arcpy.management.Delete(r'memory\water_bodies')
+        if arcpy.Exists(r'memory\plume_raster'):
+            arcpy.management.Delete(r'memory\plume_raster')
+        if arcpy.Exists(r'memory\Resample'):
+            arcpy.management.Delete(r'memory\Resample')
+        if arcpy.Exists(r'memory\polyline'):
+            arcpy.management.Delete(r'memory\polyline')
+        if arcpy.Exists(r'memory\polygon'):
+            arcpy.management.Delete(r'memory\polygon')
+        if arcpy.Exists(r'memory\Erase_polygon'):
+            arcpy.management.Delete(r'memory\Erase_polygon')
+        if arcpy.Exists(r'memory\Intersect'):
+            arcpy.management.Delete(r'memory\Intersect')
 
     @staticmethod
     def is_file_path(input_string):
