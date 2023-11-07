@@ -1,5 +1,5 @@
 """
-Python code that implements implements an ArcGIS Tool,
+Python code that implements an ArcGIS Tool,
 to be included in an ArcGIS Python Toolbox.
 
 @author: Wei Mao <wm23a@fsu.edu>
@@ -19,14 +19,14 @@ class InterfaceTransport(object):
 
     def __init__(self) -> None:
         """Define the tool. """
-        self.label = "4 Transport"
+        self.label = "4-Transport"
         self.description = """Transport module."""
         self.category = "ArcNLET"
 
     def getParameterInfo(self) -> list:
         """Define parameter definitions.
         """
-        param0 = arcpy.Parameter(name="whether NH4",
+        param0 = arcpy.Parameter(name="Consideration of NH\u2084",
                                  displayName="Consideration of NH\u2084",
                                  datatype="GPBoolean",
                                  parameterType="Required",  # Required|Optional|Derived
@@ -41,28 +41,28 @@ class InterfaceTransport(object):
                                   direction="Input")
         infile0.filter.list = ["Point"]
 
-        infile1 = arcpy.Parameter(name="Waterbodies",
+        infile1 = arcpy.Parameter(name="Water bodies",
                                   displayName="Input Water bodies (polygon)",
                                   datatype="GPFeatureLayer",
                                   parameterType="Required",
                                   direction="Input")
         infile1.filter.list = ["Polygon"]
 
-        infile2 = arcpy.Parameter(name="Particle path",
+        infile2 = arcpy.Parameter(name="Particle paths",
                                   displayName="Input Particle Paths (polyline)",
                                   datatype="GPFeatureLayer",
                                   parameterType="Required",
                                   direction="Input")
         infile2.filter.list = ["Polyline"]
 
-        outfile0 = arcpy.Parameter(name="Plumes_NO3",
+        outfile0 = arcpy.Parameter(name="Output Plumes of NO\u2083",
                                    displayName="Output Plumes of NO\u2083 (raster)",
                                    datatype=["GPRasterLayer"],
                                    parameterType="Required",  # Required|Optional|Derived
                                    direction="Output",  # Input|Output
                                    )
 
-        outfile1 = arcpy.Parameter(name="Plumes_NH4",
+        outfile1 = arcpy.Parameter(name="Output Plumes of NH\u2084",
                                    displayName="Output Plumes of NH\u2084 (raster)",
                                    datatype=["GPRasterLayer"],
                                    parameterType="Optional",  # Required|Optional|Derived
@@ -70,7 +70,7 @@ class InterfaceTransport(object):
                                    )
         outfile1.parameterDependencies = [param0.name]
 
-        outfile2 = arcpy.Parameter(name="Plumes_info_NO3",
+        outfile2 = arcpy.Parameter(name="Output Plumes info of NO\u2083",
                                    displayName="Output Plumes info of NO\u2083 (point)",
                                    datatype=["GPFeatureLayer"],
                                    parameterType="Optional",  # Required|Optional|Derived
@@ -78,7 +78,7 @@ class InterfaceTransport(object):
                                    )
         outfile2.enabled = False
 
-        outfile3 = arcpy.Parameter(name="Plumes_info_NH4",
+        outfile3 = arcpy.Parameter(name="Output Plumes info of NH\u2084",
                                    displayName="Output Plumes info of NH\u2084 (point)",
                                    datatype=["GPFeatureLayer"],
                                    parameterType="Optional",  # Required|Optional|Derived
@@ -87,7 +87,7 @@ class InterfaceTransport(object):
         outfile3.enabled = False
         outfile3.parameterDependencies = [param0.name]
 
-        option0 = arcpy.Parameter(name="Solution_type",
+        option0 = arcpy.Parameter(name="Solution type",
                                   displayName="Solution type",
                                   datatype="String",
                                   parameterType="Required",  # Required|Optional|Derived
@@ -99,7 +99,7 @@ class InterfaceTransport(object):
         option0.filter.list = choices
         option0.value = choices[1]
 
-        option1 = arcpy.Parameter(name="Plume_point",
+        option1 = arcpy.Parameter(name="Plume warping control point spacing",
                                   displayName="Plume warping control point spacing [Cells]",
                                   datatype="Long",
                                   parameterType="Required",  # Required|Optional|Derived
@@ -108,7 +108,7 @@ class InterfaceTransport(object):
                                   )
         option1.value = 48
 
-        option2 = arcpy.Parameter(name="Plume_method",
+        option2 = arcpy.Parameter(name="Plume warping method",
                                   displayName="Plume warping method",
                                   datatype="String",
                                   parameterType="Required",  # Required|Optional|Derived
@@ -120,7 +120,7 @@ class InterfaceTransport(object):
         option2.filter.list = choices
         option2.value = choices[2]
 
-        option3 = arcpy.Parameter(name="threshold",
+        option3 = arcpy.Parameter(name="Threshold Concentration",
                                   displayName="Threshold Concentration [M/L\u00B3]",
                                   datatype="Double",
                                   parameterType="Required",  # Required|Optional|Derived
@@ -129,8 +129,8 @@ class InterfaceTransport(object):
                                   )
         option3.value = 0.000001
 
-        option4 = arcpy.Parameter(name="postprocessing",
-                                  displayName="Post processing",
+        option4 = arcpy.Parameter(name="Postprocessing",
+                                  displayName="Postprocessing",
                                   datatype="String",
                                   parameterType="Required",  # Required|Optional|Derived
                                   direction="Input",  # Input|Output
@@ -141,7 +141,7 @@ class InterfaceTransport(object):
         option4.filter.list = choices
         option4.value = choices[1]
 
-        option5 = arcpy.Parameter(name="Demenico",
+        option5 = arcpy.Parameter(name="Demenico Bdy.",
                                   displayName="Domenico Bdy.",
                                   datatype="String",
                                   parameterType="Required",  # Required|Optional|Derived
@@ -153,7 +153,7 @@ class InterfaceTransport(object):
         option5.filter.list = choices
         option5.value = choices[0]
 
-        param1 = arcpy.Parameter(name="Mass_input",
+        param1 = arcpy.Parameter(name="Mass input",
                                  displayName="Mass input [M/T]",
                                  datatype="Double",
                                  parameterType="Required",  # Required|Optional|Derived
@@ -162,7 +162,7 @@ class InterfaceTransport(object):
                                  )
         param1.value = 20000
 
-        param2 = arcpy.Parameter(name="Y",
+        param2 = arcpy.Parameter(name="Source Dimension Y",
                                  displayName="Source Dimension Y [L]",
                                  datatype="Double",
                                  parameterType="Required",  # Required|Optional|Derived
@@ -171,7 +171,7 @@ class InterfaceTransport(object):
                                  )
         param2.value = 6
 
-        param3 = arcpy.Parameter(name="Z",
+        param3 = arcpy.Parameter(name="Source Dimension Z",
                                  displayName="Source Dimension Z [L]",
                                  datatype="Double",
                                  parameterType="Optional",  # Required|Optional|Derived
@@ -181,7 +181,7 @@ class InterfaceTransport(object):
         param3.enabled = False
         param3.value = 1.5
 
-        param4 = arcpy.Parameter(name="Use_maxZ",
+        param4 = arcpy.Parameter(name="Maximum Z",
                                   displayName="Maximum Z [L]",
                                   datatype="GPBoolean",
                                   parameterType="Required",  # Required|Optional|Derived
@@ -199,7 +199,7 @@ class InterfaceTransport(object):
                                  )
         param5.value = 3.0
 
-        param6 = arcpy.Parameter(name="Plumecellsize",
+        param6 = arcpy.Parameter(name="Plume cell size",
                                  displayName="Plume cell size [L]",
                                  datatype="Double",
                                  parameterType="Required",  # Required|Optional|Derived
@@ -208,7 +208,7 @@ class InterfaceTransport(object):
                                  )
         param6.value = 0.4
 
-        no3param0 = arcpy.Parameter(name="NO3Co",
+        no3param0 = arcpy.Parameter(name="NO\u2083 Concentration",
                                     displayName="NO\u2083 Concentration [M/L\u00B3]",
                                     datatype="Double",
                                     parameterType="Required",  # Required|Optional|Derived
@@ -217,7 +217,7 @@ class InterfaceTransport(object):
                                     )
         no3param0.value = 40
 
-        no3param1 = arcpy.Parameter(name="no3DispersivitiesaL",
+        no3param1 = arcpy.Parameter(name="NO\u2083 Dispersivity \u03B1L",
                                     displayName="NO\u2083 Dispersivity \u03B1L [L]",
                                     datatype="Double",
                                     parameterType="Required",  # Required|Optional|Derived
@@ -226,7 +226,7 @@ class InterfaceTransport(object):
                                     )
         no3param1.value = 2.113
 
-        no3param2 = arcpy.Parameter(name="no3DispersivitiesaTH",
+        no3param2 = arcpy.Parameter(name="NO\u2083 Dispersivity \u03B1TH",
                                     displayName="NO\u2083 Dispersivity \u03B1TH [L]",
                                     datatype="Double",
                                     parameterType="Required",  # Required|Optional|Derived
@@ -235,7 +235,7 @@ class InterfaceTransport(object):
                                     )
         no3param2.value = 0.234
 
-        no3param3 = arcpy.Parameter(name="DenitriDecay",
+        no3param3 = arcpy.Parameter(name="Denitrification Decay Rate",
                                     displayName="Denitrification Decay Rate [1/T]",
                                     datatype="Double",
                                     parameterType="Required",  # Required|Optional|Derived
@@ -244,7 +244,7 @@ class InterfaceTransport(object):
                                     )
         no3param3.value = 0.008
 
-        no3param4 = arcpy.Parameter(name="VolConverFactor",
+        no3param4 = arcpy.Parameter(name="Volume Conversion Factor",
                                     displayName="Volume Conversion Factor",
                                     datatype="Double",
                                     parameterType="Required",  # Required|Optional|Derived
@@ -253,7 +253,7 @@ class InterfaceTransport(object):
                                     )
         no3param4.value = 1000
 
-        nh4param0 = arcpy.Parameter(name="NH4Co",
+        nh4param0 = arcpy.Parameter(name="NH\u2084 Concentration",
                                     displayName="NH\u2084 Concentration [M/L\u00B3]",
                                     datatype="Double",
                                     parameterType="Optional",  # Required|Optional|Derived
@@ -262,7 +262,7 @@ class InterfaceTransport(object):
                                     )
         nh4param0.value = 10
 
-        nh4param1 = arcpy.Parameter(name="nh4DispersivitiesaL",
+        nh4param1 = arcpy.Parameter(name="NH\u2084 Dispersivity \u03B1L",
                                     displayName="NH\u2084 Dispersivity \u03B1L [L]",
                                     datatype="Double",
                                     parameterType="Optional",  # Required|Optional|Derived
@@ -271,7 +271,7 @@ class InterfaceTransport(object):
                                     )
         nh4param1.value = 2.113
 
-        nh4param2 = arcpy.Parameter(name="nh4DispersivitiesaTH",
+        nh4param2 = arcpy.Parameter(name="NH\u2084 Dispersivity \u03B1TH",
                                     displayName="NH\u2084 Dispersivity \u03B1TH [L]",
                                     datatype="Double",
                                     parameterType="Optional",  # Required|Optional|Derived
@@ -280,7 +280,7 @@ class InterfaceTransport(object):
                                     )
         nh4param2.value = 0.234
 
-        nh4param3 = arcpy.Parameter(name="NitriDecay",
+        nh4param3 = arcpy.Parameter(name="Nitrification Decay Rate",
                                     displayName="Nitrification Decay Rate [1/T]",
                                     datatype="Double",
                                     parameterType="Optional",  # Required|Optional|Derived
@@ -289,7 +289,7 @@ class InterfaceTransport(object):
                                     )
         nh4param3.value = 0.0001
 
-        nh4param4 = arcpy.Parameter(name="BulDens",
+        nh4param4 = arcpy.Parameter(name="Bulk Density",
                                     displayName="Bulk Density [M/L\u00B3]",
                                     datatype="Double",
                                     parameterType="Optional",  # Required|Optional|Derived
@@ -298,7 +298,7 @@ class InterfaceTransport(object):
                                     )
         nh4param4.value = 1.42
 
-        nh4param5 = arcpy.Parameter(name="Adsorption",
+        nh4param5 = arcpy.Parameter(name="Adsorption coefficient",
                                     displayName="Adsorption coefficient [L\u00B3/M]",
                                     datatype="Double",
                                     parameterType="Optional",  # Required|Optional|Derived
@@ -540,6 +540,7 @@ class InterfaceTransport(object):
                            param1, param2, param3, param4, param5, param6,
                            no3param0, no3param1, no3param2, no3param3, no3param4,
                            nh4param0, nh4param1, nh4param2, nh4param3, nh4param4, nh4param5)
+
             TP.calculate_plumes()
             current_time = time.strftime("%H:%M:%S", time.localtime())
             arcpy.AddMessage(f"{current_time} Transport: FINISH")

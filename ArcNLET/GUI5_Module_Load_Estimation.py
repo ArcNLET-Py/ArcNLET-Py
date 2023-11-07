@@ -1,5 +1,5 @@
 """
-Python code that implements implements an ArcGIS Tool,
+Python code that implements an ArcGIS Tool,
 to be included in an ArcGIS Python Toolbox.
 
 @author: Wei Mao <wm23a@fsu.edu>
@@ -20,14 +20,14 @@ class InterfaceLoadEstimation(object):
 
     def __init__(self) -> None:
         """Define the tool. """
-        self.label = "5 Load Estimation"
+        self.label = "5-Load Estimation"
         self.description = """Load Estimation."""
         self.category = "ArcNLET"
 
     def getParameterInfo(self) -> list:
         """Define parameter definitions.
         """
-        param0 = arcpy.Parameter(name="whether NH4",
+        param0 = arcpy.Parameter(name="Consideration of NH\u2084",
                                  displayName="Consideration of NH\u2084",
                                  datatype="GPBoolean",
                                  parameterType="Required",  # Required|Optional|Derived
@@ -35,7 +35,7 @@ class InterfaceLoadEstimation(object):
                                  )
         param0.value = 0
 
-        param1 = arcpy.Parameter(name="RiskFactor",
+        param1 = arcpy.Parameter(name="Risk Factor",
                                  displayName="Risk Factor",
                                  datatype="GPDouble",
                                  parameterType="Required",  # Required|Optional|Derived
@@ -43,14 +43,14 @@ class InterfaceLoadEstimation(object):
                                  )
         param1.value = 1.0
 
-        infile1 = arcpy.Parameter(name="PlumesNO3",
+        infile1 = arcpy.Parameter(name="Input Plumes NO\u2083 info",
                                   displayName="Input Plumes NO\u2083 info (Point)",
                                   datatype="GPFeatureLayer",
                                   parameterType="Required",
                                   direction="Input")
         infile1.filter.list = ["Point"]
 
-        infile2 = arcpy.Parameter(name="PlumesNH4",
+        infile2 = arcpy.Parameter(name="Input Plumes NH\u2084 info",
                                   displayName="Input Plumes NH\u2084 info (Point)",
                                   datatype="GPFeatureLayer",
                                   parameterType="Required",
@@ -58,13 +58,13 @@ class InterfaceLoadEstimation(object):
         infile2.filter.list = ["Point"]
         infile2.parameterDependencies = [param0.name]
 
-        outfile1 = arcpy.Parameter(name="outputNO3",
+        outfile1 = arcpy.Parameter(name="Output Results for NO\u2083",
                                    displayName="Output Results for NO\u2083",
                                    datatype="DEFile",
                                    parameterType="required",
                                    direction="Output")
 
-        outfile2 = arcpy.Parameter(name="outputNH4",
+        outfile2 = arcpy.Parameter(name="Output Results for NH\u2084",
                                    displayName="Output Results for NH\u2084",
                                    datatype="DEFile",
                                    parameterType="Optional",

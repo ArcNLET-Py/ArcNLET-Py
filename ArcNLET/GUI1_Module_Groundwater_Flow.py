@@ -1,9 +1,6 @@
 """
-Python code that implements an ArcGIS Tool to be included in an ArcGIS Python Toolbox.
-
-This is the interface file between the ArcGIS Pro and the computational code.
-
-https://pro.arcgis.com/en/pro-app/latest/arcpy/geoprocessing_and_python/defining-a-tool-in-a-python-toolbox.htm
+Python code that implements an ArcGIS Tool,
+to be included in an ArcGIS Python Toolbox.
 
 @author: Wei Mao <wm23a@fsu.edu>
 """
@@ -25,7 +22,7 @@ class InterfaceGroundwaterFlow(object):
     def __init__(self) -> None:
         """Define the tool.
         """
-        self.label = "1 Groundwater Flow"
+        self.label = "1-Groundwater Flow"
         self.description = """Groundwater flow module."""
         self.category = "ArcNLET"
 
@@ -34,12 +31,12 @@ class InterfaceGroundwaterFlow(object):
         """
 
         infile0 = arcpy.Parameter(name="DEM",
-                                  displayName="Input DEM surface elevation map [L] (raster)",  # shown in Geoprocessing pane
+                                  displayName="Input DEM [L] (raster)",  # shown in Geoprocessing pane
                                   datatype=["GPRasterLayer"],  # data type
                                   parameterType="Required",  # Required|Optional|Derived
                                   direction="Input")  # Input|Output
 
-        infile1 = arcpy.Parameter(name="Waterbodies",
+        infile1 = arcpy.Parameter(name="Water bodies",
                                   displayName="Input Water bodies (polygon)",
                                   datatype="GPFeatureLayer",
                                   parameterType="Required",
@@ -116,7 +113,7 @@ class InterfaceGroundwaterFlow(object):
                                  )
         param5.value = 1
 
-        outfile0 = arcpy.Parameter(name="Velocity",
+        outfile0 = arcpy.Parameter(name="Velocity Magnitude",
                                    displayName="Output Velocity Magnitude [L/T]",
                                    datatype=["GPRasterLayer"],
                                    parameterType="Required",  # Required|Optional|Derived
@@ -130,7 +127,7 @@ class InterfaceGroundwaterFlow(object):
                                    direction="Output",  # Input|Output
                                    )
 
-        outfile2 = arcpy.Parameter(name="Gradient",
+        outfile2 = arcpy.Parameter(name="Hydraulic Gradient",
                                    displayName="(Optional) Output Hydraulic Gradient",
                                    datatype=["GPRasterLayer"],
                                    parameterType="Optional",  # Required|Optional|Derived
@@ -218,7 +215,7 @@ class InterfaceGroundwaterFlow(object):
             parameters[4].setWarningMessage("The Smoothing Factor may be too large.")
         if parameters[5].value is not None and parameters[5].value < 0:
             parameters[5].setErrorMessage("The Smoothing Cell must be greater than 0.")
-        if parameters[5].value is not None and parameters[5].value % 2 == 0:
+        if parameters[5].value is not None and parameters[5].value >= 0 and parameters[5].value % 2 == 0:
             parameters[5].setWarningMessage("The Smoothing Cell is recommended to be an odd number.")
         if parameters[9].value is not None and parameters[9].value < 0:
             parameters[9].setErrorMessage("The Z-Factor must be greater than 0.")

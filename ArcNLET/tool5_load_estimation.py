@@ -93,8 +93,7 @@ class LoadEstimation:
 # ======================================================================
 # Main program for debugging
 if __name__ == '__main__':
-    # arcpy.env.workspace = ".\\test_pro"
-    arcpy.env.workspace = "C:\\Users\\Wei\\Downloads\\llake\\lakeshore_example\\lakeshore_example"
+    arcpy.env.workspace = ".\\test_pro"
 
     whether_nh4 = False
     risk_factor = 1

@@ -21,7 +21,7 @@ class InterfaceParticleTracking(object):
 
     def __init__(self) -> None:
         """Define the tool. """
-        self.label = "2 Particle Tracking"
+        self.label = "2-Particle Tracking"
         self.description = """Particle Tracking module."""
         self.category = "ArcNLET"
 
@@ -36,14 +36,14 @@ class InterfaceParticleTracking(object):
                                   direction="Input")
         infile0.filter.list = ["Point"]
 
-        infile1 = arcpy.Parameter(name="Waterbodies",
+        infile1 = arcpy.Parameter(name="Water bodies",
                                   displayName="Input Water bodies (polygon)",
                                   datatype="GPFeatureLayer",
                                   parameterType="Required",
                                   direction="Input")
         infile1.filter.list = ["Polygon"]
 
-        infile2 = arcpy.Parameter(name="Velocity",
+        infile2 = arcpy.Parameter(name="Velocity Magnitude",
                                   displayName="Input Velocity Magnitude [L/T] (raster)",
                                   datatype=["GPRasterLayer"],
                                   parameterType="Required",  # Required|Optional|Derived
@@ -64,7 +64,7 @@ class InterfaceParticleTracking(object):
                                   direction="Input",  # Input|Output
                                   )
 
-        option = arcpy.Parameter(name="ClippingOption",
+        option = arcpy.Parameter(name="Precise truncation",
                                  displayName="Precise truncation",
                                  datatype="GPBoolean",
                                  parameterType="Required",  # Required|Optional|Derived
@@ -73,7 +73,7 @@ class InterfaceParticleTracking(object):
                                  )
         option.value = False
 
-        param0 = arcpy.Parameter(name="WBRasterRes",
+        param0 = arcpy.Parameter(name="WB Raster Resolution",
                                  displayName="WB Raster Resolution [L]",
                                  datatype="GPLong",
                                  parameterType="Required",  # Required|Optional|Derived
@@ -83,7 +83,7 @@ class InterfaceParticleTracking(object):
         param0.value = 10
         param0.parameterDependencies = [infile3.name]
 
-        param1 = arcpy.Parameter(name="Stepsize",
+        param1 = arcpy.Parameter(name="Step Size",
                                  displayName="Step Size [L]",
                                  datatype="GPLong",
                                  parameterType="Required",  # Required|Optional|Derived
@@ -93,7 +93,7 @@ class InterfaceParticleTracking(object):
         param1.value = 10
         param1.parameterDependencies = [param0.name]
 
-        param2 = arcpy.Parameter(name="Maxsteps",
+        param2 = arcpy.Parameter(name="Max Steps",
                                  displayName="Max Steps",
                                  datatype="GPLong",
                                  parameterType="Required",  # Required|Optional|Derived
@@ -102,7 +102,7 @@ class InterfaceParticleTracking(object):
                                  )
         param2.value = 1000
 
-        outfile = arcpy.Parameter(name="Particlepath",
+        outfile = arcpy.Parameter(name="Particle Paths",
                                   displayName="Output Particle Paths (Polyline)",
                                   datatype=["GPFeatureLayer"],
                                   parameterType="Required",  # Required|Optional|Derived

@@ -1,7 +1,7 @@
 """
 This script contains the VZMOD module of ArcNLET model in the ArcGIS Python Toolbox.
 
-For detailed algorithms, please see https://atmos.eoas.fsu.edu/~mye/ArcNLET/Techican_manual.pdf
+For detailed algorithms, please see https://atmos.eoas.fsu.edu/~mye/VZMOD/user_manual.pdf
 
 @author: Wei Mao <wm23@@fsu.edu>
 """
@@ -72,7 +72,7 @@ adsorption_default = {"clay":            [1.46, 1.50],
 class VZMOD:
     def __init__(self, soiltypes, hlr, alpha, ks, thetar, thetas, n, knit, toptnit, beltanit, e2, e3, fs, fwp, Swp,
                  Sl, Sh, kdnt, toptdnt, beltadnt, e1, Sdnt, kd, rho, Temp, Tran, NH4, NO3, DTW, dist,
-                 multi_sources, output_folder, hetero_ks_theta=0, calc_DTW=0, multi_soil_type=0,
+                 options, output_folder, hetero_ks_theta=0, calc_DTW=0, multi_soil_type=0,
                  septic_tank=None, hydraulic_conductivity=None, soil_porosity=None, DEM=None,
                  smoothed_DEM=None, soil_type=None):
         """Initialize the load estimation module.
@@ -111,7 +111,7 @@ class VZMOD:
         self.DTW = DTW
         self.dist = dist
 
-        self.multi_sources = multi_sources
+        self.multi_ostds = options
         self.hetero_ks_theta = hetero_ks_theta
         self.calc_DTW = calc_DTW
         self.multi_soil_type = multi_soil_type
@@ -139,7 +139,7 @@ class VZMOD:
         os.chdir(self.output_folder)
         file = open("results.txt", "w")
         file.write('Depth    CNH4       CNO3     Theta   fsw_nit    fsw_dnt'+'\n')
-        if self.multi_sources:
+        if self.multi_ostds:
             DTW_hete, hydr_hete, poro_hete, soil_hete = self.arcgis_map(self.septic_tank, self.hydraulic_conductivity,
                                                                         self.soil_porosity, self.dist, self.DEM,
                                                                         self.smoothed_DEM, self.soil_type)
@@ -527,10 +527,9 @@ def tridiagonal_matrix(a, b, c, f, n=Nlayer + 1):
 # ======================================================================
 # Main program for debugging
 if __name__ == '__main__':
-    # arcpy.env.workspace = ".\\test_pro"
-    arcpy.env.workspace = "C:\\Users\\Wei\\OneDrive - Florida State University\\Work\\01-ArcNLET\\03-Turkey Creek Sub Basin\\VZMOD\\Regional Inputs"
+    arcpy.env.workspace = ".\\test_pro"
 
-    multi_sources = True
+    options = True
     hetero_Ks_thetas = True
     calc_DTW = True
     multi_soil_type = True
@@ -582,7 +581,7 @@ if __name__ == '__main__':
 
     vzmod = VZMOD(soiltype, hlr, alpha, ks, thetar, thetas, n, knit, toptnit, beltanit, e2, e3, fs, fwp, Swp,
                   Sl, Sh, kdnt, toptdnt, beltadnt, e1, Sdnt, kd, rho, Temp, Tran, NH4, NO3, DTW, dist,
-                  multi_sources, output_folder, hetero_Ks_thetas, calc_DTW, multi_soil_type,
+                  options, output_folder, hetero_Ks_thetas, calc_DTW, multi_soil_type,
                   septic_tank, hydraulic_conductivity, soil_porosity, DEM, smoothed_DEM, soiltypefile)
     vzmod.runVZMOD()
 

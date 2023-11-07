@@ -260,28 +260,31 @@ class DarcyFlow:
 # ======================================================================
 # Main program for debugging
 if __name__ == '__main__':
-    arcpy.env.workspace = ".\\test_pro"
-    dem = os.path.join(arcpy.env.workspace, "Demodem.tif")
-    wb = os.path.join(arcpy.env.workspace, "waterbodies")
-    ks = os.path.join(arcpy.env.workspace, "hydr_cond.img")
-    poro = os.path.join(arcpy.env.workspace, "porosity.img")
+    for i in range(30):
+        arcpy.env.workspace = ".\\test_pro"
+        dem = os.path.join(arcpy.env.workspace, "lakeshore")
+        wb = os.path.join(arcpy.env.workspace, "waterbodies")
+        ks = os.path.join(arcpy.env.workspace, "hydr_cond.img")
+        poro = os.path.join(arcpy.env.workspace, "porosity.img")
 
-    smthf1 = 1
-    smthc = 7
-    fsink = 0
-    merge = 0
-    smthf2 = [0]
-    zfact = 1
+        smthf1 = 50
+        smthc = 7
+        fsink = 0
+        merge = 0
+        smthf2 = [0]
+        zfact = 1
 
-    vel = os.path.join(arcpy.env.workspace, "demovel")
-    veld = os.path.join(arcpy.env.workspace, "demoveld")
-    grad = os.path.join(arcpy.env.workspace, "demograd")
-    smthd = os.path.join(arcpy.env.workspace, "demosmthd")
+        vel = os.path.join(arcpy.env.workspace, "demovel"+str(i))
+        veld = os.path.join(arcpy.env.workspace, "demoveld"+str(i))
+        grad = os.path.join(arcpy.env.workspace, "demograd"+str(i))
+        smthd = os.path.join(arcpy.env.workspace, "demosmthd"+str(i))
+        start_time = time.time()
 
-    arcpy.AddMessage("starting geoprocessing")
-    GF = DarcyFlow(dem, wb, ks, poro,
-                   smthf1, smthc, fsink, merge, smthf2, zfact,
-                   vel, veld, grad, smthd)
-    GF.calculateDarcyFlow()
-
-    print("Tests successful!")
+        arcpy.AddMessage("starting geoprocessing")
+        GF = DarcyFlow(dem, wb, ks, poro,
+                       smthf1, smthc, fsink, merge, smthf2, zfact,
+                       vel, veld, grad, smthd)
+        GF.calculateDarcyFlow()
+        end_time = time.time()
+        print("{} times, Time elapsed: {} seconds".format(i, end_time - start_time))
+        print("Tests successful!")

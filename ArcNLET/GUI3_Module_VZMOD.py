@@ -1,5 +1,5 @@
 """
-Python code that implements implements an ArcGIS Tool,
+Python code that implements an ArcGIS Tool,
 to be included in an ArcGIS Python Toolbox.
 
 @author: Wei Mao <wm23a@fsu.edu>
@@ -72,7 +72,7 @@ class InterfaceVZMOD(object):
 
     def __init__(self) -> None:
         """Define the tool. """
-        self.label = "3 VZMOD (Optional)"
+        self.label = "3-VZMOD (Optional)"
         self.description = """VZMOD (Optional)."""
         self.category = "ArcNLET"
 
@@ -90,8 +90,8 @@ class InterfaceVZMOD(object):
         Option.filter.list = choices
         Option.value = "Clay"
 
-        hydroparam0 = arcpy.Parameter(name="HLR",
-                                      displayName="Hydraulic Loading Rate",
+        hydroparam0 = arcpy.Parameter(name="Hydraulic Loading Rate",
+                                      displayName="Hydraulic Loading Rate (cm/d)",
                                       datatype="GPDouble",
                                       parameterType="Required",  # Required|Optional|Derived
                                       direction="Input",  # Input|Output
@@ -100,8 +100,8 @@ class InterfaceVZMOD(object):
         hydroparam0.parameterDependencies = [Option.value]
         hydroparam0.value = hydraulic_default[Option.value][0]
 
-        hydroparam1 = arcpy.Parameter(name="alpha",
-                                      displayName="\u0251",
+        hydroparam1 = arcpy.Parameter(name="\u0251",
+                                      displayName="\u0251 (-)",
                                       datatype="GPDouble",
                                       parameterType="Required",  # Required|Optional|Derived
                                       direction="Input",  # Input|Output
@@ -111,7 +111,7 @@ class InterfaceVZMOD(object):
         hydroparam1.value = hydraulic_default[Option.value][1]
 
         hydroparam2 = arcpy.Parameter(name="Ks",
-                                      displayName="Ks",
+                                      displayName="Ks (cm/d)",
                                       datatype="GPDouble",
                                       parameterType="Required",  # Required|Optional|Derived
                                       direction="Input",  # Input|Output
@@ -120,8 +120,8 @@ class InterfaceVZMOD(object):
         hydroparam2.parameterDependencies = [Option.value]
         hydroparam2.value = hydraulic_default[Option.value][2]
 
-        hydroparam3 = arcpy.Parameter(name="thetar",
-                                      displayName="\u03B8r",
+        hydroparam3 = arcpy.Parameter(name="\u03B8r",
+                                      displayName="\u03B8r (-)",
                                       datatype="GPDouble",
                                       parameterType="Required",  # Required|Optional|Derived
                                       direction="Input",  # Input|Output
@@ -129,8 +129,8 @@ class InterfaceVZMOD(object):
                                       )
         hydroparam3.value = 0.098
 
-        hydroparam4 = arcpy.Parameter(name="thetas",
-                                      displayName="\u03B8s",
+        hydroparam4 = arcpy.Parameter(name="\u03B8s",
+                                      displayName="\u03B8s (-)",
                                       datatype="GPDouble",
                                       parameterType="Required",  # Required|Optional|Derived
                                       direction="Input",  # Input|Output
@@ -139,7 +139,7 @@ class InterfaceVZMOD(object):
         hydroparam4.value = 0.459
 
         hydroparam5 = arcpy.Parameter(name="n",
-                                      displayName="n",
+                                      displayName="n (-)",
                                       datatype="GPDouble",
                                       parameterType="Required",  # Required|Optional|Derived
                                       direction="Input",  # Input|Output
@@ -148,7 +148,7 @@ class InterfaceVZMOD(object):
         hydroparam5.value = 1.26
 
         nitriparam0 = arcpy.Parameter(name="Knit",
-                                      displayName="Knit",
+                                      displayName="Knit (1/d)",
                                       datatype="GPDouble",
                                       parameterType="Required",  # Required|Optional|Derived
                                       direction="Input",  # Input|Output
@@ -157,7 +157,7 @@ class InterfaceVZMOD(object):
         nitriparam0.value = 2.9
 
         nitriparam1 = arcpy.Parameter(name="Topt-nit",
-                                      displayName="Topt-nit",
+                                      displayName="Topt-nit (\u2103)",
                                       datatype="GPDouble",
                                       parameterType="Required",  # Required|Optional|Derived
                                       direction="Input",  # Input|Output
@@ -165,8 +165,8 @@ class InterfaceVZMOD(object):
                                       )
         nitriparam1.value = 25.0
 
-        nitriparam2 = arcpy.Parameter(name="beltanit",
-                                      displayName="\u03B2nit",
+        nitriparam2 = arcpy.Parameter(name="\u03B2nit",
+                                      displayName="\u03B2nit (-)",
                                       datatype="GPDouble",
                                       parameterType="Required",  # Required|Optional|Derived
                                       direction="Input",  # Input|Output
@@ -175,7 +175,7 @@ class InterfaceVZMOD(object):
         nitriparam2.value = 0.347
 
         nitriparam3 = arcpy.Parameter(name="e2",
-                                      displayName="e2",
+                                      displayName="e2 (-)",
                                       datatype="GPDouble",
                                       parameterType="Required",  # Required|Optional|Derived
                                       direction="Input",  # Input|Output
@@ -184,7 +184,7 @@ class InterfaceVZMOD(object):
         nitriparam3.value = 2.267
 
         nitriparam4 = arcpy.Parameter(name="e3",
-                                      displayName="e3",
+                                      displayName="e3 (-)",
                                       datatype="GPDouble",
                                       parameterType="Required",  # Required|Optional|Derived
                                       direction="Input",  # Input|Output
@@ -193,7 +193,7 @@ class InterfaceVZMOD(object):
         nitriparam4.value = 1.104
 
         nitriparam5 = arcpy.Parameter(name="fs",
-                                      displayName="fs",
+                                      displayName="fs (-)",
                                       datatype="GPDouble",
                                       parameterType="Required",  # Required|Optional|Derived
                                       direction="Input",  # Input|Output
@@ -202,7 +202,7 @@ class InterfaceVZMOD(object):
         nitriparam5.value = 0.0
 
         nitriparam6 = arcpy.Parameter(name="fwp",
-                                      displayName="fwp",
+                                      displayName="fwp (-)",
                                       datatype="GPDouble",
                                       parameterType="Required",  # Required|Optional|Derived
                                       direction="Input",  # Input|Output
@@ -211,7 +211,7 @@ class InterfaceVZMOD(object):
         nitriparam6.value = 0.0
 
         nitriparam7 = arcpy.Parameter(name="Swp",
-                                      displayName="Swp",
+                                      displayName="Swp (-)",
                                       datatype="GPDouble",
                                       parameterType="Required",  # Required|Optional|Derived
                                       direction="Input",  # Input|Output
@@ -220,7 +220,7 @@ class InterfaceVZMOD(object):
         nitriparam7.value = 0.154
 
         nitriparam8 = arcpy.Parameter(name="Sl",
-                                      displayName="Sl",
+                                      displayName="Sl (-)",
                                       datatype="GPDouble",
                                       parameterType="Required",  # Required|Optional|Derived
                                       direction="Input",  # Input|Output
@@ -229,7 +229,7 @@ class InterfaceVZMOD(object):
         nitriparam8.value = 0.665
 
         nitriparam9 = arcpy.Parameter(name="Sh",
-                                      displayName="Sh",
+                                      displayName="Sh (-)",
                                       datatype="GPDouble",
                                       parameterType="Required",  # Required|Optional|Derived
                                       direction="Input",  # Input|Output
@@ -238,7 +238,7 @@ class InterfaceVZMOD(object):
         nitriparam9.value = 0.809
 
         denitparam0 = arcpy.Parameter(name="Kdnt",
-                                      displayName="Kdnt",
+                                      displayName="Kdnt (1/d)",
                                       datatype="GPDouble",
                                       parameterType="Required",  # Required|Optional|Derived
                                       direction="Input",  # Input|Output
@@ -247,7 +247,7 @@ class InterfaceVZMOD(object):
         denitparam0.value = 0.025
 
         denitparam1 = arcpy.Parameter(name="Topt-dnt",
-                                      displayName="Topt-dnt",
+                                      displayName="Topt-dnt (/u2103)",
                                       datatype="GPDouble",
                                       parameterType="Required",  # Required|Optional|Derived
                                       direction="Input",  # Input|Output
@@ -255,8 +255,8 @@ class InterfaceVZMOD(object):
                                       )
         denitparam1.value = 26.0
 
-        denitparam2 = arcpy.Parameter(name="beltadnt",
-                                      displayName="\u03B2dnt",
+        denitparam2 = arcpy.Parameter(name="\u03B2dnt",
+                                      displayName="\u03B2dnt (-)",
                                       datatype="GPDouble",
                                       parameterType="Required",  # Required|Optional|Derived
                                       direction="Input",  # Input|Output
@@ -265,7 +265,7 @@ class InterfaceVZMOD(object):
         denitparam2.value = 0.347
 
         denitparam3 = arcpy.Parameter(name="e1",
-                                      displayName="e1",
+                                      displayName="e1 (-)",
                                       datatype="GPDouble",
                                       parameterType="Required",  # Required|Optional|Derived
                                       direction="Input",  # Input|Output
@@ -274,7 +274,7 @@ class InterfaceVZMOD(object):
         denitparam3.value = 3.774
 
         denitparam4 = arcpy.Parameter(name="Sdnt",
-                                      displayName="Sdnt",
+                                      displayName="Sdnt (-)",
                                       datatype="GPDouble",
                                       parameterType="Required",  # Required|Optional|Derived
                                       direction="Input",  # Input|Output
@@ -283,7 +283,7 @@ class InterfaceVZMOD(object):
         denitparam4.value = 0.0
 
         adsorparam0 = arcpy.Parameter(name="kd",
-                                      displayName="kd",
+                                      displayName="kd (cm\u00B3/g)",
                                       datatype="GPDouble",
                                       parameterType="Required",  # Required|Optional|Derived
                                       direction="Input",  # Input|Output
@@ -291,8 +291,8 @@ class InterfaceVZMOD(object):
                                       )
         adsorparam0.value = 1.46
 
-        adsorparam1 = arcpy.Parameter(name="rho",
-                                      displayName="\u03C1",
+        adsorparam1 = arcpy.Parameter(name="\u03C1",
+                                      displayName="\u03C1 (g/cm\u00B3)",
                                       datatype="GPDouble",
                                       parameterType="Required",  # Required|Optional|Derived
                                       direction="Input",  # Input|Output
@@ -300,8 +300,8 @@ class InterfaceVZMOD(object):
                                       )
         adsorparam1.value = 1.50
 
-        Tempparam0 = arcpy.Parameter(name="Temp",
-                                     displayName="Temperature param",
+        Tempparam0 = arcpy.Parameter(name="Temperature Parameter",
+                                     displayName="Temperature param (\u2103)",
                                      datatype="GPDouble",
                                      parameterType="Required",  # Required|Optional|Derived
                                      direction="Input",  # Input|Output
@@ -309,8 +309,8 @@ class InterfaceVZMOD(object):
                                      )
         Tempparam0.value = 25.5
 
-        Tempparam1 = arcpy.Parameter(name="Transport",
-                                     displayName="Transport param",
+        Tempparam1 = arcpy.Parameter(name="Transport Parameter",
+                                     displayName="Transport param (cm\u00B2/d)",
                                      datatype="GPDouble",
                                      parameterType="Required",  # Required|Optional|Derived
                                      direction="Input",  # Input|Output
@@ -318,23 +318,23 @@ class InterfaceVZMOD(object):
                                      )
         Tempparam1.value = 4.32
 
-        Initparam0 = arcpy.Parameter(name="NH4",
-                                     displayName="Concentration of NH\u2084",
+        Initparam0 = arcpy.Parameter(name="Concentration of NH\u2084",
+                                     displayName="Concentration of NH\u2084 (mg/L)",
                                      datatype="GPDouble",
                                      parameterType="Required",  # Required|Optional|Derived
                                      direction="Input"  # Input|Output
                                      )
         Initparam0.value = 60.0
 
-        Initparam1 = arcpy.Parameter(name="NO3",
-                                     displayName="Concentration of NO\u2083",
+        Initparam1 = arcpy.Parameter(name="Concentration of NO\u2083",
+                                     displayName="Concentration of NO\u2083 (mg/L)",
                                      datatype="GPDouble",
                                      parameterType="Required",  # Required|Optional|Derived
                                      direction="Input"  # Input|Output
                                      )
         Initparam1.value = 1.0
 
-        Initparam2 = arcpy.Parameter(name="DTW",
+        Initparam2 = arcpy.Parameter(name="Depth to Water Table",
                                      displayName="Depth to water table (cm)",
                                      datatype="GPDouble",
                                      parameterType="Optional",  # Required|Optional|Derived
@@ -343,7 +343,7 @@ class InterfaceVZMOD(object):
         Initparam2.value = 150
 
         Initparam3 = arcpy.Parameter(name="Distance",
-                                     displayName="Distance",
+                                     displayName="Distance (cm)",
                                      datatype="GPDouble",
                                      parameterType="Optional",  # Required|Optional|Derived
                                      direction="Input"  # Input|Output
@@ -358,22 +358,24 @@ class InterfaceVZMOD(object):
                                       direction="Input"  # Input|Output
                                       )
 
-        inputfile0 = arcpy.Parameter(name="Multiple sources",
-                                     displayName="Multiple sources",
-                                     datatype="GPBoolean",
+        inputfile0 = arcpy.Parameter(name="Single or multiple OSTDS",
+                                     displayName="Single or multiple OSTDS",
+                                     datatype="String",
                                      parameterType="Required",  # Required|Optional|Derived
                                      direction="Input"  # Input|Output
                                      )
-        inputfile0.value = 0
+        choices = ["Single OSTDS", "Multiple OSTDS"]
+        inputfile0.filter.list = choices
+        inputfile0.value = "Single OSTDS"
 
-        inputfile1 = arcpy.Parameter(name="Distributed Ks and thetas",
-                                     displayName="Distributed Ks and \u03B8s",
+        inputfile1 = arcpy.Parameter(name="Heterogeneous Ks and \u03B8s",
+                                     displayName="Heterogeneous Ks and \u03B8s",
                                      datatype="GPBoolean",
                                      parameterType="Optional",  # Required|Optional|Derived
                                      direction="Input"  # Input|Output
                                      )
         inputfile1.value = 0
-        inputfile1.parameterDependencies = [inputfile1.name]
+        inputfile1.parameterDependencies = [inputfile0.name]
 
         inputfile2 = arcpy.Parameter(name="Calculate depth to water table",
                                      displayName="Calculate depth to water table",
@@ -382,16 +384,16 @@ class InterfaceVZMOD(object):
                                      direction="Input"  # Input|Output
                                      )
         inputfile2.value = 0
-        inputfile2.parameterDependencies = [inputfile1.name]
+        inputfile2.parameterDependencies = [inputfile0.name]
 
-        inputfile3 = arcpy.Parameter(name="Multiple soil type",
-                                     displayName="Multiple soil type",
+        inputfile3 = arcpy.Parameter(name="Multiple soil types",
+                                     displayName="Multiple soil types",
                                      datatype="GPBoolean",
                                      parameterType="Optional",  # Required|Optional|Derived
                                      direction="Input"  # Input|Output
                                      )
         inputfile3.value = 0
-        inputfile2.parameterDependencies = [inputfile1.name]
+        inputfile3.parameterDependencies = [inputfile0.name]
 
         inputfile4 = arcpy.Parameter(name="Septic tank sources (point)",
                                      displayName="Septic tank sources (point)",
@@ -400,7 +402,7 @@ class InterfaceVZMOD(object):
                                      direction="Input"  # Input|Output
                                      )
         inputfile4.filter.list = ["Point"]
-        inputfile4.parameterDependencies = [inputfile1.name]
+        inputfile4.parameterDependencies = [inputfile0.name]
 
         inputfile5 = arcpy.Parameter(name="Hydraulic conductivity (raster)",
                                      displayName="Hydraulic conductivity (raster)",
@@ -430,8 +432,8 @@ class InterfaceVZMOD(object):
                                      direction="Input"  # Input|Output
                                      )
 
-        inputfile9 = arcpy.Parameter(name="Soil type (raster)",
-                                     displayName="Soil type (raster)",
+        inputfile9 = arcpy.Parameter(name="Soil types (raster)",
+                                     displayName="Soil types (raster)",
                                      datatype="GPRasterLayer",
                                      parameterType="Optional",  # Required|Optional|Derived
                                      direction="Input"  # Input|Output
@@ -512,7 +514,7 @@ class InterfaceVZMOD(object):
             parameters[33].value = None
 
         if parameters[0].altered:
-            if parameters[0].value:
+            if parameters[0].value == "Multiple OSTDS":
                 parameters[1].enabled = True
                 parameters[2].enabled = True
                 parameters[3].enabled = True
@@ -638,7 +640,10 @@ class InterfaceVZMOD(object):
         for param in parameters:
             self.describeParameter(messages, param)
 
-        multi_sources = parameters[0].value
+        if parameters[0].value == "Multiple OSTDS":
+            options = True
+        elif parameters[0].value == "Single OSTDS":
+            options = False
         hetero_Ks_thetas = parameters[1].value
         calc_DTW = parameters[2].value
         multi_soil_type = parameters[3].value
@@ -691,7 +696,7 @@ class InterfaceVZMOD(object):
         try:
             vzmod = VZMOD(soiltype, hlr, alpha, ks, thetar, thetas, n, knit, toptnit, beltanit, e2, e3, fs, fwp, Swp,
                           Sl, Sh, kdnt, toptdnt, beltadnt, e1, Sdnt, kd, rho, Temp, Tran, NH4, NO3, DTW, dist,
-                          multi_sources, output_folder, hetero_Ks_thetas, calc_DTW, multi_soil_type,
+                          options, output_folder, hetero_Ks_thetas, calc_DTW, multi_soil_type,
                           septic_tank, hydraulic_conductivity, soil_porosity, DEM, smoothed_DEM, soiltypefile)
             vzmod.runVZMOD()
             current_time = time.strftime("%H:%M:%S", time.localtime())
