@@ -3,7 +3,7 @@ This script contains the Particle Tracking module of ArcNLET model in the ArcGIS
 
 For detailed algorithms, please see https://atmos.eoas.fsu.edu/~mye/ArcNLET/Techican_manual.pdf
 
-@author: Wei Mao <wm23a@fsu.edu>
+@author: Wei Mao <wm23a@fsu.edu>, Mike
 """
 
 import arcpy
