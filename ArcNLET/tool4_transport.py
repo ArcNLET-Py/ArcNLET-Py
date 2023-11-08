@@ -3,7 +3,7 @@ This script contains the Transport module of ArcNLET model in the ArcGIS Python 
 
 For detailed algorithms, please see https://atmos.eoas.fsu.edu/~mye/ArcNLET/Techican_manual.pdf
 
-@author: Wei Mao <wm23a@fsu.edu>
+@author: Wei Mao <wm23a@fsu.edu>, Michael Core <mcore@fsu.edu>
 """
 
 import datetime
@@ -111,6 +111,32 @@ class Transport:
         self.knh4 = 0.0
         self.nh4_Z = 0.0
 
+    def batch_mosaic_rasters(self, rasters_to_mosaic, output_raster):
+        """
+        Mosaics a list of rasters into a single output raster.
+        """
+        if rasters_to_mosaic:
+            try:
+                # Get the number of bands from the first raster in the list
+                raster_info = arcpy.Describe(rasters_to_mosaic[0])
+                number_of_bands = raster_info.bandCount
+
+                arcpy.MosaicToNewRaster_management(
+                    input_rasters=rasters_to_mosaic,
+                    output_location=self.working_dir,
+                    raster_dataset_name_with_extension=output_raster,
+                    pixel_type='32_BIT_FLOAT',
+                    number_of_bands=number_of_bands,  # Set the number of bands to match the original rasters
+                    mosaic_method='SUM'
+                )
+                for raster in rasters_to_mosaic:
+                    arcpy.Delete_management(raster)  # Clean up individual plume rasters
+            except Exception as e:
+                arcpy.AddError("Failed to mosaic rasters: " + str(e))
+                sys.exit(-1)
+        else:
+            arcpy.AddWarning("No rasters to mosaic.")
+    
     def calculate_plumes(self):
         current_time = time.strftime("%H:%M:%S", time.localtime())
         arcpy.AddMessage("{}     Calculating plumes...".format(current_time))
@@ -125,6 +151,12 @@ class Transport:
         colname = ["Shape", "PathID", "SegID", "TotDist", "TotTime", "SegPrsity", "SegVel", "DirAngle", "WBId",
                    "PathWBId"]
         data = []
+
+        #adding no3 and nh4 rasters to mosaic list
+        no3_rasters_to_mosaic = []
+        if self.whether_nh4:
+            nh4_rasters_to_mosaic = []
+        
         with arcpy.da.SearchCursor(self.particle_path,
                                    ["SHAPE@", "PathID", "SegID", "TotDist", "TotTime", "SegPrsity", "SegVel",
                                     "DirAngle", "WBId", "PathWBId"]) as cursor:
@@ -150,7 +182,7 @@ class Transport:
                 arcpy.management.Delete(os.path.join(self.no3_dir, self.no3_output))
             arcpy.management.CreateRasterDataset(self.no3_dir, self.no3_output, self.plume_cell_size,
                                                  "32_BIT_FLOAT", self.crs, 1)
-
+            
             if self.whether_nh4:
                 if arcpy.Exists(os.path.join(self.nh4_dir, self.nh4_output)):
                     arcpy.management.Delete(os.path.join(self.nh4_dir, self.nh4_output))
@@ -200,6 +232,7 @@ class Transport:
             else:
                 warped_no3, target_body_pts = self.warp_arcgis(filtered_no3, pathid, xvalue, yvalue, seg)
             post_no3 = self.post_process_plume(warped_no3, pathid, seg, target_body_pts)
+            no3_rasters_to_mosaic.append(post_no3)  # Add the plume raster to the list
             try:
                 _, file_extension = os.path.splitext(self.no3_output)
                 wait_time = 0
@@ -211,7 +244,7 @@ class Transport:
                         if wait_time > 60:
                             arcpy.AddMessage("The output raster is used by other software, exit the program.")
                             sys.exit(0)
-                arcpy.Mosaic_management(post_no3, self.no3_output, "SUM")
+                
             except Exception as e:
                 arcpy.AddMessage("[Error]: Failed to mosaic plume {}: ".format(pathid) + str(e))
                 sys.exit(-1)
@@ -229,6 +262,7 @@ class Transport:
                 else:
                     warped_nh4, target_body_pts = self.warp_arcgis(filtered_nh4, pathid, xvalue, yvalue, seg)
                 post_nh4 = self.post_process_plume(warped_nh4, pathid, seg, target_body_pts)
+                nh4_rasters_to_mosaic.append(post_nh4)  # Add the plume raster to the list
                 try:
                     _, file_extension = os.path.splitext(self.nh4_output)
                     wait_time = 0
@@ -240,10 +274,15 @@ class Transport:
                             if wait_time > 60:
                                 arcpy.AddMessage("The output raster is used by other software, exit the program.")
                                 sys.exit(0)
-                    arcpy.Mosaic_management(post_nh4, self.nh4_output, "SUM")
+                    
                 except Exception as e:
                     arcpy.AddMessage("[Error]: Failed to mosaic plume {}: ".format(pathid) + str(e))
                     sys.exit(-1)
+
+        # After the loop, mosaic all the rasters in one batch operation
+        self.batch_mosaic_rasters(no3_rasters_to_mosaic, self.no3_output)
+        if self.whether_nh4:
+            self.batch_mosaic_rasters(nh4_rasters_to_mosaic, self.nh4_output)
 
         arcpy.management.Delete(post_no3)
         if self.whether_nh4:
