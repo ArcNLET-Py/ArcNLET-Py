@@ -3,7 +3,7 @@ This script contains the Groundwater Flow module of ArcNLET model in the ArcGIS 
 
 For detailed algorithms, please see https://atmos.eoas.fsu.edu/~mye/ArcNLET/Techican_manual.pdf
 
-@author: Wei Mao <wm23a@fsu.edu>, Michael Core <mcore@fsu.edu>
+@author: Wei Mao <wm23a@fsu.edu>
 """
 
 import os
@@ -14,7 +14,6 @@ import numpy as np
 
 __version__ = "V1.0.0"
 arcpy.env.parallelProcessingFactor = "100%"
-arcpy.env.overwriteOutput = True  # Allows data to be overwritten
 
 
 class DarcyFlow:
@@ -147,15 +146,20 @@ class DarcyFlow:
         current_time = time.strftime("%H:%M:%S", time.localtime())
         arcpy.AddMessage("{}         Calculating velocity magnitude finished".format(current_time))
 
-
         # save the output
+        if arcpy.Exists(os.path.join(self.veldir, self.velname)):
+            arcpy.Delete_management(os.path.join(self.veldir, self.velname))
         velocity.save(os.path.join(self.veldir, self.velname))
+        if arcpy.Exists(os.path.join(self.velddir, self.veldname)):
+            arcpy.Delete_management(os.path.join(self.velddir, self.veldname))
         flowdir_raster.save(os.path.join(self.velddir, self.veldname))
-
         if self.gradname is not None:
+            if arcpy.Exists(os.path.join(self.graddir, self.gradname)):
+                arcpy.Delete_management(os.path.join(self.graddir, self.gradname))
             gradient.save(os.path.join(self.graddir, self.gradname))
-
         if self.smthname is not None:
+            if arcpy.Exists(os.path.join(self.smthdir, self.smthname)):
+                arcpy.Delete_management(os.path.join(self.smthdir, self.smthname))
             smoothed_merge_dem.save(os.path.join(self.smthdir, self.smthname))
 
         return
@@ -163,38 +167,16 @@ class DarcyFlow:
     def smoothDEM(self, raster, factor, flag_fsink=False):
         """smooth the raster factor times"""
         neighborhood = arcpy.sa.NbrRectangle(self.smthc, self.smthc, "CELL")
-
-        arcpy.env.workspace = r"memory"  # Set the workspace to memory to speed up the process
-        smoothed_dem = raster
         for i in range(factor):
-            smoothed_dem_name = r"memory/smoothed_dem_{}".format(i)  # Give a unique name for each iteration
-            smoothed_dem_temp = arcpy.sa.FocalStatistics(smoothed_dem, neighborhood, "MEAN", "DATA")
-            
-            # Save the smoothed raster and verify it exists
-            smoothed_dem_temp.save(smoothed_dem_name)
-            if not arcpy.Exists(smoothed_dem_name):
-                arcpy.AddError(f"Failed to save smoothed raster at iteration {i}: {smoothed_dem_name}")
-                # It's generally not a good idea to continue if the raster hasn't saved correctly
-                return None
-            
-            smoothed_dem = arcpy.Raster(smoothed_dem_name)  # Use the saved in memory raster for the next iteration
+            smoothed_dem = arcpy.sa.FocalStatistics(raster, neighborhood, "MEAN", "DATA")
+            raster = smoothed_dem
 
         if flag_fsink:
-            # Fill sinks
-            smoothed_filled_dem_name = "memory/smoothed_filled_dem"
-            smoothed_filled_dem_temp = arcpy.sa.Fill(smoothed_dem)
-            smoothed_filled_dem_temp.save(smoothed_filled_dem_name)
-            if not arcpy.Exists(smoothed_filled_dem_name):
-                arcpy.AddError(f"Failed to save smoothed and filled DEM: {smoothed_filled_dem_name}")
-                # As before, it's not a good idea to continue if the raster hasn't saved correctly
-                return None
-            smoothed_filled_dem = arcpy.Raster(smoothed_filled_dem_name)
+            # https://pro.arcgis.com/en/pro-app/latest/tool-reference/spatial-analyst/how-fill-works.htm
+            smoothed_filled_dem = arcpy.sa.Fill(smoothed_dem)
         else:
             smoothed_filled_dem = smoothed_dem
-
-        # Return smoothed_filled_dem without deleting it
         return smoothed_filled_dem
-
 
     def mergeDEM(self, original_dem, waterbody, factor_list, smoothed_filled_dem, flag_fsink=False):
         """merge the original dem and waterbody, then smooth the merged dem"""
@@ -234,13 +216,11 @@ class DarcyFlow:
         flow_dir_d8_raster = arcpy.sa.FlowDirection(dem_raster, out_drop_raster=flowdrop, flow_direction_type="D8")
         return flowdrop, flow_dir_d8_raster
 
-
     def convertFD(self, flow_dir_raster):
         converted_raster = arcpy.sa.RemapRange([[1, 1, 90], [2, 2, 135], [4, 4, 180], [8, 8, 225],
                                                 [16, 16, 270], [32, 32, 315], [64, 64, 360], [128, 128, 45]])
         outreclass = arcpy.sa.Reclassify(flow_dir_raster, "Value", converted_raster, "NODATA")
         return outreclass
-
 
     def flowdir2cal(self, gx, gy, flowdir_raster):
         gx_array = arcpy.RasterToNumPyArray(gx)

@@ -3,7 +3,7 @@ This script contains the VZMOD module of ArcNLET model in the ArcGIS Python Tool
 
 For detailed algorithms, please see https://atmos.eoas.fsu.edu/~mye/VZMOD/user_manual.pdf
 
-@author: Wei Mao <wm23@@fsu.edu>, Michael Core <mcore@fsu.edu>
+@author: Wei Mao <wm23@@fsu.edu>
 """
 
 import datetime
