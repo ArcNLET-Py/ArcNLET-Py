@@ -21,7 +21,7 @@ class InterfaceParticleTracking(object):
 
     def __init__(self) -> None:
         """Define the tool. """
-        self.label = "2 Particle Tracking"
+        self.label = "2-Particle Tracking"
         self.description = """Particle Tracking module."""
         self.category = "ArcNLET"
 
@@ -36,14 +36,14 @@ class InterfaceParticleTracking(object):
                                   direction="Input")
         infile0.filter.list = ["Point"]
 
-        infile1 = arcpy.Parameter(name="Waterbodies",
+        infile1 = arcpy.Parameter(name="Water bodies",
                                   displayName="Input Water bodies (polygon)",
                                   datatype="GPFeatureLayer",
                                   parameterType="Required",
                                   direction="Input")
         infile1.filter.list = ["Polygon"]
 
-        infile2 = arcpy.Parameter(name="Velocity",
+        infile2 = arcpy.Parameter(name="Velocity Magnitude",
                                   displayName="Input Velocity Magnitude [L/T] (raster)",
                                   datatype=["GPRasterLayer"],
                                   parameterType="Required",  # Required|Optional|Derived
@@ -64,7 +64,7 @@ class InterfaceParticleTracking(object):
                                   direction="Input",  # Input|Output
                                   )
 
-        option = arcpy.Parameter(name="ClippingOption",
+        option = arcpy.Parameter(name="Precise truncation",
                                  displayName="Precise truncation",
                                  datatype="GPBoolean",
                                  parameterType="Required",  # Required|Optional|Derived
@@ -73,7 +73,7 @@ class InterfaceParticleTracking(object):
                                  )
         option.value = False
 
-        param0 = arcpy.Parameter(name="WBRasterRes",
+        param0 = arcpy.Parameter(name="WB Raster Resolution",
                                  displayName="WB Raster Resolution [L]",
                                  datatype="GPLong",
                                  parameterType="Required",  # Required|Optional|Derived
@@ -83,7 +83,7 @@ class InterfaceParticleTracking(object):
         param0.value = 10
         param0.parameterDependencies = [infile3.name]
 
-        param1 = arcpy.Parameter(name="Stepsize",
+        param1 = arcpy.Parameter(name="Step Size",
                                  displayName="Step Size [L]",
                                  datatype="GPLong",
                                  parameterType="Required",  # Required|Optional|Derived
@@ -93,7 +93,7 @@ class InterfaceParticleTracking(object):
         param1.value = 10
         param1.parameterDependencies = [param0.name]
 
-        param2 = arcpy.Parameter(name="Maxsteps",
+        param2 = arcpy.Parameter(name="Max Steps",
                                  displayName="Max Steps",
                                  datatype="GPLong",
                                  parameterType="Required",  # Required|Optional|Derived
@@ -102,7 +102,7 @@ class InterfaceParticleTracking(object):
                                  )
         param2.value = 1000
 
-        outfile = arcpy.Parameter(name="Particlepath",
+        outfile = arcpy.Parameter(name="Particle Paths",
                                   displayName="Output Particle Paths (Polyline)",
                                   datatype=["GPFeatureLayer"],
                                   parameterType="Required",  # Required|Optional|Derived
@@ -120,68 +120,84 @@ class InterfaceParticleTracking(object):
         """Modify the values and properties of parameters before internal
         validation is performed.  This method is called whenever a parameter
         has been changed."""
+        if parameters[3].altered:
+            if not parameters[3].hasBeenValidated:
+                veld = parameters[3].value
+                desc = arcpy.Describe(veld)
+                xsize = desc.meanCellWidth
+                parameters[6].value = xsize / 2
+        return
+
+    def updateMessages(self, parameters) -> None:
+        """Modify the messages created by internal validation for each tool
+        parameter.  This method is called after internal validation."""
         if parameters[0].altered:
             source_location = parameters[0].value
-            if not arcpy.Exists(source_location):
-                arcpy.AddMessage("The specified source location does not exist.")
             desc = arcpy.Describe(source_location)
             crs1 = desc.spatialReference
 
         if parameters[1].altered:
             wb = parameters[1].value
-            if not arcpy.Exists(wb):
-                arcpy.AddMessage("The specified shapefile does not exist.")
             desc = arcpy.Describe(wb)
             crs2 = desc.spatialReference
 
         if parameters[2].altered:
             velo = parameters[2].value
-            if not arcpy.Exists(velo):
-                arcpy.AddMessage("The specified raster does not exist.")
             desc = arcpy.Describe(velo)
             band_count = desc.bandCount
             crs3 = desc.spatialReference
             if band_count != 1:
-                arcpy.AddMessage("Input velocity must have only one band.")
+                parameters[2].setErrorMessage("Input velocity must have only one band.")
 
         if parameters[3].altered:
             veld = parameters[3].value
-            if not arcpy.Exists(veld):
-                arcpy.AddMessage("The specified raster does not exist.")
             desc = arcpy.Describe(veld)
             band_count = desc.bandCount
-            xsize = desc.meanCellWidth
             crs4 = desc.spatialReference
             if band_count != 1:
-                arcpy.AddMessage("Input porosity must have only one band.")
-            parameters[6].value = xsize / 2
-            # parameters[6].value = xsize / 2
+                parameters[3].setErrorMessage("Input porosity must have only one band.")
 
         if parameters[4].altered:
             poro = parameters[4].value
-            if not arcpy.Exists(poro):
-                arcpy.AddMessage("The specified raster does not exist.")
             desc = arcpy.Describe(poro)
             band_count = desc.bandCount
             crs5 = desc.spatialReference
             if band_count != 1:
-                arcpy.AddMessage("Input porosity must have only one band.")
+                parameters[4].setErrorMessage("Input porosity must have only one band.")
 
         if parameters[0].altered and parameters[1].altered and parameters[2].altered and parameters[3].altered and \
                 parameters[4].altered:
             if crs1.name != crs2.name or crs1.name != crs3.name or crs1.name != crs4.name or crs1.name != crs5.name:
-                arcpy.AddMessage("All input files must have the same coordinate system.")
+                parameters[0].setErrorMessage("All input files must have the same coordinate system.")
+                parameters[1].setErrorMessage("All input files must have the same coordinate system.")
+                parameters[2].setErrorMessage("All input files must have the same coordinate system.")
+                parameters[3].setErrorMessage("All input files must have the same coordinate system.")
+                parameters[4].setErrorMessage("All input files must have the same coordinate system.")
 
-        if parameters[6].altered:
-            if parameters[6].value is not None and parameters[6].value < 0:
-                arcpy.AddMessage("The WB Raster Res. must be greater than 0.")
-        if parameters[7].altered:
-            if parameters[7].value is not None and parameters[7].value < 0:
-                arcpy.AddMessage("The Step Size must be greater than 0.")
-        if parameters[8].altered:
-            if parameters[8].value is not None and parameters[8].value < 0:
-                arcpy.AddMessage("The Max Steps must be greater than 0.")
+        if parameters[6].value is not None and parameters[6].value < 0:
+            parameters[6].setErrorMessage("The WB Raster Res. must be greater than 0.")
+        if parameters[7].value is not None and parameters[7].value < 0:
+            parameters[7].setErrorMessage("The Step Size must be greater than 0.")
+        if parameters[8].value is not None and parameters[8].value < 0:
+            parameters[8].setErrorMessage("The Max Steps must be greater than 0.")
 
+        if parameters[9].altered and parameters[9].value is not None:
+            if self.is_file_path(parameters[9].valueAsText):
+                filename, fileext = os.path.splitext(parameters[9].valueAsText)
+                if (".gdb" in filename or 'mdb' in filename) and fileext:
+                    parameters[9].setErrorMessage(
+                            "When storing a shapefile in a geodatabase, "
+                            "do not add a file extension to the name of the shapefile.")
+                elif fileext and fileext != ".shp":
+                    parameters[9].setWarningMessage("Suffixes '.shp' will used for output file.")
+                    parameters[9].value = filename
+            else:
+                ppath = os.path.dirname(arcpy.Describe(parameters[2].valueAsText).catalogPath)
+                if (".gdb" in ppath or 'mdb' in ppath) and "." in parameters[9].valueAsText:
+                    parameters[9].setErrorMessage(
+                        "If not specified, paths will be saved at the same location as the velocity magnitude raster. "
+                        "When storing a shapefile in a geodatabase (where the velocity magnitude raster is), "
+                        "do not add a file extension to the name of the shapefile.")
         return
 
     def execute(self, parameters, messages) -> None:

@@ -1,9 +1,9 @@
 """
-This script contains the Groundwater Flow module of ArcNLET model in the ArcGIS Python Toolbox.
+This script contains the Particle Tracking module of ArcNLET model in the ArcGIS Python Toolbox.
 
 For detailed algorithms, please see https://atmos.eoas.fsu.edu/~mye/ArcNLET/Techican_manual.pdf
 
-@author: Wei Mao <wm23a@fsu.edu>
+@author: Wei Mao <wm23a@fsu.edu>, Michael Core <mcore@fsu.edu>
 """
 
 import arcpy
@@ -18,6 +18,7 @@ import cProfile
 
 __version__ = "V1.0.0"
 arcpy.env.parallelProcessingFactor = "100%"
+arcpy.env.overwriteOutput = True
 
 
 class ParticleTracking:
@@ -25,26 +26,14 @@ class ParticleTracking:
 
     def __init__(self, c_source_location, c_water_bodies, c_velocity, c_velocity_dir, c_poro, c_option,
                  c_resolution, c_step_size, c_max_steps, c_output):
-        if not self.is_file_path(c_source_location):
-            self.source_location = arcpy.Describe(c_source_location).catalogPath
-        else:
-            self.source_location = c_source_location
-        if not self.is_file_path(c_water_bodies):
-            self.water_bodies = arcpy.Describe(c_water_bodies).catalogPath
-        else:
-            self.water_bodies = c_water_bodies
-        if not self.is_file_path(c_velocity):
-            self.velocity = arcpy.Describe(c_velocity).catalogPath
-        else:
-            self.velocity = c_velocity
-        if not self.is_file_path(c_velocity_dir):
-            self.velocity_dir = arcpy.Describe(c_velocity_dir).catalogPath
-        else:
-            self.velocity_dir = c_velocity_dir
-        if not self.is_file_path(c_poro):
-            self.poro = arcpy.Describe(c_poro).catalogPath
-        else:
-            self.poro = c_poro
+        self.source_location = arcpy.Describe(c_source_location).catalogPath if not self.is_file_path(
+            c_source_location) else c_source_location
+        self.water_bodies = arcpy.Describe(c_water_bodies).catalogPath if not self.is_file_path(
+            c_water_bodies) else c_water_bodies
+        self.velocity = arcpy.Describe(c_velocity).catalogPath if not self.is_file_path(c_velocity) else c_velocity
+        self.velocity_dir = arcpy.Describe(c_velocity_dir).catalogPath if not self.is_file_path(
+            c_velocity_dir) else c_velocity_dir
+        self.poro = arcpy.Describe(c_poro).catalogPath if not self.is_file_path(c_poro) else c_poro
 
         self.resolution = c_resolution
         self.step_size = c_step_size
@@ -66,8 +55,6 @@ class ParticleTracking:
         self.index = 0
 
         # Convert water bodies to raster
-        if arcpy.Exists(r"memory\water_bodies"):
-            arcpy.Delete_management(r"memory\water_bodies")
         self.waterbody_raster = r"memory\water_bodies"
         arcpy.conversion.FeatureToRaster(self.water_bodies, "FID", self.waterbody_raster, self.resolution)
 
@@ -103,9 +90,6 @@ class ParticleTracking:
         """ Create a shapefile with the given name and spatial reference """
 
         # arcpy.env.workspace(self.output_dir)
-
-        if arcpy.Exists(self.output_fc):
-            arcpy.Delete_management(self.output_fc)
 
         arcpy.CreateFeatureclass_management(
             out_path=self.output_dir,
@@ -158,9 +142,6 @@ class ParticleTracking:
                                     "DirAngle", "WBId", "PathWBId"]) as cursor:
             for seg in segments:
                 cursor.insertRow(seg)
-
-        # if arcpy.Exists("water_bodies"):
-        #     arcpy.Delete_management("water_bodies")
 
         return self.output_fc
 
@@ -255,8 +236,6 @@ class ParticleTracking:
                 arcpy.SelectLayerByAttribute_management(self.temp_layer_name, "NEW_SELECTION", query)
 
                 intersect_output = r'memory\intersect'
-                if arcpy.Exists(intersect_output):
-                    arcpy.Delete_management(intersect_output)
 
                 index = 0
                 with arcpy.da.SearchCursor(self.water_bodies, ["SHAPE@"], where_clause=query) as cursor:
@@ -300,8 +279,6 @@ class ParticleTracking:
                                      total_time, poro, velo, dirangle, segments[-1][-2], segments[-1][-1]])
                     segments[-2][-2] = -1
 
-                    if arcpy.Exists(intersect_output):
-                        arcpy.Delete_management(intersect_output)
                     arcpy.analysis.Intersect([self.temp_layer_name, intersect_polyline], intersect_output,
                                              "ALL", "", "LINE")
 

@@ -3,7 +3,7 @@ This script contains the Groundwater Flow module of ArcNLET model in the ArcGIS 
 
 For detailed algorithms, please see https://atmos.eoas.fsu.edu/~mye/ArcNLET/Techican_manual.pdf
 
-@author: Wei Mao <wm23a@fsu.edu>
+@author: Wei Mao <wm23a@fsu.edu>， Michael Core <mcore@fsu.edu>
 """
 
 import os
@@ -14,6 +14,7 @@ import numpy as np
 
 __version__ = "V1.0.0"
 arcpy.env.parallelProcessingFactor = "100%"
+arcpy.env.overwriteOutput = True
 
 
 class DarcyFlow:
@@ -21,22 +22,11 @@ class DarcyFlow:
                  c_smthf1, c_smthc, c_fsink, c_merge, c_smthf2, c_zfact,
                  velname, veldname, gradname=None, smthname=None):
         # input files
-        if not self.is_file_path(c_dem):
-            self.dem = arcpy.Describe(c_dem).catalogPath
-        else:
-            self.dem = c_dem
-        if not self.is_file_path(c_wb):
-            self.wb = arcpy.Describe(c_wb).catalogPath
-        else:
-            self.wb = c_wb
-        if not self.is_file_path(c_ks):
-            self.ks = arcpy.Describe(c_ks).catalogPath
-        else:
-            self.ks = c_ks
-        if not self.is_file_path(c_poro):
-            self.poro = arcpy.Describe(c_poro).catalogPath
-        else:
-            self.poro = c_poro
+
+        self.dem = arcpy.Describe(c_dem).catalogPath if not self.is_file_path(c_dem) else c_dem
+        self.wb = arcpy.Describe(c_wb).catalogPath if not self.is_file_path(c_wb) else c_wb
+        self.ks = arcpy.Describe(c_ks).catalogPath if not self.is_file_path(c_ks) else c_ks
+        self.poro = arcpy.Describe(c_poro).catalogPath if not self.is_file_path(c_poro) else c_poro
 
         # input parameters
         self.smthf1 = c_smthf1
@@ -47,10 +37,50 @@ class DarcyFlow:
         self.zfact = c_zfact
 
         # output file names
-        self.velname = velname
-        self.veldname = veldname
-        self.gradname = gradname
-        self.smthname = smthname
+        if self.is_file_path(velname):
+            self.velname = os.path.basename(velname)
+            self.veldir = os.path.dirname(velname)
+            if os.path.isabs(self.veldir):
+                self.veldir = os.path.abspath(self.veldir)
+        else:
+            self.velname = velname
+            if self.is_file_path(veldname):
+                self.veldir = os.path.dirname(veldname)
+            else:
+                self.veldir = os.path.dirname(self.dem)
+        if self.is_file_path(veldname):
+            self.veldname = os.path.basename(veldname)
+            self.velddir = os.path.dirname(veldname)
+            if os.path.isabs(self.velddir):
+                self.velddir = os.path.abspath(self.velddir)
+        else:
+            self.veldname = veldname
+            if self.is_file_path(velname):
+                self.velddir = os.path.dirname(veldname)
+            else:
+                self.velddir = os.path.dirname(self.dem)
+        if gradname is not None:
+            if self.is_file_path(gradname):
+                self.gradname = os.path.basename(gradname)
+                self.graddir = os.path.dirname(gradname)
+                if os.path.isabs(self.graddir):
+                    self.graddir = os.path.abspath(self.graddir)
+            else:
+                self.gradname = gradname
+                self.graddir = os.path.dirname(self.dem)
+        else:
+            self.gradname = None
+        if smthname is not None:
+            if self.is_file_path(smthname):
+                self.smthname = os.path.basename(smthname)
+                self.smthdir = os.path.dirname(smthname)
+                if os.path.isabs(self.smthdir):
+                    self.velddir = os.path.abspath(self.smthdir)
+            else:
+                self.smthname = smthname
+                self.smthdir = os.path.dirname(self.dem)
+        else:
+            self.smthname = None
 
         self.zero_threshold = 1E-8
         self.temp_output_dir = None
@@ -118,25 +148,18 @@ class DarcyFlow:
         arcpy.AddMessage("{}         Calculating velocity magnitude finished".format(current_time))
 
         # save the output
-        if arcpy.Exists(self.velname):
-            arcpy.Delete_management(self.velname)
-        velocity.save(self.velname)
-        if arcpy.Exists(self.veldname):
-            arcpy.Delete_management(self.veldname)
-        flowdir_raster.save(self.veldname)
+        velocity.save(os.path.join(self.veldir, self.velname))
+        flowdir_raster.save(os.path.join(self.velddir, self.veldname))
         if self.gradname is not None:
-            if arcpy.Exists(self.gradname):
-                arcpy.Delete_management(self.gradname)
-            gradient.save(self.gradname)
+            gradient.save(os.path.join(self.graddir, self.gradname))
         if self.smthname is not None:
-            if arcpy.Exists(self.smthname):
-                arcpy.Delete_management(self.smthname)
-            smoothed_merge_dem.save(self.smthname)
+            smoothed_merge_dem.save(os.path.join(self.smthdir, self.smthname))
 
         return
 
     def smoothDEM(self, raster, factor, flag_fsink=False):
         """smooth the raster factor times"""
+        arcpy.env.workspace = r'memory'
         neighborhood = arcpy.sa.NbrRectangle(self.smthc, self.smthc, "CELL")
         for i in range(factor):
             smoothed_dem = arcpy.sa.FocalStatistics(raster, neighborhood, "MEAN", "DATA")
@@ -231,28 +254,31 @@ class DarcyFlow:
 # ======================================================================
 # Main program for debugging
 if __name__ == '__main__':
-    arcpy.env.workspace = ".\\test_pro"
-    dem = os.path.join(arcpy.env.workspace, "Demodem.tif")
-    wb = os.path.join(arcpy.env.workspace, "waterbodies")
-    ks = os.path.join(arcpy.env.workspace, "hydr_cond.img")
-    poro = os.path.join(arcpy.env.workspace, "porosity.img")
+    for i in range(30):
+        arcpy.env.workspace = ".\\test_pro"
+        dem = os.path.join(arcpy.env.workspace, "lakeshore")
+        wb = os.path.join(arcpy.env.workspace, "waterbodies")
+        ks = os.path.join(arcpy.env.workspace, "hydr_cond.img")
+        poro = os.path.join(arcpy.env.workspace, "porosity.img")
 
-    smthf1 = 1
-    smthc = 7
-    fsink = 0
-    merge = 0
-    smthf2 = [0]
-    zfact = 1
+        smthf1 = 50
+        smthc = 7
+        fsink = 0
+        merge = 0
+        smthf2 = [0]
+        zfact = 1
 
-    vel = os.path.join(arcpy.env.workspace, "demovel")
-    veld = os.path.join(arcpy.env.workspace, "demoveld")
-    grad = os.path.join(arcpy.env.workspace, "demograd")
-    smthd = os.path.join(arcpy.env.workspace, "demosmthd")
+        vel = os.path.join(arcpy.env.workspace, "demovel"+str(i))
+        veld = os.path.join(arcpy.env.workspace, "demoveld"+str(i))
+        grad = os.path.join(arcpy.env.workspace, "demograd"+str(i))
+        smthd = os.path.join(arcpy.env.workspace, "demosmthd"+str(i))
+        start_time = time.time()
 
-    arcpy.AddMessage("starting geoprocessing")
-    GF = DarcyFlow(dem, wb, ks, poro,
-                   smthf1, smthc, fsink, merge, smthf2, zfact,
-                   vel, veld, grad, smthd)
-    GF.calculateDarcyFlow()
-
-    print("Tests successful!")
+        arcpy.AddMessage("starting geoprocessing")
+        GF = DarcyFlow(dem, wb, ks, poro,
+                       smthf1, smthc, fsink, merge, smthf2, zfact,
+                       vel, veld, grad, smthd)
+        GF.calculateDarcyFlow()
+        end_time = time.time()
+        print("{} times, Time elapsed: {} seconds".format(i, end_time - start_time))
+        print("Tests successful!")

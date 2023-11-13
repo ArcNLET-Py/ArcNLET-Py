@@ -1,9 +1,6 @@
 """
-Python code that implements an ArcGIS Tool to be included in an ArcGIS Python Toolbox.
-
-This is the interface file between the ArcGIS Pro and the computational code.
-
-https://pro.arcgis.com/en/pro-app/latest/arcpy/geoprocessing_and_python/defining-a-tool-in-a-python-toolbox.htm
+Python code that implements an ArcGIS Tool,
+to be included in an ArcGIS Python Toolbox.
 
 @author: Wei Mao <wm23a@fsu.edu>
 """
@@ -25,7 +22,7 @@ class InterfaceGroundwaterFlow(object):
     def __init__(self) -> None:
         """Define the tool.
         """
-        self.label = "1 Groundwater Flow"
+        self.label = "1-Groundwater Flow"
         self.description = """Groundwater flow module."""
         self.category = "ArcNLET"
 
@@ -34,12 +31,12 @@ class InterfaceGroundwaterFlow(object):
         """
 
         infile0 = arcpy.Parameter(name="DEM",
-                                  displayName="Input DEM surface elevation map [L] (raster)",  # shown in Geoprocessing pane
+                                  displayName="Input DEM [L] (raster)",  # shown in Geoprocessing pane
                                   datatype=["GPRasterLayer"],  # data type
                                   parameterType="Required",  # Required|Optional|Derived
                                   direction="Input")  # Input|Output
 
-        infile1 = arcpy.Parameter(name="Waterbodies",
+        infile1 = arcpy.Parameter(name="Water bodies",
                                   displayName="Input Water bodies (polygon)",
                                   datatype="GPFeatureLayer",
                                   parameterType="Required",
@@ -77,6 +74,7 @@ class InterfaceGroundwaterFlow(object):
                                  category="Parameters",
                                  )
         param1.value = 7
+
         param2 = arcpy.Parameter(name="Fill Sinks",
                                  displayName="Fill Sinks",
                                  datatype="GPBoolean",
@@ -115,14 +113,12 @@ class InterfaceGroundwaterFlow(object):
                                  )
         param5.value = 1
 
-        outfile0 = arcpy.Parameter(name="Velocity",
+        outfile0 = arcpy.Parameter(name="Velocity Magnitude",
                                    displayName="Output Velocity Magnitude [L/T]",
                                    datatype=["GPRasterLayer"],
                                    parameterType="Required",  # Required|Optional|Derived
                                    direction="Output",  # Input|Output
                                    )
-        # outfile0.symbology = os.path.join(os.path.dirname(__file__),
-        #                                   'Aspect_out_raster.lyrx')
 
         outfile1 = arcpy.Parameter(name="Velocity Direction",
                                    displayName="Output Velocity Direction [°wrt N]",
@@ -131,7 +127,7 @@ class InterfaceGroundwaterFlow(object):
                                    direction="Output",  # Input|Output
                                    )
 
-        outfile2 = arcpy.Parameter(name="Gradient",
+        outfile2 = arcpy.Parameter(name="Hydraulic Gradient",
                                    displayName="(Optional) Output Hydraulic Gradient",
                                    datatype=["GPRasterLayer"],
                                    parameterType="Optional",  # Required|Optional|Derived
@@ -164,64 +160,68 @@ class InterfaceGroundwaterFlow(object):
         """Modify the values and properties of parameters before internal
         validation is performed. This method is called whenever a parameter
         has been changed."""
+        if parameters[7].value:
+            parameters[8].enabled = True
+        else:
+            parameters[8].enabled = False
+        return
+
+    def updateMessages(self, parameters):
+        """Modify the messages created by internal validation for each tool
+        parameter.  This method is called after internal validation."""
         if parameters[0].altered:
             dem = parameters[0].value
-            if not arcpy.Exists(dem):
-                arcpy.AddMessage("The specified raster does not exist.")
             desc = arcpy.Describe(dem)
             band_count = desc.bandCount
             crs1 = desc.spatialReference
             xsize = desc.meanCellWidth
             ysize = desc.meanCellHeight
             if band_count != 1:
-                arcpy.AddMessage("Input DEM must have only one band.")
+                parameters[0].setErrorMessage("Input DEM must have only one band.")
             if xsize != ysize:
-                arcpy.AddMessage("Input DEM must be square cells.")
+                parameters[0].setErrorMessage("Input DEM must be square cells.")
 
         if parameters[1].altered:
             wb = parameters[1].value
-            if not arcpy.Exists(wb):
-                arcpy.AddMessage("The specified shapefile does not exist.")
             desc = arcpy.Describe(wb)
             crs3 = desc.spatialReference
 
         if parameters[2].altered:
             ks = parameters[2].value
-            if not arcpy.Exists(ks):
-                arcpy.AddMessage("The specified raster does not exist.")
             desc = arcpy.Describe(ks)
             band_count = desc.bandCount
             crs2 = desc.spatialReference
             if band_count != 1:
-                arcpy.AddMessage("Input Hydraulic conductivity must have only one band.")
+                parameters[2].setErrorMessage("Input Hydraulic conductivity must have only one band.")
 
         if parameters[3].altered:
             poro = parameters[3].value
-            if not arcpy.Exists(poro):
-                arcpy.AddMessage("The specified raster does not exist.")
             desc = arcpy.Describe(poro)
             band_count = desc.bandCount
             crs4 = desc.spatialReference
             if band_count != 1:
-                arcpy.AddMessage("Input porosity must have only one band.")
+                parameters[3].setErrorMessage("Input porosity must have only one band.")
 
         if parameters[0].altered and parameters[1].altered and parameters[2].altered and parameters[3].altered:
             if crs1.name != crs2.name or crs1.name != crs3.name or crs1.name != crs4.name:
-                arcpy.AddMessage("All input files must have the same coordinate system.")
+                parameters[0].setErrorMessage("All input files must have the same coordinate system.")
+                parameters[1].setErrorMessage("All input files must have the same coordinate system.")
+                parameters[2].setErrorMessage("All input files must have the same coordinate system.")
+                parameters[3].setErrorMessage("All input files must have the same coordinate system.")
 
-        if parameters[4].altered:
-            if parameters[4].value is not None and parameters[4].value < 0:
-                arcpy.AddMessage("The Smoothing Factor must be greater than 0.")
-        if parameters[5].altered:
-            if parameters[5].value is not None and parameters[5].value < 0:
-                arcpy.AddMessage("The Smoothing Cell must be greater than 0.")
-        if parameters[9].altered:
-            if parameters[9].value is not None and parameters[9].value < 0:
-                arcpy.AddMessage("The Z-Factor must be greater than 0.")
+        if parameters[4].value is not None and parameters[4].value < 0:
+            parameters[4].setErrorMessage("The Smoothing Factor must be greater than 0.")
+        if parameters[4].value is not None and parameters[4].value > 200:
+            parameters[4].setWarningMessage("The Smoothing Factor may be too large.")
+        if parameters[5].value is not None and parameters[5].value < 0:
+            parameters[5].setErrorMessage("The Smoothing Cell must be greater than 0.")
+        if parameters[5].value is not None and parameters[5].value >= 0 and parameters[5].value % 2 == 0:
+            parameters[5].setWarningMessage("The Smoothing Cell is recommended to be an odd number.")
+        if parameters[9].value is not None and parameters[9].value < 0:
+            parameters[9].setErrorMessage("The Z-Factor must be greater than 0.")
 
         if parameters[7].value:
-            parameters[8].enabled = True
-            if parameters[8].altered:
+            if parameters[8].altered and parameters[8].value is not None:
                 values_list = parameters[8].valueAsText.split(";")
                 try:
                     values_list = [int(i) for i in values_list]
@@ -229,9 +229,39 @@ class InterfaceGroundwaterFlow(object):
                 except ValueError:
                     values_greater_than_zero = False
                 if not values_greater_than_zero:
-                    arcpy.AddMessage("The Smoothing Cell must be greater than 0.")
-        else:
-            parameters[8].enabled = False
+                    parameters[8].setErrorMessage("The Smoothing Factor must be greater than 0.")
+                try:
+                    values_list = [int(i) for i in values_list]
+                    values_smaller_than_2h = all(val <= 200 for val in values_list)
+                except ValueError:
+                    values_smaller_than_2h = False
+                if not values_smaller_than_2h:
+                    parameters[8].setWarningMessage("The Smoothing Factor may be too large.")
+
+        if parameters[10].altered and parameters[10].value is not None:
+            if ".img" in parameters[10].valueAsText and (
+                    ".gdb" in parameters[10].valueAsText or ".mdb" in parameters[10].valueAsText):
+                parameters[10].setErrorMessage(
+                    "When storing a raster dataset in a geodatabase, "
+                    "do not add a file extension to the name of the raster dataset.")
+        if parameters[11].altered and parameters[11].value is not None:
+            if ".img" in parameters[11].valueAsText and (
+                    ".gdb" in parameters[11].valueAsText or ".mdb" in parameters[11].valueAsText):
+                parameters[11].setErrorMessage(
+                    "When storing a raster dataset in a geodatabase, "
+                    "do not add a file extension to the name of the raster dataset.")
+        if parameters[12].altered and parameters[12].value is not None:
+            if ".img" in parameters[12].valueAsText and (
+                    ".gdb" in parameters[12].valueAsText or ".mdb" in parameters[12].valueAsText):
+                parameters[12].setErrorMessage(
+                    "When storing a raster dataset in a geodatabase, "
+                    "do not add a file extension to the name of the raster dataset.")
+        if parameters[13].altered and parameters[13].value is not None:
+            if ".img" in parameters[13].valueAsText and (
+                    ".gdb" in parameters[13].valueAsText or ".mdb" in parameters[13].valueAsText):
+                parameters[13].setErrorMessage(
+                    "When storing a raster dataset in a geodatabase, "
+                    "do not add a file extension to the name of the raster dataset.")
         return
 
     def execute(self, parameters, messages) -> None:
@@ -272,9 +302,11 @@ class InterfaceGroundwaterFlow(object):
 
         # Okay finally go ahead and do the work.
         try:
+            arcpy.AddMessage("Compute Darcy Flow: START")
             GF = DarcyFlow(dem, wb, ks, poro,
                            smthf1, smthc, fsink, merge, smthf2, zfact,
                            velo, veld, grad, smth)
+            arcpy.AddMessage("Compute Darcy Flow: FINISH")
             GF.calculateDarcyFlow()
             current_time = time.strftime("%H:%M:%S", time.localtime())
             arcpy.AddMessage(f"{current_time} Compute Darcy Flow: FINISH")
