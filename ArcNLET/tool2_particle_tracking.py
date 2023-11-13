@@ -3,7 +3,7 @@ This script contains the Particle Tracking module of ArcNLET model in the ArcGIS
 
 For detailed algorithms, please see https://atmos.eoas.fsu.edu/~mye/ArcNLET/Techican_manual.pdf
 
-@author: Wei Mao <wm23a@fsu.edu>
+@author: Wei Mao <wm23a@fsu.edu>, Michael Core <mcore@fsu.edu>
 """
 
 import arcpy
@@ -18,6 +18,7 @@ import cProfile
 
 __version__ = "V1.0.0"
 arcpy.env.parallelProcessingFactor = "100%"
+arcpy.env.overwriteOutput = True
 
 
 class ParticleTracking:
@@ -54,8 +55,6 @@ class ParticleTracking:
         self.index = 0
 
         # Convert water bodies to raster
-        if arcpy.Exists(r"memory\water_bodies"):
-            arcpy.Delete_management(r"memory\water_bodies")
         self.waterbody_raster = r"memory\water_bodies"
         arcpy.conversion.FeatureToRaster(self.water_bodies, "FID", self.waterbody_raster, self.resolution)
 
@@ -91,9 +90,6 @@ class ParticleTracking:
         """ Create a shapefile with the given name and spatial reference """
 
         # arcpy.env.workspace(self.output_dir)
-
-        if arcpy.Exists(self.output_fc):
-            arcpy.Delete_management(self.output_fc)
 
         arcpy.CreateFeatureclass_management(
             out_path=self.output_dir,
@@ -146,9 +142,6 @@ class ParticleTracking:
                                     "DirAngle", "WBId", "PathWBId"]) as cursor:
             for seg in segments:
                 cursor.insertRow(seg)
-
-        # if arcpy.Exists("water_bodies"):
-        #     arcpy.Delete_management("water_bodies")
 
         return self.output_fc
 
@@ -243,8 +236,6 @@ class ParticleTracking:
                 arcpy.SelectLayerByAttribute_management(self.temp_layer_name, "NEW_SELECTION", query)
 
                 intersect_output = r'memory\intersect'
-                if arcpy.Exists(intersect_output):
-                    arcpy.Delete_management(intersect_output)
 
                 index = 0
                 with arcpy.da.SearchCursor(self.water_bodies, ["SHAPE@"], where_clause=query) as cursor:
@@ -288,8 +279,6 @@ class ParticleTracking:
                                      total_time, poro, velo, dirangle, segments[-1][-2], segments[-1][-1]])
                     segments[-2][-2] = -1
 
-                    if arcpy.Exists(intersect_output):
-                        arcpy.Delete_management(intersect_output)
                     arcpy.analysis.Intersect([self.temp_layer_name, intersect_polyline], intersect_output,
                                              "ALL", "", "LINE")
 

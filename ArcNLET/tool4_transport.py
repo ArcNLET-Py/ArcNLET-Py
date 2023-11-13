@@ -3,7 +3,7 @@ This script contains the Transport module of ArcNLET model in the ArcGIS Python 
 
 For detailed algorithms, please see https://atmos.eoas.fsu.edu/~mye/ArcNLET/Techican_manual.pdf
 
-@author: Wei Mao <wm23a@fsu.edu>
+@author: Wei Mao <wm23a@fsu.edu>, Michael Core <mcore@fsu.edu>
 """
 
 import datetime
@@ -26,6 +26,7 @@ import pstats
 
 __version__ = "V1.0.0"
 arcpy.env.parallelProcessingFactor = "100%"
+arcpy.env.overwriteOutput = True
 
 
 class Transport:
@@ -137,8 +138,6 @@ class Transport:
         arcpy.AddMessage("{}     Creating water body...".format(current_time))
         try:
             self.waterbody_raster = r"memory\water_bodies"
-            if arcpy.Exists(self.waterbody_raster):
-                arcpy.management.Delete(self.waterbody_raster)
             arcpy.conversion.FeatureToRaster(self.waterbodies, "FID", self.waterbody_raster,
                                              max(self.plume_cell_size, 1))
         except Exception as e:
@@ -146,14 +145,10 @@ class Transport:
             sys.exit(-1)
 
         try:
-            if arcpy.Exists(os.path.join(self.no3_dir, self.no3_output)):
-                arcpy.management.Delete(os.path.join(self.no3_dir, self.no3_output))
             arcpy.management.CreateRasterDataset(self.no3_dir, self.no3_output, self.plume_cell_size,
                                                  "32_BIT_FLOAT", self.crs, 1)
 
             if self.whether_nh4:
-                if arcpy.Exists(os.path.join(self.nh4_dir, self.nh4_output)):
-                    arcpy.management.Delete(os.path.join(self.nh4_dir, self.nh4_output))
                 arcpy.management.CreateRasterDataset(self.nh4_dir, self.nh4_output, self.plume_cell_size,
                                                      "32_BIT_FLOAT", self.crs, 1)
         except Exception as e:
@@ -250,15 +245,12 @@ class Transport:
             arcpy.management.Delete(post_nh4)
 
         out_raster = arcpy.sa.SetNull(self.no3_output, self.no3_output, "VALUE < {}".format(self.threshold))
-        if arcpy.Exists(os.path.join(self.no3_dir, self.no3_output)):
-            arcpy.management.Delete(os.path.join(self.no3_dir, self.no3_output))
-        # # set_nodata_value(os.path.join(self.no3_dir, self.no3_output))
+       # # set_nodata_value(os.path.join(self.no3_dir, self.no3_output))
         out_raster.save(os.path.join(self.no3_dir, self.no3_output))
 
         if self.whether_nh4:
             out_raster = arcpy.sa.SetNull(self.nh4_output, self.nh4_output, "VALUE < {}".format(self.threshold))
-            if arcpy.Exists(os.path.join(self.nh4_dir, self.nh4_output)):
-                arcpy.management.Delete(os.path.join(self.nh4_dir, self.nh4_output))
+
             out_raster.save(os.path.join(self.nh4_dir, self.nh4_output))
 
         if self.post_process == "medium":
@@ -613,8 +605,7 @@ class Transport:
         # # plt.show()
 
         name = r'memory\plume_raster'
-        if arcpy.Exists(name):
-            arcpy.management.Delete(name)
+
         # warped_raster = arcpy.NumPyArrayToRaster(modified_warped_array[::-1], arcpy.Point(new_xvalue, new_yvalue),
         #                                          self.plume_cell_size, self.plume_cell_size)
         # arcpy.management.DefineProjection(warped_raster, self.crs)
@@ -643,8 +634,7 @@ class Transport:
             target_control_points = ';'.join([f"'{x} {y}'" for x, y in target_control_points])
 
             name = r'memory\plume_raster'
-            if arcpy.Exists(name):
-                arcpy.management.Delete(name)
+
             arcpy.management.Warp(plume_raster, source_control_points, target_control_points, name,
                                   self.warp_method.upper(), "BILINEAR")
 
@@ -668,8 +658,7 @@ class Transport:
         Post process the plume
         """
         fname = r'memory\Resample'
-        if arcpy.Exists(fname):
-            arcpy.management.Delete(fname)
+
         if pathid != 0:
             try:
                 arcpy.env.snapRaster = self.no3_output
@@ -695,18 +684,15 @@ class Transport:
                         point = arcpy.Point(row[0], row[1])
                         point_list.append(point)
                     polyline = arcpy.Polyline(arcpy.Array(point_list), self.crs)
-                    if arcpy.Exists(r'memory\polyline'):
-                        arcpy.management.Delete(r'memory\polyline')
+
                     arcpy.CopyFeatures_management(polyline, r'memory\polyline')
 
                     inFeatures = [r'memory\polyline', self.waterbodies]
                     outFeatures = r'memory\polygon'
-                    if arcpy.Exists(outFeatures):
-                        arcpy.management.Delete(outFeatures)
+
                     arcpy.FeatureToPolygon_management(inFeatures, outFeatures, "", "NO_ATTRIBUTES")
                     Erase_polygon = r'memory\Erase_polygon'
-                    if arcpy.Exists(Erase_polygon):
-                        arcpy.management.Delete(Erase_polygon)
+
                     arcpy.Erase_analysis(outFeatures, self.waterbodies, Erase_polygon)
 
                     save_name = name.split('.')[0] + '_full' + '.tif'
@@ -743,8 +729,6 @@ class Transport:
                                     row[0] = new_polyline
                                     cursor.updateRow(row)
 
-                            if arcpy.Exists(r'memory\Intersect'):
-                                arcpy.management.Delete(r'memory\Intersect')
                             arcpy.analysis.Intersect([r'memory\polyline', self.waterbodies], r'memory\Intersect')
                             ppp = arcpy.da.SearchCursor(r'memory\Intersect', ["SHAPE@"]).next()[0]
                             if ppp.isMultipart:
@@ -752,17 +736,14 @@ class Transport:
 
                         inFeatures = [r'memory\polyline', self.waterbodies]
                         outFeatures = r'memory\polygon'
-                        if arcpy.Exists(outFeatures):
-                            arcpy.management.Delete(outFeatures)
+
                         arcpy.FeatureToPolygon_management(inFeatures, outFeatures, "", "NO_ATTRIBUTES")
                         Erase_polygon = r'memory\Erase_polygon'
-                        if arcpy.Exists(Erase_polygon):
-                            arcpy.management.Delete(Erase_polygon)
+
                         arcpy.Erase_analysis(outFeatures, self.waterbodies, Erase_polygon)
 
                         save_name = name.split('.')[0] + '_full' + '.tif'
-                        if arcpy.Exists(save_name):
-                            arcpy.management.Delete(save_name)
+
                         arcpy.sa.ExtractByMask(fname, Erase_polygon).save(save_name)
 
                     return save_name
@@ -778,8 +759,7 @@ class Transport:
         """
         try:
             no3 = arcpy.sa.ExtractByMask(no3_output, self.waterbodies, "OUTSIDE")
-            if arcpy.Exists(self.no3_output):
-                arcpy.management.Delete(self.no3_output)
+
             arcpy.env.snapRaster = None
             no3 = arcpy.sa.SetNull(no3, no3, "VALUE < {}".format(self.threshold))
             no3.save(self.no3_output)
@@ -788,8 +768,7 @@ class Transport:
                 if nh4_output is None:
                     arcpy.AddMessage("The nh4_output is None!")
                 nh4 = arcpy.sa.ExtractByMask(nh4_output, self.waterbodies, "OUTSIDE")
-                if arcpy.Exists(self.nh4_output):
-                    arcpy.management.Delete(self.nh4_output)
+
                 nh4 = arcpy.sa.SetNull(nh4, nh4, "VALUE < {}".format(self.threshold))
                 nh4.save(self.nh4_output)
             return
@@ -862,8 +841,6 @@ class Transport:
         """
         try:
             # Create a list to hold field information
-            if arcpy.Exists(os.path.join(self.no3_dir, self.no3_output_info)):
-                arcpy.management.Delete(os.path.join(self.no3_dir, self.no3_output_info))
             create_shapefile(self.no3_dir, self.no3_output_info, self.crs)
         except Exception as e:
             arcpy.AddMessage("[Error] Create_new_plume_data_shapefile for NO3: " + str(e))
@@ -871,8 +848,6 @@ class Transport:
 
         if self.whether_nh4:
             try:
-                if arcpy.Exists(os.path.join(self.nh4_dir, self.nh4_output_info)):
-                    arcpy.management.Delete(os.path.join(self.nh4_dir, self.nh4_output_info))
                 create_shapefile(self.nh4_dir, self.nh4_output_info, self.crs)
             except Exception as e:
                 arcpy.AddMessage("[Error] Create_new_plume_data_shapefile for NH4: " + str(e))

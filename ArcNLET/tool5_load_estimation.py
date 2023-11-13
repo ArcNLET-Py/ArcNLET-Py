@@ -3,7 +3,7 @@ This script contains the Load Estimation module of ArcNLET model in the ArcGIS P
 
 For detailed algorithms, please see https://atmos.eoas.fsu.edu/~mye/ArcNLET/Techican_manual.pdf
 
-@author: Wei Mao <wm23@@fsu.edu>
+@author: Wei Mao <wm23@@fsu.edu>, Michael Core <mcore@fsu.edu>
 """
 
 import datetime
@@ -13,6 +13,8 @@ import numpy as np
 import pandas as pd
 
 __version__ = "V1.0.0"
+arcpy.env.parallelProcessingFactor = "100%"
+arcpy.env.overwriteOutput = True
 
 
 class LoadEstimation:

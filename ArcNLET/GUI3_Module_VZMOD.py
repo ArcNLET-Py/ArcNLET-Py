@@ -632,10 +632,10 @@ class InterfaceVZMOD(object):
     def execute(self, parameters, messages) -> None:
         """This is the code that executes when you click the "Run" button."""
 
-        messages.addMessage("Load Estimation Module.")
+        messages.addMessage("VZMOD Module.")
 
         current_time = time.strftime("%H:%M:%S", time.localtime())
-        arcpy.AddMessage(f"{current_time} Load Estimation: START")
+        arcpy.AddMessage(f"{current_time} VZMOD: START")
 
         for param in parameters:
             self.describeParameter(messages, param)
@@ -700,7 +700,7 @@ class InterfaceVZMOD(object):
                           septic_tank, hydraulic_conductivity, soil_porosity, DEM, smoothed_DEM, soiltypefile)
             vzmod.runVZMOD()
             current_time = time.strftime("%H:%M:%S", time.localtime())
-            arcpy.AddMessage(f"{current_time} Load Estimation: FINISH")
+            arcpy.AddMessage(f"{current_time} VZMOD: FINISH")
         except Exception as e:
             current_time = time.strftime("%H:%M:%S", time.localtime())
             arcpy.AddMessage(f"{current_time} Fail. {e}")

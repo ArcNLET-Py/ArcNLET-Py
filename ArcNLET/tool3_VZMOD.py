@@ -3,7 +3,7 @@ This script contains the VZMOD module of ArcNLET model in the ArcGIS Python Tool
 
 For detailed algorithms, please see https://atmos.eoas.fsu.edu/~mye/VZMOD/user_manual.pdf
 
-@author: Wei Mao <wm23@@fsu.edu>
+@author: Wei Mao <wm23@@fsu.edu>, Michael Core <mcore@fsu.edu>
 """
 
 import datetime
@@ -14,6 +14,8 @@ import numpy as np
 import pandas as pd
 
 __version__ = "V1.0.0"
+arcpy.env.parallelProcessingFactor = "100%"
+arcpy.env.overwriteOutput = True
 
 Nlayer = 100
 hydraulic_default = {"clay":            [2.0, 0.015, 14.75,  0.098, 0.459, 1.260],
@@ -116,16 +118,22 @@ class VZMOD:
         self.calc_DTW = calc_DTW
         self.multi_soil_type = multi_soil_type
 
-        self.septic_tank = arcpy.Describe(septic_tank).catalogPath if not self.is_file_path(
-            septic_tank) else septic_tank
-        self.hydraulic_conductivity = arcpy.Describe(hydraulic_conductivity).catalogPath if not self.is_file_path(
-            hydraulic_conductivity) else hydraulic_conductivity
-        self.soil_porosity = arcpy.Describe(soil_porosity).catalogPath if not self.is_file_path(
-            soil_porosity) else soil_porosity
-        self.DEM = arcpy.Describe(DEM).catalogPath if not self.is_file_path(DEM) else DEM
-        self.smoothed_DEM = arcpy.Describe(smoothed_DEM).catalogPath if not self.is_file_path(
-            smoothed_DEM) else smoothed_DEM
-        self.soil_type = arcpy.Describe(soil_type).catalogPath if not self.is_file_path(soil_type) else soil_type
+        if septic_tank:
+            self.septic_tank = arcpy.Describe(septic_tank).catalogPath if not self.is_file_path(
+                septic_tank) else septic_tank
+        if hydraulic_conductivity:
+            self.hydraulic_conductivity = arcpy.Describe(hydraulic_conductivity).catalogPath if not self.is_file_path(
+                hydraulic_conductivity) else hydraulic_conductivity
+        if soil_porosity:
+            self.soil_porosity = arcpy.Describe(soil_porosity).catalogPath if not self.is_file_path(
+                soil_porosity) else soil_porosity
+        if DEM:
+            self.DEM = arcpy.Describe(DEM).catalogPath if not self.is_file_path(DEM) else DEM
+        if smoothed_DEM:
+            self.smoothed_DEM = arcpy.Describe(smoothed_DEM).catalogPath if not self.is_file_path(
+                smoothed_DEM) else smoothed_DEM
+        if soil_type:
+            self.soil_type = arcpy.Describe(soil_type).catalogPath if not self.is_file_path(soil_type) else soil_type
 
         self.output_folder = output_folder
 
@@ -442,8 +450,6 @@ class VZMOD:
         arcpy.env.workspace = self.output_folder
 
         septictankfile_tmp = os.path.join(self.output_folder, "septictanks.shp")
-        if arcpy.Exists(septictankfile_tmp):
-            arcpy.management.Delete(septictankfile_tmp)
         arcpy.management.Copy(septictankfile, septictankfile_tmp)
         field = []
 

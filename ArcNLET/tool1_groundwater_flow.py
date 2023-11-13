@@ -3,7 +3,7 @@ This script contains the Groundwater Flow module of ArcNLET model in the ArcGIS 
 
 For detailed algorithms, please see https://atmos.eoas.fsu.edu/~mye/ArcNLET/Techican_manual.pdf
 
-@author: Wei Mao <wm23a@fsu.edu>
+@author: Wei Mao <wm23a@fsu.edu>， Michael Core <mcore@fsu.edu>
 """
 
 import os
@@ -14,6 +14,7 @@ import numpy as np
 
 __version__ = "V1.0.0"
 arcpy.env.parallelProcessingFactor = "100%"
+arcpy.env.overwriteOutput = True
 
 
 class DarcyFlow:
@@ -147,25 +148,18 @@ class DarcyFlow:
         arcpy.AddMessage("{}         Calculating velocity magnitude finished".format(current_time))
 
         # save the output
-        if arcpy.Exists(os.path.join(self.veldir, self.velname)):
-            arcpy.Delete_management(os.path.join(self.veldir, self.velname))
         velocity.save(os.path.join(self.veldir, self.velname))
-        if arcpy.Exists(os.path.join(self.velddir, self.veldname)):
-            arcpy.Delete_management(os.path.join(self.velddir, self.veldname))
         flowdir_raster.save(os.path.join(self.velddir, self.veldname))
         if self.gradname is not None:
-            if arcpy.Exists(os.path.join(self.graddir, self.gradname)):
-                arcpy.Delete_management(os.path.join(self.graddir, self.gradname))
             gradient.save(os.path.join(self.graddir, self.gradname))
         if self.smthname is not None:
-            if arcpy.Exists(os.path.join(self.smthdir, self.smthname)):
-                arcpy.Delete_management(os.path.join(self.smthdir, self.smthname))
             smoothed_merge_dem.save(os.path.join(self.smthdir, self.smthname))
 
         return
 
     def smoothDEM(self, raster, factor, flag_fsink=False):
         """smooth the raster factor times"""
+        arcpy.env.workspace = r'memory'
         neighborhood = arcpy.sa.NbrRectangle(self.smthc, self.smthc, "CELL")
         for i in range(factor):
             smoothed_dem = arcpy.sa.FocalStatistics(raster, neighborhood, "MEAN", "DATA")
