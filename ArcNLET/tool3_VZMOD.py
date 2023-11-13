@@ -118,22 +118,27 @@ class VZMOD:
         self.calc_DTW = calc_DTW
         self.multi_soil_type = multi_soil_type
 
-        if septic_tank:
+        self.septic_tank = None
+        self.hydraulic_conductivity = None
+        self.soil_porosity = None
+        self.DEM = None
+        self.smoothed_DEM = None
+        self.soil_type = None
+        if self.multi_ostds:
             self.septic_tank = arcpy.Describe(septic_tank).catalogPath if not self.is_file_path(
                 septic_tank) else septic_tank
-        if hydraulic_conductivity:
-            self.hydraulic_conductivity = arcpy.Describe(hydraulic_conductivity).catalogPath if not self.is_file_path(
-                hydraulic_conductivity) else hydraulic_conductivity
-        if soil_porosity:
-            self.soil_porosity = arcpy.Describe(soil_porosity).catalogPath if not self.is_file_path(
-                soil_porosity) else soil_porosity
-        if DEM:
-            self.DEM = arcpy.Describe(DEM).catalogPath if not self.is_file_path(DEM) else DEM
-        if smoothed_DEM:
-            self.smoothed_DEM = arcpy.Describe(smoothed_DEM).catalogPath if not self.is_file_path(
-                smoothed_DEM) else smoothed_DEM
-        if soil_type:
-            self.soil_type = arcpy.Describe(soil_type).catalogPath if not self.is_file_path(soil_type) else soil_type
+            if self.hetero_ks_theta:
+                self.hydraulic_conductivity = arcpy.Describe(hydraulic_conductivity).catalogPath if not (
+                    self.is_file_path(hydraulic_conductivity)) else hydraulic_conductivity
+                self.soil_porosity = arcpy.Describe(soil_porosity).catalogPath if not self.is_file_path(
+                    soil_porosity) else soil_porosity
+            if self.calc_DTW:
+                self.DEM = arcpy.Describe(DEM).catalogPath if not self.is_file_path(DEM) else DEM
+                self.smoothed_DEM = arcpy.Describe(smoothed_DEM).catalogPath if not self.is_file_path(
+                    smoothed_DEM) else smoothed_DEM
+            if self.multi_soil_type:
+                self.soil_type = arcpy.Describe(soil_type).catalogPath if not self.is_file_path(
+                    soil_type) else soil_type
 
         self.output_folder = output_folder
 
@@ -538,14 +543,14 @@ if __name__ == '__main__':
     options = True
     hetero_Ks_thetas = True
     calc_DTW = True
-    multi_soil_type = True
+    multi_soil_type = False
 
     septic_tank = os.path.join(arcpy.env.workspace, "Septic_tank_11.shp")
     hydraulic_conductivity = os.path.join(arcpy.env.workspace, "HydraulicConductivity.tif")
     soil_porosity = os.path.join(arcpy.env.workspace, "Porosity.tif")
     DEM = os.path.join(arcpy.env.workspace, "DEM.tif")
     smoothed_DEM = os.path.join(arcpy.env.workspace, "SmthDEM.img")
-    soiltypefile = os.path.join(arcpy.env.workspace, "soiltexture")
+    soiltypefile = None
 
     soiltype = "loam"
     hlr = 2.342
