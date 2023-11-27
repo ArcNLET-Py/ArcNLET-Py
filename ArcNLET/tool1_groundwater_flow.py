@@ -3,7 +3,9 @@ This script contains the Groundwater Flow module of ArcNLET model in the ArcGIS 
 
 For detailed algorithms, please see https://atmos.eoas.fsu.edu/~mye/ArcNLET/Techican_manual.pdf
 
-@author: Wei Mao <wm23a@fsu.edu>， Michael Core <mcore@fsu.edu>
+@author: Wei Mao <wm23a@fsu.edu>， Michael Core <mcore@fsu.edu>, Ming Ye <mye@fsu.edu>
+            The Department of Earth, Ocean, and Atmospheric Science, Florida State University
+@date: 2023-11-13
 """
 
 import os

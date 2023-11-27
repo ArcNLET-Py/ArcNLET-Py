@@ -1,9 +1,12 @@
 """
-This script contains the Groundwater Flow module of ArcNLET model in the ArcGIS Python Toolbox.
+This script contains the Preprocessing module of ArcNLET model in the ArcGIS Python Toolbox.
 
-For detailed algorithms, please see https://atmos.eoas.fsu.edu/~mye/ArcNLET/Techican_manual.pdf
+The users provide a polygon shapefile of the study area, and the code will extract the soil properties from the SSURGO
+The soil properties include hydraulic conductivity, porosity, and soil type.
 
-@author: Wei Mao <wm23a@fsu.edu>， Michael Core <mcore@fsu.edu>
+@author: Wei Mao <wm23a@fsu.edu>， Michael Core <mcore@fsu.edu>, Ming Ye <mye@fsu.edu>
+            The Department of Earth, Ocean, and Atmospheric Science, Florida State University
+@date: 2023-11-27
 """
 
 import os
@@ -1098,8 +1101,8 @@ class Preprocessing(object):
 # ======================================================================
 # Main program for debugging
 if __name__ == '__main__':
-    arcpy.env.workspace = "C:\\Users\\Wei\\Downloads\\test_pro\\test_pro"
-    # arcpy.env.workspace = "E:\\lakeshore_example\\lakeshore_example"
+    # arcpy.env.workspace = "C:\\Users\\Wei\\Downloads\\test_pro\\test_pro"
+    arcpy.env.workspace = "E:\\lakeshore_example\\lakeshore_example"
     area = os.path.join(arcpy.env.workspace, "file1.shp")
     pcs = arcpy.SpatialReference(26917)
     top = 0
