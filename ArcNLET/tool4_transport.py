@@ -428,7 +428,8 @@ class Transport:
                             no3y[math.floor(len(ylist) / 2) - math.floor(ny / 2):
                                  math.floor(len(ylist) / 2) - math.floor(ny / 2) + ny] = no3_conc
                         else:
-                            no3y[len(ylist) / 2 - ny / 2: len(ylist) / 2 + ny / 2] = no3_conc
+                            no3y[math.floor(len(ylist) / 2 - ny / 2):
+                                 math.floor(len(ylist) / 2 + ny / 2)] = no3_conc
                         no3result = np.hstack((no3y.reshape(-1, 1), no3result))
 
                         row_to_delete = np.all(no3result <= self.threshold, axis=1)
@@ -697,9 +698,9 @@ class Transport:
 
                     arcpy.Erase_analysis(outFeatures, self.waterbodies, Erase_polygon)
 
-                    save_name = name.split('.')[0] + '_full' + '.tif'
-                    if arcpy.Exists(save_name):
-                        arcpy.management.Delete(save_name)
+                    save_name = r'memory\plume_full'
+                    # if arcpy.Exists(save_name):
+                    #     arcpy.management.Delete(save_name)
                     try:
                         arcpy.sa.ExtractByMask(fname, Erase_polygon).save(save_name)
 
@@ -744,7 +745,7 @@ class Transport:
 
                         arcpy.Erase_analysis(outFeatures, self.waterbodies, Erase_polygon)
 
-                        save_name = name.split('.')[0] + '_full' + '.tif'
+                        save_name = r'memory\plume_full'
 
                         arcpy.sa.ExtractByMask(fname, Erase_polygon).save(save_name)
 
@@ -1144,59 +1145,60 @@ def is_file_locked(file_path):
 # ======================================================================
 # Main program for debugging
 if __name__ == '__main__':
-    for i in range(1):
-        arcpy.env.workspace = ".\\test_pro"
-        whethernh4 = False
-        source_location = os.path.join(arcpy.env.workspace, "PotentialSepticTankLocations.shp")
-        water_bodies = os.path.join(arcpy.env.workspace, "waterbodies")
-        particlepath = os.path.join(arcpy.env.workspace, "Path3.shp")
+    # for i in range(1):
+        # arcpy.env.workspace = ".\\test_pro"
+    arcpy.env.workspace = "C:\\Users\\Wei\\Downloads\\Ortho_P_3rd_attempt\\Ortho_P_3rd_attempt"
+    whethernh4 = False
+    source_location = os.path.join(arcpy.env.workspace, "septic_tanks.shp")
+    water_bodies = os.path.join(arcpy.env.workspace, "Golden_Gate_Water_Bodies.shp")
+    particlepath = os.path.join(arcpy.env.workspace, "particlepath_wei.shp")
 
-        no3output = os.path.join(arcpy.env.workspace, "no"+str(i))
-        nh4output = os.path.join(arcpy.env.workspace, "nh"+str(i))
-        no3output_info = "no"+str(i)+"_info.shp"
-        nh4output_info = "nh"+str(i)+"_info.shp"
+    no3output = os.path.join(arcpy.env.workspace, "no3")
+    nh4output = os.path.join(arcpy.env.workspace, "nh4")
+    no3output_info = "no3"+"_info.shp"
+    nh4output_info = "nh4"+"_info.shp"
 
-        option0 = "DomenicoRobbinsSSDecay2D"
-        option1 = 48
-        option2 = "Polyorder2"
-        option3 = 0.000001
-        option4 = "medium"
-        option5 = "Specified z"  # input mass rate or z
+    option0 = "DomenicoRobbinsSS2D"
+    option1 = 48
+    option2 = "Polyorder2"
+    option3 = 0.000001
+    option4 = "full"
+    option5 = "Specified Input Mass Rate"  # input mass rate or z
 
-        param1 = 20000
-        param2 = 6
-        param3 = 1
-        param4 = False
-        param5 = 3.0
-        param6 = 0.4
+    param1 = 5850
+    param2 = 20
+    param3 = 1
+    param4 = False
+    param5 = 3.0
+    param6 = 2
 
-        no3param0 = 40
-        no3param1 = 2.113
-        no3param2 = 0.234
-        no3param3 = 0.008
-        no3param4 = 1000.0
-        nh4param0 = 5
-        nh4param1 = 2.113
-        nh4param2 = 0.234
-        nh4param3 = 0.0008
-        nh4param4 = 1.42
-        nh4param5 = 4
+    no3param0 = 9
+    no3param1 = 45
+    no3param2 = 2.25
+    no3param3 = 0.008
+    no3param4 = 28.3168
+    nh4param0 = 5
+    nh4param1 = 2.113
+    nh4param2 = 0.234
+    nh4param3 = 0.0008
+    nh4param4 = 1.42
+    nh4param5 = 4
 
-        arcpy.AddMessage("starting geoprocessing")
-        start_time = datetime.datetime.now()
-        Tr = Transport(whethernh4, source_location, water_bodies, particlepath,
-                       no3output, nh4output, no3output_info, nh4output_info,
-                       option0, option1, option2, option3, option4, option5,
-                       param1, param2, param3, param4, param5, param6,
-                       no3param0, no3param1, no3param2, no3param3, no3param4,
-                       nh4param0, nh4param1, nh4param2, nh4param3, nh4param4, nh4param5)
+    arcpy.AddMessage("starting geoprocessing")
+    start_time = datetime.datetime.now()
+    Tr = Transport(whethernh4, source_location, water_bodies, particlepath,
+                   no3output, nh4output, no3output_info, nh4output_info,
+                   option0, option1, option2, option3, option4, option5,
+                   param1, param2, param3, param4, param5, param6,
+                   no3param0, no3param1, no3param2, no3param3, no3param4,
+                   nh4param0, nh4param1, nh4param2, nh4param3, nh4param4, nh4param5)
 
-        cProfile.run('Tr.calculate_plumes()', 'transport')
-        profile_stats = pstats.Stats('transport')
-        with open('transport.txt', 'w') as output_file:
-            profile_stats.sort_stats('cumulative').print_stats(output_file)
+    # cProfile.run('Tr.calculate_plumes()', 'transport')
+    # profile_stats = pstats.Stats('transport')
+    # with open('transport.txt', 'w') as output_file:
+    #     profile_stats.sort_stats('cumulative').print_stats(output_file)
 
-        # Tr.calculate_plumes()
-        end_time = datetime.datetime.now()
-        print("Total time: {}".format(end_time - start_time))
-        print("Tests successful!")
+    Tr.calculate_plumes()
+    end_time = datetime.datetime.now()
+    print("Total time: {}".format(end_time - start_time))
+    print("Tests successful!")

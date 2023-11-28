@@ -90,8 +90,8 @@ class DomenicoRobbins:
             else:
                 raise TypeError("x must be a number or a numpy array")
         if self.name == "DomenicoRobbins":
-            yden = 2 * math.sqrt(self.dy * x)
-            zden = 2 * math.sqrt(self.dz * x)
+            yden = 2 * np.sqrt(self.dy * x)
+            zden = 2 * np.sqrt(self.dz * x)
             erfy_p1 = (y + self.yover2) / yden
             erfy_p2 = (y - self.yover2) / yden
             erfz_p1 = (z + self.zover2) / zden
@@ -107,7 +107,7 @@ class DomenicoRobbins:
                 * (vertorized_erf(erfz_p1_withinf) - vertorized_erf(erfz_p2_withinf))
 
         elif self.name == "DomenicoRobbins2D":
-            yden = 2 * math.sqrt(self.dy * x)
+            yden = 2 * np.sqrt(self.dy * x)
             erfy_p1 = (y + self.yover2) / yden
             erfy_p2 = (y - self.yover2) / yden
 
@@ -118,8 +118,8 @@ class DomenicoRobbins:
                 * (vertorized_erf(erfy_p1_withinf) - vertorized_erf(erfy_p2_withinf))
 
         elif self.name == "DomenicoRobbinsSS":
-            yden = 2 * math.sqrt(self.dy * x)
-            zden = 2 * math.sqrt(self.dz * x)
+            yden = 2 * np.sqrt(self.dy * x)
+            zden = 2 * np.sqrt(self.dz * x)
             erfy_p1 = (y + self.yover2) / yden
             erfy_p2 = (y - self.yover2) / yden
             erfz_p1 = (z + self.zover2) / zden
@@ -134,7 +134,7 @@ class DomenicoRobbins:
                 * (vertorized_erf(erfz_p1_withinf) - vertorized_erf(erfz_p2_withinf))
 
         elif self.name == "DomenicoRobbinsSS2D":
-            yden = 2 * math.sqrt(self.dy * x)
+            yden = 2 * np.sqrt(self.dy * x)
             erfy_p1 = (y + self.yover2) / yden
             erfy_p2 = (y - self.yover2) / yden
 
@@ -156,7 +156,7 @@ class DomenicoRobbins:
                 * np.exp(xover2 - xover2 * self.decay_sqrt)
 
         elif self.name == "DomenicoRobbins2DModified":
-            yden = 2 * math.sqrt(self.dy * x)
+            yden = 2 * np.sqrt(self.dy * x)
             erfy_p1 = (y + self.yover2) / yden
             erfy_p2 = (y - self.yover2) / yden
 
