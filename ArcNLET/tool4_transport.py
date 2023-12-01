@@ -697,6 +697,10 @@ class Transport:
                     Erase_polygon = r'memory\Erase_polygon'
 
                     arcpy.Erase_analysis(outFeatures, self.waterbodies, Erase_polygon)
+                    if arcpy.management.GetCount(Erase_polygon)[0] == '0':
+                        # arcpy.AddMessage(
+                        #     "The plume {} is completely in the waterbody, no need to post process.".format(pathid))
+                        return fname
 
                     save_name = r'memory\plume_full'
                     # if arcpy.Exists(save_name):
@@ -1064,6 +1068,8 @@ class Transport:
             arcpy.management.Delete(r'memory\water_bodies')
         if arcpy.Exists(r'memory\plume_raster'):
             arcpy.management.Delete(r'memory\plume_raster')
+        if arcpy.Exists(r'memory\plume_full'):
+            arcpy.management.Delete(r'memory\plume_full')
         if arcpy.Exists(r'memory\Resample'):
             arcpy.management.Delete(r'memory\Resample')
         if arcpy.Exists(r'memory\polyline'):
@@ -1146,8 +1152,8 @@ def is_file_locked(file_path):
 # Main program for debugging
 if __name__ == '__main__':
     # for i in range(1):
-        # arcpy.env.workspace = ".\\test_pro"
-    arcpy.env.workspace = "C:\\Users\\Wei\\Downloads\\Ortho_P_3rd_attempt\\Ortho_P_3rd_attempt"
+    arcpy.env.workspace = ".\\test_pro"
+    # arcpy.env.workspace = "C:\\Users\\Wei\\Downloads\\Ortho_P_3rd_attempt\\Ortho_P_3rd_attempt"
     whethernh4 = False
     source_location = os.path.join(arcpy.env.workspace, "septic_tanks.shp")
     water_bodies = os.path.join(arcpy.env.workspace, "Golden_Gate_Water_Bodies.shp")

@@ -61,7 +61,7 @@ class InterfacePreprocessing(object):
                                  datatype="String",
                                  parameterType="Required",
                                  direction="Input")
-        choices = ["Weighted Average", "Dominant Component (Numeric)", "Min", "Max"]
+        choices = ["Harmonic mean for Ks", "Weighted Average", "Dominant Component (Numeric)", "Min", "Max"]
         input3.filter.list = choices
         input3.value = choices[0]
 

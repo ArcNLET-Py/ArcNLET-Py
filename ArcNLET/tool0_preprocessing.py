@@ -563,6 +563,366 @@ class Preprocessing(object):
                     #last_step2.wsatiated_r, #last_step2.wsatiated_h, #last_step2.dbovendry_l, 
                     #last_step2.dbovendry_r, #last_step2.dbovendry_h, #last_step2.partdensity, 
                     #last_step2.claytotal_r, #last_step2.silttotal_r, #last_step2.sandtotal_r""")
+        elif method.lower() == "harmonic mean for ks":
+            q = ("""
+            SELECT areasymbol, musym, muname, mukey
+                INTO #kitchensink
+                FROM legend
+                INNER JOIN mapunit ON mapunit.lkey = legend.lkey AND mapunit.mukey IN(""" + keys + """)
+            SELECT mapunit.mukey, cokey, comppct_r, compkind, majcompflag,
+                    SUM (comppct_r) OVER (PARTITION BY mapunit.mukey) AS SUM_COMP_PCT
+                INTO #comp_temp
+                FROM legend AS legend
+                INNER JOIN mapunit ON mapunit.lkey = legend.lkey AND mapunit.mukey IN(""" + keys + """)
+                INNER JOIN component ON component.mukey = mapunit.mukey AND component.majcompflag = 'Yes'
+            SELECT cokey, compkind, majcompflag, SUM_COMP_PCT,
+                    CASE WHEN comppct_r = SUM_COMP_PCT THEN 1 ELSE CAST((#comp_temp.comppct_r) AS decimal(5,2)) / 
+                        SUM_COMP_PCT END AS WEIGHTED_COMP_PCT1,
+                    CASE WHEN comppct_r = SUM_COMP_PCT THEN 1 ELSE CAST((#comp_temp.comppct_r) AS decimal(5,2)) /
+                        SUM_COMP_PCT END AS WEIGHTED_COMP_PCT2,
+                    CASE WHEN comppct_r = SUM_COMP_PCT THEN 1 ELSE CAST((#comp_temp.comppct_r) AS decimal(5,2)) /
+                        SUM_COMP_PCT END AS WEIGHTED_COMP_PCT3,
+                    CASE WHEN comppct_r = SUM_COMP_PCT THEN 1 ELSE CAST((#comp_temp.comppct_r) AS decimal(5,2)) /
+                        SUM_COMP_PCT END AS WEIGHTED_COMP_PCT4,
+                    CASE WHEN comppct_r = SUM_COMP_PCT THEN 1 ELSE CAST((#comp_temp.comppct_r) AS decimal(5,2)) /
+                        SUM_COMP_PCT END AS WEIGHTED_COMP_PCT5,
+                    CASE WHEN comppct_r = SUM_COMP_PCT THEN 1 ELSE CAST((#comp_temp.comppct_r) AS decimal(5,2)) /
+                        SUM_COMP_PCT END AS WEIGHTED_COMP_PCT6,
+                    CASE WHEN comppct_r = SUM_COMP_PCT THEN 1 ELSE CAST((#comp_temp.comppct_r) AS decimal(5,2)) /
+                        SUM_COMP_PCT END AS WEIGHTED_COMP_PCT7,
+                    CASE WHEN comppct_r = SUM_COMP_PCT THEN 1 ELSE CAST((#comp_temp.comppct_r) AS decimal(5,2)) /
+                        SUM_COMP_PCT END AS WEIGHTED_COMP_PCT8,
+                    CASE WHEN comppct_r = SUM_COMP_PCT THEN 1 ELSE CAST((#comp_temp.comppct_r) AS decimal(5,2)) /
+                        SUM_COMP_PCT END AS WEIGHTED_COMP_PCT9,
+                    CASE WHEN comppct_r = SUM_COMP_PCT THEN 1 ELSE CAST((#comp_temp.comppct_r) AS decimal(5,2)) /
+                        SUM_COMP_PCT END AS WEIGHTED_COMP_PCT10,
+                    CASE WHEN comppct_r = SUM_COMP_PCT THEN 1 ELSE CAST((#comp_temp.comppct_r) AS decimal(5,2)) /
+                        SUM_COMP_PCT END AS WEIGHTED_COMP_PCT11,
+                    CASE WHEN comppct_r = SUM_COMP_PCT THEN 1 ELSE CAST((#comp_temp.comppct_r) AS decimal(5,2)) /
+                        SUM_COMP_PCT END AS WEIGHTED_COMP_PCT12,
+                    CASE WHEN comppct_r = SUM_COMP_PCT THEN 1 ELSE CAST((#comp_temp.comppct_r) AS decimal(5,2)) /
+                        SUM_COMP_PCT END AS WEIGHTED_COMP_PCT13
+                INTO #comp_temp3
+                FROM #comp_temp
+            SELECT mapunit.mukey, areasymbol, musym, muname, component.cokey AS cokey, chorizon.chkey/1 AS chkey,
+                    compname, compkind, hzname, hzdept_r, hzdepb_r, 
+                    CASE WHEN hzdept_r < """ + tDep + " THEN " + tDep + """ ELSE hzdept_r END AS hzdept_r_ADJ,
+                    CASE WHEN hzdepb_r > """ + bDep + " THEN " + bDep + """ ELSE hzdepb_r END AS hzdepb_r_ADJ,
+                    CASE WHEN ksat_l is NULL THEN NULL ELSE CAST (CASE WHEN hzdepb_r > """ + bDep +
+                 " THEN " + bDep + """ ELSE hzdepb_r END - CASE WHEN hzdept_r < """ + tDep +
+                 " THEN " + tDep + """ ELSE hzdept_r END AS decimal(5,2)) END AS thickness_wt_ksat_l,
+                    CASE WHEN ksat_r is NULL THEN NULL ELSE CAST (CASE WHEN hzdepb_r > """ + bDep +
+                 " THEN " + bDep + """ ELSE hzdepb_r END - CASE WHEN hzdept_r < """ + tDep +
+                 " THEN " + tDep + """ ELSE hzdept_r END AS decimal(5,2)) END AS thickness_wt_ksat_r,
+                    CASE WHEN ksat_h is NULL THEN NULL ELSE CAST (CASE WHEN hzdepb_r > """ + bDep +
+                 " THEN " + bDep + """ ELSE hzdepb_r END - CASE WHEN hzdept_r < """ + tDep +
+                 " THEN " + tDep + """ ELSE hzdept_r END AS decimal(5,2)) END AS thickness_wt_ksat_h,
+                    CASE WHEN wsatiated_l is NULL THEN NULL ELSE CAST (CASE WHEN hzdepb_r > """ + bDep +
+                 " THEN " + bDep + """ ELSE hzdepb_r END - CASE WHEN hzdept_r < """ + tDep +
+                 " THEN " + tDep + """ ELSE hzdept_r END AS decimal(5,2)) END AS thickness_wt_wsatiated_l,
+                    CASE WHEN wsatiated_r is NULL THEN NULL ELSE CAST (CASE WHEN hzdepb_r > """ + bDep +
+                 " THEN " + bDep + """ ELSE hzdepb_r END - CASE WHEN hzdept_r < """ + tDep +
+                 " THEN " + tDep + """ ELSE hzdept_r END AS decimal(5,2)) END AS thickness_wt_wsatiated_r,
+                    CASE WHEN wsatiated_h is NULL THEN NULL ELSE CAST (CASE WHEN hzdepb_r > """ + bDep +
+                 " THEN " + bDep + """ ELSE hzdepb_r END - CASE WHEN hzdept_r < """ + tDep +
+                 " THEN " + tDep + """ ELSE hzdept_r END AS decimal(5,2)) END AS thickness_wt_wsatiated_h,
+                    CASE WHEN dbovendry_l is NULL THEN NULL ELSE CAST (CASE WHEN hzdepb_r > """ + bDep +
+                 " THEN " + bDep + """ ELSE hzdepb_r END - CASE WHEN hzdept_r < """ + tDep +
+                 " THEN " + tDep + """ ELSE hzdept_r END AS decimal(5,2)) END AS thickness_wt_dbovendry_l,
+                    CASE WHEN dbovendry_r is NULL THEN NULL ELSE CAST (CASE WHEN hzdepb_r > """ + bDep +
+                 " THEN " + bDep + """ ELSE hzdepb_r END - CASE WHEN hzdept_r < """ + tDep +
+                 " THEN " + tDep + """ ELSE hzdept_r END AS decimal(5,2)) END AS thickness_wt_dbovendry_r,
+                    CASE WHEN dbovendry_h is NULL THEN NULL ELSE CAST (CASE WHEN hzdepb_r > """ + bDep +
+                 " THEN " + bDep + """ ELSE hzdepb_r END - CASE WHEN hzdept_r < """ + tDep +
+                 " THEN " + tDep + """ ELSE hzdept_r END AS decimal(5,2)) END AS thickness_wt_dbovendry_h,
+                    CASE WHEN partdensity is NULL THEN NULL ELSE CAST (CASE WHEN hzdepb_r > """ + bDep +
+                 " THEN " + bDep + """ ELSE hzdepb_r END - CASE WHEN hzdept_r < """ + tDep +
+                 " THEN " + tDep + """ ELSE hzdept_r END AS decimal(5,2)) END AS thickness_wt_partdensity,
+                    CASE WHEN claytotal_r is NULL THEN NULL ELSE CAST (CASE WHEN hzdepb_r > """ + bDep +
+                 " THEN " + bDep + """ ELSE hzdepb_r END - CASE WHEN hzdept_r < """ + tDep +
+                 " THEN " + tDep + """ ELSE hzdept_r END AS decimal(5,2)) END AS thickness_wt_claytotal_r,
+                    CASE WHEN silttotal_r is NULL THEN NULL ELSE CAST (CASE WHEN hzdepb_r > """ + bDep +
+                 " THEN " + bDep + """ ELSE hzdepb_r END - CASE WHEN hzdept_r < """ + tDep +
+                 " THEN " + tDep + """ ELSE hzdept_r END AS decimal(5,2)) END AS thickness_wt_silttotal_r,
+                    CASE WHEN sandtotal_r is NULL THEN NULL ELSE CAST (CASE WHEN hzdepb_r > """ + bDep +
+                 " THEN " + bDep + """ ELSE hzdepb_r END - CASE WHEN hzdept_r < """ + tDep +
+                 " THEN " + tDep + """ ELSE hzdept_r END AS decimal(5,2)) END AS thickness_wt_sandtotal_r,
+                    CAST( SUM ( CAST ( ( 
+                        ( CASE WHEN hzdepb_r > """ + bDep + " THEN " + bDep + """ 
+                               WHEN ksat_l is NULL THEN NULL ELSE hzdepb_r END - 
+                          CASE WHEN hzdept_r < """ + tDep + " THEN " + tDep + """ 
+                               WHEN ksat_l is NULL THEN NULL ELSE hzdept_r END ) / ksat_l
+                        )AS decimal(5,2))) OVER (PARTITION BY component.cokey) AS decimal(5,2)) AS sum_thickness_ksat_l,
+                    CAST( SUM ( CAST ( (
+                        ( CASE WHEN hzdepb_r > """ + bDep + " THEN " + bDep + """ 
+                               WHEN ksat_r is NULL THEN NULL ELSE hzdepb_r END - 
+                          CASE WHEN hzdept_r < """ + tDep + " THEN " + tDep + """ 
+                               WHEN ksat_r is NULL THEN NULL ELSE hzdept_r END ) / ksat_r
+                        )AS decimal(5,2))) OVER (PARTITION BY component.cokey) AS decimal(5,2)) AS sum_thickness_ksat_r,
+                    CAST( SUM ( CAST ( (
+                        ( CASE WHEN hzdepb_r > """ + bDep + " THEN " + bDep + """ 
+                               WHEN ksat_h is NULL THEN NULL ELSE hzdepb_r END - 
+                          CASE WHEN hzdept_r < """ + tDep + " THEN " + tDep + """ 
+                               WHEN ksat_h is NULL THEN NULL ELSE hzdept_r END ) / ksat_h
+                        )AS decimal(5,2))) OVER (PARTITION BY component.cokey) AS decimal(5,2)) AS sum_thickness_ksat_h,
+                    CAST (SUM(CAST((CASE WHEN hzdepb_r > """ + bDep + " THEN " + bDep +
+                 """ WHEN wsatiated_l is NULL THEN NULL ELSE hzdepb_r END - CASE WHEN hzdept_r < """ + tDep +
+                 " THEN " + tDep + """ WHEN wsatiated_l is NULL THEN NULL ELSE hzdept_r END) AS decimal(5,2))) 
+                 OVER (PARTITION BY component.cokey) AS decimal(5,2)) AS sum_thickness_wsatiated_l,
+                    CAST (SUM(CAST((CASE WHEN hzdepb_r > """ + bDep + " THEN " + bDep +
+                 """ WHEN wsatiated_r is NULL THEN NULL ELSE hzdepb_r END - CASE WHEN hzdept_r < """ + tDep +
+                 " THEN " + tDep + """ WHEN wsatiated_r is NULL THEN NULL ELSE hzdept_r END) AS decimal(5,2))) 
+                 OVER (PARTITION BY component.cokey) AS decimal(5,2)) AS sum_thickness_wsatiated_r,
+                    CAST (SUM(CAST((CASE WHEN hzdepb_r > """ + bDep + " THEN " + bDep +
+                 """ WHEN wsatiated_h is NULL THEN NULL ELSE hzdepb_r END - CASE WHEN hzdept_r < """ + tDep +
+                 " THEN " + tDep + """ WHEN wsatiated_h is NULL THEN NULL ELSE hzdept_r END) AS decimal(5,2))) 
+                 OVER (PARTITION BY component.cokey) AS decimal(5,2)) AS sum_thickness_wsatiated_h,
+                    CAST (SUM(CAST((CASE WHEN hzdepb_r > """ + bDep + " THEN " + bDep +
+                 """ WHEN dbovendry_l is NULL THEN NULL ELSE hzdepb_r END - CASE WHEN hzdept_r < """ + tDep +
+                 " THEN " + tDep + """ WHEN dbovendry_l is NULL THEN NULL ELSE hzdept_r END) AS decimal(5,2))) 
+                 OVER (PARTITION BY component.cokey) AS decimal(5,2)) AS sum_thickness_dbovendry_l,
+                    CAST (SUM(CAST((CASE WHEN hzdepb_r > """ + bDep + " THEN " + bDep +
+                 """ WHEN dbovendry_r is NULL THEN NULL ELSE hzdepb_r END - CASE WHEN hzdept_r < """ + tDep +
+                 " THEN " + tDep + """ WHEN dbovendry_r is NULL THEN NULL ELSE hzdept_r END) AS decimal(5,2))) 
+                 OVER (PARTITION BY component.cokey) AS decimal(5,2)) AS sum_thickness_dbovendry_r,
+                    CAST (SUM(CAST((CASE WHEN hzdepb_r > """ + bDep + " THEN " + bDep +
+                 """ WHEN dbovendry_h is NULL THEN NULL ELSE hzdepb_r END - CASE WHEN hzdept_r < """ + tDep +
+                 " THEN " + tDep + """ WHEN dbovendry_h is NULL THEN NULL ELSE hzdept_r END) AS decimal(5,2))) 
+                 OVER (PARTITION BY component.cokey) AS decimal(5,2)) AS sum_thickness_dbovendry_h,
+                    CAST (SUM(CAST((CASE WHEN hzdepb_r > """ + bDep + " THEN " + bDep +
+                 """ WHEN partdensity is NULL THEN NULL ELSE hzdepb_r END - CASE WHEN hzdept_r < """ + tDep +
+                 " THEN " + tDep + """ WHEN partdensity is NULL THEN NULL ELSE hzdept_r END) AS decimal(5,2))) 
+                 OVER (PARTITION BY component.cokey) AS decimal(5,2)) AS sum_thickness_partdensity,
+                    CAST (SUM(CAST((CASE WHEN hzdepb_r > """ + bDep + " THEN " + bDep +
+                 """ WHEN claytotal_r is NULL THEN NULL ELSE hzdepb_r END - CASE WHEN hzdept_r < """ + tDep +
+                 " THEN " + tDep + """ WHEN claytotal_r is NULL THEN NULL ELSE hzdept_r END) AS decimal(5,2))) 
+                 OVER (PARTITION BY component.cokey) AS decimal(5,2)) AS sum_thickness_claytotal_r,
+                    CAST (SUM(CAST((CASE WHEN hzdepb_r > """ + bDep + " THEN " + bDep +
+                 """ WHEN silttotal_r is NULL THEN NULL ELSE hzdepb_r END - CASE WHEN hzdept_r < """ + tDep +
+                 " THEN " + tDep + """ WHEN silttotal_r is NULL THEN NULL ELSE hzdept_r END) AS decimal(5,2))) 
+                 OVER (PARTITION BY component.cokey) AS decimal(5,2)) AS sum_thickness_silttotal_r,
+                    CAST (SUM(CAST((CASE WHEN hzdepb_r > """ + bDep + " THEN " + bDep +
+                 """ WHEN sandtotal_r is NULL THEN NULL ELSE hzdepb_r END - CASE WHEN hzdept_r < """ + tDep +
+                 " THEN " + tDep + """ WHEN sandtotal_r is NULL THEN NULL ELSE hzdept_r END) AS decimal(5,2))) 
+                 OVER (PARTITION BY component.cokey) AS decimal(5,2)) AS sum_thickness_sandtotal_r,
+                    comppct_r, ksat_l, ksat_r, ksat_h, wsatiated_l, wsatiated_r, wsatiated_h, dbovendry_l, dbovendry_r,
+                    dbovendry_h, partdensity, claytotal_r, silttotal_r, sandtotal_r
+                INTO #main
+                FROM legend
+                INNER JOIN mapunit ON mapunit.lkey = legend.lkey AND mapunit.mukey IN(""" + keys + """)
+                INNER JOIN component ON component.mukey = mapunit.mukey  AND component.compkind != 'Miscellaneous area'
+                INNER JOIN chorizon ON chorizon.cokey = component.cokey AND hzdepb_r > """ + tDep +
+                 """ AND hzdept_r <= """ + bDep + """
+                WHERE chorizon.hzdept_r IS NOT NULL
+                ORDER BY mapunit.mukey, areasymbol, musym, muname, comppct_r DESC, cokey, hzdept_r, hzdepb_r
+            SELECT #main.mukey, #main.areasymbol, #main.musym, #main.muname, #main.cokey, #main.chkey, #main.compname,
+                    #main.compkind, hzname, hzdept_r, hzdepb_r, hzdept_r_ADJ, hzdepb_r_ADJ, 
+                    (CASE WHEN ISNULL(sum_thickness_ksat_l, 0) = 0 THEN 0 ELSE WEIGHTED_COMP_PCT1 END) AS
+                        CORRECT_COMP_PCT1,
+                    (CASE WHEN ISNULL(sum_thickness_ksat_r, 0) = 0 THEN 0 ELSE WEIGHTED_COMP_PCT2 END) AS
+                        CORRECT_COMP_PCT2,
+                    (CASE WHEN ISNULL(sum_thickness_ksat_h, 0) = 0 THEN 0 ELSE WEIGHTED_COMP_PCT3 END) AS
+                        CORRECT_COMP_PCT3,
+                    (CASE WHEN ISNULL(sum_thickness_wsatiated_l, 0) = 0 THEN 0 ELSE WEIGHTED_COMP_PCT4 END) AS
+                        CORRECT_COMP_PCT4,
+                    (CASE WHEN ISNULL(sum_thickness_wsatiated_r, 0) = 0 THEN 0 ELSE WEIGHTED_COMP_PCT5 END) AS
+                        CORRECT_COMP_PCT5,
+                    (CASE WHEN ISNULL(sum_thickness_wsatiated_h, 0) = 0 THEN 0 ELSE WEIGHTED_COMP_PCT6 END) AS
+                        CORRECT_COMP_PCT6,
+                    (CASE WHEN ISNULL(sum_thickness_dbovendry_l, 0) = 0 THEN 0 ELSE WEIGHTED_COMP_PCT7 END) AS
+                        CORRECT_COMP_PCT7,
+                    (CASE WHEN ISNULL(sum_thickness_dbovendry_r, 0) = 0 THEN 0 ELSE WEIGHTED_COMP_PCT8 END) AS
+                        CORRECT_COMP_PCT8,
+                    (CASE WHEN ISNULL(sum_thickness_dbovendry_h, 0) = 0 THEN 0 ELSE WEIGHTED_COMP_PCT9 END) AS
+                        CORRECT_COMP_PCT9,
+                    (CASE WHEN ISNULL(sum_thickness_partdensity, 0) = 0 THEN 0 ELSE WEIGHTED_COMP_PCT10 END) AS
+                        CORRECT_COMP_PCT10,
+                    (CASE WHEN ISNULL(sum_thickness_claytotal_r, 0) = 0 THEN 0 ELSE WEIGHTED_COMP_PCT11 END) AS
+                        CORRECT_COMP_PCT11,
+                    (CASE WHEN ISNULL(sum_thickness_silttotal_r, 0) = 0 THEN 0 ELSE WEIGHTED_COMP_PCT12 END) AS
+                        CORRECT_COMP_PCT12,
+                    (CASE WHEN ISNULL(sum_thickness_sandtotal_r, 0) = 0 THEN 0 ELSE WEIGHTED_COMP_PCT13 END) AS
+                        CORRECT_COMP_PCT13,
+                    ISNULL(thickness_wt_ksat_l, 0) AS thickness_wt_ksat_l, sum_thickness_ksat_l, 
+                    ISNULL(thickness_wt_ksat_r, 0) AS thickness_wt_ksat_r, sum_thickness_ksat_r,
+                    ISNULL(thickness_wt_ksat_h, 0) AS thickness_wt_ksat_h, sum_thickness_ksat_h,
+                    ISNULL(thickness_wt_wsatiated_l, 0) AS thickness_wt_wsatiated_l, sum_thickness_wsatiated_l,
+                    ISNULL(thickness_wt_wsatiated_r, 0) AS thickness_wt_wsatiated_r, sum_thickness_wsatiated_r,
+                    ISNULL(thickness_wt_wsatiated_h, 0) AS thickness_wt_wsatiated_h, sum_thickness_wsatiated_h,
+                    ISNULL(thickness_wt_dbovendry_l, 0) AS thickness_wt_dbovendry_l, sum_thickness_dbovendry_l,
+                    ISNULL(thickness_wt_dbovendry_r, 0) AS thickness_wt_dbovendry_r, sum_thickness_dbovendry_r,
+                    ISNULL(thickness_wt_dbovendry_h, 0) AS thickness_wt_dbovendry_h, sum_thickness_dbovendry_h,
+                    ISNULL(thickness_wt_partdensity, 0) AS thickness_wt_partdensity, sum_thickness_partdensity,
+                    ISNULL(thickness_wt_claytotal_r, 0) AS thickness_wt_claytotal_r, sum_thickness_claytotal_r,
+                    ISNULL(thickness_wt_silttotal_r, 0) AS thickness_wt_silttotal_r, sum_thickness_silttotal_r,
+                    ISNULL(thickness_wt_sandtotal_r, 0) AS thickness_wt_sandtotal_r, sum_thickness_sandtotal_r,
+                    comppct_r, SUM_COMP_PCT, ksat_l, ksat_r, ksat_h, wsatiated_l, wsatiated_r, wsatiated_h, dbovendry_l,
+                    dbovendry_r, dbovendry_h, partdensity, claytotal_r, silttotal_r, sandtotal_r, 
+                    ((thickness_wt_ksat_l / (CASE WHEN sum_thickness_ksat_l = 0 THEN 1 ELSE 
+                        sum_thickness_ksat_l END)) ) AS DEPTH_WEIGHTED_AVERAGE1,
+                    ((thickness_wt_ksat_r / (CASE WHEN sum_thickness_ksat_r = 0 THEN 1 ELSE 
+                        sum_thickness_ksat_r END)) ) AS DEPTH_WEIGHTED_AVERAGE2,
+                    ((thickness_wt_ksat_h / (CASE WHEN sum_thickness_ksat_h = 0 THEN 1 ELSE 
+                        sum_thickness_ksat_h END)) ) AS DEPTH_WEIGHTED_AVERAGE3,
+                    ((thickness_wt_wsatiated_l / (CASE WHEN sum_thickness_wsatiated_l = 0 THEN 1 ELSE 
+                        sum_thickness_wsatiated_l END)) * wsatiated_l) AS DEPTH_WEIGHTED_AVERAGE4,
+                    ((thickness_wt_wsatiated_r / (CASE WHEN sum_thickness_wsatiated_r = 0 THEN 1 ELSE 
+                        sum_thickness_wsatiated_r END)) * wsatiated_r) AS DEPTH_WEIGHTED_AVERAGE5,
+                    ((thickness_wt_wsatiated_h / (CASE WHEN sum_thickness_wsatiated_h = 0 THEN 1 ELSE 
+                        sum_thickness_wsatiated_h END)) * wsatiated_h) AS DEPTH_WEIGHTED_AVERAGE6,
+                    ((thickness_wt_dbovendry_l / (CASE WHEN sum_thickness_dbovendry_l = 0 THEN 1 ELSE 
+                        sum_thickness_dbovendry_l END)) * dbovendry_l) AS DEPTH_WEIGHTED_AVERAGE7,
+                    ((thickness_wt_dbovendry_r / (CASE WHEN sum_thickness_dbovendry_r = 0 THEN 1 ELSE 
+                        sum_thickness_dbovendry_r END)) * dbovendry_r) AS DEPTH_WEIGHTED_AVERAGE8,
+                    ((thickness_wt_dbovendry_h / (CASE WHEN sum_thickness_dbovendry_h = 0 THEN 1 ELSE 
+                        sum_thickness_dbovendry_h END)) * dbovendry_h) AS DEPTH_WEIGHTED_AVERAGE9,
+                    ((thickness_wt_partdensity / (CASE WHEN sum_thickness_partdensity = 0 THEN 1 ELSE 
+                        sum_thickness_partdensity END)) * partdensity) AS DEPTH_WEIGHTED_AVERAGE10,
+                    ((thickness_wt_claytotal_r / (CASE WHEN sum_thickness_claytotal_r = 0 THEN 1 ELSE 
+                        sum_thickness_claytotal_r END)) * claytotal_r) AS DEPTH_WEIGHTED_AVERAGE11,
+                    ((thickness_wt_silttotal_r / (CASE WHEN sum_thickness_silttotal_r = 0 THEN 1 ELSE 
+                        sum_thickness_silttotal_r END)) * silttotal_r) AS DEPTH_WEIGHTED_AVERAGE12,
+                    ((thickness_wt_sandtotal_r / (CASE WHEN sum_thickness_sandtotal_r = 0 THEN 1 ELSE 
+                        sum_thickness_sandtotal_r END)) * sandtotal_r) AS DEPTH_WEIGHTED_AVERAGE13
+                INTO #comp_temp2
+                FROM #main
+                INNER JOIN #comp_temp3 ON #comp_temp3.cokey = #main.cokey
+                ORDER BY #main.mukey, comppct_r DESC, #main.cokey, #main.areasymbol, #main.musym, #main.muname,
+                    hzdept_r, hzdepb_r
+            SELECT DISTINCT #comp_temp2.mukey, #comp_temp2.cokey, CORRECT_COMP_PCT1, CORRECT_COMP_PCT2,
+                    CORRECT_COMP_PCT3, CORRECT_COMP_PCT4, CORRECT_COMP_PCT5, CORRECT_COMP_PCT6, CORRECT_COMP_PCT7,
+                    CORRECT_COMP_PCT8, CORRECT_COMP_PCT9, CORRECT_COMP_PCT10, CORRECT_COMP_PCT11,
+                    CORRECT_COMP_PCT12, CORRECT_COMP_PCT13
+                INTO #weights
+                FROM #comp_temp2
+                    WHERE DEPTH_WEIGHTED_AVERAGE1 IS NOT NULL OR DEPTH_WEIGHTED_AVERAGE2 IS NOT NULL OR 
+                          DEPTH_WEIGHTED_AVERAGE3 IS NOT NULL OR DEPTH_WEIGHTED_AVERAGE4 IS NOT NULL OR 
+                          DEPTH_WEIGHTED_AVERAGE5 IS NOT NULL OR DEPTH_WEIGHTED_AVERAGE6 IS NOT NULL OR 
+                          DEPTH_WEIGHTED_AVERAGE7 IS NOT NULL OR DEPTH_WEIGHTED_AVERAGE8 IS NOT NULL OR 
+                          DEPTH_WEIGHTED_AVERAGE9 IS NOT NULL OR DEPTH_WEIGHTED_AVERAGE10 IS NOT NULL OR 
+                          DEPTH_WEIGHTED_AVERAGE11 IS NOT NULL OR DEPTH_WEIGHTED_AVERAGE12 IS NOT NULL OR 
+                          DEPTH_WEIGHTED_AVERAGE13 IS NOT NULL
+            SELECT DISTINCT #weights.mukey, SUM(CORRECT_COMP_PCT1) AS RATED_PCT1, SUM(CORRECT_COMP_PCT2) AS RATED_PCT2, 
+                    SUM(CORRECT_COMP_PCT3) AS RATED_PCT3, SUM(CORRECT_COMP_PCT4) AS RATED_PCT4, 
+                    SUM(CORRECT_COMP_PCT5) AS RATED_PCT5, SUM(CORRECT_COMP_PCT6) AS RATED_PCT6, 
+                    SUM(CORRECT_COMP_PCT7) AS RATED_PCT7, SUM(CORRECT_COMP_PCT8) AS RATED_PCT8, 
+                    SUM(CORRECT_COMP_PCT9) AS RATED_PCT9, SUM(CORRECT_COMP_PCT10) AS RATED_PCT10, 
+                    SUM(CORRECT_COMP_PCT11) AS RATED_PCT11, SUM(CORRECT_COMP_PCT12) AS RATED_PCT12, 
+                    SUM(CORRECT_COMP_PCT13) AS RATED_PCT13
+                INTO #weights2
+                FROM #weights
+                GROUP BY #weights.mukey
+            SELECT #comp_temp2.mukey, #comp_temp2.cokey, #weights2.RATED_PCT1, #weights2.RATED_PCT2, 
+                    #weights2.RATED_PCT3, #weights2.RATED_PCT4, #weights2.RATED_PCT5, #weights2.RATED_PCT6, 
+                    #weights2.RATED_PCT7, #weights2.RATED_PCT8, #weights2.RATED_PCT9, #weights2.RATED_PCT10, 
+                    #weights2.RATED_PCT11, #weights2.RATED_PCT12, #weights2.RATED_PCT13, 
+                    SUM(CORRECT_COMP_PCT1 * DEPTH_WEIGHTED_AVERAGE1) AS COMP_WEIGHTED_AVERAGE1, 
+                    SUM(CORRECT_COMP_PCT2 * DEPTH_WEIGHTED_AVERAGE2) AS COMP_WEIGHTED_AVERAGE2, 
+                    SUM(CORRECT_COMP_PCT3 * DEPTH_WEIGHTED_AVERAGE3) AS COMP_WEIGHTED_AVERAGE3, 
+                    SUM(CORRECT_COMP_PCT4 * DEPTH_WEIGHTED_AVERAGE4) AS COMP_WEIGHTED_AVERAGE4, 
+                    SUM(CORRECT_COMP_PCT5 * DEPTH_WEIGHTED_AVERAGE5) AS COMP_WEIGHTED_AVERAGE5, 
+                    SUM(CORRECT_COMP_PCT6 * DEPTH_WEIGHTED_AVERAGE6) AS COMP_WEIGHTED_AVERAGE6, 
+                    SUM(CORRECT_COMP_PCT7 * DEPTH_WEIGHTED_AVERAGE7) AS COMP_WEIGHTED_AVERAGE7, 
+                    SUM(CORRECT_COMP_PCT8 * DEPTH_WEIGHTED_AVERAGE8) AS COMP_WEIGHTED_AVERAGE8, 
+                    SUM(CORRECT_COMP_PCT9 * DEPTH_WEIGHTED_AVERAGE9) AS COMP_WEIGHTED_AVERAGE9, 
+                    SUM(CORRECT_COMP_PCT10 * DEPTH_WEIGHTED_AVERAGE10) AS COMP_WEIGHTED_AVERAGE10, 
+                    SUM(CORRECT_COMP_PCT11 * DEPTH_WEIGHTED_AVERAGE11) AS COMP_WEIGHTED_AVERAGE11, 
+                    SUM(CORRECT_COMP_PCT12 * DEPTH_WEIGHTED_AVERAGE12) AS COMP_WEIGHTED_AVERAGE12, 
+                    SUM(CORRECT_COMP_PCT13 * DEPTH_WEIGHTED_AVERAGE13) AS COMP_WEIGHTED_AVERAGE13
+                INTO #last_step
+                FROM #comp_temp2
+                INNER JOIN #weights2 ON #weights2.mukey = #comp_temp2.mukey
+                    WHERE DEPTH_WEIGHTED_AVERAGE1 IS NOT NULL OR DEPTH_WEIGHTED_AVERAGE2 IS NOT NULL OR 
+                        DEPTH_WEIGHTED_AVERAGE3 IS NOT NULL OR DEPTH_WEIGHTED_AVERAGE4 IS NOT NULL OR 
+                        DEPTH_WEIGHTED_AVERAGE5 IS NOT NULL OR DEPTH_WEIGHTED_AVERAGE6 IS NOT NULL OR 
+                        DEPTH_WEIGHTED_AVERAGE7 IS NOT NULL OR DEPTH_WEIGHTED_AVERAGE8 IS NOT NULL OR 
+                        DEPTH_WEIGHTED_AVERAGE9 IS NOT NULL OR DEPTH_WEIGHTED_AVERAGE10 IS NOT NULL OR 
+                        DEPTH_WEIGHTED_AVERAGE11 IS NOT NULL OR DEPTH_WEIGHTED_AVERAGE12 IS NOT NULL OR 
+                        DEPTH_WEIGHTED_AVERAGE13 IS NOT NULL
+                GROUP BY #comp_temp2.mukey, #comp_temp2.cokey, CORRECT_COMP_PCT1, CORRECT_COMP_PCT2, CORRECT_COMP_PCT3, 
+                    CORRECT_COMP_PCT4, CORRECT_COMP_PCT5, CORRECT_COMP_PCT6, CORRECT_COMP_PCT7, CORRECT_COMP_PCT8, 
+                    CORRECT_COMP_PCT9, CORRECT_COMP_PCT10, CORRECT_COMP_PCT11, CORRECT_COMP_PCT12, CORRECT_COMP_PCT13, 
+                    #weights2.RATED_PCT1, #weights2.RATED_PCT2, #weights2.RATED_PCT3, #weights2.RATED_PCT4, 
+                    #weights2.RATED_PCT5, #weights2.RATED_PCT6, #weights2.RATED_PCT7, #weights2.RATED_PCT8, 
+                    #weights2.RATED_PCT9, #weights2.RATED_PCT10, #weights2.RATED_PCT11, #weights2.RATED_PCT12, 
+                    #weights2.RATED_PCT13, DEPTH_WEIGHTED_AVERAGE1, DEPTH_WEIGHTED_AVERAGE2, DEPTH_WEIGHTED_AVERAGE3, 
+                    DEPTH_WEIGHTED_AVERAGE4, DEPTH_WEIGHTED_AVERAGE5, 
+                    DEPTH_WEIGHTED_AVERAGE6, DEPTH_WEIGHTED_AVERAGE7,
+                    DEPTH_WEIGHTED_AVERAGE8, DEPTH_WEIGHTED_AVERAGE9, 
+                    DEPTH_WEIGHTED_AVERAGE10, DEPTH_WEIGHTED_AVERAGE11, 
+                    DEPTH_WEIGHTED_AVERAGE12, DEPTH_WEIGHTED_AVERAGE13
+            SELECT #kitchensink.mukey, #last_step.cokey, areasymbol, musym, muname, #last_step.RATED_PCT1, 
+                    #last_step.RATED_PCT2, #last_step.RATED_PCT3, #last_step.RATED_PCT4, #last_step.RATED_PCT5, 
+                    #last_step.RATED_PCT6, #last_step.RATED_PCT7, #last_step.RATED_PCT8, #last_step.RATED_PCT9, 
+                    #last_step.RATED_PCT10, #last_step.RATED_PCT11, #last_step.RATED_PCT12, #last_step.RATED_PCT13, 
+                    CAST (SUM((CASE WHEN RATED_PCT1 = 0 THEN NULL ELSE COMP_WEIGHTED_AVERAGE1 END) / 
+                        (CASE WHEN RATED_PCT1 = 0 THEN 1 ELSE RATED_PCT1 END)) OVER 
+                        (PARTITION BY #kitchensink.mukey) AS decimal(10,2)) AS ksat_l, 
+                    CAST (SUM((CASE WHEN RATED_PCT2 = 0 THEN NULL ELSE COMP_WEIGHTED_AVERAGE2 END) / 
+                        (CASE WHEN RATED_PCT2 = 0 THEN 1 ELSE RATED_PCT2 END)) OVER 
+                        (PARTITION BY #kitchensink.mukey) AS decimal(10,2)) AS ksat_r, 
+                    CAST (SUM((CASE WHEN RATED_PCT3 = 0 THEN NULL ELSE COMP_WEIGHTED_AVERAGE3 END) / 
+                        (CASE WHEN RATED_PCT3 = 0 THEN 1 ELSE RATED_PCT3 END)) 
+                        OVER (PARTITION BY #kitchensink.mukey) AS decimal(10,2)) AS ksat_h, 
+                    CAST (SUM((CASE WHEN RATED_PCT4 = 0 THEN NULL ELSE COMP_WEIGHTED_AVERAGE4 END) / 
+                        (CASE WHEN RATED_PCT4 = 0 THEN 1 ELSE RATED_PCT4 END)) 
+                        OVER (PARTITION BY #kitchensink.mukey) AS decimal(10,2)) AS wsatiated_l, 
+                    CAST (SUM((CASE WHEN RATED_PCT5 = 0 THEN NULL ELSE COMP_WEIGHTED_AVERAGE5 END) / 
+                        (CASE WHEN RATED_PCT5 = 0 THEN 1 ELSE RATED_PCT5 END)) 
+                        OVER (PARTITION BY #kitchensink.mukey) AS decimal(10,2)) AS wsatiated_r, 
+                    CAST (SUM((CASE WHEN RATED_PCT6 = 0 THEN NULL ELSE COMP_WEIGHTED_AVERAGE6 END) / 
+                        (CASE WHEN RATED_PCT6 = 0 THEN 1 ELSE RATED_PCT6 END)) 
+                        OVER (PARTITION BY #kitchensink.mukey) AS decimal(10,2)) AS wsatiated_h, 
+                    CAST (SUM((CASE WHEN RATED_PCT7 = 0 THEN NULL ELSE COMP_WEIGHTED_AVERAGE7 END) / 
+                        (CASE WHEN RATED_PCT7 = 0 THEN 1 ELSE RATED_PCT7 END)) 
+                        OVER (PARTITION BY #kitchensink.mukey) AS decimal(10,2)) AS dbovendry_l, 
+                    CAST (SUM((CASE WHEN RATED_PCT8 = 0 THEN NULL ELSE COMP_WEIGHTED_AVERAGE8 END) / 
+                        (CASE WHEN RATED_PCT8 = 0 THEN 1 ELSE RATED_PCT8 END)) 
+                        OVER (PARTITION BY #kitchensink.mukey) AS decimal(10,2)) AS dbovendry_r, 
+                    CAST (SUM((CASE WHEN RATED_PCT9 = 0 THEN NULL ELSE COMP_WEIGHTED_AVERAGE9 END) / 
+                        (CASE WHEN RATED_PCT9 = 0 THEN 1 ELSE RATED_PCT9 END)) 
+                        OVER (PARTITION BY #kitchensink.mukey) AS decimal(10,2)) AS dbovendry_h, 
+                    CAST (SUM((CASE WHEN RATED_PCT10 = 0 THEN NULL ELSE COMP_WEIGHTED_AVERAGE10 END) / 
+                        (CASE WHEN RATED_PCT10 = 0 THEN 1 ELSE RATED_PCT10 END)) 
+                        OVER (PARTITION BY #kitchensink.mukey) AS decimal(10,2)) AS partdensity, 
+                    CAST (SUM((CASE WHEN RATED_PCT11 = 0 THEN NULL ELSE COMP_WEIGHTED_AVERAGE11 END) / 
+                        (CASE WHEN RATED_PCT11 = 0 THEN 1 ELSE RATED_PCT11 END)) 
+                        OVER (PARTITION BY #kitchensink.mukey) AS decimal(10,2)) AS claytotal_r, 
+                    CAST (SUM((CASE WHEN RATED_PCT12 = 0 THEN NULL ELSE COMP_WEIGHTED_AVERAGE12 END) / 
+                        (CASE WHEN RATED_PCT12 = 0 THEN 1 ELSE RATED_PCT12 END)) 
+                        OVER (PARTITION BY #kitchensink.mukey) AS decimal(10,2)) AS silttotal_r, 
+                    CAST (SUM((CASE WHEN RATED_PCT13 = 0 THEN NULL ELSE COMP_WEIGHTED_AVERAGE13 END) / 
+                    (CASE WHEN RATED_PCT13 = 0 THEN 1 ELSE RATED_PCT13 END)) 
+                    OVER (PARTITION BY #kitchensink.mukey) AS decimal(10,2)) AS sandtotal_r
+                INTO #last_step2
+                FROM #last_step
+                RIGHT OUTER JOIN #kitchensink ON #kitchensink.mukey = #last_step.mukey
+                GROUP BY #kitchensink.areasymbol, #kitchensink.musym, #kitchensink.muname, #kitchensink.mukey, 
+                    #last_step.RATED_PCT1, #last_step.RATED_PCT2, #last_step.RATED_PCT3, #last_step.RATED_PCT4, 
+                    #last_step.RATED_PCT5, #last_step.RATED_PCT6, #last_step.RATED_PCT7, #last_step.RATED_PCT8, 
+                    #last_step.RATED_PCT9, #last_step.RATED_PCT10, #last_step.RATED_PCT11, #last_step.RATED_PCT12, 
+                    #last_step.RATED_PCT13, COMP_WEIGHTED_AVERAGE1, COMP_WEIGHTED_AVERAGE2, COMP_WEIGHTED_AVERAGE3, 
+                    COMP_WEIGHTED_AVERAGE4, COMP_WEIGHTED_AVERAGE5, COMP_WEIGHTED_AVERAGE6, COMP_WEIGHTED_AVERAGE7, 
+                    COMP_WEIGHTED_AVERAGE8, COMP_WEIGHTED_AVERAGE9, COMP_WEIGHTED_AVERAGE10, COMP_WEIGHTED_AVERAGE11, 
+                    COMP_WEIGHTED_AVERAGE12, COMP_WEIGHTED_AVERAGE13, #last_step.cokey
+                ORDER BY #kitchensink.mukey, #kitchensink.areasymbol, #kitchensink.musym, #kitchensink.muname
+            SELECT #last_step2.areasymbol, #last_step2.musym, #last_step2.muname, #last_step2.mukey, 
+                    #last_step2.ksat_l, #last_step2.ksat_r, #last_step2.ksat_h, #last_step2.wsatiated_l, 
+                    #last_step2.wsatiated_r, #last_step2.wsatiated_h, #last_step2.dbovendry_l, 
+                    #last_step2.dbovendry_r, #last_step2.dbovendry_h, #last_step2.partdensity, 
+                    #last_step2.claytotal_r, #last_step2.silttotal_r, #last_step2.sandtotal_r
+                FROM #last_step2
+                LEFT OUTER JOIN #last_step ON #last_step.mukey = #last_step2.mukey
+                GROUP BY #last_step2.areasymbol, #last_step2.musym, #last_step2.muname, #last_step2.mukey, 
+                    #last_step2.ksat_l, #last_step2.ksat_r, #last_step2.ksat_h, #last_step2.wsatiated_l, 
+                    #last_step2.wsatiated_r, #last_step2.wsatiated_h, #last_step2.dbovendry_l, 
+                    #last_step2.dbovendry_r, #last_step2.dbovendry_h, #last_step2.partdensity, 
+                    #last_step2.claytotal_r, #last_step2.silttotal_r, #last_step2.sandtotal_r
+                ORDER BY #last_step2.mukey, #last_step2.areasymbol, #last_step2.musym, #last_step2.muname, 
+                    #last_step2.ksat_l, #last_step2.ksat_r, #last_step2.ksat_h, #last_step2.wsatiated_l, 
+                    #last_step2.wsatiated_r, #last_step2.wsatiated_h, #last_step2.dbovendry_l, 
+                    #last_step2.dbovendry_r, #last_step2.dbovendry_h, #last_step2.partdensity, 
+                    #last_step2.claytotal_r, #last_step2.silttotal_r, #last_step2.sandtotal_r""")
         elif method.lower() == "dominant component (numeric)":
             q = ("""
             SELECT areasymbol, musym, muname, mukey

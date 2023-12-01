@@ -249,7 +249,7 @@ class InterfaceVZMOD(object):
         denitparam0.value = 0.025
 
         denitparam1 = arcpy.Parameter(name="Topt-dnt",
-                                      displayName="Topt-dnt (/u2103)",
+                                      displayName="Topt-dnt (\u2103)",
                                       datatype="GPDouble",
                                       parameterType="Required",  # Required|Optional|Derived
                                       direction="Input",  # Input|Output
