@@ -49,12 +49,14 @@ class InterfacePreprocessing(object):
                                  datatype="GPDouble",
                                  parameterType="Required",
                                  direction="Input")
+        input1.value = 0
 
         input2 = arcpy.Parameter(name="Bottom Depth",
                                  displayName="Bottom Depth [cm]",
                                  datatype="GPDouble",
                                  parameterType="Required",
                                  direction="Input")
+        input2.value = 200
 
         input3 = arcpy.Parameter(name="Extraction Method",
                                  displayName="Extraction Method",
