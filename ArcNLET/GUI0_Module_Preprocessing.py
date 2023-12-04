@@ -31,7 +31,7 @@ class InterfacePreprocessing(object):
         """Define parameter definitions.
         """
         infile0 = arcpy.Parameter(name="Study Area",
-                                  displayName="Study Area",
+                                  displayName="Study Area (polygon)",
                                   datatype="GPFeatureLayer",
                                   parameterType="Required",
                                   direction="Input")
