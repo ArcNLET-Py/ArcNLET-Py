@@ -2,7 +2,9 @@
 Python code that implements an ArcGIS Tool,
 to be included in an ArcGIS Python Toolbox.
 
-@author: Wei Mao <wm23a@fsu.edu>
+@author: Wei Mao <wm23a@fsu.edu>， Michael Core <mcore@fsu.edu>, Ming Ye <mye@fsu.edu>
+            The Department of Earth, Ocean, and Atmospheric Science, Florida State University
+@date: 2023-11-13
 """
 
 import os
@@ -247,7 +249,7 @@ class InterfaceVZMOD(object):
         denitparam0.value = 0.025
 
         denitparam1 = arcpy.Parameter(name="Topt-dnt",
-                                      displayName="Topt-dnt (/u2103)",
+                                      displayName="Topt-dnt (\u2103)",
                                       datatype="GPDouble",
                                       parameterType="Required",  # Required|Optional|Derived
                                       direction="Input",  # Input|Output

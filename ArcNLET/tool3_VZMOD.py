@@ -3,7 +3,9 @@ This script contains the VZMOD module of ArcNLET model in the ArcGIS Python Tool
 
 For detailed algorithms, please see https://atmos.eoas.fsu.edu/~mye/VZMOD/user_manual.pdf
 
-@author: Wei Mao <wm23@@fsu.edu>, Michael Core <mcore@fsu.edu>
+@author: Wei Mao <wm23a@fsu.edu>， Michael Core <mcore@fsu.edu>, Ming Ye <mye@fsu.edu>
+            The Department of Earth, Ocean, and Atmospheric Science, Florida State University
+@date: 2023-11-21
 """
 
 import datetime
@@ -538,19 +540,20 @@ def tridiagonal_matrix(a, b, c, f, n=Nlayer + 1):
 # ======================================================================
 # Main program for debugging
 if __name__ == '__main__':
-    arcpy.env.workspace = ".\\test_pro"
+    arcpy.env.workspace = "C:\\Users\\Wei\\Downloads\\test_pro\\test_pro"
+    # arcpy.env.workspace = ".\\test_pro"
 
     options = True
     hetero_Ks_thetas = True
     calc_DTW = True
-    multi_soil_type = False
+    multi_soil_type = True
 
-    septic_tank = os.path.join(arcpy.env.workspace, "Septic_tank_11.shp")
-    hydraulic_conductivity = os.path.join(arcpy.env.workspace, "HydraulicConductivity.tif")
-    soil_porosity = os.path.join(arcpy.env.workspace, "Porosity.tif")
-    DEM = os.path.join(arcpy.env.workspace, "DEM.tif")
-    smoothed_DEM = os.path.join(arcpy.env.workspace, "SmthDEM.img")
-    soiltypefile = None
+    septic_tank = os.path.join(arcpy.env.workspace, "PotentialSepticTankLocations.shp")
+    hydraulic_conductivity = os.path.join(arcpy.env.workspace, "hydr")
+    soil_porosity = os.path.join(arcpy.env.workspace, "poro")
+    DEM = os.path.join(arcpy.env.workspace, "lakeshore")
+    smoothed_DEM = os.path.join(arcpy.env.workspace, "00smth")
+    soiltypefile = os.path.join(arcpy.env.workspace, "solt")
 
     soiltype = "loam"
     hlr = 2.342

@@ -11,11 +11,13 @@ import arcpy
 
 # This is for development, so that you can edit code while running in ArcGIS Pro.
 import importlib
+import GUI0_Module_Preprocessing
 import GUI1_Module_Groundwater_Flow
 import GUI2_Module_Particle_Tracking
 import GUI3_Module_VZMOD
 import GUI4_Module_Transport
 import GUI5_Module_Load_Estimation
+importlib.reload(GUI0_Module_Preprocessing)
 importlib.reload(GUI1_Module_Groundwater_Flow)
 importlib.reload(GUI2_Module_Particle_Tracking)
 importlib.reload(GUI3_Module_VZMOD)
@@ -23,6 +25,7 @@ importlib.reload(GUI4_Module_Transport)
 importlib.reload(GUI5_Module_Load_Estimation)
 
 # Import all the tool classes that will be included in this toolbox.
+from GUI0_Module_Preprocessing     import InterfacePreprocessing
 from GUI1_Module_Groundwater_Flow  import InterfaceGroundwaterFlow
 from GUI2_Module_Particle_Tracking import InterfaceParticleTracking
 from GUI3_Module_VZMOD             import InterfaceVZMOD
@@ -39,9 +42,10 @@ class Toolbox(object):
 
         # List of tool classes associated with this toolbox
         self.tools = [
-		    InterfaceGroundwaterFlow,
+            InterfacePreprocessing,
+            InterfaceGroundwaterFlow,
             InterfaceParticleTracking,
-			InterfaceVZMOD,
+            InterfaceVZMOD,
             InterfaceTransport,
             InterfaceLoadEstimation
         ]

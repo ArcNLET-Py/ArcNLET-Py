@@ -2,7 +2,9 @@
 Python code that implements an ArcGIS Tool,
 to be included in an ArcGIS Python Toolbox.
 
-@author: Wei Mao <wm23a@fsu.edu>
+@author: Wei Mao <wm23a@fsu.edu>， Michael Core <mcore@fsu.edu>, Ming Ye <mye@fsu.edu>
+            The Department of Earth, Ocean, and Atmospheric Science, Florida State University
+@date: 2023-11-07
 """
 
 import os
