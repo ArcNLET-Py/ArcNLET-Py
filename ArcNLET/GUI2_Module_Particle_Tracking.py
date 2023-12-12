@@ -66,8 +66,8 @@ class InterfaceParticleTracking(object):
                                   direction="Input",  # Input|Output
                                   )
 
-        option = arcpy.Parameter(name="Precise truncation",
-                                 displayName="Precise truncation",
+        option = arcpy.Parameter(name="Flow Path Truncation",
+                                 displayName="Flow Path Truncation",
                                  datatype="GPBoolean",
                                  parameterType="Required",  # Required|Optional|Derived
                                  direction="Input",  # Input|Output
