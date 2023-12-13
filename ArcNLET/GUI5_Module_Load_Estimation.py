@@ -56,9 +56,9 @@ class InterfaceLoadEstimation(object):
                                   displayName="Input Plumes NH\u2084 info (Point)",
                                   datatype="GPFeatureLayer",
                                   parameterType="Required",
-                                  direction="Optional")
+                                  direction="Input")
         infile2.filter.list = ["Point"]
-        infile2.parameterDependencies = [param0.name]
+        # infile2.parameterDependencies = [param0.name]
 
         outfile1 = arcpy.Parameter(name="Output Results for NO\u2083",
                                    displayName="Output Results for NO\u2083",
@@ -71,7 +71,7 @@ class InterfaceLoadEstimation(object):
                                    datatype="DEFile",
                                    parameterType="Optional",
                                    direction="Output")
-        outfile2.parameterDependencies = [param0.name]
+        # outfile2.parameterDependencies = [param0.name]
 
         return [param0, param1, infile1, infile2, outfile1, outfile2]
 

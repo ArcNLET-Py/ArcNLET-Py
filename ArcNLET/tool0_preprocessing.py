@@ -39,18 +39,40 @@ class Preprocessing(object):
 
         self.workdir = os.path.dirname(self.area)
 
-        self.hydr_cond = os.path.basename(c_hydr_cond) if self.is_file_path(c_hydr_cond) else c_hydr_cond
-        self.porosity = os.path.basename(c_porosity) if self.is_file_path(c_porosity) else c_porosity
+        if self.is_file_path(c_hydr_cond):
+            self.hydr_cond_name = os.path.basename(c_hydr_cond)
+            self.hydr_cond_dir = os.path.dirname(c_hydr_cond)
+        else:
+            self.hydr_cond_name = os.path.basename(c_hydr_cond)
+            self.hydr_cond_dir = self.workdir
+        if self.is_file_path(c_porosity):
+            self.porosity_name = os.path.basename(c_porosity)
+            self.porosity_dir = os.path.dirname(c_porosity)
+        else:
+            self.porosity_name = os.path.basename(c_porosity)
+            self.porosity_dir = self.workdir
         if c_soiltexture is not None:
-            self.soiltexture = os.path.basename(c_soiltexture) if self.is_file_path(
-                c_soiltexture) else c_soiltexture
+            if self.is_file_path(c_soiltexture):
+                self.soiltexture_name = os.path.basename(c_soiltexture)
+                self.soiltexture_dir = os.path.dirname(c_soiltexture)
+            else:
+                self.soiltexture_name = os.path.basename(c_soiltexture)
+                self.soiltexture_dir = self.workdir
         else:
-            self.soiltexture = None
+            self.soiltexture_name = None
         if c_spatial is not None:
-            self.spatial = os.path.basename(c_spatial) if self.is_file_path(c_spatial) else c_spatial
+            if self.is_file_path(c_spatial):
+                self.spatial_name = os.path.basename(c_spatial)
+                self.spatial_dir = os.path.dirname(c_spatial)
+            else:
+                self.spatial_name = os.path.basename(c_spatial)
+                self.spatial_dir = self.workdir
         else:
-            self.spatial = None
-        pass
+            self.spatial_name = None
+        self.hydr_cond = os.path.join(self.hydr_cond_dir, self.hydr_cond_name)
+        self.porosity = os.path.join(self.porosity_dir, self.porosity_name)
+        self.soiltexture = os.path.join(self.soiltexture_dir, self.soiltexture_name) if self.soiltexture_name else None
+        self.spatial = os.path.join(self.spatial_dir, self.spatial_name) if self.spatial_name else None
 
     def main(self):
         """main calculation function

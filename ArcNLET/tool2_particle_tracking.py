@@ -162,12 +162,20 @@ class ParticleTracking:
         wbid = -1
         path_wbid = -1
         pi_over_180 = math.pi / 180
+        poro_last_step = 0
+        velo_last_step = 0
 
         segments = []
 
         while steps < self.max_steps:
             # print("Step {}...".format(steps))
             index, velo, angle, poro = self.get_values(cur_x, cur_y)
+            if poro > 1 or poro <= 0:
+                poro = poro_last_step
+            poro_last_step = poro
+            if velo > 1E10 or velo <= 0:
+                velo = velo_last_step
+            velo_last_step = velo
             if index != -9999:
                 if steps == 0:
                     print("The {} source point is in a water body! x = {}, y = {}".format(oid, cur_x, cur_y))
