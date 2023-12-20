@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Using the Preprocessing Module &mdash; ArcNLET-Py User&#39;s Manual December 20th, 2023 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="_static/custom.css?v=65185a0e" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=cdec1bd1"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Using the Groundwater Flow Module" href="usinggroundwaterflow.html" />
+    <link rel="prev" title="Lakeshore Example" href="lakeshoeexample.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            ArcNLET-Py User's Manual
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">ArcNLET-Py: A Python Version of ArcGIS-Based Nitrogen Load Estimation Toolbox Developed for ArcGIS Pro</a></li>
+<li class="toctree-l1"><a class="reference internal" href="simplifiedmodel.html">Simplified Model of Nitrogen Transformation and Transport</a></li>
+<li class="toctree-l1"><a class="reference internal" href="preprocessing.html">0-Preprocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="groundwaterflow.html">1-Groundwater Flow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="particletracking.html">2-Particle Tracking</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vzmod.html">3-VZMOD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="transport.html">4-Transport</a></li>
+<li class="toctree-l1"><a class="reference internal" href="loadestimation.html">5-Load Estimation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installationandrequirements.html">Installation and Requirements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="preparinginputdata.html">Preparing Input Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lakeshoeexample.html">Lakeshore Example</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Using the Preprocessing Module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#data-inputs">Data Inputs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#data-outputs-and-parameters">Data Outputs and Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#executing-the-module">Executing the Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#view-and-verify-results">View and Verify Results</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="usinggroundwaterflow.html">Using the Groundwater Flow Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usingparticletracking.html">Using the Particle Tracking Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usingvzmod.html">Using the VZMOD Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usingtransport.html">Using the Transport Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usingloadestimation.html">Using the Load Estimation Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="visualization.html">Visualization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sensitivityandcalibration.html">Sensitivity and Calibration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="references.html">REFERENCES</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">ArcNLET-Py User's Manual</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Using the Preprocessing Module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/usingpreprocessing.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Sequential page navigation">
+        <a href="lakeshoeexample.html" class="btn btn-neutral float-left" title="Lakeshore Example" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="usinggroundwaterflow.html" class="btn btn-neutral float-right" title="Using the Groundwater Flow Module" accesskey="n">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+  </div>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="using-the-preprocessing-module">
+<span id="usingpreprocessing"></span><h1>Using the Preprocessing Module<a class="headerlink" href="#using-the-preprocessing-module" title="Link to this heading"></a></h1>
+<p>The Preprocessing Module (Figure 5‑12) automatically extracts hydraulic
+conductivity, porosity, and soil types from the SSURGO database.</p>
+<section id="data-inputs">
+<h2>Data Inputs<a class="headerlink" href="#data-inputs" title="Link to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p>Double-click the [0 Preprocessing] module, and the preprocessing
+Python toolset opens in the [Geoprocessing Pane].</p>
+<ol class="loweralpha simple">
+<li><p>Take a moment to review the data inputs, outputs, and parameters.
+Please remember that data inputs and outputs marked with a red
+asterisk [*] are required for the geoprocessing operation.</p></li>
+</ol>
+</li>
+<li><p>Data inputs:</p>
+<ol class="loweralpha simple">
+<li><p>Input the study area shapefile (polygon).</p>
+<ol class="lowerroman simple">
+<li><p>Lakeshore Example input shapefile: [study_area.shp], as shown
+in Figure 5‑13.</p>
+<ol class="arabic simple">
+<li><p>Please note that the shapefile must have only one feature.</p></li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<figure class="align-center" id="id1">
+<a class="reference internal image-reference" href="_images/image128.png"><img alt="图形用户界面, 应用程序 描述已自动生成" src="_images/image128.png" style="width: 3.83363in; height: 6.43944in;" /></a>
+<figcaption>
+<p><span class="caption-text">Figure 5‑12: The Preprocessing Module in the Geoprocessing Pane.</span><a class="headerlink" href="#id1" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<figure class="align-center" id="id2">
+<a class="reference internal image-reference" href="_images/image29.png"><img alt="A hand with a drawing of a hand Description automatically generated" src="_images/image29.png" style="width: 5.6in; height: 5.62899in;" /></a>
+<figcaption>
+<p><span class="caption-text">Figure 5‑13: The spatial distribution of the study area, septic tanks, and water bodies.</span><a class="headerlink" href="#id2" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<p>The OSTDS are green dots, the study area is beige, and the water body is
+blue.</p>
+</section>
+<section id="data-outputs-and-parameters">
+<h2>Data Outputs and Parameters<a class="headerlink" href="#data-outputs-and-parameters" title="Link to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p>You are selecting the module parameters, as shown in Figure 5‑14.</p>
+<ol class="loweralpha simple">
+<li><p>Projected Coordinate System</p>
+<ol class="lowerroman simple">
+<li><p>You should change to [NAD_1983_UTM_Zone_17N] in this example.</p></li>
+<li><p>Please note that the projected coordinate system automatically displays the coordinate system of the study area. However, a projected coordinate system must be used, or an error is triggered.</p></li>
+</ol>
+</li>
+<li><p>Top Depth</p>
+<ol class="lowerroman simple">
+<li><p>Default value: [0]</p></li>
+</ol>
+</li>
+<li><p>Bottom Depth</p>
+<ol class="lowerroman simple">
+<li><p>Default value: [200]</p></li>
+</ol>
+</li>
+<li><p>Extraction Method</p>
+<ol class="lowerroman simple">
+<li><p>Default option: [Harmonic mean for Ks]</p></li>
+</ol>
+</li>
+<li><p>Raster Cell Size [m]</p>
+<ol class="lowerroman simple">
+<li><p>Default value: [10]</p></li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>Selecting the module outputs</p>
+<ol class="loweralpha simple">
+<li><p>The output hydraulic conductivity [Raster]</p>
+<ol class="lowerroman simple">
+<li><p>Lakeshore Example output raster: [demo_hydr]</p></li>
+<li><p>Please note that the length of the name of the raster file must not exceed 13 characters. It is a requirement by ArcGIS Pro.</p></li>
+</ol>
+</li>
+<li><p>The output porosity is a [Raster].</p>
+<ol class="lowerroman simple">
+<li><p>Lakeshore Example output raster: [demo_poro]</p></li>
+</ol>
+</li>
+<li><p>The optional output soil texture (Raster).</p>
+<ol class="lowerroman simple">
+<li><p>Lakeshore Example output raster: [demo_soil]</p></li>
+</ol>
+</li>
+<li><p>The optional output spatial SSURGO data in (Shapefile) format.</p>
+<ol class="lowerroman simple">
+<li><p>Lakeshore Example output shapefile: [demo_spatial]</p></li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>Double-check to ensure all red astricts [*] are removed from the [Geoprocessing Pane], indicating that all necessary data inputs and outputs have the correct file type and are accessible.</p></li>
+</ol>
+<figure class="align-center" id="id3">
+<a class="reference internal image-reference" href="_images/image38.png"><img alt="A screenshot of a computer Description automatically generated" src="_images/image38.png" style="width: 4.05107in; height: 5.91181in;" /></a>
+<figcaption>
+<p><span class="caption-text">Figure 5‑14: The Preprocessing Module data inputs and outputs in the Geoprocessing Pane.</span><a class="headerlink" href="#id3" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+<section id="executing-the-module">
+<h2>Executing the Module<a class="headerlink" href="#executing-the-module" title="Link to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p>Once satisfied with the data input and output selections, click [Run]
+in the [Geoprocessing Pane] (Figure 5‑15).</p></li>
+</ol>
+<figure class="align-center" id="id4">
+<a class="reference internal image-reference" href="_images/image48.png"><img alt="A screenshot of a computer Description automatically generated" src="_images/image48.png" style="width: 3.63835in; height: 0.74615in;" /></a>
+<figcaption>
+<p><span class="caption-text">Figure 5‑15: The Run button in the Geoprocessing Pane.</span><a class="headerlink" href="#id4" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<ol class="arabic simple" start="2">
+<li><p>The ArcNLET-Py Preprocessing Module (Figure 5‑16) begins to process
+data, and the progress bar appears. The runtime can vary depending on
+the data sets’ file sizes, spatial scale, raster cell size, and
+network speed.</p></li>
+</ol>
+<figure class="align-center" id="id5">
+<a class="reference internal image-reference" href="_images/image57.png"><img alt="A screen shot of a computer Description automatically generated" src="_images/image57.png" style="width: 3.73839in; height: 1.22647in;" /></a>
+<figcaption>
+<p><span class="caption-text">5‑16: The progress bar in the ArcGIS Pro Geoprocessing Pane for the Preprocessing Module.Figure</span><a class="headerlink" href="#id5" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<ol class="arabic simple" start="3">
+<li><p>ArcGIS Pro indicates the tool is finished with a green notification
+box, as shown in Figure 5‑17, at the bottom of the [Geoprocessing
+Pane]. You may click [View Details] for more information about the
+process, including data inputs and outputs, start and end times and
+dates, and a success or failure message.</p></li>
+</ol>
+<figure class="align-center" id="id6">
+<a class="reference internal image-reference" href="_images/image67.png"><img alt="A close-up of a message Description automatically generated" src="_images/image67.png" style="width: 3.73941in; height: 1.01034in;" /></a>
+<figcaption>
+<p><span class="caption-text">Figure 5‑17: The green notification box in the ArcGIS Pro Geoprocessing Pane for the Preprocessing Module.</span><a class="headerlink" href="#id6" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+<section id="view-and-verify-results">
+<h2>View and Verify Results<a class="headerlink" href="#view-and-verify-results" title="Link to this heading"></a></h2>
+<p>If you have your data inputs in an open [Map] in ArcGIS Pro, the data
+outputs are automatically added to the [Contents Pane] and the [Map]
+view. Alternatively, if you do not have your input data in a [Map], nor
+do you have a [Map View] open in your ArcGIS Pro Project, and you run
+the ArcNLET-Py Preprocessing Module from the [Geoprocessing Pane], as
+shown in Figure 5‑18. Your results are accessible via the [Catalog Pane]
+or [Catalog View] in the output folder created in Section 3.3.</p>
+<figure class="align-center" id="id7">
+<a class="reference internal image-reference" href="_images/image77.png"><img alt="A screenshot of a computer Description automatically generated" src="_images/image77.png" style="width: 4.43128in; height: 1.91532in;" /></a>
+<figcaption>
+<p><span class="caption-text">Figure 5‑18: The ArcNLET-Py Preprocessing Module outputs in the Catalog Pane.</span><a class="headerlink" href="#id7" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<ol class="arabic simple">
+<li><p>Take a moment to review each output to ensure your data has been
+processed correctly. Your data must be processed correctly because
+data outputs from the Preprocessing Module are inputs in the
+subsequent modules.</p>
+<ol class="loweralpha simple">
+<li><p>The output raster images are automatically styled with a
+black-and-white contrast stretch. ArcGIS Pro assigns two stretch
+types based on whether your raster dataset has one value or many
+values. The stretch type [Standard Deviation] is for raster
+datasets with many values, and the stretch type [None] is for
+datasets with only one value.</p></li>
+<li><p>Please note that the symbology has been changed from the ArcGIS
+Pro automatic default symbology for aesthetic purposes.</p></li>
+</ol>
+</li>
+</ol>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="lakeshoeexample.html" class="btn btn-neutral float-left" title="Lakeshore Example" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="usinggroundwaterflow.html" class="btn btn-neutral float-right" title="Using the Groundwater Flow Module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Michael Core, Wei Mao, and Ming Ye.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

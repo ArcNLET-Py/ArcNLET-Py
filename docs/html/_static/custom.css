@@ -1,0 +1,9 @@
+/* Custom CSS for centering images and captions */
+.figure.align-center, .figure.align-default {
+    text-align: center;
+}
+.figure.align-center img, .figure.align-default img {
+    margin: 0 auto;
+}
+
+.center {text-align: center;}

@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Using the Particle Tracking Module &mdash; ArcNLET-Py User&#39;s Manual December 20th, 2023 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="_static/custom.css?v=65185a0e" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=cdec1bd1"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Using the VZMOD Module" href="usingvzmod.html" />
+    <link rel="prev" title="Using the Groundwater Flow Module" href="usinggroundwaterflow.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            ArcNLET-Py User's Manual
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">ArcNLET-Py: A Python Version of ArcGIS-Based Nitrogen Load Estimation Toolbox Developed for ArcGIS Pro</a></li>
+<li class="toctree-l1"><a class="reference internal" href="simplifiedmodel.html">Simplified Model of Nitrogen Transformation and Transport</a></li>
+<li class="toctree-l1"><a class="reference internal" href="preprocessing.html">0-Preprocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="groundwaterflow.html">1-Groundwater Flow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="particletracking.html">2-Particle Tracking</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vzmod.html">3-VZMOD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="transport.html">4-Transport</a></li>
+<li class="toctree-l1"><a class="reference internal" href="loadestimation.html">5-Load Estimation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installationandrequirements.html">Installation and Requirements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="preparinginputdata.html">Preparing Input Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lakeshoeexample.html">Lakeshore Example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usingpreprocessing.html">Using the Preprocessing Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usinggroundwaterflow.html">Using the Groundwater Flow Module</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Using the Particle Tracking Module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#data-inputs">Data Inputs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#data-outputs-and-parameters">Data Outputs and Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#execute-the-module">Execute the Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#view-and-verify-results">View and Verify Results</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="usingvzmod.html">Using the VZMOD Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usingtransport.html">Using the Transport Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usingloadestimation.html">Using the Load Estimation Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="visualization.html">Visualization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sensitivityandcalibration.html">Sensitivity and Calibration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="references.html">REFERENCES</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">ArcNLET-Py User's Manual</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Using the Particle Tracking Module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/usingparticletracking.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Sequential page navigation">
+        <a href="usinggroundwaterflow.html" class="btn btn-neutral float-left" title="Using the Groundwater Flow Module" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="usingvzmod.html" class="btn btn-neutral float-right" title="Using the VZMOD Module" accesskey="n">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+  </div>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="using-the-particle-tracking-module">
+<span id="usingparticletracking"></span><h1>Using the Particle Tracking Module<a class="headerlink" href="#using-the-particle-tracking-module" title="Link to this heading"></a></h1>
+<p>The Particle Tracking Module places a water particle (point) at each
+septic tank location. It uses the Groundwater Flow Module outputs for
+velocity direction and velocity magnitude to simulate flow paths from a
+septic tank to a nearby water body.</p>
+<section id="data-inputs">
+<h2>Data Inputs<a class="headerlink" href="#data-inputs" title="Link to this heading"></a></h2>
+<p>Once you are satisfied with the Groundwater Flow Module’s data outputs,
+it is time to move on to the Particle Tracking Module. Access the
+[ArcNLET.pyt] ArcGIS Python Toolbox and the ArcNLET-Py ArcGIS Pro
+toolsets within, as described in Section 5.4.2</p>
+<figure class="align-center" id="id1">
+<a class="reference internal image-reference" href="_images/image126.png"><img alt="A screenshot of a computer program Description automatically generated" src="_images/image126.png" style="width: 4.39753in; height: 3.77323in;" /></a>
+<figcaption>
+<p><span class="caption-text">Figure 5‑31: The ArcNLET-Py Python Toolset and Particle Tracking Module in the Catalog Pane.</span><a class="headerlink" href="#id1" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<ol class="arabic simple">
+<li><p>Double-click the [2 Particle Tracking] module, and the particle
+tracking Python toolset opens in the [Geoprocessing Pane].</p>
+<ol class="loweralpha simple">
+<li><p>Take a moment to review the data inputs, outputs, and parameters.
+Please remember that data inputs and outputs marked with a red
+asterisk [*] are required for the geoprocessing operation.</p></li>
+</ol>
+</li>
+<li><p>Click the drop-down arrow next to [Parameters] to expose the options.</p></li>
+<li><p>Data inputs:</p>
+<ol class="loweralpha simple">
+<li><p>Input the source locations (point).</p>
+<ol class="lowerroman simple">
+<li><p>Lakeshore Example input vector point:
+[PotentialSepticTankLocations.shp]</p></li>
+</ol>
+</li>
+<li><p>Input the water bodies (polygon).</p>
+<ol class="lowerroman simple">
+<li><p>Lakeshore Example input water body polygons: [water bodies.shp]</p></li>
+</ol>
+</li>
+<li><p>Input the velocity magnitude [L/T] (raster), the output from the
+Groundwater Flow Module.</p>
+<ol class="lowerroman simple">
+<li><p>Groundwater Flow Module output raster: [demo_vel_mag]</p></li>
+</ol>
+</li>
+<li><p>Input the velocity direction [°wrt N] (raster), output from the
+Groundwater Flow Module.</p>
+<ol class="lowerroman simple">
+<li><p>Groundwater Flow Module output raster: [demo_vel_dir]</p></li>
+</ol>
+</li>
+<li><p>Input the soil porosity (raster).</p>
+<ol class="lowerroman simple">
+<li><p>Lakeshore Example input raster: [porosity.img]</p></li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<figure class="align-center" id="id2">
+<a class="reference internal image-reference" href="_images/image28.png"><img alt="A screenshot of a computer Description automatically generated" src="_images/image28.png" style="width: 3.79045in; height: 4.12719in;" /></a>
+<figcaption>
+<p><span class="caption-text">Figure 5‑32: The Particle Tracking Module in the Geoprocessing Pane.</span><a class="headerlink" href="#id2" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<ol class="arabic simple" start="4">
+<li><p>There are several options for selecting data for a geoprocessing tool
+in ArcGIS Pro. If you are unfamiliar with ArcGIS Pro geoprocessing
+tools, please use the following URL to learn how to use geoprocessing
+tools. URL:
+<a class="reference external" href="https://pro.arcgis.com/en/pro-app/latest/help/analysis/geoprocessing/basics/run-geoprocessing-tools.htm">https://pro.arcgis.com/en/pro-app/latest/help/analysis/geoprocessing/basics/run-geoprocessing-tools.htm</a></p></li>
+<li><p>Use the [Map], [Catalog View], [Catalog Pane], or [Folder Icon] to
+select the necessary data inputs.</p>
+<ol class="loweralpha simple">
+<li><p>If you have the data from the Lakeshore example in a [Map] in your
+ArcGIS Pro Project file and the [Geoprocessing Pane] open, you can
+drag and drop the necessary inputs or select the files from the
+drop-down menu for each of the input fields.</p></li>
+</ol>
+</li>
+</ol>
+<figure class="align-center" id="id3">
+<a class="reference internal image-reference" href="_images/image37.png"><img alt="A colorful map of a person's face Description automatically generated" src="_images/image37.png" style="width: 6.5in; height: 2.87083in;" /></a>
+<figcaption>
+<p><span class="caption-text">Figure 5‑33: Selecting Particle Tracking Module Data Inputs in the Map View.</span><a class="headerlink" href="#id3" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<ol class="loweralpha simple" start="2">
+<li><p>If you have the data from the Lakeshore example open in a [Catalog
+Pane] or [Catalog View] and the [Geoprocessing Pane] open, then you
+can drag and drop the necessary inputs.</p></li>
+</ol>
+<figure class="align-center" id="id4">
+<a class="reference internal image-reference" href="_images/image47.png"><img alt="A screenshot of a computer Description automatically generated" src="_images/image47.png" style="width: 6.5in; height: 3.50694in;" /></a>
+<figcaption>
+<p><span class="caption-text">Figure 5‑34: Selecting Particle Tracking Module inputs by dragging and dropping from the Catalog View.</span><a class="headerlink" href="#id4" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<ol class="loweralpha simple" start="3">
+<li><p>You can also click the [Folder Icon] next to each field to select the
+data inputs using the Windows File Explorer. To use this method, you
+must use the Windows File Explorer to navigate to the
+[…\lakeshore_example\lakeshore_example] folder to select each data
+input and click [OK].</p></li>
+</ol>
+<figure class="align-center" id="id5">
+<a class="reference internal image-reference" href="_images/image56.png"><img alt="A screenshot of a computer Description automatically generated" src="_images/image56.png" style="width: 6.5in; height: 4.33681in;" /></a>
+<figcaption>
+<p><span class="caption-text">Figure 5‑35: Selecting Particle Tracking Module inputs from the Windows File Explorer.</span><a class="headerlink" href="#id5" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+<section id="data-outputs-and-parameters">
+<h2>Data Outputs and Parameters<a class="headerlink" href="#data-outputs-and-parameters" title="Link to this heading"></a></h2>
+<p>Storing your files in an organized and appropriately named manner is
+good practice when selecting locations for data outputs. Earlier in this
+exercise, we used the Windows File Explorer or ArcGIS Pro [Catalog Pane]
+to create a new folder titled [LakeshoreExampleOutputs_YYYY_MM_DD]. The
+folder stores the output shapefiles.</p>
+<ol class="arabic simple">
+<li><p>If you need to create a new file folder in ArcGIS Pro, use the
+[Catalog Pane], right-click on the folder
+[…\lakeshore_example\lakeshore_example], hover over the option
+[New] in the submenu, and click [Folder].</p></li>
+</ol>
+<figure class="align-center" id="id6">
+<a class="reference internal image-reference" href="_images/image66.png"><img alt="A screenshot of a computer Description automatically generated" src="_images/image66.png" style="width: 6.39222in; height: 4.69207in;" /></a>
+<figcaption>
+<p><span class="caption-text">Figure 5‑36: The Lakeshore example output folders in the Windows File Explorer.</span><a class="headerlink" href="#id6" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<ol class="arabic" start="2">
+<li><p>Select the necessary data output by clicking the [Folder Icon] next
+to the [Output Particle Paths (Polyline)] field in the [Geoprocessing
+Pane].</p>
+<ol class="loweralpha simple">
+<li><p>The Windows File Explorer opens, and in the left pane under
+[Project], click the drop-down arrows to expand the [Folders] and
+ArcGIS Pro home folder.</p></li>
+<li><p>Please note that when typing the data output into the provided
+field in the [Geoprocessing Pane], the outputs are automatically
+stored in the folder with the [Input Velocity Magnitude [L/T]
+(raster)].</p></li>
+</ol>
+</li>
+<li><p>Select the [lakeshore_example\lakeshore_example] folders.</p>
+<p>a. Click the above output folder to store the output vector shapefile from the
+Particle Tracking Module. The file path and name for the [Output Particle Paths (Polyline)]
+is […\lakeshore_example_shpOutputs_2023_09_28\demo_path]</p>
+</li>
+<li><p>Type the name of the shapefile output into the [Name] field with no
+file extension and click [OK].</p>
+<ol class="loweralpha simple">
+<li><p>The ArcNLET-Py ArcGIS Pro Python toolset automatically assigns the
+correct file types, and if you enter a file type, a warning is
+triggered.</p></li>
+</ol>
+</li>
+<li><p>Data output:</p>
+<ol class="loweralpha simple">
+<li><p>The output particle paths (polyline).</p>
+<ol class="lowerroman simple">
+<li><p>Lakeshore Example output shapefile: [demo_path]</p></li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>The Parameters are related to model validation and verification. For
+the Lakeshore Example, the WB Raster Resolution and Step Size
+parameters are automatically set from the [lakeshore.img] DEM file.</p>
+<ol class="loweralpha simple">
+<li><p>Flow Path Truncation</p>
+<ol class="lowerroman simple">
+<li><p>Please check the box for this option: [Checked Box]</p>
+<ol class="arabic simple">
+<li><p>The Flow Path Truncation option trims line features
+intersecting the water body polygons and extending particle
+paths that fall short of the water body polygons.
+Furthermore, enabling Flow Path Truncation requires more
+processing time.</p></li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>WB Raster Resolution [L]</p>
+<ol class="lowerroman simple">
+<li><p>Default value: [5]</p></li>
+</ol>
+</li>
+<li><p>Step Size [L]</p>
+<ol class="lowerroman simple">
+<li><p>Default value: [10]</p></li>
+</ol>
+</li>
+<li><p>Max Step</p>
+<ol class="lowerroman simple">
+<li><p>Default value: [1000]</p></li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<figure class="align-center" id="id7">
+<a class="reference internal image-reference" href="_images/image76.png"><img alt="A screenshot of a computer Description automatically generated" src="_images/image76.png" style="width: 6.39222in; height: 4.69207in;" /></a>
+<figcaption>
+<p><span class="caption-text">Figure 5‑37: Selecting the data output location from the Windows File Explorer for the Particle Tracking Module.</span><a class="headerlink" href="#id7" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<ol class="arabic simple" start="7">
+<li><p>Double-check to ensure all red astricts [*] are removed from the
+[Geoprocessing Pane], indicating that all necessary data inputs and
+outputs have the correct file type and are accessible.</p></li>
+</ol>
+<figure class="align-center" id="id8">
+<a class="reference internal image-reference" href="_images/image86.png"><img alt="A screenshot of a computer Description automatically generated" src="_images/image86.png" style="width: 4in; height: 4.34545in;" /></a>
+<figcaption>
+<p><span class="caption-text">Figure 5‑38: The Particle Tracking Module data inputs and output in the Geoprocessing Pane.</span><a class="headerlink" href="#id8" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+<section id="execute-the-module">
+<h2>Execute the Module<a class="headerlink" href="#execute-the-module" title="Link to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p>Once satisfied with the data input and output selections, click [Run]
+in the [Geoprocessing Pane].</p></li>
+</ol>
+<figure class="align-center" id="id9">
+<a class="reference internal image-reference" href="_images/image96.png"><img alt="A screenshot of a computer Description automatically generated" src="_images/image96.png" style="width: 4in; height: 0.88in;" /></a>
+<figcaption>
+<p><span class="caption-text">Figure 5‑39: The Run button in the Geoprocessing Pane.</span><a class="headerlink" href="#id9" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<ol class="arabic simple" start="2">
+<li><p>The ArcNLET-Py Particle Tracking Module begins to process data, and
+the progress bar appears. The runtime can vary depending on the data
+sets’ file sizes, spatial scale, and raster cell size.</p></li>
+</ol>
+<figure class="align-center" id="id10">
+<a class="reference internal image-reference" href="_images/image106.png"><img alt="A screenshot of a computer Description automatically generated" src="_images/image106.png" style="width: 4in; height: 1.06123in;" /></a>
+<figcaption>
+<p><span class="caption-text">Figure 5‑40: The Progress Bar in the ArcGIS Pro Geoprocessing Pane for the Particle Tracking Module.</span><a class="headerlink" href="#id10" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<ol class="arabic simple" start="3">
+<li><p>ArcGIS Pro indicates the tool is finished with a green notification
+box at the bottom of the [Geoprocessing Pane]. You may click [View
+Details] for more information about the process, including data
+inputs and output(s), start and end times and dates, and a success
+or failure message.</p></li>
+</ol>
+<figure class="align-center" id="id11">
+<a class="reference internal image-reference" href="_images/image1112.png"><img alt="A screenshot of a computer Description automatically generated" src="_images/image1112.png" style="width: 4in; height: 0.69841in;" /></a>
+<figcaption>
+<p><span class="caption-text">Figure 5‑41: The green notification box in the ArcGIS Pro Geoprocessing Pane for the Particle Tracking Module.</span><a class="headerlink" href="#id11" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+<section id="view-and-verify-results">
+<h2>View and Verify Results<a class="headerlink" href="#view-and-verify-results" title="Link to this heading"></a></h2>
+<p>If you have your data inputs in an open [Map] in ArcGIS Pro, the data
+output(s) are automatically added to the [Contents Pane] and the [Map
+View]. Alternatively, if you do not have your input data in a [Map], nor
+do you have a [Map View] open in your ArcGIS Pro Project, and you ran
+the ArcNLET-Py Particle Tracking Module from the [Geoprocessing Pane],
+then your results are accessible via the [Catalog Pane] or [Catalog
+View] in the output folder [LakeshoreExampleOutputs_YYYY_MM_DD].</p>
+<figure class="align-center" id="id12">
+<a class="reference internal image-reference" href="_images/image127.png"><img alt="A screenshot of a computer Description automatically generated" src="_images/image127.png" style="width: 4.05218in; height: 5.4125in;" /></a>
+<figcaption>
+<p><span class="caption-text">Figure 5‑42: The ArcNLET-Py Particle Tracking Module output in the Catalog Pane</span><a class="headerlink" href="#id12" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+<ol class="arabic">
+<li><p>Take a moment to review the shapefile output to ensure your data has
+been processed correctly. Your data processes must be done correctly
+because data outputs from the Particle Tracking Module are used as
+data inputs in the subsequent module.</p>
+<ol class="loweralpha simple">
+<li><p>Please note that if your vector shapefile outputs are not line
+features originating from your potential contamination sources
+(septic tank locations) towards the proximal surface water body
+polygons, then this is an indicator that there might have been an
+error processing the data inputs.</p>
+<ol class="lowerroman simple">
+<li><p>For example, you should have one segmented particle path for
+each septic tank location in the output particle path
+shapefile. You may notice several thousand individual line
+features for the potential septic tank locations.</p></li>
+</ol>
+</li>
+</ol>
+</li>
+<li><dl>
+<dt>If there seems to be an issue with the output particle paths</dt><dd><p>shapefile, please ensure all your data inputs are correct, in an
+accessible file folder, and uncorrupted.</p>
+<ol class="loweralpha">
+<li><p>If you continue having issues processing your data, please [View
+Details] as mentioned in Section 5.7.3 to see if empty datasets
+were created as outputs. Empty datasets indicate an issue with
+the input data, or ArcGIS Pro does not have read/write access
+to input or output file locations.</p>
+<p>i. If you cannot find a solution to the issue, then please
+submit a [New issue] in the ArcNLET-Py GitHub repository
+(<a class="reference external" href="https://github.com/ArcNLET-Py/ArcNLET-Py/issues">Issues · ArcNLET-Py/ArcNLET-Py · GitHub</a>)
+as described in the GitHub instructions at
+<a class="reference external" href="https://docs.github.com/en/issues/tracking-your-work-with-issues/creating-an-issue">Creating an issue - GitHub Docs</a>.</p>
+</li>
+</ol>
+</dd>
+</dl>
+</li>
+</ol>
+<figure class="align-center" id="id13">
+<a class="reference internal image-reference" href="_images/image134.png"><img alt="A screenshot of a computer Description automatically generated" src="_images/image134.png" style="width: 6.5in; height: 3.73403in;" /></a>
+<figcaption>
+<p><span class="caption-text">Figure 5‑43: The ArcNLET-Py Particle Tracking Module outputs in the Contents Pane and Map</span><a class="headerlink" href="#id13" title="Link to this image"></a></p>
+</figcaption>
+</figure>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="usinggroundwaterflow.html" class="btn btn-neutral float-left" title="Using the Groundwater Flow Module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="usingvzmod.html" class="btn btn-neutral float-right" title="Using the VZMOD Module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Michael Core, Wei Mao, and Ming Ye.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
