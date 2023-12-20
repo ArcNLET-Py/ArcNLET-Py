@@ -6,7 +6,7 @@ ArcNLET-Py, the Python version of the ArcGIS-Based Nitrogen Load Estimation Tool
 
 Developed at the Department of Earth, Ocean, and Atmospheric Science at Florida State University, ArcNLET-Py builds upon its predecessor, ArcNLET, which was created using Visual Basic for ArcMap. With the shift to ArcGIS Pro, the toolbox is now written in Python, offering several new features and an intuitive user interface.
 
-![ArcNLET-Py Interface](docs/html/_images/image36.png)
+![ArcNLET-Py Nitrogen Plumes](docs/html/_images/image411.png)
 
 ArcNLET-Py serves a crucial role in simulating the movement and transformation of nitrogen, primarily originating from onsite sewage treatment and disposal systems (OSTDS). It estimates the ammonium and nitrate load to surface water bodies and integrates seamlessly with GIS for efficient data management.
 
