@@ -87,7 +87,7 @@ A practical example, the Lakeshore case, is provided to demonstrate the applicat
 
 ## Contribution and Usage
 
-We welcome contributions and feedback from the community. For more detailed information about each module and usage instructions, please refer to the [User Manual](https://arcnlet.readthedocs.io/en/latest/).
+We welcome contributions and feedback from the community. For more detailed information about each module and usage instructions, please refer to the [User Manual](https://arcnlet-py.readthedocs.io/en/latest/).
 
 For any queries or contributions, feel free to contact us:
 - Michael Core - mcore@fsu.edu
