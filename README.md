@@ -23,22 +23,34 @@ ArcNLET-Py serves a crucial role in simulating the movement and transformation o
 Each module is designed to function cohesively, providing a comprehensive analysis of nitrogen transformation and transport.
 
 1. **0-Preprocessing**: Prepares soil datasets from SSURGO.
-   ![Preprocessing Module](docs/html/_images/image38.png)
+   <p align="center">
+      <img src="docs/html/_images/image38.png" alt="Preprocessing Module" width="400"/>
+   </p>
 
 2. **1-Groundwater Flow**: Approximates water table using smoothed topography.
-   ![Groundwater Flow Module](docs/html/_images/image1.png)
+   <p align="center">
+      <img src="docs/html/_images/image1.png" alt="Groundwater Flow Module" width="400"/>
+   </p>
 
 3. **2-Particle Tracking**: Calculates flow paths based on groundwater velocity.
-   ![Particle Tracking Module](docs/html/_images/image28.png)
+   <p align="center">
+      <img src="docs/html/_images/image28.png" alt="Particle Tracking Module" width="400"/>
+   </p>
 
 4. **3-VZMOD (Vadose Zone Model)**: Optional module for vertical soil flow estimation.
-   ![VZMOD Module](docs/html/_images/image88.png)
+   <p align="center">
+      <img src="docs/html/_images/image88.png" alt="VZMOD Module" width="400"/>
+   </p>
 
 5. **4-Transport**: Simulates NH4/NO3 plume movement using an analytical solution.
-   ![Transport Module](docs/html/_images/image87.png)
+   <p align="center">
+      <img src="docs/html/_images/image87.png" alt="Transport Module" width="400"/>
+   </p>
 
 6. **5-Load Estimation**: Calculates NH4/NO3 mass load-input, -output, and -removal.
-   ![Load Estimation Module](docs/html/_images/image22.png)
+   <p align="center">
+      <img src="docs/html/_images/image22.png" alt="Load Estimation Module" width="400"/>
+   </p>
 
 ## Requirements
 
@@ -55,14 +67,19 @@ ArcNLET V4.0 was developed based on ArcGIS Pro 3.1.3. The built-in arcpy package
 1. Please download the code locally,
 2. Open the SourceCode folder,
 
-   ![SourceCode Folder](docs/html/_images/image12.png)
+   <p align="center">
+      <img src="docs/html/_images/image12.png" alt="SourceCode Folder" width="400"/>
+   </p>
 
 3. Click SourceCode -> ArcNLET.pyt -> ArcNLET, and then choose the tool Groundwater Flow,
 4. Use the lakeshore example for description. Click on the folder icon behind each input box to select the individual input file, and write the name of the output file. Change the parameter values, and click the run button.
 
-   ![Groundwater Flow Tool](docs/html/_images/image74.png)
+   <p align="center">
+      <img src="docs/html/_images/image74.png" alt="Groundwater Flow Tool" width="400"/>
+   </p>
 
 5. The model will then start running. The results will be automatically displayed in Contents of ArcGIS Pro.
+
 
 ### Lakeshore Example
 
