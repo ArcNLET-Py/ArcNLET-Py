@@ -10,26 +10,26 @@ Welcome to ArcNLET-Py User's Manual's documentation!
    :maxdepth: 2
    :caption: Contents:
 
-   introduction
-   simplifiedmodel
-   preprocessing
-   groundwaterflow
-   particletracking
-   vzmod
-   transport
-   loadestimation
-   installationandrequirements
-   preparinginputdata
-   lakeshoeexample
-   usingpreprocessing
-   usinggroundwaterflow
-   usingparticletracking
-   usingvzmod
-   usingtransport
-   usingloadestimation
-   visualization
-   sensitivityandcalibration
-   references
+   UserManual/introduction
+   UserManual/simplifiedmodel
+   UserManual/preprocessing
+   UserManual/groundwaterflow
+   UserManual/particletracking
+   UserManual/vzmod
+   UserManual/transport
+   UserManual/loadestimation
+   UserManual/installationandrequirements
+   UserManual/preparinginputdata
+   UserManual/lakeshoeexample
+   UserManual/usingpreprocessing
+   UserManual/usinggroundwaterflow
+   UserManual/usingparticletracking
+   UserManual/usingvzmod
+   UserManual/usingtransport
+   UserManual/usingloadestimation
+   UserManual/visualization
+   UserManual/sensitivityandcalibration
+   UserManual/references
 
 Indices and tables
 ==================
