@@ -55,7 +55,7 @@ class InterfaceLoadEstimation(object):
         infile2 = arcpy.Parameter(name="Input Plumes NH\u2084 info",
                                   displayName="Input Plumes NH\u2084 info (Point)",
                                   datatype="GPFeatureLayer",
-                                  parameterType="Required",
+                                  parameterType="Optional",
                                   direction="Input")
         infile2.filter.list = ["Point"]
         # infile2.parameterDependencies = [param0.name]
