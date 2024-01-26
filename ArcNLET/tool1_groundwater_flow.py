@@ -22,7 +22,7 @@ arcpy.env.overwriteOutput = True
 class DarcyFlow:
     def __init__(self, c_dem, c_wb, c_ks, c_poro,
                  c_smthf1, c_smthc, c_fsink, c_merge, c_smthf2, c_zfact,
-                 velname, veldname, gradname=None, smthname=None):
+                 velname, veldname, smthname=None, gradname=None):
         # input files
 
         self.dem = arcpy.Describe(c_dem).catalogPath if not self.is_file_path(c_dem) else c_dem
@@ -161,7 +161,6 @@ class DarcyFlow:
 
     def smoothDEM(self, raster, factor, flag_fsink=False):
         """smooth the raster factor times"""
-        arcpy.env.workspace = r'memory'
         neighborhood = arcpy.sa.NbrRectangle(self.smthc, self.smthc, "CELL")
         for i in range(factor):
             smoothed_dem = arcpy.sa.FocalStatistics(raster, neighborhood, "MEAN", "DATA")

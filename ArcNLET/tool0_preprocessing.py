@@ -39,18 +39,40 @@ class Preprocessing(object):
 
         self.workdir = os.path.dirname(self.area)
 
-        self.hydr_cond = os.path.basename(c_hydr_cond) if self.is_file_path(c_hydr_cond) else c_hydr_cond
-        self.porosity = os.path.basename(c_porosity) if self.is_file_path(c_porosity) else c_porosity
+        if self.is_file_path(c_hydr_cond):
+            self.hydr_cond_name = os.path.basename(c_hydr_cond)
+            self.hydr_cond_dir = os.path.dirname(c_hydr_cond)
+        else:
+            self.hydr_cond_name = os.path.basename(c_hydr_cond)
+            self.hydr_cond_dir = self.workdir
+        if self.is_file_path(c_porosity):
+            self.porosity_name = os.path.basename(c_porosity)
+            self.porosity_dir = os.path.dirname(c_porosity)
+        else:
+            self.porosity_name = os.path.basename(c_porosity)
+            self.porosity_dir = self.workdir
         if c_soiltexture is not None:
-            self.soiltexture = os.path.basename(c_soiltexture) if self.is_file_path(
-                c_soiltexture) else c_soiltexture
+            if self.is_file_path(c_soiltexture):
+                self.soiltexture_name = os.path.basename(c_soiltexture)
+                self.soiltexture_dir = os.path.dirname(c_soiltexture)
+            else:
+                self.soiltexture_name = os.path.basename(c_soiltexture)
+                self.soiltexture_dir = self.workdir
         else:
-            self.soiltexture = None
+            self.soiltexture_name = None
         if c_spatial is not None:
-            self.spatial = os.path.basename(c_spatial) if self.is_file_path(c_spatial) else c_spatial
+            if self.is_file_path(c_spatial):
+                self.spatial_name = os.path.basename(c_spatial)
+                self.spatial_dir = os.path.dirname(c_spatial)
+            else:
+                self.spatial_name = os.path.basename(c_spatial)
+                self.spatial_dir = self.workdir
         else:
-            self.spatial = None
-        pass
+            self.spatial_name = None
+        self.hydr_cond = os.path.join(self.hydr_cond_dir, self.hydr_cond_name)
+        self.porosity = os.path.join(self.porosity_dir, self.porosity_name)
+        self.soiltexture = os.path.join(self.soiltexture_dir, self.soiltexture_name) if self.soiltexture_name else None
+        self.spatial = os.path.join(self.spatial_dir, self.spatial_name) if self.spatial_name else None
 
     def main(self):
         """main calculation function
@@ -651,19 +673,19 @@ class Preprocessing(object):
                         ( CASE WHEN hzdepb_r > """ + bDep + " THEN " + bDep + """ 
                                WHEN ksat_l is NULL THEN NULL ELSE hzdepb_r END - 
                           CASE WHEN hzdept_r < """ + tDep + " THEN " + tDep + """ 
-                               WHEN ksat_l is NULL THEN NULL ELSE hzdept_r END ) / ksat_l
+                               WHEN ksat_l is NULL THEN NULL ELSE hzdept_r END ) 
                         )AS decimal(5,2))) OVER (PARTITION BY component.cokey) AS decimal(5,2)) AS sum_thickness_ksat_l,
                     CAST( SUM ( CAST ( (
                         ( CASE WHEN hzdepb_r > """ + bDep + " THEN " + bDep + """ 
                                WHEN ksat_r is NULL THEN NULL ELSE hzdepb_r END - 
                           CASE WHEN hzdept_r < """ + tDep + " THEN " + tDep + """ 
-                               WHEN ksat_r is NULL THEN NULL ELSE hzdept_r END ) / ksat_r
+                               WHEN ksat_r is NULL THEN NULL ELSE hzdept_r END ) 
                         )AS decimal(5,2))) OVER (PARTITION BY component.cokey) AS decimal(5,2)) AS sum_thickness_ksat_r,
                     CAST( SUM ( CAST ( (
                         ( CASE WHEN hzdepb_r > """ + bDep + " THEN " + bDep + """ 
                                WHEN ksat_h is NULL THEN NULL ELSE hzdepb_r END - 
                           CASE WHEN hzdept_r < """ + tDep + " THEN " + tDep + """ 
-                               WHEN ksat_h is NULL THEN NULL ELSE hzdept_r END ) / ksat_h
+                               WHEN ksat_h is NULL THEN NULL ELSE hzdept_r END ) 
                         )AS decimal(5,2))) OVER (PARTITION BY component.cokey) AS decimal(5,2)) AS sum_thickness_ksat_h,
                     CAST (SUM(CAST((CASE WHEN hzdepb_r > """ + bDep + " THEN " + bDep +
                  """ WHEN wsatiated_l is NULL THEN NULL ELSE hzdepb_r END - CASE WHEN hzdept_r < """ + tDep +
@@ -758,12 +780,12 @@ class Preprocessing(object):
                     ISNULL(thickness_wt_sandtotal_r, 0) AS thickness_wt_sandtotal_r, sum_thickness_sandtotal_r,
                     comppct_r, SUM_COMP_PCT, ksat_l, ksat_r, ksat_h, wsatiated_l, wsatiated_r, wsatiated_h, dbovendry_l,
                     dbovendry_r, dbovendry_h, partdensity, claytotal_r, silttotal_r, sandtotal_r, 
-                    ((thickness_wt_ksat_l / (CASE WHEN sum_thickness_ksat_l = 0 THEN 1 ELSE 
-                        sum_thickness_ksat_l END)) ) AS DEPTH_WEIGHTED_AVERAGE1,
-                    ((thickness_wt_ksat_r / (CASE WHEN sum_thickness_ksat_r = 0 THEN 1 ELSE 
-                        sum_thickness_ksat_r END)) ) AS DEPTH_WEIGHTED_AVERAGE2,
-                    ((thickness_wt_ksat_h / (CASE WHEN sum_thickness_ksat_h = 0 THEN 1 ELSE 
-                        sum_thickness_ksat_h END)) ) AS DEPTH_WEIGHTED_AVERAGE3,
+                    thickness_wt_ksat_l / SUM (ISNULL(thickness_wt_ksat_l / ksat_l, 1)) OVER (PARTITION BY #main.cokey)
+                     AS DEPTH_WEIGHTED_AVERAGE1, 
+                    thickness_wt_ksat_r / SUM (ISNULL(thickness_wt_ksat_r / ksat_r, 1)) OVER (PARTITION BY #main.cokey)
+                     AS DEPTH_WEIGHTED_AVERAGE2,
+                    thickness_wt_ksat_h / SUM (ISNULL(thickness_wt_ksat_h / ksat_h, 1)) OVER (PARTITION BY #main.cokey)
+                     AS DEPTH_WEIGHTED_AVERAGE3,
                     ((thickness_wt_wsatiated_l / (CASE WHEN sum_thickness_wsatiated_l = 0 THEN 1 ELSE 
                         sum_thickness_wsatiated_l END)) * wsatiated_l) AS DEPTH_WEIGHTED_AVERAGE4,
                     ((thickness_wt_wsatiated_r / (CASE WHEN sum_thickness_wsatiated_r = 0 THEN 1 ELSE 
@@ -1461,13 +1483,13 @@ class Preprocessing(object):
 # ======================================================================
 # Main program for debugging
 if __name__ == '__main__':
-    # arcpy.env.workspace = "C:\\Users\\Wei\\Downloads\\test_pro\\test_pro"
-    arcpy.env.workspace = "E:\\lakeshore_example\\lakeshore_example"
-    area = os.path.join(arcpy.env.workspace, "file1.shp")
+    arcpy.env.workspace = "C:\\Users\\Wei\\OneDrive - Florida State University\\Desktop\\lakeshore_example\\OriginalData"
+    # arcpy.env.workspace = "E:\\lakeshore_example\\lakeshore_example"
+    area = os.path.join(arcpy.env.workspace, "clip.shp")
     pcs = arcpy.SpatialReference(26917)
     top = 0
     bot = 200
-    method = "Weighted Average"
+    method = "weighted average"
     cell_size = 10
 
     hydr = os.path.join(arcpy.env.workspace, "hydr")

@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ArcNLET-Py: A Python Version of ArcGIS-Based Nitrogen Load Estimation Toolbox Developed for ArcGIS Pro &mdash; ArcNLET-Py User&#39;s Manual December 20th, 2023 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="_static/custom.css?v=65185a0e" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=cdec1bd1"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Simplified Model of Nitrogen Transformation and Transport" href="simplifiedmodel.html" />
+    <link rel="prev" title="Welcome to ArcNLET-Py User’s Manual documentation!" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            ArcNLET-Py User's Manual
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">ArcNLET-Py: A Python Version of ArcGIS-Based Nitrogen Load Estimation Toolbox Developed for ArcGIS Pro</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id1">Introduction</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#organization-of-the-manual">Organization of the Manual</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#acronyms-and-abbreviations">Acronyms and Abbreviations</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="simplifiedmodel.html">Simplified Model of Nitrogen Transformation and Transport</a></li>
+<li class="toctree-l1"><a class="reference internal" href="preprocessing.html">0-Preprocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="groundwaterflow.html">1-Groundwater Flow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="particletracking.html">2-Particle Tracking</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vzmod.html">3-VZMOD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="transport.html">4-Transport</a></li>
+<li class="toctree-l1"><a class="reference internal" href="loadestimation.html">5-Load Estimation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installationandrequirements.html">Installation and Requirements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="preparinginputdata.html">Preparing Input Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lakeshoeexample.html">Lakeshore Example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usingpreprocessing.html">Using the Preprocessing Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usinggroundwaterflow.html">Using the Groundwater Flow Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usingparticletracking.html">Using the Particle Tracking Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usingvzmod.html">Using the VZMOD Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usingtransport.html">Using the Transport Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usingloadestimation.html">Using the Load Estimation Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="visualization.html">Visualization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sensitivityandcalibration.html">Sensitivity and Calibration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="references.html">REFERENCES</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">ArcNLET-Py User's Manual</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">ArcNLET-Py: A Python Version of ArcGIS-Based Nitrogen Load Estimation Toolbox Developed for ArcGIS Pro</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/introduction.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Sequential page navigation">
+        <a href="index.html" class="btn btn-neutral float-left" title="Welcome to ArcNLET-Py User’s Manual documentation!" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="simplifiedmodel.html" class="btn btn-neutral float-right" title="Simplified Model of Nitrogen Transformation and Transport" accesskey="n">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+  </div>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="arcnlet-py-a-python-version-of-arcgis-based-nitrogen-load-estimation-toolbox-developed-for-arcgis-pro">
+<span id="introduction"></span><h1>ArcNLET-Py: A Python Version of ArcGIS-Based Nitrogen Load Estimation Toolbox Developed for ArcGIS Pro<a class="headerlink" href="#arcnlet-py-a-python-version-of-arcgis-based-nitrogen-load-estimation-toolbox-developed-for-arcgis-pro" title="Link to this heading"></a></h1>
+<blockquote>
+<div><p>User’s Manual</p>
+<p>Manuscript Completed: December 2023</p>
+<p>Prepared by</p>
+<p>Michael Core(<a class="reference external" href="mailto:mcore&#37;&#52;&#48;fsu&#46;edu">mcore<span>&#64;</span>fsu<span>&#46;</span>edu</a>), Wei Mao (<a class="reference external" href="mailto:wm23a&#37;&#52;&#48;fsu&#46;edu">wm23a<span>&#64;</span>fsu<span>&#46;</span>edu</a>), and Ming Ye
+(<a class="reference external" href="mailto:mye&#37;&#52;&#48;fsu&#46;edu">mye<span>&#64;</span>fsu<span>&#46;</span>edu</a>)</p>
+<p>Department of Earth, Ocean, and Atmospheric Science, Florida State
+University, Tallahassee, FL 32306</p>
+</div></blockquote>
+<p><strong>Prepared for Florida Department of Environmental Protection
+Tallahassee, FL</strong></p>
+<section id="id1">
+<h2>Introduction<a class="headerlink" href="#id1" title="Link to this heading"></a></h2>
+<p>The original ArcNLET (ArcGIS-based Nitrogen Load Estimation Toolbox) was
+developed using the Visual Basic programming language for ArcMap. Since
+ESRI stopped supporting Visual Basic programming for ArcGIS and ArcGIS
+Pro is the current ArcGIS platform, we developed a new version of
+ArcNLET for ArcGIS Pro. In addition, the new version was written in
+Python, and the Python source codes are open to the public through
+GitHub. This new version is referred to as <strong>ArcNLET-Py</strong>. It has all
+the features of ArcNLET, with several new features that will be
+discussed in the manual later on. Since the graphic user interface of
+ArcNLET-Py is entirely different from ArcNLET, we developed this manual
+for using ArcNLET-Py. The numerical simulation behind ArcNLET-Py is
+similar to ArcNLET, and it should be conceptually straightforward for
+ArcNLET users to use ArcNLET-Py.</p>
+<p>ArcNLET-Py simulates the fate and transport of nitrogen (including both
+ammonium and nitrate) in a surficial groundwater aquifer originating
+from onsite sewage treatment and disposal system systems (OSTDS),
+a.k.a., septic tanks. ArcNLET-Py produces estimated values of ammonium
+and/or nitrate load to specified surface water bodies. The primary
+functions performed by ArcNLET-Py are to:</p>
+<ul class="simple">
+<li><p>Aid in preparing data that represents the soil hydraulic properties
+(e.g., hydraulic conductivity and porosity) within the domain
+boundary.</p></li>
+<li><p>Simulate reactive transport of ammonium and nitrate in the vertical
+direction at the distance between an OSTDS drainfield and groundwater
+table.</p></li>
+<li><p>Evaluate the groundwater flow directions and magnitudes at discrete
+points (i.e., OSTDS locations) of a domain of interest.</p></li>
+<li><p>Determine the flow paths along which nitrogen travels from an OSTDS
+to its receiving water body.</p></li>
+<li><p>Estimate the nitrogen plumes originating from OSTDS and ending at
+receiving surface water bodies.</p></li>
+<li><p>Calculate nitrate-nitrogen loss due to denitrification during nitrate
+transport and calculate the final nitrate load to target water
+bodies.</p></li>
+</ul>
+<p>The impetus behind developing the original ArcNLET and ArcNLET-Py is to
+have a simplified nitrogen transformation and transport model that is
+easy to implement, integrated into a geographic information system (GIS)
+for ease of data management, and uses input data that are available in
+the public domain. Traditional numerical models for groundwater flow and
+contaminant transport, such as the Modular Three-Dimensional
+Finite-Difference Groundwater Flow Model (MODFLOW), Modular
+Three-Dimensional Particle Tracking Model (MODPATH), and Modular
+Three-Dimensional Multispecies Transport Model for Simulation (MT3DMS)
+can simulate nitrogen fate and transport under complicated field
+conditions and produce simulated results that may agree well with field
+measurements. Developing these models and generating such agreement
+requires extensive data collection of the study area and an experienced
+modeler. An approach involving traditional modeling tools may not be
+ideal for obtaining quick but realistic estimates of nitrogen loads to
+surface water bodies since traditional modeling processes can be
+difficult and time-consuming. Additionally, traditional tools do not
+integrate well with GIS. As a result, a simplified model is developed to
+address the concerns with traditional modeling software. An outcome of
+the simplified model is that it becomes possible to integrate the
+modeling toolbox effectively within the GIS framework and to use the
+advanced spatial analysis tools made available by the GIS.</p>
+<p>The model is implemented as a Python Toolbox for ArcGIS Pro from the
+Environmental Systems Research Institute, Inc. (Esri). Integrating this
+model with ArcGIS Pro makes it easy to incorporate the spatial nature of
+data, such as the locations of individual OSTDS and spatially variable
+hydraulic conductivity and porosity. Finally, embedding the model within
+ArcGIS facilitates data pre- and post-processing and the visualization
+of results.</p>
+<ol class="arabic simple">
+<li><p>Please keep in mind that ArcNLET-Py uses shapefiles stored in folders
+on your local machine.</p></li>
+<li><p>ArcNLET-Py is compatible neither with the Esri feature class nor with
+any of the Esri geodatabases (i.e., file geodatabase, personal
+geodatabase, or enterprise geodatabase).</p></li>
+</ol>
+<p>The model is controlled via the Geoprocessing Pane and accessed as tools
+in the content pane or Catalog View of ArcGIS Pro. A point-and-click
+approach facilitates user interaction, as it is more user-friendly than
+the input file-oriented interaction used in traditional groundwater
+modeling software such as MODFLOW and MT3DMS.</p>
+<p>This manual describes the practical usage of the toolbox. The underlying
+model of nitrogen fate and transport and the associated algorithmic
+implementation are described in detail in the technical manual (Rios et
+al., 2011). Readers of this manual should be familiar with ArcGIS Pro
+3.2.0 and basic scientific and hydrological terminology.</p>
+<nav class="contents local" id="table-of-contents">
+<p class="topic-title">Table of Contents</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#organization-of-the-manual" id="id2">Organization of the Manual</a></p></li>
+<li><p><a class="reference internal" href="#acronyms-and-abbreviations" id="id3">Acronyms and Abbreviations</a></p></li>
+</ul>
+</nav>
+<p>1.1 Organization of the Manual
+1.2 Acronyms and Abbreviations</p>
+<section id="organization-of-the-manual">
+<h3><a class="toc-backref" href="#id2" role="doc-backlink">Organization of the Manual</a><a class="headerlink" href="#organization-of-the-manual" title="Link to this heading"></a></h3>
+<p>The structure of the manual is as follows: the manual begins with an
+abbreviated description of the simplified model used in this toolbox,
+followed by a discussion of the assumptions employed in the model with a
+detailed description of each module’s data inputs, outputs, and
+parameters. After a brief overview of the simplified model, the focus
+turns to installation requirements for the toolbox and instructions for
+accessing the tools within. After learning to access the tool, there is
+a detailed breakdown for finding and preparing data inputs for OSTDS
+locations, groundwater modeling, and particle tracking. Once comfortable
+with preparing data inputs, the manual explains the theory and practice
+of sensitivity analysis and model calibration within the toolbox.
+Finally, an example problem (referred to as Lakeshore example) for
+preparing the input files and executing each module is provided.</p>
+<p>The measurement units used in this manual may vary between metric and
+imperial units. However, required units are always explicitly stated.
+For clarification, it is best to use the units of meters and the
+projection coordinate system of North American Datum (NAD) 1983
+Universal Transverse Mercator (UTM) Zone 17 North (N), identified by the
+European Petroleum Survey Group (EPSG) via the Well-Known ID (WKID) of
+26917. To make this manual more straightforward to read, a specific
+typographic convention has been adopted as follows:</p>
+<ul class="simple">
+<li><p>Model inputs and parameters are in <strong>bold</strong> in the document text and
+are surrounded by [brackets] in the Lakeshore example. Names of
+attributes (i.e., field names) in attribute tables are always shown
+in the Courier New font.</p></li>
+</ul>
+</section>
+<section id="acronyms-and-abbreviations">
+<h3><a class="toc-backref" href="#id3" role="doc-backlink">Acronyms and Abbreviations</a><a class="headerlink" href="#acronyms-and-abbreviations" title="Link to this heading"></a></h3>
+<blockquote>
+<div><p>In this manual, abbreviated acronyms or terms are spelled out in full
+the first time they appear. Table 1‑1 is a list of acronyms and
+abbreviations used in this manual:</p>
+</div></blockquote>
+<p>Table 1‑1: Abbreviations</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>ArcNLET-Py</p></th>
+<th class="head"><p>ArcGIS Pro Nitrogen Loading and Estimation Toolbox
+for Python</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>CPU</p></td>
+<td><p>Central Processing Unit</p></td>
+</tr>
+<tr class="row-odd"><td><p>CSV</p></td>
+<td><p>Comma-Separated Values text file</p></td>
+</tr>
+<tr class="row-even"><td><p>DEM</p></td>
+<td><p>Digital Elevation Model</p></td>
+</tr>
+<tr class="row-odd"><td><p>DTW</p></td>
+<td><p>Depth to Water Table</p></td>
+</tr>
+<tr class="row-even"><td><p>Esri</p></td>
+<td><p>Environmental Systems Research Institute, Inc.</p></td>
+</tr>
+<tr class="row-odd"><td><p>FDEP</p></td>
+<td><p>Florida Department of Environmental Protection</p></td>
+</tr>
+<tr class="row-even"><td><p>FID</p></td>
+<td><p>Feature ID</p></td>
+</tr>
+<tr class="row-odd"><td><p>GIS</p></td>
+<td><p>Geographic Information System.</p></td>
+</tr>
+<tr class="row-even"><td><p>GUI</p></td>
+<td><p>Graphical User Interface</p></td>
+</tr>
+<tr class="row-odd"><td><p>MODFLOW</p></td>
+<td><p>Modular Three-Dimensional Finite-Difference
+Groundwater Flow Model</p></td>
+</tr>
+<tr class="row-even"><td><p>MODPATH</p></td>
+<td><p>Modular Three-Dimensional Particle Tracking Model</p></td>
+</tr>
+<tr class="row-odd"><td><p>MT3DMS</p></td>
+<td><p>Modular Three-Dimensional Multispecies Transport
+Model for Simulation</p></td>
+</tr>
+<tr class="row-even"><td><p>NED</p></td>
+<td><p>National Elevation Dataset</p></td>
+</tr>
+<tr class="row-odd"><td><p>NH4</p></td>
+<td><p>Ammonium</p></td>
+</tr>
+<tr class="row-even"><td><p>NHD</p></td>
+<td><p>National Hydrography dataset</p></td>
+</tr>
+<tr class="row-odd"><td><p>NO3</p></td>
+<td><p>Nitrate</p></td>
+</tr>
+<tr class="row-even"><td><p>OSTDS</p></td>
+<td><p>Onsite Sewage Treatment and Disposal System. A
+septic tank is an example of an OSTDS.</p></td>
+</tr>
+<tr class="row-odd"><td><p>RAM</p></td>
+<td><p>Randon Access Memory</p></td>
+</tr>
+<tr class="row-even"><td><p>SA</p></td>
+<td><p>Spatial Analyst (extension for ArcGIS)</p></td>
+</tr>
+<tr class="row-odd"><td><p>STU</p></td>
+<td><p>Soil Treatment Unit</p></td>
+</tr>
+<tr class="row-even"><td><p>STUMOD</p></td>
+<td><p>Spreadsheet-Based Analytical Flow and Transport
+Model</p></td>
+</tr>
+<tr class="row-odd"><td><p>SSURGO</p></td>
+<td><p>Soil Survey Geographic Database</p></td>
+</tr>
+<tr class="row-even"><td><p>TNM</p></td>
+<td><p>USGS The National Map Download v2.0</p></td>
+</tr>
+<tr class="row-odd"><td><p>VZMOD</p></td>
+<td><p>Vadose Zone Model</p></td>
+</tr>
+</tbody>
+</table>
+<p>See also:
+- <a class="reference internal" href="simplifiedmodel.html#simplifiedmodel"><span class="std std-ref">Simplified Model of Nitrogen Transformation and Transport</span></a> for details on the simplified model.
+- <a class="reference internal" href="installationandrequirements.html#installationandrequirements"><span class="std std-ref">Installation and Requirements</span></a> for installation requirements.
+- <a class="reference internal" href="preparinginputdata.html#preparinginputdata"><span class="std std-ref">Preparing Input Data</span></a> for information on preparing input data.
+- <a class="reference internal" href="lakeshoeexample.html#lakeshoeexample"><span class="std std-ref">Lakeshore Example</span></a> for the lakeshore example.
+- <a class="reference internal" href="sensitivityandcalibration.html#sensitivityandcalibration"><span class="std std-ref">Sensitivity and Calibration</span></a> for sensitivity analysis and calibration.
+- <a class="reference internal" href="references.html#references"><span class="std std-ref">REFERENCES</span></a> for the references section.</p>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Welcome to ArcNLET-Py User’s Manual documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="simplifiedmodel.html" class="btn btn-neutral float-right" title="Simplified Model of Nitrogen Transformation and Transport" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Michael Core, Wei Mao, and Ming Ye.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -129,15 +129,15 @@ class InterfaceGroundwaterFlow(object):
                                    direction="Output",  # Input|Output
                                    )
 
-        outfile2 = arcpy.Parameter(name="Hydraulic Gradient",
-                                   displayName="(Optional) Output Hydraulic Gradient",
+        outfile2 = arcpy.Parameter(name="Smoothed DEM",
+                                   displayName="(Optional) Output Smoothed DEM (VZMOD required)",
                                    datatype=["GPRasterLayer"],
                                    parameterType="Optional",  # Required|Optional|Derived
                                    direction="Output",  # Input|Output
                                    )
 
-        outfile3 = arcpy.Parameter(name="Smoothed DEM",
-                                   displayName="(Optional) Output Smoothed DEM",
+        outfile3 = arcpy.Parameter(name="Hydraulic Gradient",
+                                   displayName="(Optional) Output Hydraulic Gradient",
                                    datatype=["GPRasterLayer"],
                                    parameterType="Optional",  # Required|Optional|Derived
                                    direction="Output",  # Input|Output
@@ -299,15 +299,15 @@ class InterfaceGroundwaterFlow(object):
 
         velo = parameters[10].valueAsText
         veld = parameters[11].valueAsText
-        grad = parameters[12].valueAsText
-        smth = parameters[13].valueAsText
+        smth = parameters[12].valueAsText
+        grad = parameters[13].valueAsText
 
         # Okay finally go ahead and do the work.
         try:
             arcpy.AddMessage("Compute Darcy Flow: START")
             GF = DarcyFlow(dem, wb, ks, poro,
                            smthf1, smthc, fsink, merge, smthf2, zfact,
-                           velo, veld, grad, smth)
+                           velo, veld, smth, grad)
             arcpy.AddMessage("Compute Darcy Flow: FINISH")
             GF.calculateDarcyFlow()
             current_time = time.strftime("%H:%M:%S", time.localtime())

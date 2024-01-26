@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Simplified Model of Nitrogen Transformation and Transport &mdash; ArcNLET-Py User&#39;s Manual December 20th, 2023 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="_static/custom.css?v=65185a0e" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=cdec1bd1"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="0-Preprocessing" href="preprocessing.html" />
+    <link rel="prev" title="ArcNLET-Py: A Python Version of ArcGIS-Based Nitrogen Load Estimation Toolbox Developed for ArcGIS Pro" href="introduction.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            ArcNLET-Py User's Manual
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">ArcNLET-Py: A Python Version of ArcGIS-Based Nitrogen Load Estimation Toolbox Developed for ArcGIS Pro</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Simplified Model of Nitrogen Transformation and Transport</a></li>
+<li class="toctree-l1"><a class="reference internal" href="preprocessing.html">0-Preprocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="groundwaterflow.html">1-Groundwater Flow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="particletracking.html">2-Particle Tracking</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vzmod.html">3-VZMOD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="transport.html">4-Transport</a></li>
+<li class="toctree-l1"><a class="reference internal" href="loadestimation.html">5-Load Estimation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installationandrequirements.html">Installation and Requirements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="preparinginputdata.html">Preparing Input Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lakeshoeexample.html">Lakeshore Example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usingpreprocessing.html">Using the Preprocessing Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usinggroundwaterflow.html">Using the Groundwater Flow Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usingparticletracking.html">Using the Particle Tracking Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usingvzmod.html">Using the VZMOD Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usingtransport.html">Using the Transport Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usingloadestimation.html">Using the Load Estimation Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="visualization.html">Visualization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sensitivityandcalibration.html">Sensitivity and Calibration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="references.html">REFERENCES</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">ArcNLET-Py User's Manual</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Simplified Model of Nitrogen Transformation and Transport</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/simplifiedmodel.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Sequential page navigation">
+        <a href="introduction.html" class="btn btn-neutral float-left" title="ArcNLET-Py: A Python Version of ArcGIS-Based Nitrogen Load Estimation Toolbox Developed for ArcGIS Pro" accesskey="p"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="preprocessing.html" class="btn btn-neutral float-right" title="0-Preprocessing" accesskey="n">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+  </div>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="simplified-model-of-nitrogen-transformation-and-transport">
+<span id="simplifiedmodel"></span><h1>Simplified Model of Nitrogen Transformation and Transport<a class="headerlink" href="#simplified-model-of-nitrogen-transformation-and-transport" title="Link to this heading"></a></h1>
+<p>The simplified model consists of three components (flow model, transport
+model, and nitrogen (nitrate (NO<sub>3</sub>) and ammonium (NH<sub>4</sub>))
+load estimation) implemented in six separate modules as follows:</p>
+<ul class="simple">
+<li><p>The proto-module (0-Preprocessing) aids in preparing soil datasets
+derived from the Soil Survey Geographic Database (SSURGO), which
+includes hydraulic conductivity, porosity, texture, and spatial
+distribution.</p></li>
+<li><p>The first module (1-Groundwater Flow) consists of a simplified flow
+model that uses smoothed topography to approximate the water table
+and calculate the magnitude and direction of groundwater seepage
+velocity.</p></li>
+<li><p>The second module (2-Particle Tracking) calculates flow paths based
+on the first module’s results of velocity direction and magnitude
+results.</p></li>
+<li><p>The third module, the Vadose Zone MODel (3-VZMOD), is optional and
+estimates the vertical soil flow and nitrification and
+denitrification of ammonium (NH<sub>4</sub>) and nitrate (NO<sub>3</sub>)
+within the Vadose Zone below the OSTDS based on the number of OSTDS
+points, soil conditions, and depth between the drainfield and the
+water table.</p></li>
+<li><p>The fourth module (4-Transport) uses an analytical solution to the
+advection-dispersion equation to simulate the movement of
+NH<sub>4</sub> and/or NO<sub>3</sub> plumes. The Transport Module warps
+plumes along their paths.</p></li>
+<li><p>The fifth module (5-Load Estimation) calculates the NH<sub>4</sub>
+and/or NO<sub>3</sub> mass load-input, -output, and -removal for both
+surface water bodies and plumes that fall short of water features.</p></li>
+</ul>
+<p>The modules are each described in detail below.</p>
+<p>Subsections:
+- <a class="reference internal" href="preprocessing.html#preprocessing"><span class="std std-ref">0-Preprocessing</span></a> for preprocessing steps.
+- <a class="reference internal" href="groundwaterflow.html#groundwaterflow"><span class="std std-ref">1-Groundwater Flow</span></a> for understanding groundwater flow.
+- <a class="reference internal" href="particletracking.html#particletracking"><span class="std std-ref">2-Particle Tracking</span></a> on particle tracking.
+- <a class="reference internal" href="vzmod.html#vzmod"><span class="std std-ref">3-VZMOD</span></a> for vertical zone modeling.
+- <a class="reference internal" href="transport.html#transport"><span class="std std-ref">4-Transport</span></a> for transport modeling.
+- <a class="reference internal" href="loadestimation.html#loadestimation"><span class="std std-ref">5-Load Estimation</span></a> for load estimation techniques.</p>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="introduction.html" class="btn btn-neutral float-left" title="ArcNLET-Py: A Python Version of ArcGIS-Based Nitrogen Load Estimation Toolbox Developed for ArcGIS Pro" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="preprocessing.html" class="btn btn-neutral float-right" title="0-Preprocessing" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Michael Core, Wei Mao, and Ming Ye.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

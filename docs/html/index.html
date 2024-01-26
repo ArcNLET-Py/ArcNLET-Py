@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Welcome to ArcNLET-Py User’s Manual documentation! &mdash; ArcNLET-Py User&#39;s Manual December 20th, 2023 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="_static/custom.css?v=65185a0e" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=cdec1bd1"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="ArcNLET-Py: A Python Version of ArcGIS-Based Nitrogen Load Estimation Toolbox Developed for ArcGIS Pro" href="introduction.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="#" class="icon icon-home">
+            ArcNLET-Py User's Manual
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">ArcNLET-Py: A Python Version of ArcGIS-Based Nitrogen Load Estimation Toolbox Developed for ArcGIS Pro</a></li>
+<li class="toctree-l1"><a class="reference internal" href="simplifiedmodel.html">Simplified Model of Nitrogen Transformation and Transport</a></li>
+<li class="toctree-l1"><a class="reference internal" href="preprocessing.html">0-Preprocessing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="groundwaterflow.html">1-Groundwater Flow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="particletracking.html">2-Particle Tracking</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vzmod.html">3-VZMOD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="transport.html">4-Transport</a></li>
+<li class="toctree-l1"><a class="reference internal" href="loadestimation.html">5-Load Estimation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installationandrequirements.html">Installation and Requirements</a></li>
+<li class="toctree-l1"><a class="reference internal" href="preparinginputdata.html">Preparing Input Data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lakeshoeexample.html">Lakeshore Example</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usingpreprocessing.html">Using the Preprocessing Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usinggroundwaterflow.html">Using the Groundwater Flow Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usingparticletracking.html">Using the Particle Tracking Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usingvzmod.html">Using the VZMOD Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usingtransport.html">Using the Transport Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usingloadestimation.html">Using the Load Estimation Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="visualization.html">Visualization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sensitivityandcalibration.html">Sensitivity and Calibration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="references.html">References</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">ArcNLET-Py User's Manual</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="#" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Welcome to ArcNLET-Py User’s Manual documentation!</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul><div class="rst-breadcrumbs-buttons" role="navigation" aria-label="Sequential page navigation">
+        <a href="introduction.html" class="btn btn-neutral float-right" title="ArcNLET-Py: A Python Version of ArcGIS-Based Nitrogen Load Estimation Toolbox Developed for ArcGIS Pro" accesskey="n">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+  </div>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="welcome-to-arcnlet-py-user-s-manual-s-documentation">
+<h1>Welcome to ArcNLET-Py User’s Manual documentation!<a class="headerlink" href="#welcome-to-arcnlet-py-user-s-manual-s-documentation" title="Link to this heading"></a></h1>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">ArcNLET-Py: A Python Version of ArcGIS-Based Nitrogen Load Estimation Toolbox Developed for ArcGIS Pro</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="introduction.html#id1">Introduction</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="simplifiedmodel.html">Simplified Model of Nitrogen Transformation and Transport</a></li>
+<li class="toctree-l1"><a class="reference internal" href="preprocessing.html">0-Preprocessing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="preprocessing.html#input-layers">Input Layers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="preprocessing.html#options-and-parameters">Options and Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="preprocessing.html#outputs">Outputs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="preprocessing.html#troubleshooting">Troubleshooting</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="groundwaterflow.html">1-Groundwater Flow</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="groundwaterflow.html#input-layers">Input Layers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="groundwaterflow.html#options-and-parameters">Options and Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="groundwaterflow.html#outputs">Outputs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="groundwaterflow.html#troubleshooting">Troubleshooting</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="particletracking.html">2-Particle Tracking</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="particletracking.html#input-layers">Input Layers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="particletracking.html#options-and-parameters">Options and Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="particletracking.html#outputs">Outputs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="particletracking.html#troubleshooting">Troubleshooting</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="vzmod.html">3-VZMOD</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="vzmod.html#input-layers">Input Layers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vzmod.html#options-and-parameters">Options and Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vzmod.html#outputs">Outputs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vzmod.html#troubleshooting">Troubleshooting</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="transport.html">4-Transport</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="transport.html#input-layers">Input Layers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="transport.html#options-and-parameters">Options and Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="transport.html#outputs">Outputs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="transport.html#troubleshooting">Troubleshooting</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="loadestimation.html">5-Load Estimation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="loadestimation.html#input">Input</a></li>
+<li class="toctree-l2"><a class="reference internal" href="loadestimation.html#options-and-parameters">Options and Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="loadestimation.html#outputs">Outputs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="loadestimation.html#troubleshooting">Troubleshooting</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="installationandrequirements.html">Installation and Requirements</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="installationandrequirements.html#system-requirements">System Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installationandrequirements.html#install-arcgis-pro">Install ArcGIS Pro</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installationandrequirements.html#arcgis-pro-project-file">ArcGIS Pro Project File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installationandrequirements.html#arcnlet-py-from-github">ArcNLET-Py from GitHub</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installationandrequirements.html#arcnlet-py-installation">ArcNLET-Py Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installationandrequirements.html#run-arcnlet-py-in-arcgis-pro">Run ArcNLET-Py in ArcGIS Pro</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="preparinginputdata.html">Preparing Input Data</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="preparinginputdata.html#obtaining-the-data">Obtaining the Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="preparinginputdata.html#ostds-locations">OSTDS Locations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="preparinginputdata.html#projections">Projections</a></li>
+<li class="toctree-l2"><a class="reference internal" href="preparinginputdata.html#clipping">Clipping</a></li>
+<li class="toctree-l2"><a class="reference internal" href="preparinginputdata.html#merging-line-and-water-bodies-features">Merging Line and Water Bodies Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="preparinginputdata.html#excessive-dem-smoothing">Excessive DEM Smoothing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="preparinginputdata.html#dem-burning">DEM Burning</a></li>
+<li class="toctree-l2"><a class="reference internal" href="preparinginputdata.html#multiple-smoothings">Multiple Smoothings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="preparinginputdata.html#processing-lidar-data">Processing LiDAR data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="preparinginputdata.html#lidar-dem-updating-water-bodies">LiDAR DEM Updating Water Bodies</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="lakeshoeexample.html">Lakeshore Example</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="lakeshoeexample.html#unit-consistency-quick-reference">Unit Consistency Quick Reference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lakeshoeexample.html#description-of-modeling-data">Description of Modeling Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lakeshoeexample.html#lakeshore-example-data">Lakeshore Example Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lakeshoeexample.html#arcnlet-py-toolbox">ArcNLET-Py Toolbox</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="usingpreprocessing.html">Using the Preprocessing Module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="usingpreprocessing.html#data-inputs">Data Inputs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usingpreprocessing.html#data-outputs-and-parameters">Data Outputs and Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usingpreprocessing.html#executing-the-module">Executing the Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usingpreprocessing.html#view-and-verify-results">View and Verify Results</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="usinggroundwaterflow.html">Using the Groundwater Flow Module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="usinggroundwaterflow.html#data-inputs">Data Inputs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usinggroundwaterflow.html#data-outputs-and-parameters">Data Outputs and Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usinggroundwaterflow.html#executing-the-module">Executing the Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usinggroundwaterflow.html#view-and-verify-results">View and Verify Results</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="usingparticletracking.html">Using the Particle Tracking Module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="usingparticletracking.html#data-inputs">Data Inputs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usingparticletracking.html#data-outputs-and-parameters">Data Outputs and Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usingparticletracking.html#execute-the-module">Execute the Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usingparticletracking.html#view-and-verify-results">View and Verify Results</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="usingvzmod.html">Using the VZMOD Module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="usingvzmod.html#data-inputs">Data Inputs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usingvzmod.html#data-outputs-and-parameters">Data Outputs and Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usingvzmod.html#execute-the-module">Execute the Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usingvzmod.html#view-and-verify-results">View and Verify Results</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="usingtransport.html">Using the Transport Module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="usingtransport.html#data-inputs">Data Inputs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usingtransport.html#data-outputs-and-parameters">Data Outputs and Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usingtransport.html#execute-the-module">Execute the Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usingtransport.html#view-and-verify-results">View and Verify Results</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="usingloadestimation.html">Using the Load Estimation Module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="usingloadestimation.html#data-inputs">Data Inputs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usingloadestimation.html#data-outputs-and-parameters">Data Outputs and Parameters</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usingloadestimation.html#executing-the-module">Executing the Module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usingloadestimation.html#view-and-verify-results">View and Verify Results</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="visualization.html">Visualization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sensitivityandcalibration.html">Sensitivity and Calibration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="sensitivityandcalibration.html#local-sensitivity">Local Sensitivity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="sensitivityandcalibration.html#model-calibration">Model Calibration</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="references.html">References</a></li>
+</ul>
+</div>
+</section>
+<section id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Link to this heading"></a></h1>
+<ul class="simple">
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
+<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
+<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
+</ul>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="introduction.html" class="btn btn-neutral float-right" title="ArcNLET-Py: A Python Version of ArcGIS-Based Nitrogen Load Estimation Toolbox Developed for ArcGIS Pro" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Michael Core, Wei Mao, and Ming Ye.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

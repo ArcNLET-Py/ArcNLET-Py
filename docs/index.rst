@@ -1,16 +1,35 @@
-.. ArcNLET Document documentation master file, created by
-   sphinx-quickstart on Fri Oct  6 14:21:18 2023.
+.. ArcNLET-Py User's Manual documentation master file, created by
+   sphinx-quickstart on Tue Dec 19 23:37:36 2023.
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-User Manual
-============================================
+Welcome to ArcNLET-Py User's Manual documentation!
+====================================================
 
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
 
-   UserManual/index
+   UserManual/introduction
+   UserManual/simplifiedmodel
+   UserManual/preprocessing
+   UserManual/groundwaterflow
+   UserManual/particletracking
+   UserManual/vzmod
+   UserManual/transport
+   UserManual/loadestimation
+   UserManual/installationandrequirements
+   UserManual/preparinginputdata
+   UserManual/lakeshoeexample
+   UserManual/usingpreprocessing
+   UserManual/usinggroundwaterflow
+   UserManual/usingparticletracking
+   UserManual/usingvzmod
+   UserManual/usingtransport
+   UserManual/usingloadestimation
+   UserManual/visualization
+   UserManual/sensitivityandcalibration
+   UserManual/references
 
 Indices and tables
 ==================
