@@ -286,7 +286,8 @@ class ParticleTracking:
                     velo = 1E-8 if velo < 1E-8 else velo
                     total_time = segments[-1][4] + self.step_size / velo
                     segments.append([intersect_polyline, segments[-1][1], segments[-1][2] + 1, total_dist,
-                                     total_time, poro, velo, dirangle, segments[-1][-2], segments[-1][-1]])
+                                     total_time, segments[-1][5], segments[-1][6], dirangle,
+                                     segments[-1][-2], segments[-1][-1]])
                     segments[-2][-2] = -1
 
                     arcpy.analysis.Intersect([self.temp_layer_name, intersect_polyline], intersect_output,

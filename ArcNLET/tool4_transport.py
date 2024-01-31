@@ -1152,43 +1152,43 @@ def is_file_locked(file_path):
 # Main program for debugging
 if __name__ == '__main__':
     # for i in range(1):
-    arcpy.env.workspace = ".\\test_pro"
+    arcpy.env.workspace = "C:\\Users\\Wei\\Downloads\\ArcNLET-Py-dev\\ArcNLET-Py-dev\\Examples\\lakeshore_example"
     # arcpy.env.workspace = "C:\\Users\\Wei\\Downloads\\Ortho_P_3rd_attempt\\Ortho_P_3rd_attempt"
-    whethernh4 = False
-    source_location = os.path.join(arcpy.env.workspace, "septic_tanks.shp")
-    water_bodies = os.path.join(arcpy.env.workspace, "Golden_Gate_Water_Bodies.shp")
-    particlepath = os.path.join(arcpy.env.workspace, "particlepath_wei.shp")
+    whethernh4 = True
+    source_location = os.path.join(arcpy.env.workspace, "VZMOD\\septictanks.shp")
+    water_bodies = os.path.join(arcpy.env.workspace, "Example_Inputs\\waterbodies.shp")
+    particlepath = os.path.join(arcpy.env.workspace, "Example_Inputs\\demo_paths.shp")
 
-    no3output = os.path.join(arcpy.env.workspace, "no3")
-    nh4output = os.path.join(arcpy.env.workspace, "nh4")
-    no3output_info = "no3"+"_info.shp"
-    nh4output_info = "nh4"+"_info.shp"
+    no3output = os.path.join(arcpy.env.workspace, "demo_no3")
+    nh4output = os.path.join(arcpy.env.workspace, "demo_nh4")
+    no3output_info = "demo_no3"+"_info.shp"
+    nh4output_info = "demo_nh4"+"_info.shp"
 
-    option0 = "DomenicoRobbinsSS2D"
+    option0 = "DomenicoRobbinsSSDecay2D"
     option1 = 48
     option2 = "Polyorder2"
     option3 = 0.000001
-    option4 = "full"
-    option5 = "Specified Input Mass Rate"  # input mass rate or z
+    option4 = "Medium"
+    option5 = "Specified Z"  # input mass rate or z
 
-    param1 = 5850
-    param2 = 20
-    param3 = 1
+    param1 = 20000
+    param2 = 12
+    param3 = 1.5
     param4 = False
     param5 = 3.0
-    param6 = 2
+    param6 = 0.8
 
-    no3param0 = 9
-    no3param1 = 45
-    no3param2 = 2.25
+    no3param0 = 60
+    no3param1 = 2.113
+    no3param2 = 0.234
     no3param3 = 0.008
-    no3param4 = 28.3168
+    no3param4 = 1000
     nh4param0 = 5
     nh4param1 = 2.113
     nh4param2 = 0.234
-    nh4param3 = 0.0008
+    nh4param3 = 0.0001
     nh4param4 = 1.42
-    nh4param5 = 4
+    nh4param5 = 2
 
     arcpy.AddMessage("starting geoprocessing")
     start_time = datetime.datetime.now()

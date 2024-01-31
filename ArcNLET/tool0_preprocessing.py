@@ -73,6 +73,8 @@ class Preprocessing(object):
         self.porosity = os.path.join(self.porosity_dir, self.porosity_name)
         self.soiltexture = os.path.join(self.soiltexture_dir, self.soiltexture_name) if self.soiltexture_name else None
         self.spatial = os.path.join(self.spatial_dir, self.spatial_name) if self.spatial_name else None
+        if self.spatial is None:
+            self.spatial = os.path.join(self.workdir, "ssurgo_spatial.shp")
 
     def main(self):
         """main calculation function
@@ -1483,9 +1485,9 @@ class Preprocessing(object):
 # ======================================================================
 # Main program for debugging
 if __name__ == '__main__':
-    arcpy.env.workspace = "C:\\Users\\Wei\\OneDrive - Florida State University\\Desktop\\lakeshore_example\\OriginalData"
+    arcpy.env.workspace = "C:\\Users\\Wei\\OneDrive - Florida State University\\Documents\\lakeshore\\ArcNLET-Py-dev\\ArcNLET-Py-dev\\Examples\\lakeshore_example\\Preprocessing_Module"
     # arcpy.env.workspace = "E:\\lakeshore_example\\lakeshore_example"
-    area = os.path.join(arcpy.env.workspace, "clip.shp")
+    area = os.path.join(arcpy.env.workspace, "study_area.shp")
     pcs = arcpy.SpatialReference(26917)
     top = 0
     bot = 200
@@ -1495,7 +1497,7 @@ if __name__ == '__main__':
     hydr = os.path.join(arcpy.env.workspace, "hydr")
     poro = os.path.join(arcpy.env.workspace, "poro")
     solt = os.path.join(arcpy.env.workspace, "solt")
-    spat = os.path.join(arcpy.env.workspace, "spat.shp")
+    spat = None
 
     start_time = time.time()
 
