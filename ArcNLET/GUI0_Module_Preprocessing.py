@@ -155,6 +155,76 @@ class InterfacePreprocessing(object):
                 parameters[3].setErrorMessage("Bottom depth must be greater than top depth.")
         if parameters[5].value is not None and parameters[5].value < 0:
             parameters[5].setErrorMessage("Cell size must be greater than 0.")
+
+        if parameters[0].altered and parameters[0].value is not None:
+            filedir = arcpy.Describe(parameters[0].valueAsText).catalogPath
+            if parameters[6].altered and parameters[6].value is not None:
+                if self.is_file_path(parameters[6].valueAsText):
+                    if ".gdb" in parameters[6].valueAsText or ".mdb" in parameters[6].valueAsText:
+                        filename = os.path.basename(parameters[6].valueAsText)
+                        if "." in filename:
+                            parameters[6].setErrorMessage(
+                                "When storing a raster dataset in a geodatabase, "
+                                "do not add a file extension to the name of the raster dataset. ")
+                else:
+                    if ".gdb" in filedir or ".mdb" in filedir:
+                        filename = parameters[6].valueAsText
+                        if "." in filename:
+                            parameters[6].setErrorMessage(
+                                "When storing a raster dataset in a geodatabase, "
+                                "do not add a file extension to the name of the raster dataset. "
+                                "The default output location is same as Study Area shapefile")
+
+            if parameters[7].altered and parameters[7].value is not None:
+                if self.is_file_path(parameters[7].valueAsText):
+                    if ".gdb" in parameters[7].valueAsText or ".mdb" in parameters[7].valueAsText:
+                        filename = os.path.basename(parameters[7].valueAsText)
+                        if "." in filename:
+                            parameters[7].setErrorMessage(
+                                "When storing a raster dataset in a geodatabase, "
+                                "do not add a file extension to the name of the raster dataset. ")
+                else:
+                    if ".gdb" in filedir or ".mdb" in filedir:
+                        filename = parameters[7].valueAsText
+                        if "." in filename:
+                            parameters[7].setErrorMessage(
+                                "When storing a raster dataset in a geodatabase, "
+                                "do not add a file extension to the name of the raster dataset. "
+                                "The default output location is same as Study Area shapefile")
+
+            if parameters[8].altered and parameters[8].value is not None:
+                if self.is_file_path(parameters[8].valueAsText):
+                    if ".gdb" in parameters[8].valueAsText or ".mdb" in parameters[8].valueAsText:
+                        filename = os.path.basename(parameters[8].valueAsText)
+                        if "." in filename:
+                            parameters[8].setErrorMessage(
+                                "When storing a raster dataset in a geodatabase, "
+                                "do not add a file extension to the name of the raster dataset. ")
+                else:
+                    if ".gdb" in filedir or ".mdb" in filedir:
+                        filename = parameters[8].valueAsText
+                        if "." in filename:
+                            parameters[8].setErrorMessage(
+                                "When storing a raster dataset in a geodatabase, "
+                                "do not add a file extension to the name of the raster dataset. "
+                                "The default output location is same as Study Area shapefile")
+
+            if parameters[9].altered and parameters[9].value is not None:
+                if self.is_file_path(parameters[9].valueAsText):
+                    if ".gdb" in parameters[9].valueAsText or ".mdb" in parameters[9].valueAsText:
+                        filename = os.path.basename(parameters[9].valueAsText)
+                        if "." in filename:
+                            parameters[9].setErrorMessage(
+                                "When storing a raster dataset in a geodatabase, "
+                                "do not add a file extension to the name of the raster dataset. ")
+                else:
+                    if ".gdb" in filedir or ".mdb" in filedir:
+                        filename = parameters[9].valueAsText
+                        if "." in filename:
+                            parameters[9].setErrorMessage(
+                                "When storing a raster dataset in a geodatabase, "
+                                "do not add a file extension to the name of the raster dataset. "
+                                "The default output location is same as Study Area shapefile")
         return
 
     def execute(self, parameters, messages) -> None:

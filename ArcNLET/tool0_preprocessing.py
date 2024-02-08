@@ -38,6 +38,10 @@ class Preprocessing(object):
         self.cellsize = c_cellsize
 
         self.workdir = os.path.dirname(self.area)
+        if ".gdb" in self.workdir or ".mdb" in self.workdir:
+            self.geodatabase = True
+        else:
+            self.geodatabase = False
 
         if self.is_file_path(c_hydr_cond):
             self.hydr_cond_name = os.path.basename(c_hydr_cond)
@@ -74,7 +78,10 @@ class Preprocessing(object):
         self.soiltexture = os.path.join(self.soiltexture_dir, self.soiltexture_name) if self.soiltexture_name else None
         self.spatial = os.path.join(self.spatial_dir, self.spatial_name) if self.spatial_name else None
         if self.spatial is None:
-            self.spatial = os.path.join(self.workdir, "ssurgo_spatial.shp")
+            if self.geodatabase:
+                self.spatial = os.path.join(self.workdir, "ssurgo_spatial")
+            else:
+                self.spatial = os.path.join(self.workdir, "ssurgo_spatial.shp")
 
     def main(self):
         """main calculation function
@@ -139,7 +146,10 @@ class Preprocessing(object):
 
         current_time = time.strftime("%H:%M:%S", time.localtime())
         arcpy.AddMessage(f"{current_time}     Export to shapefile")
-        output_shapefile = "spatial.shp"
+        if self.geodatabase:
+            output_shapefile = "int_spa_tmp"
+        else:
+            output_shapefile = "int_spa_tmp.shp"
         arcpy.management.CreateFeatureclass(arcpy.env.workspace, output_shapefile, "POLYGON",
                                             spatial_reference=wgs84)
 
@@ -188,7 +198,7 @@ class Preprocessing(object):
                         row[1] = "NA"
                     cursor.updateRow(row)
 
-        if self.spatial is None:
+        if self.spatial_name is None:
             arcpy.management.Delete(self.spatial)
 
     @staticmethod
@@ -1485,13 +1495,13 @@ class Preprocessing(object):
 # ======================================================================
 # Main program for debugging
 if __name__ == '__main__':
-    arcpy.env.workspace = "C:\\Users\\Wei\\OneDrive - Florida State University\\Documents\\lakeshore\\ArcNLET-Py-dev\\ArcNLET-Py-dev\\Examples\\lakeshore_example\\Preprocessing_Module"
+    arcpy.env.workspace = "C:\\Users\\Wei\\Downloads\\WeiEmail\\WeiEmail\\GrocloseTraining_20240208.gdb"
     # arcpy.env.workspace = "E:\\lakeshore_example\\lakeshore_example"
-    area = os.path.join(arcpy.env.workspace, "study_area.shp")
+    area = os.path.join(arcpy.env.workspace, "GrosecloseStudyAreaPolygon")
     pcs = arcpy.SpatialReference(26917)
     top = 0
     bot = 200
-    method = "weighted average"
+    method = "harmonic mean for ks"
     cell_size = 10
 
     hydr = os.path.join(arcpy.env.workspace, "hydr")
