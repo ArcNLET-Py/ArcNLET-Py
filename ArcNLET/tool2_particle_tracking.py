@@ -68,6 +68,8 @@ class ParticleTracking:
         desc = arcpy.Describe(self.waterbody_raster)
         self.waterx = desc.extent.XMin
         self.watery = desc.extent.YMax
+        self.waterxx = desc.extent.XMax
+        self.wateryy = desc.extent.YMin
         self.water_cell_size = desc.meanCellWidth
 
         desc = arcpy.Describe(self.velocity)
@@ -221,7 +223,10 @@ class ParticleTracking:
         poro_col_index = int((x - self.porox) / self.poro_cell_size)
         poro_row_index = int((self.poroy - y) / self.poro_cell_size)
 
-        indd = self.waterbody_array[water_row_index, water_col_index]
+        if x > self.waterxx or x < self.waterx or y > self.watery or y < self.wateryy:
+            indd = -9999
+        else:
+            indd = self.waterbody_array[water_row_index, water_col_index]
         velo = self.velocity_array[velo_row_index, velo_col_index]
         angl = self.velocity_dir_array[veld_row_index, veld_col_index]
         porv = self.poro_array[poro_row_index, poro_col_index]
@@ -325,12 +330,12 @@ class ParticleTracking:
 # ======================================================================
 # Main program for debugging
 if __name__ == '__main__':
-    arcpy.env.workspace = ".\\test_pro"
-    source_location = os.path.join(arcpy.env.workspace, "OneSepticTank.shp")
-    water_bodies = os.path.join(arcpy.env.workspace, "waterbodies")
-    velocity = os.path.join(arcpy.env.workspace, "demovel")
-    velocity_dir = os.path.join(arcpy.env.workspace, "demoveld")
-    porosity = os.path.join(arcpy.env.workspace, "porosity.img")
+    arcpy.env.workspace = "C:\\Users\\Wei\\Downloads\\Orlando"
+    source_location = os.path.join(arcpy.env.workspace, "Lake_Buchanan_OSTDS.shp")
+    water_bodies = os.path.join(arcpy.env.workspace, "Lake_Buchanan_Project.shp")
+    velocity = os.path.join(arcpy.env.workspace, "velocity")
+    velocity_dir = os.path.join(arcpy.env.workspace, "veldir")
+    porosity = os.path.join(arcpy.env.workspace, "porosity")
 
     option = True
     resolution = 5

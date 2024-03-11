@@ -180,7 +180,7 @@ class InterfaceGroundwaterFlow(object):
             ysize = desc.meanCellHeight
             if band_count != 1:
                 parameters[0].setErrorMessage("Input DEM must have only one band.")
-            if xsize != ysize:
+            if abs(xsize - ysize) > 1E-4 :
                 parameters[0].setErrorMessage("Input DEM must be square cells.")
             filedir = desc.catalogPath
             if ".gdb" in filedir or ".mdb" in filedir:

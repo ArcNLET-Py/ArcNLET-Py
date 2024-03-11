@@ -47,6 +47,8 @@ class LoadEstimation:
         segments = pd.DataFrame(data, columns=["massInRate", "massDNRate", "WBId_plume"])
         no3_load = segments.groupby("WBId_plume").sum()
         no3_load = no3_load.reset_index()
+        no3_load.loc[no3_load['WBId_plume'] == -1, 'massDNRate'] = no3_load.loc[no3_load['WBId_plume'] == -1,
+                                                                                'massInRate']
         no3_load = no3_load.assign(Massoutput=no3_load["massInRate"] - no3_load["massDNRate"])
         no3_load = no3_load.assign(Massoutputrisk=no3_load["Massoutput"] * self.risk_factor)
         no3_load = no3_load.rename(columns={"WBId_plume": "Waterbody FID", "Massoutput": "Mass Output Load [M/T]",
@@ -72,6 +74,8 @@ class LoadEstimation:
             segments = pd.DataFrame(data, columns=["massInRate", "massDNRate", "WBId_plume"])
             nh4_load = segments.groupby("WBId_plume").sum()
             nh4_load = nh4_load.reset_index()
+            nh4_load.loc[nh4_load['WBId_plume'] == -1, 'massDNRate'] = nh4_load.loc[nh4_load['WBId_plume'] == -1,
+                                                                                    'massInRate']
             nh4_load = nh4_load.assign(Massoutput=nh4_load["massInRate"] - nh4_load["massDNRate"])
             nh4_load = nh4_load.assign(Massoutputrisk=nh4_load["Massoutput"] * self.risk_factor)
             nh4_load = nh4_load.rename(columns={"WBId_plume": "Waterbody FID", "Massoutput": "Mass Output Load [M/T]",

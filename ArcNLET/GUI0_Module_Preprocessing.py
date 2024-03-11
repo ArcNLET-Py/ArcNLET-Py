@@ -89,7 +89,7 @@ class InterfacePreprocessing(object):
                                    )
 
         outfile2 = arcpy.Parameter(name="Output Soil Texture (Raster)",
-                                   displayName="(Optional) Output Soil Texture (Raster)",
+                                   displayName="(Optional) Output Soil type (VZMOD required)",
                                    datatype=["GPRasterLayer"],
                                    parameterType="Optional",  # Required|Optional|Derived
                                    direction="Output",  # Input|Output
