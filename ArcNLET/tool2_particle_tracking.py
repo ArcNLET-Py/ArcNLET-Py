@@ -172,6 +172,8 @@ class ParticleTracking:
         while steps < self.max_steps:
             # print("Step {}...".format(steps))
             index, velo, angle, poro = self.get_values(cur_x, cur_y)
+            if index == velo == angle == poro == -1:
+                return segments
             if poro > 1 or poro <= 0:
                 poro = poro_last_step
             poro_last_step = poro
@@ -227,9 +229,12 @@ class ParticleTracking:
             indd = -9999
         else:
             indd = self.waterbody_array[water_row_index, water_col_index]
-        velo = self.velocity_array[velo_row_index, velo_col_index]
-        angl = self.velocity_dir_array[veld_row_index, veld_col_index]
-        porv = self.poro_array[poro_row_index, poro_col_index]
+        try:
+            velo = self.velocity_array[velo_row_index, velo_col_index]
+            angl = self.velocity_dir_array[veld_row_index, veld_col_index]
+            porv = self.poro_array[poro_row_index, poro_col_index]
+        except:
+            return -1, -1, -1, -1
 
         return indd, velo, angl, porv
 
@@ -330,12 +335,12 @@ class ParticleTracking:
 # ======================================================================
 # Main program for debugging
 if __name__ == '__main__':
-    arcpy.env.workspace = "C:\\Users\\Wei\\Downloads\\Orlando"
-    source_location = os.path.join(arcpy.env.workspace, "Lake_Buchanan_OSTDS.shp")
-    water_bodies = os.path.join(arcpy.env.workspace, "Lake_Buchanan_Project.shp")
-    velocity = os.path.join(arcpy.env.workspace, "velocity")
-    velocity_dir = os.path.join(arcpy.env.workspace, "veldir")
-    porosity = os.path.join(arcpy.env.workspace, "porosity")
+    arcpy.env.workspace = ".\\test_pro"
+    source_location = os.path.join(arcpy.env.workspace, "OneSepticTank.shp")
+    water_bodies = os.path.join(arcpy.env.workspace, "waterbodies")
+    velocity = os.path.join(arcpy.env.workspace, "demovel")
+    velocity_dir = os.path.join(arcpy.env.workspace, "demoveld")
+    porosity = os.path.join(arcpy.env.workspace, "porosity.img")
 
     option = True
     resolution = 5
