@@ -46,7 +46,7 @@ class InterfaceParticleTracking(object):
         infile1.filter.list = ["Polygon"]
 
         infile2 = arcpy.Parameter(name="Velocity Magnitude",
-                                  displayName="Input Velocity Magnitude [L/T] (raster)",
+                                  displayName="Input Velocity Magnitude [m/d] (raster)",
                                   datatype=["GPRasterLayer"],
                                   parameterType="Required",  # Required|Optional|Derived
                                   direction="Input",  # Input|Output
@@ -76,7 +76,7 @@ class InterfaceParticleTracking(object):
         option.value = False
 
         param0 = arcpy.Parameter(name="WB Raster Resolution",
-                                 displayName="WB Raster Resolution [L]",
+                                 displayName="WB Raster Resolution [m]",
                                  datatype="GPLong",
                                  parameterType="Required",  # Required|Optional|Derived
                                  direction="Input",  # Input|Output
@@ -86,7 +86,7 @@ class InterfaceParticleTracking(object):
         param0.parameterDependencies = [infile3.name]
 
         param1 = arcpy.Parameter(name="Step Size",
-                                 displayName="Step Size [L]",
+                                 displayName="Step Size [m]",
                                  datatype="GPLong",
                                  parameterType="Required",  # Required|Optional|Derived
                                  direction="Input",  # Input|Output

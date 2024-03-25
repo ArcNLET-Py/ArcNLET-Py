@@ -38,7 +38,7 @@ class InterfacePreprocessing(object):
         infile0.filter.list = ["Polygon"]
 
         input0 = arcpy.Parameter(name="Projected Coordinate System",
-                                 displayName="Projected Coordinate System",
+                                 displayName="Projected Coordinate System [m]",
                                  datatype="GPCoordinateSystem",
                                  parameterType="Required",
                                  direction="Input")
@@ -75,7 +75,7 @@ class InterfacePreprocessing(object):
         input4.value = 10
 
         outfile0 = arcpy.Parameter(name="Output Hydraulic Conductivity (Raster)",
-                                   displayName="Output Hydraulic Conductivity (Raster)",
+                                   displayName="Output Hydraulic Conductivity [m/d] (Raster)",
                                    datatype=["GPRasterLayer"],
                                    parameterType="Required",  # Required|Optional|Derived
                                    direction="Output",  # Input|Output
@@ -145,6 +145,12 @@ class InterfacePreprocessing(object):
             arcpy.AddMessage(type(wkt))
             if sr.type == "Geographic":
                 parameters[1].setErrorMessage("Input coordinate system must be projected, not geographic.")
+            if sr.linearUnitName != "Meter":
+                parameters[1].setErrorMessage(
+                    "Input coordinate system is recommended to use meters. \n"
+                    "The reason is that ArcNLET has some default values in VZMOD module and solute transport module, "
+                    "and the default values are in units meter per day, such as nitrification/denitrification rate "
+                    "and dispersivity of transport. \n")
 
         if parameters[2].value is not None and parameters[2].value < 0:
             parameters[2].setErrorMessage("Top depth must be greater than 0.")

@@ -1495,9 +1495,9 @@ class Preprocessing(object):
 # ======================================================================
 # Main program for debugging
 if __name__ == '__main__':
-    arcpy.env.workspace = "C:\\Users\\Wei\\Downloads\\WeiEmail\\WeiEmail\\GrocloseTraining_20240208.gdb"
+    arcpy.env.workspace = "C:\\Users\\Wei\\Downloads\\test_pro\\test_pro\\LakeshoreExampleOutputs_2023_09_28"
     # arcpy.env.workspace = "E:\\lakeshore_example\\lakeshore_example"
-    area = os.path.join(arcpy.env.workspace, "GrosecloseStudyAreaPolygon")
+    area = os.path.join(arcpy.env.workspace, "study_area.shp")
     pcs = arcpy.SpatialReference(26917)
     top = 0
     bot = 200
@@ -1507,7 +1507,7 @@ if __name__ == '__main__':
     hydr = os.path.join(arcpy.env.workspace, "hydr")
     poro = os.path.join(arcpy.env.workspace, "poro")
     solt = os.path.join(arcpy.env.workspace, "solt")
-    spat = None
+    spat = os.path.join(arcpy.env.workspace, "spat")
 
     start_time = time.time()
 

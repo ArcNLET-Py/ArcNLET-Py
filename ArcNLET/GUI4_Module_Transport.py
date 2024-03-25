@@ -123,7 +123,7 @@ class InterfaceTransport(object):
         option2.value = choices[2]
 
         option3 = arcpy.Parameter(name="Threshold Concentration",
-                                  displayName="Threshold Concentration [M/L\u00B3]",
+                                  displayName="Threshold Concentration [mg/l]",
                                   datatype="Double",
                                   parameterType="Required",  # Required|Optional|Derived
                                   direction="Input",  # Input|Output
@@ -156,7 +156,7 @@ class InterfaceTransport(object):
         option5.value = choices[0]
 
         param1 = arcpy.Parameter(name="Mass input",
-                                 displayName="Mass input [M/T]",
+                                 displayName="Mass input [mg/d]",
                                  datatype="Double",
                                  parameterType="Required",  # Required|Optional|Derived
                                  direction="Input",  # Input|Output
@@ -165,7 +165,7 @@ class InterfaceTransport(object):
         param1.value = 20000
 
         param2 = arcpy.Parameter(name="Source Dimension Y",
-                                 displayName="Source Dimension Y [L]",
+                                 displayName="Source Dimension Y [m]",
                                  datatype="Double",
                                  parameterType="Required",  # Required|Optional|Derived
                                  direction="Input",  # Input|Output
@@ -174,7 +174,7 @@ class InterfaceTransport(object):
         param2.value = 6
 
         param3 = arcpy.Parameter(name="Source Dimension Z",
-                                 displayName="Source Dimension Z [L]",
+                                 displayName="Source Dimension Z [m]",
                                  datatype="Double",
                                  parameterType="Optional",  # Required|Optional|Derived
                                  direction="Input",  # Input|Output
@@ -184,7 +184,7 @@ class InterfaceTransport(object):
         param3.value = 1.5
 
         param4 = arcpy.Parameter(name="Maximum Z",
-                                  displayName="Maximum Z [L]",
+                                  displayName="Maximum Z [m]",
                                   datatype="GPBoolean",
                                   parameterType="Required",  # Required|Optional|Derived
                                   direction="Input",  # Input|Output
@@ -193,7 +193,7 @@ class InterfaceTransport(object):
         param4.value = 1
 
         param5 = arcpy.Parameter(name="Zmax",
-                                 displayName="Zmax [L]",
+                                 displayName="Zmax [m]",
                                  datatype="Double",
                                  parameterType="Optional",  # Required|Optional|Derived
                                  direction="Input",  # Input|Output
@@ -202,7 +202,7 @@ class InterfaceTransport(object):
         param5.value = 3.0
 
         param6 = arcpy.Parameter(name="Plume cell size",
-                                 displayName="Plume cell size [L]",
+                                 displayName="Plume cell size [m]",
                                  datatype="Double",
                                  parameterType="Required",  # Required|Optional|Derived
                                  direction="Input",  # Input|Output
@@ -211,7 +211,7 @@ class InterfaceTransport(object):
         param6.value = 0.4
 
         no3param0 = arcpy.Parameter(name="NO\u2083 Concentration",
-                                    displayName="NO\u2083 Concentration [M/L\u00B3]",
+                                    displayName="NO\u2083 Concentration [mg/l]",
                                     datatype="Double",
                                     parameterType="Required",  # Required|Optional|Derived
                                     direction="Input",  # Input|Output
@@ -220,7 +220,7 @@ class InterfaceTransport(object):
         no3param0.value = 40
 
         no3param1 = arcpy.Parameter(name="NO\u2083 Dispersivity \u03B1L",
-                                    displayName="NO\u2083 Dispersivity \u03B1L [L]",
+                                    displayName="NO\u2083 Dispersivity \u03B1L [m]",
                                     datatype="Double",
                                     parameterType="Required",  # Required|Optional|Derived
                                     direction="Input",  # Input|Output
@@ -229,7 +229,7 @@ class InterfaceTransport(object):
         no3param1.value = 2.113
 
         no3param2 = arcpy.Parameter(name="NO\u2083 Dispersivity \u03B1TH",
-                                    displayName="NO\u2083 Dispersivity \u03B1TH [L]",
+                                    displayName="NO\u2083 Dispersivity \u03B1TH [m]",
                                     datatype="Double",
                                     parameterType="Required",  # Required|Optional|Derived
                                     direction="Input",  # Input|Output
@@ -238,7 +238,7 @@ class InterfaceTransport(object):
         no3param2.value = 0.234
 
         no3param3 = arcpy.Parameter(name="Denitrification Decay Rate",
-                                    displayName="Denitrification Decay Rate [1/T]",
+                                    displayName="Denitrification Decay Rate [1/d]",
                                     datatype="Double",
                                     parameterType="Required",  # Required|Optional|Derived
                                     direction="Input",  # Input|Output
@@ -256,7 +256,7 @@ class InterfaceTransport(object):
         no3param4.value = 1000
 
         nh4param0 = arcpy.Parameter(name="NH\u2084 Concentration",
-                                    displayName="NH\u2084 Concentration [M/L\u00B3]",
+                                    displayName="NH\u2084 Concentration [mg/l]",
                                     datatype="Double",
                                     parameterType="Optional",  # Required|Optional|Derived
                                     direction="Input",  # Input|Output
@@ -265,7 +265,7 @@ class InterfaceTransport(object):
         nh4param0.value = 10
 
         nh4param1 = arcpy.Parameter(name="NH\u2084 Dispersivity \u03B1L",
-                                    displayName="NH\u2084 Dispersivity \u03B1L [L]",
+                                    displayName="NH\u2084 Dispersivity \u03B1L [m]",
                                     datatype="Double",
                                     parameterType="Optional",  # Required|Optional|Derived
                                     direction="Input",  # Input|Output
@@ -274,7 +274,7 @@ class InterfaceTransport(object):
         nh4param1.value = 2.113
 
         nh4param2 = arcpy.Parameter(name="NH\u2084 Dispersivity \u03B1TH",
-                                    displayName="NH\u2084 Dispersivity \u03B1TH [L]",
+                                    displayName="NH\u2084 Dispersivity \u03B1TH [m]",
                                     datatype="Double",
                                     parameterType="Optional",  # Required|Optional|Derived
                                     direction="Input",  # Input|Output
@@ -283,7 +283,7 @@ class InterfaceTransport(object):
         nh4param2.value = 0.234
 
         nh4param3 = arcpy.Parameter(name="Nitrification Decay Rate",
-                                    displayName="Nitrification Decay Rate [1/T]",
+                                    displayName="Nitrification Decay Rate [1/d]",
                                     datatype="Double",
                                     parameterType="Optional",  # Required|Optional|Derived
                                     direction="Input",  # Input|Output
@@ -292,7 +292,7 @@ class InterfaceTransport(object):
         nh4param3.value = 0.0001
 
         nh4param4 = arcpy.Parameter(name="Bulk Density",
-                                    displayName="Bulk Density [M/L\u00B3]",
+                                    displayName="Bulk Density [g/cm\u00B3]",
                                     datatype="Double",
                                     parameterType="Optional",  # Required|Optional|Derived
                                     direction="Input",  # Input|Output
@@ -301,7 +301,7 @@ class InterfaceTransport(object):
         nh4param4.value = 1.42
 
         nh4param5 = arcpy.Parameter(name="Adsorption coefficient",
-                                    displayName="Adsorption coefficient [L\u00B3/M]",
+                                    displayName="Adsorption coefficient [cm\u00B3/g]",
                                     datatype="Double",
                                     parameterType="Optional",  # Required|Optional|Derived
                                     direction="Input",  # Input|Output

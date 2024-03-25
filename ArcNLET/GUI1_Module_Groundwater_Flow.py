@@ -33,7 +33,7 @@ class InterfaceGroundwaterFlow(object):
         """
 
         infile0 = arcpy.Parameter(name="DEM",
-                                  displayName="Input DEM [L] (raster)",  # shown in Geoprocessing pane
+                                  displayName="Input DEM [m] (raster)",  # shown in Geoprocessing pane
                                   datatype=["GPRasterLayer"],  # data type
                                   parameterType="Required",  # Required|Optional|Derived
                                   direction="Input")  # Input|Output
@@ -46,7 +46,7 @@ class InterfaceGroundwaterFlow(object):
         infile1.filter.list = ["Polygon"]
 
         infile2 = arcpy.Parameter(name="Hydraulic Conductivity",
-                                  displayName="Input Hydraulic conductivity [L/T] (raster)",
+                                  displayName="Input Hydraulic conductivity [m/d] (raster)",
                                   datatype=["GPRasterLayer"],
                                   parameterType="Required",  # Required|Optional|Derived
                                   direction="Input",  # Input|Output
@@ -116,7 +116,7 @@ class InterfaceGroundwaterFlow(object):
         param5.value = 1
 
         outfile0 = arcpy.Parameter(name="Velocity Magnitude",
-                                   displayName="Output Velocity Magnitude [L/T]",
+                                   displayName="Output Velocity Magnitude [m/d]",
                                    datatype=["GPRasterLayer"],
                                    parameterType="Required",  # Required|Optional|Derived
                                    direction="Output",  # Input|Output
