@@ -56,7 +56,7 @@ class LoadEstimation:
                                             "massInRate": "Mass Input Load [mg/d]",
                                             "massDNRate": "Mass Removal Rate [mg/d]"})
         no3_load = no3_load[["Waterbody FID", "Mass Output Load [mg/d]", "Mass Output Load * Risk Factor [mg/d]",
-                             "Mass Input Load [md/d]", "Mass Removal Rate [mg/d]"]]
+                             "Mass Input Load [mg/d]", "Mass Removal Rate [mg/d]"]]
         arcpy.AddMessage(no3_load)
         if os.path.exists(self.outfileno3):
             try:
@@ -78,11 +78,11 @@ class LoadEstimation:
                                                                                     'massInRate']
             nh4_load = nh4_load.assign(Massoutput=nh4_load["massInRate"] - nh4_load["massDNRate"])
             nh4_load = nh4_load.assign(Massoutputrisk=nh4_load["Massoutput"] * self.risk_factor)
-            nh4_load = nh4_load.rename(columns={"WBId_plume": "Waterbody FID", "Massoutput": "Mass Output Load [md/d]",
+            nh4_load = nh4_load.rename(columns={"WBId_plume": "Waterbody FID", "Massoutput": "Mass Output Load [mg/d]",
                                                 "Massoutputrisk": "Mass Output Load * Risk Factor [mg/d]",
                                                 "massInRate": "Mass Input Load [mg/d]",
                                                 "massDNRate": "Mass Removal Rate [mg/d]"})
-            nh4_load = nh4_load[["Waterbody FID", "Mass Output Load [mg/d]", "Mass Output Load * Risk Factor [md/d]",
+            nh4_load = nh4_load[["Waterbody FID", "Mass Output Load [mg/d]", "Mass Output Load * Risk Factor [mg/d]",
                                  "Mass Input Load [mg/d]", "Mass Removal Rate [mg/d]"]]
             arcpy.AddMessage(nh4_load)
             if os.path.exists(self.outfilenh4):
