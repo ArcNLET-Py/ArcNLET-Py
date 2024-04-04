@@ -172,19 +172,37 @@ class Preprocessing(object):
 
         current_time = time.strftime("%H:%M:%S", time.localtime())
         arcpy.AddMessage(f"{current_time}     Export to raster")
-        arcpy.conversion.PolygonToRaster(self.spatial, 'ksat_r', self.hydr_cond, cell_assignment='MAXIMUM_AREA',
-                                         cellsize=self.cellsize)
+        try:
+            arcpy.conversion.PolygonToRaster(self.spatial, 'ksat_r', self.hydr_cond, cell_assignment='MAXIMUM_AREA',
+                                             cellsize=self.cellsize)
+        except:
+            self.hydr_cond = self.hydr_cond + ".img"
+            arcpy.conversion.PolygonToRaster(self.spatial, 'ksat_r', self.hydr_cond, cell_assignment='MAXIMUM_AREA',
+                                             cellsize=self.cellsize)
+            arcpy.CalculateStatistics_management(self.hydr_cond)
         output_hydraulic_conductivity = arcpy.sa.SetNull(self.hydr_cond, self.hydr_cond, 'VALUE = -9999')
         output_hydraulic_conductivity.save(self.hydr_cond)
 
-        arcpy.conversion.PolygonToRaster(self.spatial, 'poro', self.porosity, cell_assignment='MAXIMUM_AREA',
-                                         cellsize=self.cellsize)
+        try:
+            arcpy.conversion.PolygonToRaster(self.spatial, 'poro', self.porosity, cell_assignment='MAXIMUM_AREA',
+                                             cellsize=self.cellsize)
+        except:
+            self.porosity = self.porosity + ".img"
+            arcpy.conversion.PolygonToRaster(self.spatial, 'poro', self.porosity, cell_assignment='MAXIMUM_AREA',
+                                             cellsize=self.cellsize)
+            arcpy.CalculateStatistics_management(self.porosity)
         output_porosity = arcpy.sa.SetNull(self.porosity, self.porosity, 'VALUE = -9999')
         output_porosity.save(self.porosity)
 
         if self.soiltexture is not None:
-            arcpy.conversion.PolygonToRaster(self.spatial, 'soiltype', self.soiltexture, cell_assignment='MAXIMUM_AREA',
-                                             cellsize=self.cellsize)
+            try:
+                arcpy.conversion.PolygonToRaster(self.spatial, 'soiltype', self.soiltexture,
+                                                 cell_assignment='MAXIMUM_AREA', cellsize=self.cellsize)
+            except:
+                self.soiltexture = self.soiltexture + ".img"
+                arcpy.conversion.PolygonToRaster(self.spatial, 'soiltype', self.soiltexture,
+                                                 cell_assignment='MAXIMUM_AREA', cellsize=self.cellsize)
+                arcpy.CalculateStatistics_management(self.soiltexture)
             output_soil_texture = arcpy.sa.SetNull(self.soiltexture, self.soiltexture, 'VALUE = -9999')
             output_soil_texture.save(self.soiltexture)
 
@@ -1495,9 +1513,9 @@ class Preprocessing(object):
 # ======================================================================
 # Main program for debugging
 if __name__ == '__main__':
-    arcpy.env.workspace = "C:\\Users\\Wei\\Downloads\\test_pro\\test_pro\\LakeshoreExampleOutputs_2023_09_28"
+    arcpy.env.workspace = "E:\Francis Lake4\Input"
     # arcpy.env.workspace = "E:\\lakeshore_example\\lakeshore_example"
-    area = os.path.join(arcpy.env.workspace, "study_area.shp")
+    area = os.path.join(arcpy.env.workspace, "StudyArea2.shp")
     pcs = arcpy.SpatialReference(26917)
     top = 0
     bot = 200

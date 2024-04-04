@@ -486,6 +486,9 @@ class VZMOD:
             poro_hete = data["porosity"].to_numpy() if self.hetero_ks_theta else None
             soil_hete = data["soiltype"] if self.multi_soil_type else None
 
+            hydr_hete[hydr_hete < 0] = 10
+            poro_hete[poro_hete < 0] = 0.4
+
             arcpy.management.DeleteField(septictankfile_tmp, field)
             return DTW_hete, hydr_hete, poro_hete, soil_hete
         else:
@@ -540,20 +543,20 @@ def tridiagonal_matrix(a, b, c, f, n=Nlayer + 1):
 # ======================================================================
 # Main program for debugging
 if __name__ == '__main__':
-    arcpy.env.workspace = "C:\\Users\\Wei\\Downloads\\test_pro\\test_pro"
+    arcpy.env.workspace = "C:\\Users\\Wei\\Downloads\\Orlando\\debug"
     # arcpy.env.workspace = ".\\test_pro"
 
     options = True
     hetero_Ks_thetas = True
-    calc_DTW = True
+    calc_DTW = False
     multi_soil_type = True
 
-    septic_tank = os.path.join(arcpy.env.workspace, "PotentialSepticTankLocations.shp")
-    hydraulic_conductivity = os.path.join(arcpy.env.workspace, "hydr")
-    soil_porosity = os.path.join(arcpy.env.workspace, "poro")
+    septic_tank = os.path.join(arcpy.env.workspace, "Lake_Buchanan_OSTDS_Project.shp")
+    hydraulic_conductivity = os.path.join(arcpy.env.workspace, "hydr_cond_ProjectRaster.tif")
+    soil_porosity = os.path.join(arcpy.env.workspace, "porosity_ProjectRaster.tif")
     DEM = os.path.join(arcpy.env.workspace, "lakeshore")
     smoothed_DEM = os.path.join(arcpy.env.workspace, "00smth")
-    soiltypefile = os.path.join(arcpy.env.workspace, "solt")
+    soiltypefile = os.path.join(arcpy.env.workspace, "soiltypes_ProjectRaster.tif")
 
     soiltype = "loam"
     hlr = 2.342

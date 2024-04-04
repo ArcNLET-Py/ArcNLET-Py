@@ -87,7 +87,7 @@ class InterfaceParticleTracking(object):
 
         param1 = arcpy.Parameter(name="Step Size",
                                  displayName="Step Size [m]",
-                                 datatype="GPLong",
+                                 datatype="Double",
                                  parameterType="Required",  # Required|Optional|Derived
                                  direction="Input",  # Input|Output
                                  category="Parameters",
@@ -127,7 +127,9 @@ class InterfaceParticleTracking(object):
                 veld = parameters[3].value
                 desc = arcpy.Describe(veld)
                 xsize = desc.meanCellWidth
-                parameters[6].value = xsize / 2
+                parameters[6].value = xsize
+
+                parameters[7].value = round(xsize / 2, 4)
         return
 
     def updateMessages(self, parameters) -> None:
@@ -170,11 +172,41 @@ class InterfaceParticleTracking(object):
         if parameters[0].altered and parameters[1].altered and parameters[2].altered and parameters[3].altered and \
                 parameters[4].altered:
             if crs1.name != crs2.name or crs1.name != crs3.name or crs1.name != crs4.name or crs1.name != crs5.name:
-                parameters[0].setErrorMessage("All input files must have the same coordinate system.")
-                parameters[1].setErrorMessage("All input files must have the same coordinate system.")
-                parameters[2].setErrorMessage("All input files must have the same coordinate system.")
-                parameters[3].setErrorMessage("All input files must have the same coordinate system.")
-                parameters[4].setErrorMessage("All input files must have the same coordinate system.")
+                parameters[0].setErrorMessage("All input files must have the same coordinate system. \n"
+                                              + "\n" +
+                                              "Source locations projected coordinate system : {} \n".format(crs1.name)
+                                              + "Water bodies projected coordinate system : {} \n".format(crs2.name)
+                                              + "Velocity magnitude projected coordinate system : {} \n".format(crs3.name)
+                                              + "Velocity direction projected coordinate system : {} \n".format(crs4.name)
+                                              + "Porosity projected coordinate system : {} \n".format(crs5.name))
+                parameters[1].setErrorMessage("All input files must have the same coordinate system. \n"
+                                              + "\n" +
+                                              "Source locations projected coordinate system : {} \n".format(crs1.name)
+                                              + "Water bodies projected coordinate system : {} \n".format(crs2.name)
+                                              + "Velocity magnitude projected coordinate system : {} \n".format(crs3.name)
+                                              + "Velocity direction projected coordinate system : {} \n".format(crs4.name)
+                                              + "Porosity projected coordinate system : {} \n".format(crs5.name))
+                parameters[2].setErrorMessage("All input files must have the same coordinate system. \n"
+                                              + "\n" +
+                                              "Source locations projected coordinate system : {} \n".format(crs1.name)
+                                              + "Water bodies projected coordinate system : {} \n".format(crs2.name)
+                                              + "Velocity magnitude projected coordinate system : {} \n".format(crs3.name)
+                                              + "Velocity direction projected coordinate system : {} \n".format(crs4.name)
+                                              + "Porosity projected coordinate system : {} \n".format(crs5.name))
+                parameters[3].setErrorMessage("All input files must have the same coordinate system. \n"
+                                              + "\n" +
+                                              "Source locations projected coordinate system : {} \n".format(crs1.name)
+                                              + "Water bodies projected coordinate system : {} \n".format(crs2.name)
+                                              + "Velocity magnitude projected coordinate system : {} \n".format(crs3.name)
+                                              + "Velocity direction projected coordinate system : {} \n".format(crs4.name)
+                                              + "Porosity projected coordinate system : {} \n".format(crs5.name))
+                parameters[4].setErrorMessage("All input files must have the same coordinate system. \n"
+                                              + "\n" +
+                                              "Source locations projected coordinate system : {} \n".format(crs1.name)
+                                              + "Water bodies projected coordinate system : {} \n".format(crs2.name)
+                                              + "Velocity magnitude projected coordinate system : {} \n".format(crs3.name)
+                                              + "Velocity direction projected coordinate system : {} \n".format(crs4.name)
+                                              + "Porosity projected coordinate system : {} \n".format(crs5.name))
 
         if parameters[6].value is not None and parameters[6].value < 0:
             parameters[6].setErrorMessage("The WB Raster Res. must be greater than 0.")

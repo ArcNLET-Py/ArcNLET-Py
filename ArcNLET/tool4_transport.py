@@ -40,6 +40,7 @@ class Transport:
                  c_nh4param0, c_nh4param1, c_nh4param2, c_nh4param3, c_nh4param4, c_nh4param5):
         """Initialize the transport module
         """
+        self.pixeltype = "32_BIT_FLOAT"
         self.whether_nh4 = c_whethernh4
 
         self.source_location = arcpy.Describe(c_source_location).catalogPath if not self.is_file_path(
@@ -148,11 +149,11 @@ class Transport:
 
         try:
             arcpy.management.CreateRasterDataset(self.no3_dir, self.no3_output, self.plume_cell_size,
-                                                 "32_BIT_FLOAT", self.crs, 1)
+                                                 self.pixeltype, self.crs, 1)
 
             if self.whether_nh4:
                 arcpy.management.CreateRasterDataset(self.nh4_dir, self.nh4_output, self.plume_cell_size,
-                                                     "32_BIT_FLOAT", self.crs, 1)
+                                                     self.pixeltype, self.crs, 1)
         except Exception as e:
             arcpy.AddMessage("[Error]: Failed to create output raster: "+str(e))
             sys.exit(-1)
@@ -173,6 +174,10 @@ class Transport:
             maxtime = seg['TotTime'].max()
             wbid = seg['WBId'].iloc[-1]
             path_wbid = seg['PathWBId'].iloc[-1]
+
+            if (seg['SegPrsity'] < 0.01).any() or (seg['SegVel'] < 1E-8).any():
+                arcpy.AddMessage("[Warning]: Skip {}th OSTDS. The Ks or porosity may be missed.".format(pathid))
+                continue
 
             # calculate a single plume
             filtered_no3, filtered_nh4, tmp_list = self.calculate_single_plume(pathid, mean_poro, mean_velo, max_dist)
@@ -208,7 +213,16 @@ class Transport:
                         if wait_time > 60:
                             arcpy.AddMessage("The output raster is used by other software, exit the program.")
                             sys.exit(0)
-                arcpy.Mosaic_management(post_no3, self.no3_output, "SUM")
+                # print("post_no3 pixeltype is {}".format(arcpy.Describe(post_no3).pixelType))
+                # print("Output pixeltype is {}".format(arcpy.Describe(self.no3_output).pixelType))
+                if arcpy.Describe(post_no3).pixelType != arcpy.Describe(self.no3_output).pixelType:
+                    filename = r'post3pixel'
+                    arcpy.management.CopyRaster(post_no3, filename, pixel_type=self.pixeltype)
+                    arcpy.sa.SetNull(filename, filename, "VALUE < {}".format(self.threshold)).save(filename)
+                    arcpy.management.Mosaic(filename, self.no3_output, "SUM")
+                else:
+                    arcpy.management.Mosaic(post_no3, self.no3_output, "SUM")
+
             except Exception as e:
                 arcpy.AddMessage("[Error]: Failed to mosaic plume {}: ".format(pathid) + str(e))
                 sys.exit(-1)
@@ -237,7 +251,13 @@ class Transport:
                             if wait_time > 60:
                                 arcpy.AddMessage("The output raster is used by other software, exit the program.")
                                 sys.exit(0)
-                    arcpy.Mosaic_management(post_nh4, self.nh4_output, "SUM")
+                    if arcpy.Describe(post_nh4).pixelType != arcpy.Describe(self.nh4_output).pixelType:
+                        filename = r'post4pixel'
+                        arcpy.management.CopyRaster(post_nh4, filename, pixel_type=self.pixeltype)
+                        arcpy.sa.SetNull(filename, filename, "VALUE < {}".format(self.threshold)).save(filename)
+                        arcpy.management.Mosaic(filename, self.nh4_output, "SUM")
+                    else:
+                        arcpy.management.Mosaic(post_nh4, self.nh4_output, "SUM")
                 except Exception as e:
                     arcpy.AddMessage("[Error]: Failed to mosaic plume {}: ".format(pathid) + str(e))
                     sys.exit(-1)
@@ -246,22 +266,24 @@ class Transport:
         if self.whether_nh4:
             arcpy.management.Delete(post_nh4)
 
-        out_raster = arcpy.sa.SetNull(self.no3_output, self.no3_output, "VALUE < {}".format(self.threshold))
-       # # set_nodata_value(os.path.join(self.no3_dir, self.no3_output))
-        out_raster.save(os.path.join(self.no3_dir, self.no3_output))
+       #  out_raster = arcpy.sa.SetNull(self.no3_output, self.no3_output, "VALUE < {}".format(self.threshold))
+       #  out_raster = arcpy.sa.SetNull(self.no3_output, self.no3_output, "VALUE > {}".format(self.threshold))
+       #  set_nodata_value(os.path.join(self.no3_dir, self.no3_output))
+        arcpy.Raster(self.no3_output).save(os.path.join(self.no3_dir, self.no3_output))
 
         if self.whether_nh4:
-            out_raster = arcpy.sa.SetNull(self.nh4_output, self.nh4_output, "VALUE < {}".format(self.threshold))
-
-            out_raster.save(os.path.join(self.nh4_dir, self.nh4_output))
+            # out_raster = arcpy.sa.SetNull(self.nh4_output, self.nh4_output, "VALUE < {}".format(self.threshold))
+            # out_raster.save(os.path.join(self.nh4_dir, self.nh4_output))
+            # out_raster.save(os.path.join(self.nh4_dir, self.nh4_output))
+            arcpy.Raster(self.nh4_output).save(os.path.join(self.nh4_dir, self.nh4_output))
 
         if self.post_process == "medium":
             if not self.whether_nh4:
                 self.nh4_output = None
             self.post_process_medium(self.no3_output, self.nh4_output)
-        arcpy.CalculateStatistics_management(os.path.join(self.no3_dir, self.no3_output))
+        arcpy.management.CalculateStatistics(os.path.join(self.no3_dir, self.no3_output))
         if self.whether_nh4:
-            arcpy.CalculateStatistics_management(os.path.join(self.nh4_dir, self.nh4_output))
+            arcpy.management.CalculateStatistics(os.path.join(self.nh4_dir, self.nh4_output))
 
         with arcpy.da.InsertCursor(self.no3_output_info, ["SHAPE@", "PathID", "is2D", "domBdy", "decayCoeff",
                                                           "avgVel", "avgPrsity", "DispL", "DispTH", "DispTV",
@@ -526,6 +548,8 @@ class Transport:
         else:
             no3wbid = wbid
 
+        if no3massin < no3mdn:
+            no3mdn = no3massin
         no3segment = [point, pathid, 1, dombdy, self.kno3, mean_velo, mean_poro, self.no3_dispx,
                       self.no3_dispyz, 0, self.Y, self.no3_Z, self.plume_cell_size, self.plume_cell_size, self.no3_Z,
                       -1, maxtime, no3plumelen, max_dist, no3plumearea, no3massinratemt3d, no3massin, no3mdn,
@@ -538,6 +562,8 @@ class Transport:
             else:
                 nh4wbid = wbid
 
+            if nh4massin < nh4mdn:
+                nh4mdn = nh4massin
             nh4segment = [point, pathid, 1, dombdy, self.knh4, mean_velo, mean_poro, self.nh4_dispx,
                           self.nh4_dispyz, 0, self.Y, self.nh4_Z, self.plume_cell_size, self.plume_cell_size,
                           self.nh4_Z, -1, maxtime, nh4plumelen, max_dist, nh4plumearea, nh4massinratemt3d, nh4massin,
@@ -620,8 +646,8 @@ class Transport:
         """
         Warp the plume
         """
+        perstepnum = segment['TotDist'].iloc[0] / self.plume_cell_size
         try:
-            center_pts, body_pts = self.get_control_points(plume_array, True)
             y_lower_left = yvalue - plume_array.shape[0] * self.plume_cell_size / 2
             plume_array[plume_array <= self.threshold] = np.nan
 
@@ -629,29 +655,55 @@ class Transport:
                                                     self.plume_cell_size, self.plume_cell_size)
             arcpy.management.DefineProjection(plume_raster, self.crs)
 
-            results = self.get_target_points_gis(segment, center_pts, body_pts, xvalue, yvalue)
-            target_center_pts, origin_center_pts, target_body_pts, origin_body_pts = results
-            source_control_points = np.vstack((origin_center_pts, origin_body_pts))
-            target_control_points = np.vstack((target_center_pts, target_body_pts))
-            source_control_points = ';'.join([f"'{x} {y}'" for x, y in source_control_points])
-            target_control_points = ';'.join([f"'{x} {y}'" for x, y in target_control_points])
-
             name = r'memory\plume_raster'
 
-            arcpy.management.Warp(plume_raster, source_control_points, target_control_points, name,
-                                  self.warp_method.upper(), "BILINEAR")
+            if plume_array.shape[1] <= perstepnum:
+                first_x = segment['Shape'].iloc[0].firstPoint.X
+                first_y = segment['Shape'].iloc[0].firstPoint.Y
+                last_x = segment['Shape'].iloc[0].lastPoint.X
+                last_y = segment['Shape'].iloc[0].lastPoint.Y
+                if first_x == last_x:
+                    if first_y > last_y:
+                        angle = 90
+                    else:
+                        angle = 270
+                else:
+                    angle = math.degrees(math.atan((last_y - first_y) / (last_x - first_x)))
+                angle = 360 - angle
+                pivot_point = "" + str(xvalue) + " " + str(yvalue)
+                arcpy.management.Rotate(plume_raster, name, angle, pivot_point, "NEAREST")
+                return name, None
+            else:
+                center_pts, body_pts = self.get_control_points(plume_array, True)
 
-            # control_point = np.vstack((target_center_pts, target_body_pts))
-            # array = []
-            # for i in range(control_point.shape[0]):
-            #     array.append((i + 1, (control_point[i, 0], control_point[i, 1])))
-            # array = np.array(array, np.dtype([("idfield", np.int32), ("XY", "<f8", 2)]))
-            # pname = os.path.join(arcpy.env.workspace, name+'point_{}'.format(pathid))
-            # if arcpy.Exists(pname):
-            #     arcpy.Delete_management(pname)
-            # arcpy.da.NumPyArrayToFeatureClass(array, pname, ['XY'], self.crs)
+                if center_pts is None and body_pts is None:
+                    return plume_raster, None
 
-            return name, target_body_pts
+                results = self.get_target_points_gis(segment, center_pts, body_pts, xvalue, yvalue)
+                target_center_pts, origin_center_pts, target_body_pts, origin_body_pts = results
+                if len(target_center_pts) > 10:
+                    source_control_points = np.vstack((origin_center_pts, origin_body_pts))
+                    target_control_points = np.vstack((target_center_pts, target_body_pts))
+                else:
+                    source_control_points = origin_center_pts
+                    target_control_points = target_center_pts
+                source_control_points = ';'.join([f"'{x} {y}'" for x, y in source_control_points])
+                target_control_points = ';'.join([f"'{x} {y}'" for x, y in target_control_points])
+
+                arcpy.management.Warp(plume_raster, source_control_points, target_control_points, name,
+                                      self.warp_method.upper(), "BILINEAR")
+
+                # control_point = np.vstack((target_center_pts, target_body_pts))
+                # array = []
+                # for i in range(control_point.shape[0]):
+                #     array.append((i + 1, (control_point[i, 0], control_point[i, 1])))
+                # array = np.array(array, np.dtype([("idfield", np.int32), ("XY", "<f8", 2)]))
+                # pname = os.path.join(arcpy.env.workspace, name+'point_{}'.format(pathid))
+                # if arcpy.Exists(pname):
+                #     arcpy.Delete_management(pname)
+                # arcpy.da.NumPyArrayToFeatureClass(array, pname, ['XY'], self.crs)
+
+                return name, target_body_pts
         except Exception as e:
             arcpy.AddMessage("[Error] Plume {} cannot be warped.".format(pathid) + str(e))
             sys.exit(-1)
@@ -665,14 +717,15 @@ class Transport:
         if pathid != 0:
             try:
                 arcpy.env.snapRaster = self.no3_output
-                arcpy.Resample_management(name, fname, str(self.plume_cell_size), "NEAREST")
+                arcpy.management.Resample(name, fname, str(self.plume_cell_size), "NEAREST")
             except Exception as e:
                 arcpy.AddMessage("[Error] Post process plume {}: ".format(pathid) + str(e))
                 sys.exit(-1)
         else:
             fname = name
 
-        # arcpy.CopyRaster_management(fname, 'Resample.tif')
+        if target_body_pts is None:
+            return fname
 
         if self.post_process == 'none' or self.post_process == 'medium':
             if pathid != 0:
@@ -688,25 +741,34 @@ class Transport:
                         point_list.append(point)
                     polyline = arcpy.Polyline(arcpy.Array(point_list), self.crs)
 
-                    arcpy.CopyFeatures_management(polyline, r'memory\polyline')
+                    arcpy.management.CopyFeatures(polyline, r'memory\polyline')
+                    # arcpy.management.CopyFeatures(r'memory\polyline', 'polyline.shp')
 
                     inFeatures = [r'memory\polyline', self.waterbodies]
                     outFeatures = r'memory\polygon'
 
-                    arcpy.FeatureToPolygon_management(inFeatures, outFeatures, "", "NO_ATTRIBUTES")
+                    arcpy.management.FeatureToPolygon(inFeatures, outFeatures, "", "NO_ATTRIBUTES")
                     Erase_polygon = r'memory\Erase_polygon'
 
-                    arcpy.Erase_analysis(outFeatures, self.waterbodies, Erase_polygon)
+                    arcpy.analysis.Erase(outFeatures, self.waterbodies, Erase_polygon)
                     if arcpy.management.GetCount(Erase_polygon)[0] == '0':
-                        # arcpy.AddMessage(
-                        #     "The plume {} is completely in the waterbody, no need to post process.".format(pathid))
+                        # The contours of the plume and the waterbody cannot form a polygon, just delete the part of
+                        # waterbody from the plume
+                        try:
+                            result = arcpy.sa.ExtractByMask(fname, self.waterbodies, "OUTSIDE", fname)
+                            arcpy.env.snapRaster = None
+                            result = arcpy.sa.SetNull(result, result, "VALUE < {}".format(self.threshold))
+                            result.save(fname)
+                        except Exception as e:
+                            pass
                         return fname
 
                     save_name = r'memory\plume_full'
                     # if arcpy.Exists(save_name):
                     #     arcpy.management.Delete(save_name)
                     try:
-                        arcpy.sa.ExtractByMask(fname, Erase_polygon).save(save_name)
+                        result = arcpy.sa.ExtractByMask(fname, Erase_polygon)
+                        result.save(save_name)
 
                         return save_name
                     except arcpy.ExecuteError as e:
@@ -744,14 +806,15 @@ class Transport:
                         inFeatures = [r'memory\polyline', self.waterbodies]
                         outFeatures = r'memory\polygon'
 
-                        arcpy.FeatureToPolygon_management(inFeatures, outFeatures, "", "NO_ATTRIBUTES")
+                        arcpy.management.FeatureToPolygon(inFeatures, outFeatures, "", "NO_ATTRIBUTES")
                         Erase_polygon = r'memory\Erase_polygon'
 
-                        arcpy.Erase_analysis(outFeatures, self.waterbodies, Erase_polygon)
+                        arcpy.analysis.Erase(outFeatures, self.waterbodies, Erase_polygon)
 
                         save_name = r'memory\plume_full'
 
-                        arcpy.sa.ExtractByMask(fname, Erase_polygon).save(save_name)
+                        result = arcpy.sa.ExtractByMask(fname, Erase_polygon)
+                        result.save(save_name)
 
                     return save_name
                 else:
@@ -765,18 +828,20 @@ class Transport:
         Medium post process the plume
         """
         try:
-            no3 = arcpy.sa.ExtractByMask(no3_output, self.waterbodies, "OUTSIDE")
+            no3 = arcpy.sa.ExtractByMask(no3_output, self.waterbodies, "OUTSIDE", no3_output)
 
             arcpy.env.snapRaster = None
             no3 = arcpy.sa.SetNull(no3, no3, "VALUE < {}".format(self.threshold))
+            no3 = arcpy.sa.SetNull(no3, no3, "VALUE > {}".format(10000))
             no3.save(self.no3_output)
 
             if self.whether_nh4:
                 if nh4_output is None:
                     arcpy.AddMessage("The nh4_output is None!")
-                nh4 = arcpy.sa.ExtractByMask(nh4_output, self.waterbodies, "OUTSIDE")
+                nh4 = arcpy.sa.ExtractByMask(nh4_output, self.waterbodies, "OUTSIDE", nh4_output)
 
                 nh4 = arcpy.sa.SetNull(nh4, nh4, "VALUE < {}".format(self.threshold))
+                nh4 = arcpy.sa.SetNull(nh4, nh4, "VALUE > {}".format(10000))
                 nh4.save(self.nh4_output)
             return
         except Exception as e:
@@ -865,28 +930,38 @@ class Transport:
         Get the control points for warping
         """
         plumelen = plume_array.shape[1]
-        if plumelen < 3:
-            raise ValueError("The length of the plume is too short!")
-
-        # get the number of center line control points
-        warp_ctrl_pt_spacing = self.warp_ctrl_pt_spacing
-        center_number = math.ceil(plumelen / warp_ctrl_pt_spacing) + 1
-        while center_number < 10:
-            warp_ctrl_pt_spacing = warp_ctrl_pt_spacing / 2
+        if plumelen < 20:
+            warp_ctrl_pt_spacing = 2
             center_number = math.ceil(plumelen / warp_ctrl_pt_spacing) + 1
-            if warp_ctrl_pt_spacing <= 1:
-                raise ValueError("The number of center line control points is too small!")
+        else:
+            # get the number of center line control points
+            warp_ctrl_pt_spacing = self.warp_ctrl_pt_spacing
+            center_number = math.ceil(plumelen / warp_ctrl_pt_spacing) + 1
+            while center_number < 10:
+                warp_ctrl_pt_spacing = warp_ctrl_pt_spacing / 2
+                center_number = math.ceil(plumelen / warp_ctrl_pt_spacing) + 1
+                if warp_ctrl_pt_spacing <= 2:
+                    warp_ctrl_pt_spacing = 2
+                    center_number = math.ceil(plumelen / warp_ctrl_pt_spacing) + 1
+                    break
 
         # get the center line control points
         index_array = np.arange(0, plumelen)
         center_pts = index_array[::int(warp_ctrl_pt_spacing)]
         if (plumelen - 1) % warp_ctrl_pt_spacing != 0:
             center_pts = np.append(center_pts, plumelen - 1)
-        values_to_add = np.array([1, 2, 3, 4, 5])
+        if plumelen > 5:
+            values_to_add = np.array([1, 2, 3, 4, 5])
+        else:
+            values_to_add = np.arange(1, plumelen)
         center_pts = np.sort(np.append(center_pts, values_to_add))
+        center_pts = np.unique(center_pts)
+        if len(center_pts) < 10:
+            return center_pts, None
 
         # get the start and end points bigger than the threshold
-        if plume_array[:, -1].max() >= self.threshold:
+        plume_array = np.nan_to_num(plume_array)
+        if np.nanmax(plume_array[:, -1]) >= self.threshold:
             cols = plume_array[:, center_pts]
         else:
             cols = plume_array[:, center_pts[:-1]]
@@ -996,7 +1071,8 @@ class Transport:
             center_origin_y = yvalue
             length = (center_pts[i] - center_pts[0]) * self.plume_cell_size
             index = (segment['TotDist'] >= length).idxmax()
-            if (i == len(center_pts) - 1 and index == 0) or length >= segment['TotDist'].iloc[-1]:
+            # if (i == len(center_pts) - 1 and index == 0) or length >= segment['TotDist'].iloc[-1]:
+            if length >= segment['TotDist'].iloc[-1]:
                 index = len(segment) - 1
             first_x = segment['Shape'].iloc[index].firstPoint.X
             first_y = segment['Shape'].iloc[index].firstPoint.Y
@@ -1009,7 +1085,9 @@ class Transport:
             origin_center_pts.append([center_origin_x, center_origin_y])
             target_center_pts.append([target_x, target_y])
 
-            if len(center_pts) - len(body_pts) != 1 or i != len(center_pts) - 1:
+            if len(center_pts) < 10:
+                continue
+            elif len(center_pts) - len(body_pts) != 1 or i != len(center_pts) - 1:
                 body_origin_x = center_origin_x
                 distance = (body_pts[i][1] - body_pts[i][0]) * self.plume_cell_size / 2
                 point_right, point_left = find_perpendicular_point(first_x, first_y, last_x, last_y, distance,
@@ -1018,6 +1096,8 @@ class Transport:
                 origin_body_pts_left.append([body_origin_x, center_origin_y + distance])
                 target_body_pts_right.append(point_right)
                 target_body_pts_left.append(point_left)
+        if len(center_pts) < 10:
+            return np.array(target_center_pts), np.array(origin_center_pts), None, None
         target_body_pts = np.vstack((target_body_pts_left[::-1], target_body_pts_right))
         origin_body_pts = np.vstack((origin_body_pts_left[::-1], origin_body_pts_right))
         return np.array(target_center_pts), np.array(origin_center_pts), target_body_pts, origin_body_pts
@@ -1087,43 +1167,43 @@ class Transport:
 
 
 def create_shapefile(save_path, name, crs):
-    arcpy.CreateFeatureclass_management(
+    arcpy.management.CreateFeatureclass(
         out_path=save_path,
         out_name=name,
         geometry_type="POINT",
         spatial_reference=crs)
 
-    arcpy.AddField_management(name, "PathID", "LONG")
-    arcpy.AddField_management(name, "is2D", "LONG")
-    arcpy.AddField_management(name, "domBdy", "LONG")
-    arcpy.AddField_management(name, "decayCoeff", "DOUBLE")
-    arcpy.AddField_management(name, "avgVel", "DOUBLE")
-    arcpy.AddField_management(name, "avgPrsity", "DOUBLE")
-    arcpy.AddField_management(name, "DispL", "DOUBLE")
-    arcpy.AddField_management(name, "DispTH", "DOUBLE")
-    arcpy.AddField_management(name, "DispTV", "DOUBLE")
-    arcpy.AddField_management(name, "SourceY", "DOUBLE")
-    arcpy.AddField_management(name, "SourceZ", "DOUBLE")
-    arcpy.AddField_management(name, "MeshDX", "DOUBLE")
-    arcpy.AddField_management(name, "MeshDY", "DOUBLE")
-    arcpy.AddField_management(name, "MeshDZ", "DOUBLE")
-    arcpy.AddField_management(name, "plumeTime", "DOUBLE")
-    arcpy.AddField_management(name, "pathTime", "DOUBLE")
-    arcpy.AddField_management(name, "plumeLen", "DOUBLE")
-    arcpy.AddField_management(name, "pathLen", "DOUBLE")
-    arcpy.AddField_management(name, "plumeArea", "DOUBLE")
-    arcpy.AddField_management(name, "mslnRtNmr", "DOUBLE")
-    arcpy.AddField_management(name, "massInRate", "DOUBLE")
-    arcpy.AddField_management(name, "massDNRate", "DOUBLE")
-    arcpy.AddField_management(name, "srcAngle", "DOUBLE")
-    arcpy.AddField_management(name, "warp", "LONG")
-    arcpy.AddField_management(name, "PostP", "LONG")
-    arcpy.AddField_management(name, "Init_conc", "DOUBLE")
-    arcpy.AddField_management(name, "volFac", "DOUBLE")
-    arcpy.AddField_management(name, "nextConc", "DOUBLE")
-    arcpy.AddField_management(name, "threshConc", "DOUBLE")
-    arcpy.AddField_management(name, "WBId_plume", "LONG")
-    arcpy.AddField_management(name, "WBId_path", "LONG")
+    arcpy.management.AddField(name, "PathID", "LONG")
+    arcpy.management.AddField(name, "is2D", "LONG")
+    arcpy.management.AddField(name, "domBdy", "LONG")
+    arcpy.management.AddField(name, "decayCoeff", "DOUBLE")
+    arcpy.management.AddField(name, "avgVel", "DOUBLE")
+    arcpy.management.AddField(name, "avgPrsity", "DOUBLE")
+    arcpy.management.AddField(name, "DispL", "DOUBLE")
+    arcpy.management.AddField(name, "DispTH", "DOUBLE")
+    arcpy.management.AddField(name, "DispTV", "DOUBLE")
+    arcpy.management.AddField(name, "SourceY", "DOUBLE")
+    arcpy.management.AddField(name, "SourceZ", "DOUBLE")
+    arcpy.management.AddField(name, "MeshDX", "DOUBLE")
+    arcpy.management.AddField(name, "MeshDY", "DOUBLE")
+    arcpy.management.AddField(name, "MeshDZ", "DOUBLE")
+    arcpy.management.AddField(name, "plumeTime", "DOUBLE")
+    arcpy.management.AddField(name, "pathTime", "DOUBLE")
+    arcpy.management.AddField(name, "plumeLen", "DOUBLE")
+    arcpy.management.AddField(name, "pathLen", "DOUBLE")
+    arcpy.management.AddField(name, "plumeArea", "DOUBLE")
+    arcpy.management.AddField(name, "mslnRtNmr", "DOUBLE")
+    arcpy.management.AddField(name, "massInRate", "DOUBLE")
+    arcpy.management.AddField(name, "massDNRate", "DOUBLE")
+    arcpy.management.AddField(name, "srcAngle", "DOUBLE")
+    arcpy.management.AddField(name, "warp", "LONG")
+    arcpy.management.AddField(name, "PostP", "LONG")
+    arcpy.management.AddField(name, "Init_conc", "DOUBLE")
+    arcpy.management.AddField(name, "volFac", "DOUBLE")
+    arcpy.management.AddField(name, "nextConc", "DOUBLE")
+    arcpy.management.AddField(name, "threshConc", "DOUBLE")
+    arcpy.management.AddField(name, "WBId_plume", "LONG")
+    arcpy.management.AddField(name, "WBId_path", "LONG")
 
 
 def find_perpendicular_point(x1, y1, x2, y2, distance, x0, y0):
@@ -1152,12 +1232,12 @@ def is_file_locked(file_path):
 # Main program for debugging
 if __name__ == '__main__':
     # for i in range(1):
-    arcpy.env.workspace = "C:\\Users\\Wei\\Downloads\\ArcNLET-Py-dev\\ArcNLET-Py-dev\\Examples\\lakeshore_example"
+    arcpy.env.workspace = "C:\\Users\\Wei\\Downloads\\Orlando\\debug"
     # arcpy.env.workspace = "C:\\Users\\Wei\\Downloads\\Ortho_P_3rd_attempt\\Ortho_P_3rd_attempt"
     whethernh4 = True
-    source_location = os.path.join(arcpy.env.workspace, "VZMOD\\septictanks.shp")
-    water_bodies = os.path.join(arcpy.env.workspace, "Example_Inputs\\waterbodies.shp")
-    particlepath = os.path.join(arcpy.env.workspace, "Example_Inputs\\demo_paths.shp")
+    source_location = os.path.join(arcpy.env.workspace, "aaa\\septictanks.shp")
+    water_bodies = os.path.join(arcpy.env.workspace, "LakesWbAdded.shp")
+    particlepath = os.path.join(arcpy.env.workspace, "pathm.shp")
 
     no3output = os.path.join(arcpy.env.workspace, "demo_no3")
     nh4output = os.path.join(arcpy.env.workspace, "demo_nh4")
@@ -1168,17 +1248,17 @@ if __name__ == '__main__':
     option1 = 48
     option2 = "Polyorder2"
     option3 = 0.000001
-    option4 = "Medium"
-    option5 = "Specified Z"  # input mass rate or z
+    option4 = "Medium"  # post process, none, medium, full
+    option5 = "Specified z"  # input mass rate or z
 
-    param1 = 20000
-    param2 = 12
+    param1 = 16000
+    param2 = 6
     param3 = 1.5
-    param4 = False
+    param4 = True
     param5 = 3.0
-    param6 = 0.8
+    param6 = 0.4
 
-    no3param0 = 60
+    no3param0 = 40
     no3param1 = 2.113
     no3param2 = 0.234
     no3param3 = 0.008

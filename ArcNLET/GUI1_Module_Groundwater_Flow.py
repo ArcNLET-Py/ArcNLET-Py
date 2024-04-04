@@ -115,6 +115,15 @@ class InterfaceGroundwaterFlow(object):
                                  )
         param5.value = 1
 
+        param6 = arcpy.Parameter(name="Maximum number of continuous smoothing",
+                                 displayName="Maximum number of continuous smoothing",
+                                 datatype="GPLong",
+                                 parameterType="Required",  # Required|Optional|Derived
+                                 direction="Input",  # Input|Output
+                                 category="Parameters",
+                                 )
+        param6.value = 50
+
         outfile0 = arcpy.Parameter(name="Velocity Magnitude",
                                    displayName="Output Velocity Magnitude [m/d]",
                                    datatype=["GPRasterLayer"],
@@ -143,9 +152,9 @@ class InterfaceGroundwaterFlow(object):
                                    direction="Output",  # Input|Output
                                    )
 
-        return [infile0, infile1, infile2, infile3,
-                param0, param1, param2, param3, param4, param5,
-                outfile0, outfile1, outfile2, outfile3]
+        return [infile0, infile1, infile2, infile3,                        # 0-3
+                param0, param1, param2, param3, param4, param5, param6,    # 4-10
+                outfile0, outfile1, outfile2, outfile3]                    # 11-14
 
     def isLicensed(self) -> bool:
         """Set whether tool is licensed to execute.
@@ -211,15 +220,32 @@ class InterfaceGroundwaterFlow(object):
 
         if parameters[0].altered and parameters[1].altered and parameters[2].altered and parameters[3].altered:
             if crs1.name != crs2.name or crs1.name != crs3.name or crs1.name != crs4.name:
-                parameters[0].setErrorMessage("All input files must have the same coordinate system.")
-                parameters[1].setErrorMessage("All input files must have the same coordinate system.")
-                parameters[2].setErrorMessage("All input files must have the same coordinate system.")
-                parameters[3].setErrorMessage("All input files must have the same coordinate system.")
-
+                parameters[0].setErrorMessage("All input files must have the same coordinate system. \n"
+                                              + "\n" +
+                                              "DEM projected coordinate system : {} \n".format(crs1.name)
+                                              + "Water bodies projected coordinate system : {} \n".format(crs2.name)
+                                              + "Hydraulic conductivity projected coordinate system : {} \n".format(crs3.name)
+                                              + "Porosity projected coordinate system : {} \n".format(crs4.name))
+                parameters[1].setErrorMessage("All input files must have the same coordinate system. \n"
+                                              + "\n" +
+                                              "DEM projected coordinate system : {} \n".format(crs1.name)
+                                              + "Water bodies projected coordinate system : {} \n".format(crs2.name)
+                                              + "Hydraulic conductivity projected coordinate system : {} \n".format(crs3.name)
+                                              + "Porosity projected coordinate system : {} \n".format(crs4.name))
+                parameters[2].setErrorMessage("All input files must have the same coordinate system. \n"
+                                              + "\n" +
+                                              "DEM projected coordinate system : {} \n".format(crs1.name)
+                                              + "Water bodies projected coordinate system : {} \n".format(crs2.name)
+                                              + "Hydraulic conductivity projected coordinate system : {} \n".format(crs3.name)
+                                              + "Porosity projected coordinate system : {} \n".format(crs4.name))
+                parameters[3].setErrorMessage("All input files must have the same coordinate system. \n"
+                                              + "\n" +
+                                              "DEM projected coordinate system : {} \n".format(crs1.name)
+                                              + "Water bodies projected coordinate system : {} \n".format(crs2.name)
+                                              + "Hydraulic conductivity projected coordinate system : {} \n".format(crs3.name)
+                                              + "Porosity projected coordinate system : {} \n".format(crs4.name))
         if parameters[4].value is not None and parameters[4].value < 0:
             parameters[4].setErrorMessage("The Smoothing Factor must be greater than 0.")
-        if parameters[4].value is not None and parameters[4].value > 200:
-            parameters[4].setWarningMessage("The Smoothing Factor may be too large.")
         if parameters[5].value is not None and parameters[5].value < 0:
             parameters[5].setErrorMessage("The Smoothing Cell must be greater than 0.")
         if parameters[5].value is not None and parameters[5].value >= 0 and parameters[5].value % 2 == 0:
@@ -246,21 +272,6 @@ class InterfaceGroundwaterFlow(object):
                     parameters[8].setWarningMessage("The Smoothing Factor may be too large.")
 
         if parameters[0].altered and parameters[0].value is not None:
-            if parameters[10].altered and parameters[10].value is not None:
-                if self.is_file_path(parameters[10].valueAsText):
-                    if ".gdb" in parameters[10].valueAsText or ".mdb" in parameters[10].valueAsText:
-                        filename = os.path.basename(parameters[10].valueAsText)
-                        if "." in filename:
-                            parameters[10].setErrorMessage(
-                                "When storing a raster dataset in a geodatabase, "
-                                "do not add a file extension to the name of the raster dataset.")
-                else:
-                    if "." in parameters[10].valueAsText and geodatabase:
-                        parameters[10].setErrorMessage(
-                            "When storing a raster dataset in a geodatabase, "
-                            "do not add a file extension to the name of the raster dataset."
-                            "The default output location is same as DEM file")
-
             if parameters[11].altered and parameters[11].value is not None:
                 if self.is_file_path(parameters[11].valueAsText):
                     if ".gdb" in parameters[11].valueAsText or ".mdb" in parameters[11].valueAsText:
@@ -305,6 +316,21 @@ class InterfaceGroundwaterFlow(object):
                             "When storing a raster dataset in a geodatabase, "
                             "do not add a file extension to the name of the raster dataset."
                             "The default output location is same as DEM file")
+
+            if parameters[14].altered and parameters[14].value is not None:
+                if self.is_file_path(parameters[14].valueAsText):
+                    if ".gdb" in parameters[14].valueAsText or ".mdb" in parameters[14].valueAsText:
+                        filename = os.path.basename(parameters[14].valueAsText)
+                        if "." in filename:
+                            parameters[14].setErrorMessage(
+                                "When storing a raster dataset in a geodatabase, "
+                                "do not add a file extension to the name of the raster dataset.")
+                else:
+                    if "." in parameters[14].valueAsText and geodatabase:
+                        parameters[14].setErrorMessage(
+                            "When storing a raster dataset in a geodatabase, "
+                            "do not add a file extension to the name of the raster dataset."
+                            "The default output location is same as DEM file")
         return
 
     def execute(self, parameters, messages) -> None:
@@ -337,17 +363,18 @@ class InterfaceGroundwaterFlow(object):
         smthf2 = parameters[8].valueAsText.split(";")
         smthf2 = [int(i) for i in smthf2]
         zfact  = parameters[9].value
+        smthflimit = parameters[10].value
 
-        velo = parameters[10].valueAsText
-        veld = parameters[11].valueAsText
-        smth = parameters[12].valueAsText
-        grad = parameters[13].valueAsText
+        velo = parameters[11].valueAsText
+        veld = parameters[12].valueAsText
+        smth = parameters[13].valueAsText
+        grad = parameters[14].valueAsText
 
         # Okay finally go ahead and do the work.
         try:
             arcpy.AddMessage("Compute Darcy Flow: START")
             GF = DarcyFlow(dem, wb, ks, poro,
-                           smthf1, smthc, fsink, merge, smthf2, zfact,
+                           smthf1, smthc, fsink, merge, smthf2, zfact, smthflimit,
                            velo, veld, smth, grad)
             arcpy.AddMessage("Compute Darcy Flow: FINISH")
             GF.calculateDarcyFlow()
