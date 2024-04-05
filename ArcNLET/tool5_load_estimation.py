@@ -57,6 +57,7 @@ class LoadEstimation:
                                             "massDNRate": "Mass Removal Rate [mg/d]"})
         no3_load = no3_load[["Waterbody FID", "Mass Output Load [mg/d]", "Mass Output Load * Risk Factor [mg/d]",
                              "Mass Input Load [mg/d]", "Mass Removal Rate [mg/d]"]]
+        no3_load = no3_load[no3_load["Waterbody FID"] != -1]
         arcpy.AddMessage(no3_load)
         if os.path.exists(self.outfileno3):
             try:
@@ -84,6 +85,7 @@ class LoadEstimation:
                                                 "massDNRate": "Mass Removal Rate [mg/d]"})
             nh4_load = nh4_load[["Waterbody FID", "Mass Output Load [mg/d]", "Mass Output Load * Risk Factor [mg/d]",
                                  "Mass Input Load [mg/d]", "Mass Removal Rate [mg/d]"]]
+            nh4_load = nh4_load[nh4_load["Waterbody FID"] != -1]
             arcpy.AddMessage(nh4_load)
             if os.path.exists(self.outfilenh4):
                 try:
@@ -101,11 +103,11 @@ class LoadEstimation:
 # ======================================================================
 # Main program for debugging
 if __name__ == '__main__':
-    arcpy.env.workspace = ".\\test_pro"
+    arcpy.env.workspace = "C:\\Users\\Wei\\Downloads\\Orlando\\debug"
 
     whether_nh4 = False
     risk_factor = 1
-    plumesno3 = os.path.join(arcpy.env.workspace, "pyno3_info.shp")
+    plumesno3 = os.path.join(arcpy.env.workspace, "demo_no3_info.shp")
     plumesnh4 = ""
 
     LE = LoadEstimation(whether_nh4, risk_factor, plumesno3, plumesnh4)

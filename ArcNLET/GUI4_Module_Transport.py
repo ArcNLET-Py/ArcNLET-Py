@@ -396,6 +396,8 @@ class InterfaceTransport(object):
             crs1 = desc.spatialReference
             field_list = desc.fields
             no3_exists = any(field.name.lower() == "no3_conc" for field in field_list)
+            if crs1.linearUnitName != "Meter":
+                parameters[1].setErrorMessage("The linear unit of the source location must be meter.")
             if no3_exists:
                 with arcpy.da.SearchCursor(source_location, ["NO3_Conc"]) as cursor:
                     for row in cursor:
@@ -415,16 +417,32 @@ class InterfaceTransport(object):
             wb = parameters[2].value
             desc = arcpy.Describe(wb)
             crs2 = desc.spatialReference
+            if crs2.linearUnitName != "Meter":
+                parameters[2].setErrorMessage("The linear unit of the water bodies must be meter.")
         if parameters[3].altered:
             ppath = parameters[3].value
             desc = arcpy.Describe(ppath)
             crs3 = desc.spatialReference
+            if crs3.linearUnitName != "Meter":
+                parameters[3].setErrorMessage("The linear unit of the particle paths must be meter.")
 
         if parameters[1].altered and parameters[2].altered and parameters[3].altered:
             if crs1.name != crs2.name or crs1.name != crs3.name:
-                parameters[1].setErrorMessage("All input files must have the same coordinate system.")
-                parameters[2].setErrorMessage("All input files must have the same coordinate system.")
-                parameters[3].setErrorMessage("All input files must have the same coordinate system.")
+                parameters[1].setErrorMessage("All input files must have the same coordinate system. \n"
+                                              + "\n" +
+                                              "Source locations projected coordinate system : {} \n".format(crs1.name)
+                                              + "Water bodies projected coordinate system : {} \n".format(crs2.name)
+                                              + "Particle paths projected coordinate system : {} \n".format(crs3.name))
+                parameters[2].setErrorMessage("All input files must have the same coordinate system. \n"
+                                              + "\n" +
+                                              "Source locations projected coordinate system : {} \n".format(crs1.name)
+                                              + "Water bodies projected coordinate system : {} \n".format(crs2.name)
+                                              + "Particle paths projected coordinate system : {} \n".format(crs3.name))
+                parameters[3].setErrorMessage("All input files must have the same coordinate system. \n"
+                                              + "\n" +
+                                              "Source locations projected coordinate system : {} \n".format(crs1.name)
+                                              + "Water bodies projected coordinate system : {} \n".format(crs2.name)
+                                              + "Particle paths projected coordinate system : {} \n".format(crs3.name))
 
         if parameters[4].altered and parameters[4].value is not None:
             if ".gdb" in parameters[4].valueAsText or ".mdb" in parameters[4].valueAsText:

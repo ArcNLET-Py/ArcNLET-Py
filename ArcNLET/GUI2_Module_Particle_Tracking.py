@@ -139,11 +139,15 @@ class InterfaceParticleTracking(object):
             source_location = parameters[0].value
             desc = arcpy.Describe(source_location)
             crs1 = desc.spatialReference
+            if crs1.linearUnitName != 'Meter':
+                parameters[0].setErrorMessage("The source locations must be in meters.")
 
         if parameters[1].altered:
             wb = parameters[1].value
             desc = arcpy.Describe(wb)
             crs2 = desc.spatialReference
+            if crs2.linearUnitName != 'Meter':
+                parameters[1].setErrorMessage("The water bodies must be in meters.")
 
         if parameters[2].altered:
             velo = parameters[2].value
@@ -152,6 +156,8 @@ class InterfaceParticleTracking(object):
             crs3 = desc.spatialReference
             if band_count != 1:
                 parameters[2].setErrorMessage("Input velocity must have only one band.")
+            if crs3.linearUnitName != 'Meter':
+                parameters[2].setErrorMessage("The velocity magnitude must be in meters.")
 
         if parameters[3].altered:
             veld = parameters[3].value
@@ -160,6 +166,8 @@ class InterfaceParticleTracking(object):
             crs4 = desc.spatialReference
             if band_count != 1:
                 parameters[3].setErrorMessage("Input porosity must have only one band.")
+            if crs4.linearUnitName != 'Meter':
+                parameters[3].setErrorMessage("The velocity direction must be in meters.")
 
         if parameters[4].altered:
             poro = parameters[4].value
@@ -168,6 +176,8 @@ class InterfaceParticleTracking(object):
             crs5 = desc.spatialReference
             if band_count != 1:
                 parameters[4].setErrorMessage("Input porosity must have only one band.")
+            if crs5.linearUnitName != 'Meter':
+                parameters[4].setErrorMessage("The porosity must be in meters.")
 
         if parameters[0].altered and parameters[1].altered and parameters[2].altered and parameters[3].altered and \
                 parameters[4].altered:

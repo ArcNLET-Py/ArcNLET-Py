@@ -191,6 +191,8 @@ class InterfaceGroundwaterFlow(object):
                 parameters[0].setErrorMessage("Input DEM must have only one band.")
             if abs(xsize - ysize) > 1E-4 :
                 parameters[0].setErrorMessage("Input DEM must be square cells.")
+            if crs1.linearUnitName != "Meter":
+                parameters[0].setErrorMessage("Input DEM must be in meters.")
             filedir = desc.catalogPath
             if ".gdb" in filedir or ".mdb" in filedir:
                 geodatabase = True
@@ -200,15 +202,19 @@ class InterfaceGroundwaterFlow(object):
         if parameters[1].altered:
             wb = parameters[1].value
             desc = arcpy.Describe(wb)
-            crs3 = desc.spatialReference
+            crs2 = desc.spatialReference
+            if crs2.linearUnitName != "Meter":
+                parameters[1].setErrorMessage("Input water bodies must be in meters.")
 
         if parameters[2].altered:
             ks = parameters[2].value
             desc = arcpy.Describe(ks)
             band_count = desc.bandCount
-            crs2 = desc.spatialReference
+            crs3 = desc.spatialReference
             if band_count != 1:
                 parameters[2].setErrorMessage("Input Hydraulic conductivity must have only one band.")
+            if crs3.linearUnitName != "Meter":
+                parameters[2].setErrorMessage("Input Hydraulic conductivity must be in meters.")
 
         if parameters[3].altered:
             poro = parameters[3].value
@@ -217,6 +223,8 @@ class InterfaceGroundwaterFlow(object):
             crs4 = desc.spatialReference
             if band_count != 1:
                 parameters[3].setErrorMessage("Input porosity must have only one band.")
+            if crs4.linearUnitName != "Meter":
+                parameters[3].setErrorMessage("Input porosity must be in meters.")
 
         if parameters[0].altered and parameters[1].altered and parameters[2].altered and parameters[3].altered:
             if crs1.name != crs2.name or crs1.name != crs3.name or crs1.name != crs4.name:
