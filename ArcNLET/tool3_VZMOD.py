@@ -76,7 +76,7 @@ adsorption_default = {"clay":            [1.46, 1.50],
 class VZMOD:
     def __init__(self, soiltypes, hlr, alpha, ks, thetar, thetas, n, knit, toptnit, beltanit, e2, e3, fs, fwp, Swp,
                  Sl, Sh, kdnt, toptdnt, beltadnt, e1, Sdnt, kd, rho, Temp, Tran, NH4, NO3, DTW, dist,
-                 options, output_folder, hetero_ks_theta=0, calc_DTW=0, multi_soil_type=0,
+                 options, output_file, hetero_ks_theta=0, calc_DTW=0, multi_soil_type=0,
                  septic_tank=None, hydraulic_conductivity=None, soil_porosity=None, DEM=None,
                  smoothed_DEM=None, soil_type=None):
         """Initialize the load estimation module.
@@ -126,9 +126,11 @@ class VZMOD:
         self.DEM = None
         self.smoothed_DEM = None
         self.soil_type = None
+        self.workdir = os.getcwd()
         if self.multi_ostds:
             self.septic_tank = arcpy.Describe(septic_tank).catalogPath if not self.is_file_path(
                 septic_tank) else septic_tank
+            self.workdir = os.path.dirname(self.septic_tank)
             if self.hetero_ks_theta:
                 self.hydraulic_conductivity = arcpy.Describe(hydraulic_conductivity).catalogPath if not (
                     self.is_file_path(hydraulic_conductivity)) else hydraulic_conductivity
@@ -142,17 +144,18 @@ class VZMOD:
                 self.soil_type = arcpy.Describe(soil_type).catalogPath if not self.is_file_path(
                     soil_type) else soil_type
 
-        self.output_folder = output_folder
+        self.output_file = output_file if os.path.isabs(output_file) else os.path.join(self.workdir, output_file)
 
     def runVZMOD(self):
+        arcpy.env.workspace = os.path.abspath(self.workdir)
+
         total_CNH4 = np.zeros((Nlayer, 1))
         total_CNO3 = np.zeros((Nlayer, 1))
         total_theta = np.zeros((Nlayer, 1))
         total_fsw_nit = np.zeros((Nlayer, 1))
         total_fsw_dnt = np.zeros((Nlayer, 1))
 
-        os.chdir(self.output_folder)
-        file = open("results.txt", "w")
+        file = open(self.output_file, "w")
         file.write('Depth    CNH4       CNO3     Theta   fsw_nit    fsw_dnt'+'\n')
         if self.multi_ostds:
             DTW_hete, hydr_hete, poro_hete, soil_hete = self.arcgis_map(self.septic_tank, self.hydraulic_conductivity,
@@ -350,6 +353,13 @@ class VZMOD:
             head.append(h)
         theta.reverse()
         head.reverse()
+        # head = np.array(head)
+        # theta = np.array(theta)
+        # se = (theta - para['thetar']) / (para['thetas'] - para['thetar'])
+        # kh = para['ks']* pow(se, 0.5) * pow((1 - pow((1 - pow(se, 1 / para['m'])), para['m'])), 2)
+        # q = np.zeros(100)
+        # for i in range(100):
+        #     q[i] = (kh[i] + kh[i+1]) / 2 * (head[i] - head[i+1] + thickness) / thickness
         return theta
 
     def singlesolute(self, theta, para, ff, ooo=1):
@@ -454,29 +464,26 @@ class VZMOD:
         return CNH4, CNO3, single_fsw_nit, single_fsw_dnt
 
     def arcgis_map(self, septictankfile, hydraulicfile, porosityfile, dist, DEMfile, smoothedDEMfile, soilfile):
-        arcpy.env.workspace = self.output_folder
-
-        septictankfile_tmp = os.path.join(self.output_folder, "septictanks.shp")
-        arcpy.management.Copy(septictankfile, septictankfile_tmp)
+        arcpy.env.workspace = self.workdir
         field = []
 
         if self.hetero_ks_theta:
-            arcpy.sa.ExtractMultiValuesToPoints(septictankfile_tmp,
+            arcpy.sa.ExtractMultiValuesToPoints(septictankfile,
                                                 [[hydraulicfile, "hydro_con"], [porosityfile, "porosity"]], "NONE")
             field.append("hydro_con")
             field.append("porosity")
         if self.calc_DTW:
-            arcpy.sa.ExtractMultiValuesToPoints(septictankfile_tmp, [[DEMfile, "DEM"], [smoothedDEMfile, "smthDEM"]],
+            arcpy.sa.ExtractMultiValuesToPoints(septictankfile, [[DEMfile, "DEM"], [smoothedDEMfile, "smthDEM"]],
                                                 "NONE")
             field.append("DEM")
             field.append("smthDEM")
         if self.multi_soil_type:
-            arcpy.sa.ExtractMultiValuesToPoints(septictankfile_tmp, [[soilfile, "soiltype"]], "NONE")
+            arcpy.sa.ExtractMultiValuesToPoints(septictankfile, [[soilfile, "soiltype"]], "NONE")
             field.append("soiltype")
 
         data = []
         if bool(field):
-            with arcpy.da.SearchCursor(septictankfile_tmp, field) as cursor:
+            with arcpy.da.SearchCursor(septictankfile, field) as cursor:
                 for row in cursor:
                     data.append(row)
 
@@ -489,23 +496,22 @@ class VZMOD:
             hydr_hete[hydr_hete < 0] = 10
             poro_hete[poro_hete < 0] = 0.4
 
-            arcpy.management.DeleteField(septictankfile_tmp, field)
+            arcpy.management.DeleteField(septictankfile, field)
             return DTW_hete, hydr_hete, poro_hete, soil_hete
         else:
             return None, None, None, None
 
     def create_shapefile(self, CH4, CO3):
-        output_shapefile = os.path.join(self.output_folder, "septictanks.shp")
         fieldnameNO3 = "no3_conc"
         fieldnameNH4 = "nh4_conc"
 
-        field_name = [field.name.lower() for field in arcpy.ListFields(output_shapefile)]
+        field_name = [field.name.lower() for field in arcpy.ListFields(self.septic_tank)]
         if fieldnameNO3 not in field_name:
-            arcpy.management.AddField(output_shapefile, fieldnameNO3, "DOUBLE")
+            arcpy.management.AddField(self.septic_tank, fieldnameNO3, "DOUBLE")
         if fieldnameNH4 not in field_name:
-            arcpy.management.AddField(output_shapefile, fieldnameNH4, "DOUBLE")
+            arcpy.management.AddField(self.septic_tank, fieldnameNH4, "DOUBLE")
 
-        with arcpy.da.UpdateCursor(output_shapefile, ["FID", fieldnameNO3, fieldnameNH4]) as cursor:
+        with arcpy.da.UpdateCursor(self.septic_tank, ["FID", fieldnameNO3, fieldnameNH4]) as cursor:
             for row in cursor:
                 if self.multi_soil_type or self.calc_DTW or self.hetero_ks_theta:
                     fid = row[0]
@@ -547,9 +553,9 @@ if __name__ == '__main__':
     # arcpy.env.workspace = ".\\test_pro"
 
     options = True
-    hetero_Ks_thetas = True
+    hetero_Ks_thetas = False
     calc_DTW = False
-    multi_soil_type = True
+    multi_soil_type = False
 
     septic_tank = os.path.join(arcpy.env.workspace, "Lake_Buchanan_OSTDS_Project.shp")
     hydraulic_conductivity = os.path.join(arcpy.env.workspace, "hydr_cond_ProjectRaster.tif")
@@ -594,11 +600,11 @@ if __name__ == '__main__':
     DTW = 150
     dist = 41.15
 
-    output_folder = arcpy.env.workspace
+    output_file_name = "results.txt"
 
     vzmod = VZMOD(soiltype, hlr, alpha, ks, thetar, thetas, n, knit, toptnit, beltanit, e2, e3, fs, fwp, Swp,
                   Sl, Sh, kdnt, toptdnt, beltadnt, e1, Sdnt, kd, rho, Temp, Tran, NH4, NO3, DTW, dist,
-                  options, output_folder, hetero_Ks_thetas, calc_DTW, multi_soil_type,
+                  options, output_file_name, hetero_Ks_thetas, calc_DTW, multi_soil_type,
                   septic_tank, hydraulic_conductivity, soil_porosity, DEM, smoothed_DEM, soiltypefile)
     vzmod.runVZMOD()
 

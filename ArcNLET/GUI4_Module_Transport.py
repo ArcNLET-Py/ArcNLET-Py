@@ -171,7 +171,7 @@ class InterfaceTransport(object):
                                  direction="Input",  # Input|Output
                                  category="Parameters",  # Category
                                  )
-        param2.value = 6
+        param2.value = 12
 
         param3 = arcpy.Parameter(name="Source Dimension Z",
                                  displayName="Source Dimension Z [m]",
@@ -208,7 +208,7 @@ class InterfaceTransport(object):
                                  direction="Input",  # Input|Output
                                  category="Parameters",  # Category
                                  )
-        param6.value = 0.4
+        param6.value = 0.8
 
         no3param0 = arcpy.Parameter(name="NO\u2083 Concentration",
                                     displayName="NO\u2083 Concentration [mg/l]",

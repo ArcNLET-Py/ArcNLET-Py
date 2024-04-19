@@ -1232,12 +1232,11 @@ def is_file_locked(file_path):
 # Main program for debugging
 if __name__ == '__main__':
     # for i in range(1):
-    arcpy.env.workspace = "C:\\Users\\Wei\\Downloads\\Orlando\\debug"
-    # arcpy.env.workspace = "C:\\Users\\Wei\\Downloads\\Ortho_P_3rd_attempt\\Ortho_P_3rd_attempt"
+    arcpy.env.workspace = "C:\\Users\\Wei\\Downloads\\Plume99999Error\\Plume99999Error"
     whethernh4 = True
-    source_location = os.path.join(arcpy.env.workspace, "aaa\\septictanks.shp")
-    water_bodies = os.path.join(arcpy.env.workspace, "LakesWbAdded.shp")
-    particlepath = os.path.join(arcpy.env.workspace, "pathm.shp")
+    source_location = os.path.join(arcpy.env.workspace, "septictanks.shp")
+    water_bodies = os.path.join(arcpy.env.workspace, "waterbodies.shp")
+    particlepath = os.path.join(arcpy.env.workspace, "paths.shp")
 
     no3output = os.path.join(arcpy.env.workspace, "demo_no3")
     nh4output = os.path.join(arcpy.env.workspace, "demo_nh4")

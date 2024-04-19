@@ -16,7 +16,7 @@ import time
 import datetime
 import pandas as pd
 import numpy as np
-import cProfile
+# import cProfile
 
 __version__ = "V1.0.0"
 arcpy.env.parallelProcessingFactor = "100%"
@@ -280,6 +280,9 @@ class ParticleTracking:
                                     first_x = intersect_polyline.firstPoint.X
                                     first_y = intersect_polyline.firstPoint.Y
                                     break
+                        else:
+                            print("No intersection found!")
+                            return segments
                 else:
                     first_x = segments[-1][0].lastPoint.X
                     first_y = segments[-1][0].lastPoint.Y
@@ -335,19 +338,19 @@ class ParticleTracking:
 # ======================================================================
 # Main program for debugging
 if __name__ == '__main__':
-    arcpy.env.workspace = ".\\test_pro"
-    source_location = os.path.join(arcpy.env.workspace, "OneSepticTank.shp")
-    water_bodies = os.path.join(arcpy.env.workspace, "waterbodies")
-    velocity = os.path.join(arcpy.env.workspace, "demovel")
-    velocity_dir = os.path.join(arcpy.env.workspace, "demoveld")
-    porosity = os.path.join(arcpy.env.workspace, "porosity.img")
+    arcpy.env.workspace = "E:\\lakeshore_example\\lakeshore_example"
+    source_location = os.path.join(arcpy.env.workspace, "21septic_tank_P3Copy.shp")
+    water_bodies = os.path.join(arcpy.env.workspace, "31waterbodies.shp")
+    velocity = os.path.join(arcpy.env.workspace, "demovel0")
+    velocity_dir = os.path.join(arcpy.env.workspace, "demoveld0")
+    porosity = os.path.join(arcpy.env.workspace, "21poro_clip")
 
     option = True
     resolution = 5
     step_size = 10
     max_steps = 1000
 
-    output_fc = os.path.join(arcpy.env.workspace, "demoPath.shp")
+    output_fc = os.path.join(arcpy.env.workspace, "demoPath1.shp")
 
     start_time = datetime.datetime.now()
 

@@ -353,12 +353,13 @@ class InterfaceVZMOD(object):
         Initparam3.value = 0
         Initparam3.enabled = False
 
-        outputfile0 = arcpy.Parameter(name="Output folder",
-                                      displayName="Output folder",
-                                      datatype="DEFolder",
+        outputfile0 = arcpy.Parameter(name="Output profile results",
+                                      displayName="Output profile results (text file)",
+                                      datatype="DEFile",
                                       parameterType="Required",  # Required|Optional|Derived
-                                      direction="Input"  # Input|Output
+                                      direction="Output"  # Input|Output
                                       )
+        outputfile0.value = "Results.txt"
 
         inputfile0 = arcpy.Parameter(name="Single or multiple OSTDS",
                                      displayName="Single or multiple OSTDS",
@@ -631,6 +632,10 @@ class InterfaceVZMOD(object):
         if parameters[37].value is not None and parameters[37].value < 0:
             parameters[37].setErrorMessage("NO3 must be greater than 0.")
 
+        if parameters[40].altered and parameters[40].value is not None:
+            if not parameters[40].valueAsText.endswith(".txt"):
+                parameters[40].setErrorMessage("Output file should be a text file.")
+
     def execute(self, parameters, messages) -> None:
         """This is the code that executes when you click the "Run" button."""
 
@@ -693,12 +698,12 @@ class InterfaceVZMOD(object):
         DTW = parameters[38].value
         dist = parameters[39].value
 
-        output_folder = parameters[40].valueAsText
+        output_file = parameters[40].valueAsText
 
         try:
             vzmod = VZMOD(soiltype, hlr, alpha, ks, thetar, thetas, n, knit, toptnit, beltanit, e2, e3, fs, fwp, Swp,
                           Sl, Sh, kdnt, toptdnt, beltadnt, e1, Sdnt, kd, rho, Temp, Tran, NH4, NO3, DTW, dist,
-                          options, output_folder, hetero_Ks_thetas, calc_DTW, multi_soil_type,
+                          options, output_file, hetero_Ks_thetas, calc_DTW, multi_soil_type,
                           septic_tank, hydraulic_conductivity, soil_porosity, DEM, smoothed_DEM, soiltypefile)
             vzmod.runVZMOD()
             current_time = time.strftime("%H:%M:%S", time.localtime())

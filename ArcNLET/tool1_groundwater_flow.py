@@ -14,9 +14,9 @@ import arcpy
 import shutil
 import psutil
 import numpy as np
-import cProfile
-import pstats
-import stack_data
+# import cProfile
+# import pstats
+# import stack_data
 
 __version__ = "V1.0.0"
 arcpy.env.parallelProcessingFactor = "100%"
@@ -25,7 +25,7 @@ arcpy.env.overwriteOutput = True
 
 class DarcyFlow:
     def __init__(self, c_dem, c_wb, c_ks, c_poro,
-                 c_smthf1, c_smthc, c_fsink, c_merge, c_smthf2, c_zfact, c_smthflimit,
+                 c_smthf1, c_smthc, c_fsink, c_merge, c_smthf2, c_usecl, c_smthc2, c_zfact, c_smthflimit,
                  velname, veldname, smthname=None, gradname=None):
         # input files
         self.pixel_type = "32_BIT_FLOAT"
@@ -41,6 +41,8 @@ class DarcyFlow:
         self.flag_fsink = c_fsink
         self.flag_merge = c_merge
         self.smthf2 = c_smthf2
+        self.usecl = c_usecl
+        self.smthc2 = c_smthc2
         self.zfact = c_zfact
         self.smthflimit = c_smthflimit
 
@@ -98,6 +100,7 @@ class DarcyFlow:
         """
         workspace = os.path.dirname(self.dem)
         arcpy.env.workspace = os.path.abspath(workspace)
+        arcpy.ClearWorkspaceCache_management()
 
         self.temp_output_dir = os.path.join(workspace, 'temp')
         if os.path.exists(self.temp_output_dir):
@@ -107,7 +110,7 @@ class DarcyFlow:
         # first, smooth DEM, then fill sinks if flag_fsink is True
         current_time = time.strftime("%H:%M:%S", time.localtime())
         arcpy.AddMessage("{}     Smoothing DEM".format(current_time))
-        smoothed_filled_dem = self.smoothDEM(self.dem, self.smthf1, self.flag_fsink)
+        smoothed_filled_dem = self.smoothDEM(self.dem, self.smthf1, self.smthc, self.flag_fsink)
         current_time = time.strftime("%H:%M:%S", time.localtime())
         arcpy.AddMessage("{}         Smoothing finished".format(current_time))
 
@@ -115,7 +118,8 @@ class DarcyFlow:
             # first, merge DEM and waterbody, then smooth the merged dem
             current_time = time.strftime("%H:%M:%S", time.localtime())
             arcpy.AddMessage("{}     Merging and Smoothing DEM".format(current_time))
-            smoothed_merge_dem = self.mergeDEM(self.dem, self.wb, self.smthf2, smoothed_filled_dem, self.flag_fsink)
+            smoothed_merge_dem = self.mergeDEM(self.dem, self.wb, self.smthf2, self.usecl, self.smthc2,
+                                               smoothed_filled_dem, self.flag_fsink)
             current_time = time.strftime("%H:%M:%S", time.localtime())
             arcpy.AddMessage("{}         Merging and smoothing finished".format(current_time))
         else:
@@ -158,25 +162,41 @@ class DarcyFlow:
         # save the output
         current_time = time.strftime("%H:%M:%S", time.localtime())
         arcpy.AddMessage("{}     Save output files".format(current_time))
-        velocity.save(os.path.join(self.veldir, self.velname))
-        flowdir_raster.save(os.path.join(self.velddir, self.veldname))
+        try:
+            velocity.save(os.path.join(self.veldir, self.velname))
+        except:
+            velocity.save(os.path.join(self.veldir, self.velname + ".tif"))
+
+        try:
+            flowdir_raster.save(os.path.join(self.velddir, self.veldname))
+        except:
+            flowdir_raster.save(os.path.join(self.velddir, self.veldname + ".tif"))
+
         if self.gradname is not None:
-            gradient.save(os.path.join(self.graddir, self.gradname))
+            try:
+                gradient.save(os.path.join(self.graddir, self.gradname))
+            except:
+                gradient.save(os.path.join(self.graddir, self.gradname + ".tif"))
         if self.smthname is not None:
-            # smoothed_merge_dem.save(os.path.join(self.smthdir, self.smthname))
-            arcpy.management.CopyRaster(smoothed_merge_dem, os.path.join(self.smthdir, self.smthname))
+            try:
+                arcpy.management.CopyRaster(smoothed_merge_dem, os.path.join(self.smthdir, self.smthname))
+                # smoothed_merge_dem.save(os.path.join(self.smthdir, self.smthname))
+            except:
+                arcpy.management.CopyRaster(smoothed_merge_dem, os.path.join(self.smthdir, self.smthname + ".tif"))
+                # smoothed_merge_dem.save(os.path.join(self.smthdir, self.smthname + ".tif"))
         current_time = time.strftime("%H:%M:%S", time.localtime())
         arcpy.AddMessage("{}         Output files saved".format(current_time))
 
         arcpy.management.Delete(smoothed_merge_dem)
         arcpy.management.Delete(smoothed_filled_dem)
+        arcpy.ClearWorkspaceCache_management()
         if os.path.exists(self.temp_output_dir):
             shutil.rmtree(self.temp_output_dir)
         return
 
-    def smoothDEM(self, raster, factor, flag_fsink=False, flag=0):
+    def smoothDEM(self, raster, factor, cellsize, flag_fsink=False, flag=0):
         """Smooth the raster factor times"""
-        neighborhood = arcpy.sa.NbrRectangle(self.smthc, self.smthc, "CELL")
+        neighborhood = arcpy.sa.NbrRectangle(cellsize, cellsize, "CELL")
         chunk_size = self.smthflimit
         def smooth_chunk(raster_chunk, start_factor, times):
             """Smooth a chunk of the raster"""
@@ -214,7 +234,7 @@ class DarcyFlow:
 
         return final_smoothed_dem
 
-    def mergeDEM(self, original_dem, waterbody, factor_list, smoothed_filled_dem, flag_fsink=False):
+    def mergeDEM(self, original_dem, waterbody, factor_list, usecl, cell_list, smoothed_filled_dem, flag_fsink=False):
         """merge the original dem and waterbody, then smooth the merged dem"""
         # set the extent of the calculation environment to make sure the output raster has the same extent as the input
         desc = arcpy.Describe(original_dem)
@@ -226,11 +246,16 @@ class DarcyFlow:
 
         # merge, then smooth. The number of times of smoothing is determined by the length of factor_list
         # the times of smoothing is determined by the value of factor_list
-        for index, kk in enumerate(factor_list):
+        if usecl:
+            if len(cell_list) != len(factor_list):
+                arcpy.AddError("The number of smoothing times and cell size should be the same")
+        else:
+            cell_list = [self.smthc] * len(factor_list)
+        for index, (kk, jj) in enumerate(zip(factor_list, cell_list)):
             # merge the smoothed dem and waterbody
             merged_dem = arcpy.sa.Con(arcpy.sa.IsNull(extracted_dem), smoothed_filled_dem, extracted_dem)
             # smooth the merged dem kk times
-            smoothed_filled_dem = self.smoothDEM(merged_dem, kk, flag_fsink, index + 1)
+            smoothed_filled_dem = self.smoothDEM(merged_dem, kk, jj, flag_fsink, index + 1)
         return smoothed_filled_dem
 
     def slope(self, raster):
@@ -307,38 +332,40 @@ class DarcyFlow:
 # Main program for debugging
 if __name__ == '__main__':
     # for i in range(30):
-        i = 0
-        arcpy.env.workspace = "C:\\Users\\Wei\\Downloads\\Orlando\\debug"
-        dem = os.path.join(arcpy.env.workspace, "fl_5meter")
-        wb = os.path.join(arcpy.env.workspace, "LakesWbAdded.shp")
-        ks = os.path.join(arcpy.env.workspace, "hydr_cond_ProjectRaster.tif")
-        poro = os.path.join(arcpy.env.workspace, "porosity_ProjectRaster.tif")
+    i = 0
+    arcpy.env.workspace = "C:\\Users\\Wei\\Downloads\\lakeshore_example\\lakeshore_example"
+    dem = os.path.join(arcpy.env.workspace, "lakeshore.img")
+    wb = os.path.join(arcpy.env.workspace, "waterbodies.shp")
+    ks = os.path.join(arcpy.env.workspace, "demohydr")
+    poro = os.path.join(arcpy.env.workspace, "demoporo")
 
-        smthf1 = 30
-        smthc = 15
-        fsink = 0
-        merge = 1
-        smthf2 = [2]
-        zfact = 1
-        smthflimit = 50
+    smthf1 = 50
+    smthc = 7
+    fsink = 0
+    merge = 1
+    smthf2 = [2,2]
+    usecl = 1
+    smthc2 = [5,3]
+    zfact = 1
+    smthflimit = 50
 
-        vel = os.path.join(arcpy.env.workspace, "demovel"+str(i))
-        veld = os.path.join(arcpy.env.workspace, "demoveld"+str(i))
-        grad = os.path.join(arcpy.env.workspace, "demograd"+str(i))
-        smthd = os.path.join(arcpy.env.workspace, "demosmthd"+str(i))
-        start_time = time.time()
+    vel = os.path.join(arcpy.env.workspace, "demovel"+str(i))
+    veld = os.path.join(arcpy.env.workspace, "demoveld"+str(i))
+    grad = os.path.join(arcpy.env.workspace, "demograd"+str(i))
+    smthd = os.path.join(arcpy.env.workspace, "demosmthd"+str(i))
+    start_time = time.time()
 
-        arcpy.AddMessage("starting geoprocessing")
-        GF = DarcyFlow(dem, wb, ks, poro,
-                       smthf1, smthc, fsink, merge, smthf2, zfact, smthflimit,
-                       vel, veld, smthd, grad)
-        GF.calculateDarcyFlow()
+    arcpy.AddMessage("starting geoprocessing")
+    GF = DarcyFlow(dem, wb, ks, poro,
+                   smthf1, smthc, fsink, merge, smthf2, usecl, smthc2, zfact, smthflimit,
+                   vel, veld, smthd, grad)
+    GF.calculateDarcyFlow()
 
-        # cProfile.run('GF.calculateDarcyFlow()', 'flow')
-        # profile_stats = pstats.Stats('flow')
-        # with open('flow.txt', 'w') as output_file:
-        #     profile_stats.sort_stats('cumulative').print_stats(output_file)
+    # cProfile.run('GF.calculateDarcyFlow()', 'flow')
+    # profile_stats = pstats.Stats('flow')
+    # with open('flow.txt', 'w') as output_file:
+    #     profile_stats.sort_stats('cumulative').print_stats(output_file)
 
-        end_time = time.time()
-        print("{} times, Time elapsed: {} seconds".format(i, end_time - start_time))
-        print("Tests successful!")
+    end_time = time.time()
+    print("{} times, Time elapsed: {} seconds".format(i, end_time - start_time))
+    print("Tests successful!")

@@ -93,9 +93,14 @@ class Preprocessing(object):
         current_time = time.strftime("%H:%M:%S", time.localtime())
         arcpy.AddMessage(f"{current_time}     Preprocessing: Convert to WGS84")
         if arcpy.Describe(self.area).spatialReference.name != "GCS_WGS_1984":
-            area_wgs84 = r"memory\area_wgs84"
-            arcpy.management.Project(self.area, area_wgs84, wgs84)
-            area = area_wgs84
+            try:
+                area_wgs84 = r"memory\area_wgs84"
+                arcpy.management.Project(self.area, area_wgs84, wgs84)
+                area = area_wgs84
+            except:
+                area_wgs84 = os.path.join(self.workdir, "area_wgs84.shp")
+                arcpy.management.Project(self.area, area_wgs84, wgs84)
+                area = area_wgs84
         else:
             area = self.area
 
@@ -108,6 +113,8 @@ class Preprocessing(object):
         arcpy.AddMessage(f"{current_time}     Request tabular data from SSURGO")
         q = Preprocessing.request_tabular(df=spatial_df, method=self.method, top=self.top, bottom=self.bot)
         tabular_df = Preprocessing.fetch_ssurgodata(q)
+
+        arcpy.Exists(area_wgs84) and arcpy.management.Delete(area_wgs84)
 
         current_time = time.strftime("%H:%M:%S", time.localtime())
         arcpy.AddMessage(f"{current_time}     Merge spatial and tabular data")
@@ -1513,8 +1520,7 @@ class Preprocessing(object):
 # ======================================================================
 # Main program for debugging
 if __name__ == '__main__':
-    arcpy.env.workspace = "E:\Francis Lake4\Input"
-    # arcpy.env.workspace = "E:\\lakeshore_example\\lakeshore_example"
+    arcpy.env.workspace = "E:\\lakeshore_example\\lakeshore_example"
     area = os.path.join(arcpy.env.workspace, "StudyArea2.shp")
     pcs = arcpy.SpatialReference(26917)
     top = 0
