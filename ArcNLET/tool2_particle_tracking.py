@@ -58,6 +58,8 @@ class ParticleTracking:
 
         # Convert water bodies to raster
         self.waterbody_raster = r"memory\water_bodies"
+        if arcpy.Exists(self.waterbody_raster):
+            arcpy.Delete_management(self.waterbody_raster)
         arcpy.conversion.FeatureToRaster(self.water_bodies, "FID", self.waterbody_raster, self.resolution)
 
         self.waterbody_array = arcpy.RasterToNumPyArray(self.waterbody_raster, nodata_to_value=-9999)
@@ -315,7 +317,7 @@ class ParticleTracking:
 
                 origin_x = segments[-1][0].firstPoint.X
                 origin_y = segments[-1][0].firstPoint.Y
-                tdist = segments[-1][3] + math.sqrt((first_x - origin_x) ** 2 + (first_y - origin_y) ** 2) - 10
+                tdist = segments[-1][3] + math.sqrt((first_x - origin_x) ** 2 + (first_y - origin_y) ** 2) - self.step_size
                 if len(segments) > 1:
                     ttime = segments[-2][4] + (tdist - segments[-1][3] + 10) / segments[-1][6]
                 else:
@@ -338,16 +340,16 @@ class ParticleTracking:
 # ======================================================================
 # Main program for debugging
 if __name__ == '__main__':
-    arcpy.env.workspace = "E:\\lakeshore_example\\lakeshore_example"
-    source_location = os.path.join(arcpy.env.workspace, "21septic_tank_P3Copy.shp")
-    water_bodies = os.path.join(arcpy.env.workspace, "31waterbodies.shp")
-    velocity = os.path.join(arcpy.env.workspace, "demovel0")
-    velocity_dir = os.path.join(arcpy.env.workspace, "demoveld0")
-    porosity = os.path.join(arcpy.env.workspace, "21poro_clip")
+    arcpy.env.workspace = "E:\\2_lakeshore_example_complex\\2_Particle_tracking_module\\Inputs"
+    source_location = os.path.join(arcpy.env.workspace, "PotentialSepticTankLocations.shp")
+    water_bodies = os.path.join(arcpy.env.workspace, "waterbodies.shp")
+    velocity = os.path.join(arcpy.env.workspace, "velmag50")
+    velocity_dir = os.path.join(arcpy.env.workspace, "veldir50")
+    porosity = os.path.join(arcpy.env.workspace, "porosity")
 
     option = True
-    resolution = 5
-    step_size = 10
+    resolution = 10
+    step_size = 5
     max_steps = 1000
 
     output_fc = os.path.join(arcpy.env.workspace, "demoPath1.shp")

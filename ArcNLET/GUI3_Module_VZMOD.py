@@ -522,6 +522,8 @@ class InterfaceVZMOD(object):
                 parameters[2].enabled = True
                 parameters[3].enabled = True
                 parameters[4].enabled = True
+                if parameters[4].altered and parameters[4].value:
+                    parameters[40].value = os.path.join(os.path.dirname(parameters[4].valueAsText), "Results.txt")
                 if parameters[1].altered and parameters[1].value:
                     parameters[5].enabled = True
                     parameters[6].enabled = True

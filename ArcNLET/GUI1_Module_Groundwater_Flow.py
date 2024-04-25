@@ -419,7 +419,7 @@ class InterfaceGroundwaterFlow(object):
         merge  = parameters[7].value
         smthf2 = parameters[8].valueAsText.split(";")
         smthf2 = [int(i) for i in smthf2]
-        usecl = parameters[9]
+        usecl = parameters[9].value
         smthc2 = parameters[10].valueAsText.split(";")
         smthc2 = [int(i) for i in smthc2]
         zfact  = parameters[11].value

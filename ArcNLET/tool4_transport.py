@@ -14,6 +14,7 @@ import sys
 import arcpy
 import os
 import gc
+import psutil
 import math
 import time
 import numpy as np
@@ -141,6 +142,8 @@ class Transport:
         arcpy.AddMessage("{}     Creating water body...".format(current_time))
         try:
             self.waterbody_raster = r"memory\water_bodies"
+            if arcpy.Exists(self.waterbody_raster):
+                arcpy.management.Delete(self.waterbody_raster)
             arcpy.conversion.FeatureToRaster(self.waterbodies, "FID", self.waterbody_raster,
                                              max(self.plume_cell_size, 1))
         except Exception as e:
@@ -165,6 +168,9 @@ class Transport:
         arcpy.AddMessage("{}     Begin iterating...".format(current_time))
 
         for pathid in sorted_segments['PathID'].unique():
+            # memoryview, _ = self.get_memory_usage()
+            # arcpy.AddMessage("Memory usage before calculation: {} GB".format(memoryview))
+
             seg = sorted_segments[sorted_segments['PathID'] == pathid]
             seg = seg.reset_index(drop=True)
             mean_poro = seg['SegPrsity'].mean()
@@ -215,17 +221,20 @@ class Transport:
                             sys.exit(0)
                 # print("post_no3 pixeltype is {}".format(arcpy.Describe(post_no3).pixelType))
                 # print("Output pixeltype is {}".format(arcpy.Describe(self.no3_output).pixelType))
-                if arcpy.Describe(post_no3).pixelType != arcpy.Describe(self.no3_output).pixelType:
-                    filename = r'post3pixel'
-                    arcpy.management.CopyRaster(post_no3, filename, pixel_type=self.pixeltype)
-                    arcpy.sa.SetNull(filename, filename, "VALUE < {}".format(self.threshold)).save(filename)
-                    arcpy.management.Mosaic(filename, self.no3_output, "SUM")
+                if post_no3 is None:
+                    self.no3_output = self.no3_output
                 else:
-                    arcpy.management.Mosaic(post_no3, self.no3_output, "SUM")
+                    if arcpy.Describe(post_no3).pixelType != arcpy.Describe(self.no3_output).pixelType:
+                        filename = r'post3pixel'
+                        arcpy.management.CopyRaster(post_no3, filename, pixel_type=self.pixeltype)
+                        arcpy.sa.SetNull(filename, filename, "VALUE < {}".format(self.threshold)).save(filename)
+                        arcpy.management.Mosaic(filename, self.no3_output, "SUM")
+                    else:
+                        arcpy.management.Mosaic(post_no3, self.no3_output, "SUM")
 
             except Exception as e:
                 arcpy.AddMessage("[Error]: Failed to mosaic plume {}: ".format(pathid) + str(e))
-                sys.exit(-1)
+                arcpy.AddMessage("Skip the plume: {} for NO3-N calculation.".format(pathid))
 
             # max_value = arcpy.GetRasterProperties_management(post_no3, "MAXIMUM")
             # print('The maximum value of the plume is: {}'.format(max_value))
@@ -251,16 +260,21 @@ class Transport:
                             if wait_time > 60:
                                 arcpy.AddMessage("The output raster is used by other software, exit the program.")
                                 sys.exit(0)
-                    if arcpy.Describe(post_nh4).pixelType != arcpy.Describe(self.nh4_output).pixelType:
-                        filename = r'post4pixel'
-                        arcpy.management.CopyRaster(post_nh4, filename, pixel_type=self.pixeltype)
-                        arcpy.sa.SetNull(filename, filename, "VALUE < {}".format(self.threshold)).save(filename)
-                        arcpy.management.Mosaic(filename, self.nh4_output, "SUM")
+                    if post_nh4 is None:
+                        self.nh4_output = self.nh4_output
                     else:
-                        arcpy.management.Mosaic(post_nh4, self.nh4_output, "SUM")
+                        if arcpy.Describe(post_nh4).pixelType != arcpy.Describe(self.nh4_output).pixelType:
+                            filename = r'post4pixel'
+                            arcpy.management.CopyRaster(post_nh4, filename, pixel_type=self.pixeltype)
+                            arcpy.sa.SetNull(filename, filename, "VALUE < {}".format(self.threshold)).save(filename)
+                            arcpy.management.Mosaic(filename, self.nh4_output, "SUM")
+                        else:
+                            arcpy.management.Mosaic(post_nh4, self.nh4_output, "SUM")
                 except Exception as e:
                     arcpy.AddMessage("[Error]: Failed to mosaic plume {}: ".format(pathid) + str(e))
-                    sys.exit(-1)
+                    arcpy.AddMessage("Skip the plume: {} for NH4-N calculation.".format(pathid))
+            # memoryview, _ = self.get_memory_usage()
+            # arcpy.AddMessage("Memory usage after calculation: {} GB".format(memoryview))
 
         arcpy.management.Delete(post_no3)
         if self.whether_nh4:
@@ -395,13 +409,13 @@ class Transport:
                         no3y = np.zeros((len(ylist)))
                         nh4y = np.zeros((len(ylist)))
                         if ny % 2 != 0:
-                            no3y[math.floor(len(ylist) / 2) - math.floor(ny / 2):
-                                 math.floor(len(ylist) / 2) - math.floor(ny / 2) + ny] = no3_conc
-                            nh4y[math.floor(len(ylist) / 2) - math.floor(ny / 2):
-                                 math.floor(len(ylist) / 2) - math.floor(ny / 2) + ny] = nh4_conc
+                            no3y[int(math.floor(len(ylist) / 2) - math.floor(ny / 2)):
+                                 int(math.floor(len(ylist) / 2) - math.floor(ny / 2) + ny)] = no3_conc
+                            nh4y[int(math.floor(len(ylist) / 2) - math.floor(ny / 2)):
+                                 int(math.floor(len(ylist) / 2) - math.floor(ny / 2) + ny)] = nh4_conc
                         else:
-                            no3y[len(ylist) / 2 - ny / 2: len(ylist) / 2 + ny / 2] = no3_conc
-                            nh4y[len(ylist) / 2 - ny / 2: len(ylist) / 2 + ny / 2] = nh4_conc
+                            no3y[int(len(ylist) / 2 - ny / 2): int(len(ylist) / 2 + ny / 2)] = no3_conc
+                            nh4y[int(len(ylist) / 2 - ny / 2): int(len(ylist) / 2 + ny / 2)] = nh4_conc
                         no3result = np.hstack((no3y.reshape(-1, 1), no3result))
                         nh4result = np.hstack((nh4y.reshape(-1, 1), nh4result))
 
@@ -690,8 +704,26 @@ class Transport:
                 source_control_points = ';'.join([f"'{x} {y}'" for x, y in source_control_points])
                 target_control_points = ';'.join([f"'{x} {y}'" for x, y in target_control_points])
 
-                arcpy.management.Warp(plume_raster, source_control_points, target_control_points, name,
-                                      self.warp_method.upper(), "BILINEAR")
+                try:
+                    arcpy.management.Warp(plume_raster, source_control_points, target_control_points, name,
+                                          self.warp_method.upper(), "BILINEAR")
+                    # arcpy.sa.SetNull(name, name, "VALUE < {}".format(self.threshold)).save(name)
+                except:
+                    first_x = segment['Shape'].iloc[0].firstPoint.X
+                    first_y = segment['Shape'].iloc[0].firstPoint.Y
+                    last_x = segment['Shape'].iloc[0].lastPoint.X
+                    last_y = segment['Shape'].iloc[0].lastPoint.Y
+                    if first_x == last_x:
+                        if first_y > last_y:
+                            angle = 90
+                        else:
+                            angle = 270
+                    else:
+                        angle = math.degrees(math.atan((last_y - first_y) / (last_x - first_x)))
+                    angle = 360 - angle
+                    pivot_point = "" + str(xvalue) + " " + str(yvalue)
+                    arcpy.management.Rotate(plume_raster, name, angle, pivot_point, "NEAREST")
+                    return name, None
 
                 # control_point = np.vstack((target_center_pts, target_body_pts))
                 # array = []
@@ -716,11 +748,15 @@ class Transport:
 
         if pathid != 0:
             try:
+                out_raster = arcpy.sa.SetNull(name, name, "VALUE < {}".format(self.threshold))
+                max_value = arcpy.management.GetRasterProperties(out_raster, "MAXIMUM")
+                if float(max_value.getOutput(0)) < self.threshold:
+                    return None
+
                 arcpy.env.snapRaster = self.no3_output
                 arcpy.management.Resample(name, fname, str(self.plume_cell_size), "NEAREST")
             except Exception as e:
-                arcpy.AddMessage("[Error] Post process plume {}: ".format(pathid) + str(e))
-                sys.exit(-1)
+                return None
         else:
             fname = name
 
@@ -1057,6 +1093,7 @@ class Transport:
         Get the target points for warping
         """
         segment['dist'] = segment['TotDist'] - segment['TotDist'].shift(1)
+        segment['dist'] = segment['dist'].apply(lambda x: 0.1 if x < 0.1 else x)
         segment.loc[0, 'dist'] = segment['TotDist'].iloc[0]
 
         target_center_pts = []
@@ -1166,6 +1203,17 @@ class Transport:
         return os.path.sep in input_string
 
 
+    @staticmethod
+    def get_memory_usage():
+        process = psutil.Process()
+        memory_usage_bytes = process.memory_info().rss
+        memory_usage_gb = memory_usage_bytes / 1024 / 1024 / 1024
+
+        stack_usage = process.memory_info().rss
+        stack_usage_gb = stack_usage / 1024 / 1024 / 1024
+        return memory_usage_gb, stack_usage_gb
+
+
 def create_shapefile(save_path, name, crs):
     arcpy.management.CreateFeatureclass(
         out_path=save_path,
@@ -1232,11 +1280,11 @@ def is_file_locked(file_path):
 # Main program for debugging
 if __name__ == '__main__':
     # for i in range(1):
-    arcpy.env.workspace = "C:\\Users\\Wei\\Downloads\\Plume99999Error\\Plume99999Error"
+    arcpy.env.workspace = "E:\\2_lakeshore_example_complex\\4_Transport_module\\Inputs"
     whethernh4 = True
-    source_location = os.path.join(arcpy.env.workspace, "septictanks.shp")
+    source_location = os.path.join(arcpy.env.workspace, "PotentialSepticTankLocations.shp")
     water_bodies = os.path.join(arcpy.env.workspace, "waterbodies.shp")
-    particlepath = os.path.join(arcpy.env.workspace, "paths.shp")
+    particlepath = os.path.join(arcpy.env.workspace, "paths50.shp")
 
     no3output = os.path.join(arcpy.env.workspace, "demo_no3")
     nh4output = os.path.join(arcpy.env.workspace, "demo_nh4")
@@ -1251,7 +1299,7 @@ if __name__ == '__main__':
     option5 = "Specified z"  # input mass rate or z
 
     param1 = 16000
-    param2 = 6
+    param2 = 12
     param3 = 1.5
     param4 = True
     param5 = 3.0
