@@ -102,6 +102,7 @@ class Preprocessing(object):
                 arcpy.management.Project(self.area, area_wgs84, wgs84)
                 area = area_wgs84
         else:
+            area_wgs84 = None
             area = self.area
 
         current_time = time.strftime("%H:%M:%S", time.localtime())
@@ -114,7 +115,8 @@ class Preprocessing(object):
         q = Preprocessing.request_tabular(df=spatial_df, method=self.method, top=self.top, bottom=self.bot)
         tabular_df = Preprocessing.fetch_ssurgodata(q)
 
-        arcpy.Exists(area_wgs84) and arcpy.management.Delete(area_wgs84)
+        if area_wgs84:
+            arcpy.Exists(area_wgs84) and arcpy.management.Delete(area_wgs84)
 
         current_time = time.strftime("%H:%M:%S", time.localtime())
         arcpy.AddMessage(f"{current_time}     Merge spatial and tabular data")
@@ -1520,8 +1522,8 @@ class Preprocessing(object):
 # ======================================================================
 # Main program for debugging
 if __name__ == '__main__':
-    arcpy.env.workspace = "E:\\lakeshore_example\\lakeshore_example"
-    area = os.path.join(arcpy.env.workspace, "StudyArea2.shp")
+    arcpy.env.workspace = "C:\\Users\\Wei\\Downloads\\lakeshore_example\\Preprocessing_Module"
+    area = os.path.join(arcpy.env.workspace, "study_area.shp")
     pcs = arcpy.SpatialReference(26917)
     top = 0
     bot = 200
@@ -1530,7 +1532,7 @@ if __name__ == '__main__':
 
     hydr = os.path.join(arcpy.env.workspace, "hydr")
     poro = os.path.join(arcpy.env.workspace, "poro")
-    solt = os.path.join(arcpy.env.workspace, "solt")
+    solt = None  # os.path.join(arcpy.env.workspace, "solt")
     spat = os.path.join(arcpy.env.workspace, "spat")
 
     start_time = time.time()
