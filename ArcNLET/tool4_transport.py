@@ -187,6 +187,8 @@ class Transport:
 
             # calculate a single plume
             filtered_no3, filtered_nh4, tmp_list = self.calculate_single_plume(pathid, mean_poro, mean_velo, max_dist)
+            if filtered_no3 is None and filtered_nh4 is None and tmp_list is None:
+                continue
             current_time = time.strftime("%H:%M:%S", time.localtime())
             arcpy.AddMessage("{}          Calculating reference plume for location: {}".format(current_time, pathid))
 
@@ -217,8 +219,8 @@ class Transport:
                         time.sleep(1)
                         wait_time += 1
                         if wait_time > 60:
-                            arcpy.AddMessage("The output raster is used by other software, exit the program.")
-                            sys.exit(0)
+                            arcpy.AddMessage("Skip the plume: {} for NO3-N calculation.".format(pathid))
+                            raise Exception("The output raster is used by other software.")
                 # print("post_no3 pixeltype is {}".format(arcpy.Describe(post_no3).pixelType))
                 # print("Output pixeltype is {}".format(arcpy.Describe(self.no3_output).pixelType))
                 if post_no3 is None:
@@ -258,8 +260,8 @@ class Transport:
                             time.sleep(1)
                             wait_time += 1
                             if wait_time > 60:
-                                arcpy.AddMessage("The output raster is used by other software, exit the program.")
-                                sys.exit(0)
+                                arcpy.AddMessage("Skip the plume: {} for NH4-N calculation.".format(pathid))
+                                raise Exception("The output raster is used by other software.")
                     if post_nh4 is None:
                         self.nh4_output = self.nh4_output
                     else:
@@ -486,7 +488,8 @@ class Transport:
 
         except Exception as e:
             arcpy.AddMessage("[Error] Calculate single plume {}: ".format(pathid) + str(e))
-            sys.exit(-1)
+            arcpy.AddMessage("Skip the plume: {} for calculation.".format(pathid))
+            return None, None, None
 
     def calculate_info(self, filtered_no3result, filtered_nh4result, tmp_list, pathid, mean_poro, mean_velo, mean_angle,
                        max_dist, maxtime, wbid, path_wbid):
@@ -738,7 +741,8 @@ class Transport:
                 return name, target_body_pts
         except Exception as e:
             arcpy.AddMessage("[Error] Plume {} cannot be warped.".format(pathid) + str(e))
-            sys.exit(-1)
+            arcpy.AddMessage("Skip the plume: {} for warp calculation.".format(pathid))
+            return None, None
 
     def post_process_plume(self, name, pathid, segment, target_body_pts):
         """
@@ -857,7 +861,8 @@ class Transport:
                     return fname
             except Exception as e:
                 arcpy.AddMessage("[Error] Post process plume {}: ".format(pathid) + str(e))
-                sys.exit(-1)
+                arcpy.AddMessage("Skip the plume: {} for post process.".format(pathid))
+                return None
 
     def post_process_medium(self, no3_output, nh4_output=None):
         """
@@ -882,7 +887,7 @@ class Transport:
             return
         except Exception as e:
             arcpy.AddMessage("[Error] Post process medium: " + str(e))
-            sys.exit(-1)
+            return None
 
     def get_initial_conc(self, fid):
         """
