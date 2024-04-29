@@ -35,7 +35,7 @@ arcpy.env.overwriteOutput = True
 class Transport:
     def __init__(self, c_whethernh4, c_source_location, c_waterbodies, c_particlepath,
                  c_no3output, c_nh4output, c_no3output_info, c_nh4output_info,
-                 c_option0, c_option1, c_option2, c_option3, c_option4, c_option5,
+                 c_option0, c_option1, c_option2, c_option3, c_option4, c_option5, maxnum,
                  c_param1, c_param2, c_param3, c_param4, c_param5, c_param6,
                  c_no3param0, c_no3param1, c_no3param2, c_no3param3, c_no3param4,
                  c_nh4param0, c_nh4param1, c_nh4param2, c_nh4param3, c_nh4param4, c_nh4param5):
@@ -69,6 +69,7 @@ class Transport:
         self.threshold = c_option3  # Threshold concentration
         self.post_process = c_option4.lower()  # Post process, none, medium, and full
         self.solute_mass_type = c_option5  # Solute mass type, specified input mass rate, or specified Z
+        self.maxnum = maxnum
 
         self.Y = c_param2  # Y of the source plane
         if self.solute_mass_type.lower() == 'specified z':
@@ -116,15 +117,74 @@ class Transport:
         self.knh4 = 0.0
         self.nh4_Z = 0.0
 
-    def calculate_plumes(self):
+    def main(self):
+        arcpy.SetLogMetadata(False)
+        arcpy.SetLogHistory(False)
+        arcpy.env.workspace = self.working_dir
+        factor = self.maxnum
+
+        current_time = time.strftime("%H:%M:%S", time.localtime())
+        arcpy.AddMessage("{}     Creating water body raster...".format(current_time))
+        try:
+            self.waterbody_raster = r"memory\water_bodies"
+            if arcpy.Exists(self.waterbody_raster):
+                arcpy.management.Delete(self.waterbody_raster)
+            arcpy.conversion.FeatureToRaster(self.waterbodies, "FID", self.waterbody_raster,
+                                             max(self.plume_cell_size, 1))
+        except Exception as e:
+            arcpy.AddMessage("[Error]: Failed to create water body raster: "+str(e))
+            sys.exit(-1)
+
         current_time = time.strftime("%H:%M:%S", time.localtime())
         arcpy.AddMessage("{}     Calculating plumes...".format(current_time))
 
-        arcpy.SetLogMetadata(False)
-        arcpy.SetLogHistory(False)
+        no3plume = []
+        no3plume_info = []
+        nh4plume = []
+        nh4plume_info = []
 
-        arcpy.env.workspace = self.working_dir
-        self.create_new_plume_data_shapefile(self.working_dir)
+        ostds_number = int(arcpy.management.GetCount(self.source_location).getOutput(0))
+        for num in range(0, ostds_number, factor):
+            chunk_start = num
+            chunk_end = min(num + factor, ostds_number)
+            no3plume_name = "n3p{}_{}".format(chunk_start, chunk_end)
+            no3info_name = "n3i{}_{}".format(chunk_start, chunk_end)
+            nh4plume_name = "n4p{}_{}".format(chunk_start, chunk_end)
+            nh4info_name = "n4i{}_{}".format(chunk_start, chunk_end)
+            self.calculate_plumes(chunk_start, chunk_end, no3plume_name, no3info_name, nh4plume_name, nh4info_name)
+            no3plume.append(no3plume_name)
+            no3plume_info.append(no3info_name)
+            nh4plume.append(nh4plume_name)
+            nh4plume_info.append(nh4info_name)
+
+        try:
+            arcpy.management.MosaicToNewRaster(no3plume, self.no3_dir, self.no3_output, self.crs, self.pixeltype,
+                                               self.plume_cell_size, 1, "SUM")
+            arcpy.management.Merge(no3plume_info, self.no3_output_info)
+            if self.whether_nh4:
+                arcpy.management.MosaicToNewRaster(nh4plume, self.nh4_dir, self.nh4_output, self.crs, self.pixeltype,
+                                                   self.plume_cell_size, 1, "SUM")
+                arcpy.management.Merge(nh4plume_info, self.nh4_output_info)
+        except Exception as e:
+            arcpy.AddMessage("[Error]: Failed to mosaic the entire plumes: "+str(e))
+            sys.exit(-1)
+
+        for no3 in no3plume:
+            if arcpy.Exists(os.path.join(self.no3_dir, no3)):
+                arcpy.management.Delete(os.path.join(self.no3_dir, no3))
+        for no3 in no3plume_info:
+            if arcpy.Exists(os.path.join(self.no3_dir, no3 + '.shp')):
+                arcpy.management.Delete(os.path.join(self.no3_dir, no3 + '.shp'))
+        if self.whether_nh4:
+            for nh4 in nh4plume:
+                if arcpy.Exists(os.path.join(self.nh4_dir, nh4)):
+                    arcpy.management.Delete(os.path.join(self.nh4_dir, nh4))
+            for nh4 in nh4plume_info:
+                if arcpy.Exists(os.path.join(self.nh4_dir, nh4 + '.shp')):
+                    arcpy.management.Delete(os.path.join(self.nh4_dir, nh4 + '.shp'))
+
+    def calculate_plumes(self, start_num, end_num, no3plume_name, no3info_name, nh4plume_name, nh4info_name):
+        self.create_new_plume_data_shapefile(no3info_name, nh4info_name)
 
         # read the segments feature class (flow paths)
         colname = ["Shape", "PathID", "SegID", "TotDist", "TotTime", "SegPrsity", "SegVel", "DirAngle", "WBId",
@@ -138,24 +198,16 @@ class Transport:
         segments = pd.DataFrame(data, columns=colname)
         sorted_segments = segments.sort_values(by=['PathID', 'SegID'])
 
-        current_time = time.strftime("%H:%M:%S", time.localtime())
-        arcpy.AddMessage("{}     Creating water body...".format(current_time))
-        try:
-            self.waterbody_raster = r"memory\water_bodies"
-            if arcpy.Exists(self.waterbody_raster):
-                arcpy.management.Delete(self.waterbody_raster)
-            arcpy.conversion.FeatureToRaster(self.waterbodies, "FID", self.waterbody_raster,
-                                             max(self.plume_cell_size, 1))
-        except Exception as e:
-            arcpy.AddMessage("[Error]: Failed to create water body raster: "+str(e))
-            sys.exit(-1)
+        sl_segments = sorted_segments[(sorted_segments['PathID'] >= start_num) & (sorted_segments['PathID'] < end_num)]
+        del segments
+        del sorted_segments
 
         try:
-            arcpy.management.CreateRasterDataset(self.no3_dir, self.no3_output, self.plume_cell_size,
+            arcpy.management.CreateRasterDataset(self.no3_dir, no3plume_name, self.plume_cell_size,
                                                  self.pixeltype, self.crs, 1)
 
             if self.whether_nh4:
-                arcpy.management.CreateRasterDataset(self.nh4_dir, self.nh4_output, self.plume_cell_size,
+                arcpy.management.CreateRasterDataset(self.nh4_dir, nh4plume_name, self.plume_cell_size,
                                                      self.pixeltype, self.crs, 1)
         except Exception as e:
             arcpy.AddMessage("[Error]: Failed to create output raster: "+str(e))
@@ -164,26 +216,27 @@ class Transport:
         no3segments = []
         if self.whether_nh4:
             nh4segments = []
-        current_time = time.strftime("%H:%M:%S", time.localtime())
-        arcpy.AddMessage("{}     Begin iterating...".format(current_time))
+        # current_time = time.strftime("%H:%M:%S", time.localtime())
+        # arcpy.AddMessage("{}     Begin iterating...".format(current_time))
 
-        for pathid in sorted_segments['PathID'].unique():
+        for pathid in sl_segments['PathID'].unique():
             # memoryview, _ = self.get_memory_usage()
             # arcpy.AddMessage("Memory usage before calculation: {} GB".format(memoryview))
 
-            seg = sorted_segments[sorted_segments['PathID'] == pathid]
+            seg = sl_segments[sl_segments['PathID'] == pathid]
             seg = seg.reset_index(drop=True)
+
+            if (seg['SegPrsity'] < 0.01).any() or (seg['SegVel'] < 1E-8).any():
+                arcpy.AddMessage("[Warning]: Skip {}th OSTDS. The Ks or porosity may be missed.".format(pathid))
+                continue
+
             mean_poro = seg['SegPrsity'].mean()
-            mean_velo = hmean(seg['SegVel'])
+            mean_velo = hmean(seg['SegVel'])  # harmonic mean
             mean_angle = seg['DirAngle'].mean()
             max_dist = seg['TotDist'].max()
             maxtime = seg['TotTime'].max()
             wbid = seg['WBId'].iloc[-1]
             path_wbid = seg['PathWBId'].iloc[-1]
-
-            if (seg['SegPrsity'] < 0.01).any() or (seg['SegVel'] < 1E-8).any():
-                arcpy.AddMessage("[Warning]: Skip {}th OSTDS. The Ks or porosity may be missed.".format(pathid))
-                continue
 
             # calculate a single plume
             filtered_no3, filtered_nh4, tmp_list = self.calculate_single_plume(pathid, mean_poro, mean_velo, max_dist)
@@ -209,12 +262,12 @@ class Transport:
                 warped_no3 = self.warp_affine_transformation(filtered_no3, pathid, xvalue, yvalue, seg)
             else:
                 warped_no3, target_body_pts = self.warp_arcgis(filtered_no3, pathid, xvalue, yvalue, seg)
-            post_no3 = self.post_process_plume(warped_no3, pathid, seg, target_body_pts)
+            post_no3 = self.post_process_plume(warped_no3, pathid, seg, target_body_pts, no3plume_name)
             try:
-                _, file_extension = os.path.splitext(self.no3_output)
+                _, file_extension = os.path.splitext(no3plume_name)
                 wait_time = 0
                 if bool(file_extension):
-                    while is_file_locked(os.path.join(self.no3_dir, self.no3_output)):
+                    while is_file_locked(os.path.join(self.no3_dir, no3plume_name)):
                         arcpy.AddMessage("The output raster is used by other software, waiting for 1 second...")
                         time.sleep(1)
                         wait_time += 1
@@ -224,15 +277,15 @@ class Transport:
                 # print("post_no3 pixeltype is {}".format(arcpy.Describe(post_no3).pixelType))
                 # print("Output pixeltype is {}".format(arcpy.Describe(self.no3_output).pixelType))
                 if post_no3 is None:
-                    self.no3_output = self.no3_output
+                    no3plume_name = no3plume_name
                 else:
-                    if arcpy.Describe(post_no3).pixelType != arcpy.Describe(self.no3_output).pixelType:
+                    if arcpy.Describe(post_no3).pixelType != arcpy.Describe(no3plume_name).pixelType:
                         filename = r'post3pixel'
                         arcpy.management.CopyRaster(post_no3, filename, pixel_type=self.pixeltype)
                         arcpy.sa.SetNull(filename, filename, "VALUE < {}".format(self.threshold)).save(filename)
-                        arcpy.management.Mosaic(filename, self.no3_output, "SUM")
+                        arcpy.management.Mosaic(filename, no3plume_name, "SUM")
                     else:
-                        arcpy.management.Mosaic(post_no3, self.no3_output, "SUM")
+                        arcpy.management.Mosaic(post_no3, no3plume_name, "SUM")
 
             except Exception as e:
                 arcpy.AddMessage("[Error]: Failed to mosaic plume {}: ".format(pathid) + str(e))
@@ -250,12 +303,12 @@ class Transport:
                     warped_nh4 = self.warp_affine_transformation(filtered_nh4, pathid, xvalue, yvalue, seg)
                 else:
                     warped_nh4, target_body_pts = self.warp_arcgis(filtered_nh4, pathid, xvalue, yvalue, seg)
-                post_nh4 = self.post_process_plume(warped_nh4, pathid, seg, target_body_pts)
+                post_nh4 = self.post_process_plume(warped_nh4, pathid, seg, target_body_pts, nh4plume_name)
                 try:
-                    _, file_extension = os.path.splitext(self.nh4_output)
+                    _, file_extension = os.path.splitext(nh4plume_name)
                     wait_time = 0
                     if bool(file_extension):
-                        while is_file_locked(os.path.join(self.nh4_dir, self.nh4_output)):
+                        while is_file_locked(os.path.join(self.nh4_dir, nh4plume_name)):
                             arcpy.AddMessage("The output raster is used by other software, waiting for 1 second...")
                             time.sleep(1)
                             wait_time += 1
@@ -263,15 +316,15 @@ class Transport:
                                 arcpy.AddMessage("Skip the plume: {} for NH4-N calculation.".format(pathid))
                                 raise Exception("The output raster is used by other software.")
                     if post_nh4 is None:
-                        self.nh4_output = self.nh4_output
+                        nh4plume_name = nh4plume_name
                     else:
-                        if arcpy.Describe(post_nh4).pixelType != arcpy.Describe(self.nh4_output).pixelType:
+                        if arcpy.Describe(post_nh4).pixelType != arcpy.Describe(nh4plume_name).pixelType:
                             filename = r'post4pixel'
                             arcpy.management.CopyRaster(post_nh4, filename, pixel_type=self.pixeltype)
                             arcpy.sa.SetNull(filename, filename, "VALUE < {}".format(self.threshold)).save(filename)
-                            arcpy.management.Mosaic(filename, self.nh4_output, "SUM")
+                            arcpy.management.Mosaic(filename, nh4plume_name, "SUM")
                         else:
-                            arcpy.management.Mosaic(post_nh4, self.nh4_output, "SUM")
+                            arcpy.management.Mosaic(post_nh4, nh4plume_name, "SUM")
                 except Exception as e:
                     arcpy.AddMessage("[Error]: Failed to mosaic plume {}: ".format(pathid) + str(e))
                     arcpy.AddMessage("Skip the plume: {} for NH4-N calculation.".format(pathid))
@@ -285,40 +338,40 @@ class Transport:
        #  out_raster = arcpy.sa.SetNull(self.no3_output, self.no3_output, "VALUE < {}".format(self.threshold))
        #  out_raster = arcpy.sa.SetNull(self.no3_output, self.no3_output, "VALUE > {}".format(self.threshold))
        #  set_nodata_value(os.path.join(self.no3_dir, self.no3_output))
-        arcpy.Raster(self.no3_output).save(os.path.join(self.no3_dir, self.no3_output))
+        arcpy.Raster(no3plume_name).save(os.path.join(self.no3_dir, no3plume_name))
 
         if self.whether_nh4:
             # out_raster = arcpy.sa.SetNull(self.nh4_output, self.nh4_output, "VALUE < {}".format(self.threshold))
             # out_raster.save(os.path.join(self.nh4_dir, self.nh4_output))
             # out_raster.save(os.path.join(self.nh4_dir, self.nh4_output))
-            arcpy.Raster(self.nh4_output).save(os.path.join(self.nh4_dir, self.nh4_output))
+            arcpy.Raster(nh4plume_name).save(os.path.join(self.nh4_dir, nh4plume_name))
 
         if self.post_process == "medium":
             if not self.whether_nh4:
                 self.nh4_output = None
-            self.post_process_medium(self.no3_output, self.nh4_output)
-        arcpy.management.CalculateStatistics(os.path.join(self.no3_dir, self.no3_output))
+                nh4plume_name = None
+            self.post_process_medium(no3plume_name, no3plume_name, nh4plume_name, nh4plume_name)
+        arcpy.management.CalculateStatistics(os.path.join(self.no3_dir, no3plume_name))
         if self.whether_nh4:
-            arcpy.management.CalculateStatistics(os.path.join(self.nh4_dir, self.nh4_output))
+            arcpy.management.CalculateStatistics(os.path.join(self.nh4_dir, nh4plume_name))
 
-        with arcpy.da.InsertCursor(self.no3_output_info, ["SHAPE@", "PathID", "is2D", "domBdy", "decayCoeff",
-                                                          "avgVel", "avgPrsity", "DispL", "DispTH", "DispTV",
-                                                          "SourceY", "SourceZ", "MeshDX", "MeshDY", "MeshDZ",
-                                                          "plumeTime", "pathTime", "plumeLen", "pathLen", "plumeArea",
-                                                          "mslnRtNmr", "massInRate", "massDNRate", "srcAngle", "warp",
-                                                          "PostP", "Init_conc", "VolFac", "nextConc", "threshConc",
-                                                          "WBId_plume", "WBId_path"]) as cursor:
+        with arcpy.da.InsertCursor(no3info_name, ["SHAPE@", "PathID", "is2D", "domBdy", "decayCoeff",
+                                                  "avgVel", "avgPrsity", "DispL", "DispTH", "DispTV",
+                                                  "SourceY", "SourceZ", "MeshDX", "MeshDY", "MeshDZ",
+                                                  "plumeTime", "pathTime", "plumeLen", "pathLen", "plumeArea",
+                                                  "mslnRtNmr", "massInRate", "massDNRate", "srcAngle", "warp",
+                                                  "PostP", "Init_conc", "VolFac", "nextConc", "threshConc",
+                                                  "WBId_plume", "WBId_path"]) as cursor:
             for row in no3segments:
                 cursor.insertRow(row)
         if self.whether_nh4:
-            with arcpy.da.InsertCursor(self.nh4_output_info, ["SHAPE@", "PathID", "is2D", "domBdy", "decayCoeff",
-                                                              "avgVel", "avgPrsity", "DispL", "DispTH", "DispTV",
-                                                              "SourceY", "SourceZ", "MeshDX", "MeshDY", "MeshDZ",
-                                                              "plumeTime", "pathTime", "plumeLen", "pathLen",
-                                                              "plumeArea", "mslnRtNmr", "massInRate", "massDNRate",
-                                                              "srcAngle", "warp", "PostP", "Init_conc", "VolFac",
-                                                              "nextConc", "threshConc", "WBId_plume", "WBId_path"]
-                                       ) as cursor:
+            with arcpy.da.InsertCursor(nh4info_name, ["SHAPE@", "PathID", "is2D", "domBdy", "decayCoeff",
+                                                      "avgVel", "avgPrsity", "DispL", "DispTH", "DispTV",
+                                                      "SourceY", "SourceZ", "MeshDX", "MeshDY", "MeshDZ",
+                                                      "plumeTime", "pathTime", "plumeLen", "pathLen",
+                                                      "plumeArea", "mslnRtNmr", "massInRate", "massDNRate",
+                                                      "srcAngle", "warp", "PostP", "Init_conc", "VolFac",
+                                                      "nextConc", "threshConc", "WBId_plume", "WBId_path"]) as cursor:
                 for row in nh4segments:
                     cursor.insertRow(row)
 
@@ -670,7 +723,9 @@ class Transport:
 
             plume_raster = arcpy.NumPyArrayToRaster(plume_array, arcpy.Point(xvalue, y_lower_left),
                                                     self.plume_cell_size, self.plume_cell_size)
-            arcpy.management.DefineProjection(plume_raster, self.crs)
+            plume_name = r'memory\plume_name'
+            plume_raster.save(plume_name)
+            arcpy.management.DefineProjection(plume_name, self.crs)
 
             name = r'memory\plume_raster'
 
@@ -744,7 +799,7 @@ class Transport:
             arcpy.AddMessage("Skip the plume: {} for warp calculation.".format(pathid))
             return None, None
 
-    def post_process_plume(self, name, pathid, segment, target_body_pts):
+    def post_process_plume(self, name, pathid, segment, target_body_pts, output_raster):
         """
         Post process the plume
         """
@@ -757,8 +812,9 @@ class Transport:
                 if float(max_value.getOutput(0)) < self.threshold:
                     return None
 
-                arcpy.env.snapRaster = self.no3_output
+                arcpy.env.snapRaster = output_raster
                 arcpy.management.Resample(name, fname, str(self.plume_cell_size), "NEAREST")
+                arcpy.env.snapRaster = None
             except Exception as e:
                 return None
         else:
@@ -864,7 +920,7 @@ class Transport:
                 arcpy.AddMessage("Skip the plume: {} for post process.".format(pathid))
                 return None
 
-    def post_process_medium(self, no3_output, nh4_output=None):
+    def post_process_medium(self, no3_output, no3_name, nh4_name=None, nh4_output=None):
         """
         Medium post process the plume
         """
@@ -874,7 +930,7 @@ class Transport:
             arcpy.env.snapRaster = None
             no3 = arcpy.sa.SetNull(no3, no3, "VALUE < {}".format(self.threshold))
             no3 = arcpy.sa.SetNull(no3, no3, "VALUE > {}".format(10000))
-            no3.save(self.no3_output)
+            no3.save(no3_name)
 
             if self.whether_nh4:
                 if nh4_output is None:
@@ -883,7 +939,7 @@ class Transport:
 
                 nh4 = arcpy.sa.SetNull(nh4, nh4, "VALUE < {}".format(self.threshold))
                 nh4 = arcpy.sa.SetNull(nh4, nh4, "VALUE > {}".format(10000))
-                nh4.save(self.nh4_output)
+                nh4.save(nh4_name)
             return
         except Exception as e:
             arcpy.AddMessage("[Error] Post process medium: " + str(e))
@@ -946,25 +1002,30 @@ class Transport:
                     nh4_conc = 0
             return point, no3_conc, nh4_conc
         except Exception as e:
-            arcpy.AddMessage("[Error] Can not get initial value of NO3 and NH4: " + str(e))
+            arcpy.AddMessage("[Error] Can not get initial value of NO3 and NH4 for point {}: ".format(fid) + str(e))
             return None, None, None
 
-    def create_new_plume_data_shapefile(self, save_path):
+    def create_new_plume_data_shapefile(self, no3info_name, nh4info_name):
         """Create a new shapefile to store the plume data
         """
         try:
             # Create a list to hold field information
-            create_shapefile(self.no3_dir, self.no3_output_info, self.crs)
+            if arcpy.Exists(os.path.join(self.no3_dir, no3info_name)):
+                arcpy.Delete_management(os.path.join(self.no3_dir, no3info_name))
+            create_shapefile(self.no3_dir, no3info_name, self.crs)
         except Exception as e:
             arcpy.AddMessage("[Error] Create_new_plume_data_shapefile for NO3: " + str(e))
             sys.exit(-1)
 
         if self.whether_nh4:
             try:
-                create_shapefile(self.nh4_dir, self.nh4_output_info, self.crs)
+                if arcpy.Exists(os.path.join(self.nh4_dir, nh4info_name)):
+                    arcpy.Delete_management(os.path.join(self.nh4_dir, nh4info_name))
+                create_shapefile(self.nh4_dir, nh4info_name, self.crs)
             except Exception as e:
                 arcpy.AddMessage("[Error] Create_new_plume_data_shapefile for NH4: " + str(e))
                 sys.exit(-1)
+        return no3info_name, nh4info_name
 
     def get_control_points(self, plume_array, ifgis=False):
         """
@@ -1302,6 +1363,7 @@ if __name__ == '__main__':
     option3 = 0.000001
     option4 = "Medium"  # post process, none, medium, full
     option5 = "Specified z"  # input mass rate or z
+    maxnum = 500
 
     param1 = 16000
     param2 = 12
@@ -1326,7 +1388,7 @@ if __name__ == '__main__':
     start_time = datetime.datetime.now()
     Tr = Transport(whethernh4, source_location, water_bodies, particlepath,
                    no3output, nh4output, no3output_info, nh4output_info,
-                   option0, option1, option2, option3, option4, option5,
+                   option0, option1, option2, option3, option4, option5, maxnum,
                    param1, param2, param3, param4, param5, param6,
                    no3param0, no3param1, no3param2, no3param3, no3param4,
                    nh4param0, nh4param1, nh4param2, nh4param3, nh4param4, nh4param5)
@@ -1336,7 +1398,7 @@ if __name__ == '__main__':
     # with open('transport.txt', 'w') as output_file:
     #     profile_stats.sort_stats('cumulative').print_stats(output_file)
 
-    Tr.calculate_plumes()
+    Tr.main()
     end_time = datetime.datetime.now()
     print("Total time: {}".format(end_time - start_time))
     print("Tests successful!")
