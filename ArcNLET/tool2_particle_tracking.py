@@ -192,6 +192,9 @@ class ParticleTracking:
 
                     if self.modify_seg:
                         segments = self.modify_segments(segments)
+                        if len(segments) >= 2 and segments[-1][3] - segments[-2][3] < 1E-4:
+                            segments[-2][-2] = segments[-1][-2]
+                            segments = segments[:-1]
                 return segments
 
             next_x = cur_x + self.step_size * math.sin(angle * pi_over_180)
@@ -340,12 +343,12 @@ class ParticleTracking:
 # ======================================================================
 # Main program for debugging
 if __name__ == '__main__':
-    arcpy.env.workspace = "E:\\2_lakeshore_example_complex\\2_Particle_tracking_module\\Inputs"
-    source_location = os.path.join(arcpy.env.workspace, "PotentialSepticTankLocations.shp")
-    water_bodies = os.path.join(arcpy.env.workspace, "waterbodies.shp")
-    velocity = os.path.join(arcpy.env.workspace, "velmag50")
-    velocity_dir = os.path.join(arcpy.env.workspace, "veldir50")
-    porosity = os.path.join(arcpy.env.workspace, "porosity")
+    arcpy.env.workspace = "C:\\Users\\Wei\\Downloads\\ArcNLET-Model-1-TurkeyCreek\\ArcNLET"
+    source_location = os.path.join(arcpy.env.workspace, "01-Groseclose and Johns Sites\\OSTDS_0")
+    water_bodies = os.path.join(arcpy.env.workspace, "waterbody.shp")
+    velocity = os.path.join(arcpy.env.workspace, "vmag")
+    velocity_dir = os.path.join(arcpy.env.workspace, "vdir")
+    porosity = os.path.join(arcpy.env.workspace, "porosity.tif")
 
     option = True
     resolution = 10

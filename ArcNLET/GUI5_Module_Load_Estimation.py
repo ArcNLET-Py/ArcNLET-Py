@@ -29,6 +29,16 @@ class InterfaceLoadEstimation(object):
     def getParameterInfo(self) -> list:
         """Define parameter definitions.
         """
+        inputop = arcpy.Parameter(name="Types of contaminants",
+                                  displayName="Types of contaminants",
+                                  datatype="String",
+                                  parameterType="Required",  # Required|Optional|Derived
+                                  direction="Input",  # Input|Output
+                                  )
+        choices = ["Nitrogen", "Phosphorus", "Nitrogen and Phosphorus"]
+        inputop.filter.list = choices
+        inputop.value = "Nitrogen"
+
         param0 = arcpy.Parameter(name="Consideration of NH\u2084",
                                  displayName="Consideration of NH\u2084",
                                  datatype="GPBoolean",
@@ -58,7 +68,16 @@ class InterfaceLoadEstimation(object):
                                   parameterType="Optional",
                                   direction="Input")
         infile2.filter.list = ["Point"]
+        infile2.enabled = False
         # infile2.parameterDependencies = [param0.name]
+
+        infile3 = arcpy.Parameter(name="Input Plumes P info",
+                                  displayName="Input Plumes P info (Point)",
+                                  datatype="GPFeatureLayer",
+                                  parameterType="Optional",
+                                  direction="Input")
+        infile3.filter.list = ["Point"]
+        infile3.enabled = False
 
         outfile1 = arcpy.Parameter(name="Output Results for NO\u2083",
                                    displayName="Output Results for NO\u2083",
@@ -71,9 +90,17 @@ class InterfaceLoadEstimation(object):
                                    datatype="DEFile",
                                    parameterType="Optional",
                                    direction="Output")
+        outfile2.enabled = False
         # outfile2.parameterDependencies = [param0.name]
 
-        return [param0, param1, infile1, infile2, outfile1, outfile2]
+        outfile3 = arcpy.Parameter(name="Output Results for P",
+                                   displayName="Output Results for P",
+                                   datatype="DEFile",
+                                   parameterType="Optional",
+                                   direction="Output")
+        outfile3.enabled = False
+
+        return [inputop, param0, param1, infile1, infile2, infile3, outfile1, outfile2, outfile3]
 
     def isLicensed(self) -> bool:
         """Set whether tool is licensed to execute."""
@@ -84,20 +111,40 @@ class InterfaceLoadEstimation(object):
         validation is performed.  This method is called whenever a parameter
         has been changed."""
         if parameters[0].altered:
-            if parameters[0].value:
+            if parameters[0].value == "Nitrogen and Phosphorus":
+                parameters[1].enabled = True
                 parameters[3].enabled = True
                 parameters[5].enabled = True
-            else:
-                parameters[3].enabled = False
+                parameters[6].enabled = True
+                parameters[8].enabled = True
+                if parameters[1].altered:
+                    if parameters[1].value:
+                        parameters[4].enabled = True
+                        parameters[7].enabled = True
+                    else:
+                        parameters[4].enabled = False
+                        parameters[7].enabled = False
+            elif parameters[0].value == "Nitrogen":
+                parameters[1].enabled = True
+                parameters[3].enabled = True
                 parameters[5].enabled = False
-
-        if parameters[2].altered and parameters[2].value is not None:
-            if not parameters[2].hasBeenValidated:
-                ppath = arcpy.Describe(parameters[2].valueAsText).catalogPath if not self.is_file_path(
-                    parameters[2].valueAsText) else parameters[2].valueAsText
-                filename, file_extension = os.path.splitext(ppath)
-                dfilename = filename + ".csv"
-                parameters[4].value = dfilename
+                parameters[6].enabled = True
+                parameters[8].enabled = False
+                if parameters[1].altered:
+                    if parameters[1].value:
+                        parameters[4].enabled = True
+                        parameters[7].enabled = True
+                    else:
+                        parameters[4].enabled = False
+                        parameters[7].enabled = False
+            elif parameters[0].value == "Phosphorus":
+                parameters[1].enabled = False
+                parameters[3].enabled = False
+                parameters[4].enabled = False
+                parameters[5].enabled = True
+                parameters[6].enabled = False
+                parameters[7].enabled = False
+                parameters[8].enabled = True
 
         if parameters[3].altered and parameters[3].value is not None:
             if not parameters[3].hasBeenValidated:
@@ -105,26 +152,32 @@ class InterfaceLoadEstimation(object):
                     parameters[3].valueAsText) else parameters[3].valueAsText
                 filename, file_extension = os.path.splitext(ppath)
                 dfilename = filename + ".csv"
-                parameters[5].value = dfilename
+                parameters[6].value = dfilename
+
+        if parameters[4].altered and parameters[4].value is not None:
+            if not parameters[4].hasBeenValidated:
+                ppath = arcpy.Describe(parameters[4].valueAsText).catalogPath if not self.is_file_path(
+                    parameters[4].valueAsText) else parameters[4].valueAsText
+                filename, file_extension = os.path.splitext(ppath)
+                dfilename = filename + ".csv"
+                parameters[7].value = dfilename
+
+        if parameters[5].altered and parameters[5].value is not None:
+            if not parameters[5].hasBeenValidated:
+                ppath = arcpy.Describe(parameters[5].valueAsText).catalogPath if not self.is_file_path(
+                    parameters[5].valueAsText) else parameters[5].valueAsText
+                filename, file_extension = os.path.splitext(ppath)
+                dfilename = filename + ".csv"
+                parameters[8].value = dfilename
         return
 
     def updateMessages(self, parameters) -> None:
         """Modify the messages created by internal validation for each tool
         parameter.  This method is called after internal validation."""
-        if parameters[1].value is not None and parameters[1].value < 0:
-            parameters[1].setErrorMessage("Risk Factor should be greater than 0.")
+        if parameters[2].value is not None and parameters[2].value < 0:
+            parameters[2].setErrorMessage("Risk Factor should be greater than 0.")
 
-        if parameters[2].value is not None:
-            desc = arcpy.Describe(parameters[2].valueAsText)
-            fields = desc.fields
-            if not any(field.name == "massInRate" for field in fields):
-                parameters[2].setErrorMessage("massInRate field is missing.")
-            if not any(field.name == "massDNRate" for field in fields):
-                parameters[2].setErrorMessage("massDNRate field is missing.")
-            if not any(field.name == "WBId_plume" for field in fields):
-                parameters[2].setErrorMessage("WBId_plume field is missing.")
-
-        if parameters[0].value:
+        if parameters[0].value == "Nitrogen and Phosphorus" or parameters[0].value == "Nitrogen":
             if parameters[3].value is not None:
                 desc = arcpy.Describe(parameters[3].valueAsText)
                 fields = desc.fields
@@ -134,16 +187,42 @@ class InterfaceLoadEstimation(object):
                     parameters[3].setErrorMessage("massDNRate field is missing.")
                 if not any(field.name == "WBId_plume" for field in fields):
                     parameters[3].setErrorMessage("WBId_plume field is missing.")
+            if parameters[1].value:
+                if parameters[4].value is not None:
+                    desc = arcpy.Describe(parameters[4].valueAsText)
+                    fields = desc.fields
+                    if not any(field.name == "massInRate" for field in fields):
+                        parameters[4].setErrorMessage("massInRate field is missing.")
+                    if not any(field.name == "massDNRate" for field in fields):
+                        parameters[4].setErrorMessage("massDNRate field is missing.")
+                    if not any(field.name == "WBId_plume" for field in fields):
+                        parameters[4].setErrorMessage("WBId_plume field is missing.")
 
-        if parameters[4].value is not None:
-            filename, file_extension = os.path.splitext(parameters[4].valueAsText)
-            if file_extension != ".csv":
-                parameters[4].setErrorMessage("Please use a .csv file.")
+        if parameters[0].value == "Nitrogen and Phosphorus" or parameters[0].value == "Phosphorus":
+            if parameters[5].value is not None:
+                desc = arcpy.Describe(parameters[5].valueAsText)
+                fields = desc.fields
+                if not any(field.name == "massInRate" for field in fields):
+                    parameters[5].setErrorMessage("massInRate field is missing.")
+                if not any(field.name == "massDNRate" for field in fields):
+                    parameters[5].setErrorMessage("massDNRate field is missing.")
+                if not any(field.name == "WBId_plume" for field in fields):
+                    parameters[5].setErrorMessage("WBId_plume field is missing.")
 
-        if parameters[5].value is not None:
-            filename, file_extension = os.path.splitext(parameters[5].valueAsText)
+        if parameters[6].value is not None:
+            filename, file_extension = os.path.splitext(parameters[6].valueAsText)
             if file_extension != ".csv":
-                parameters[5].setErrorMessage("Please use a .csv file.")
+                parameters[6].setErrorMessage("Please use a .csv file.")
+
+        if parameters[7].value is not None:
+            filename, file_extension = os.path.splitext(parameters[7].valueAsText)
+            if file_extension != ".csv":
+                parameters[7].setErrorMessage("Please use a .csv file.")
+
+        if parameters[8].value is not None:
+            filename, file_extension = os.path.splitext(parameters[8].valueAsText)
+            if file_extension != ".csv":
+                parameters[8].setErrorMessage("Please use a .csv file.")
         return
 
     def execute(self, parameters, messages) -> None:
@@ -154,28 +233,54 @@ class InterfaceLoadEstimation(object):
         current_time = time.strftime("%H:%M:%S", time.localtime())
         arcpy.AddMessage(f"{current_time} Load Estimation: START")
 
-        if not self.is_file_path(parameters[2].valueAsText):
-            parameters[2].value = arcpy.Describe(parameters[2].valueAsText).catalogPath
-        if parameters[0].value:
+        if parameters[0].value == "Nitrogen and Phosphorus":
             if not self.is_file_path(parameters[3].valueAsText):
                 parameters[3].value = arcpy.Describe(parameters[3].valueAsText).catalogPath
+            if parameters[1].value:
+                if not self.is_file_path(parameters[4].valueAsText):
+                    parameters[4].value = arcpy.Describe(parameters[4].valueAsText).catalogPath
+            if not self.is_file_path(parameters[5].valueAsText):
+                parameters[5].value = arcpy.Describe(parameters[5].valueAsText).catalogPath
+        elif parameters[0].value == "Nitrogen":
+            if not self.is_file_path(parameters[3].valueAsText):
+                parameters[3].value = arcpy.Describe(parameters[3].valueAsText).catalogPath
+            if parameters[1].value:
+                if not self.is_file_path(parameters[4].valueAsText):
+                    parameters[4].value = arcpy.Describe(parameters[4].valueAsText).catalogPath
+        elif parameters[0].value == "Phosphorus":
+            if not self.is_file_path(parameters[5].valueAsText):
+                parameters[5].value = arcpy.Describe(parameters[5].valueAsText).catalogPath
 
         for param in parameters:
             self.describeParameter(messages, param)
         
-        whethernh4 = parameters[0].valueAsText
-        riskfactor = parameters[1].value
-        plumesno3 = parameters[2].valueAsText
-        outfileno3 = parameters[4].valueAsText
-        if parameters[0].value:
-            plumesnh4 = parameters[3].valueAsText
-            outfilenh4 = parameters[5].valueAsText
-        else:
+        type_of_contaminants = parameters[0].value
+        whethernh4 = parameters[1].valueAsText
+        riskfactor = parameters[2].value
+        plumesno3 = parameters[3].valueAsText
+        plumesnh4 = parameters[4].valueAsText
+        plumesp = parameters[5].valueAsText
+        outfileno3 = parameters[6].valueAsText
+        outfilenh4 = parameters[7].valueAsText
+        outfilep = parameters[8].valueAsText
+
+        if type_of_contaminants == "Nitrogen":
+            if not whethernh4:
+                plumesnh4 = None
+                outfilenh4 = None
+            plumesp = None
+            outfilep = None
+        elif type_of_contaminants == "Phosphorus":
+            plumesno3 = None
+            outfileno3 = None
             plumesnh4 = None
             outfilenh4 = None
 
         try:
-            LE = LoadEstimation(whethernh4, riskfactor, plumesno3, outfileno3, plumesnh4, outfilenh4)
+            LE = LoadEstimation(type_of_contaminants, whethernh4, riskfactor,
+                                plumesno3, outfileno3,
+                                plumesnh4, outfilenh4,
+                                plumesp, outfilep)
             LE.calculate_load_estimation()
             current_time = time.strftime("%H:%M:%S", time.localtime())
             arcpy.AddMessage(f"{current_time} Load Estimation: FINISH")

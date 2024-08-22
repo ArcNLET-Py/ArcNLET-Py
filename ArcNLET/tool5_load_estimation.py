@@ -20,7 +20,8 @@ arcpy.env.overwriteOutput = True
 
 
 class LoadEstimation:
-    def __init__(self, c_whethernh4, riskf, c_plumesno3, c_outfileno3, c_plumesnh4=None, c_outfilenh4=None):
+    def __init__(self, type_of_contaminants, c_whethernh4, riskf,
+                 c_plumesno3, c_outfileno3, c_plumesnh4, c_outfilenh4, c_plumesp, c_outfilep):
         """Initialize the load estimation module.
         """
         if isinstance(c_whethernh4, str):
@@ -30,49 +31,38 @@ class LoadEstimation:
         else:
             arcpy.AddMessage("Error: format of whether to calculate NH4 is wrong.")
 
+        self.contaminant_list = []
+        if type_of_contaminants == "Nitrogen" or type_of_contaminants == "Nitrogen and Phosphorus":
+            self.contaminant_list.append("NO3-N")
+            if self.whether_nh4:
+                self.contaminant_list.append("NH4-N")
+        if type_of_contaminants == "Phosphorus" or type_of_contaminants == "Nitrogen and Phosphorus":
+            self.contaminant_list.append("PO4-P")
+
         self.risk_factor = riskf
-        self.plumesno3 = arcpy.Describe(c_plumesno3).catalogPath if not self.is_file_path(c_plumesno3) else c_plumesno3
-        self.outfileno3 = c_outfileno3
-        if self.whether_nh4:
+
+        if "NO3-N" in self.contaminant_list:
+            self.plumesno3 = arcpy.Describe(c_plumesno3).catalogPath if not self.is_file_path(
+                c_plumesno3) else c_plumesno3
+            self.outfileno3 = c_outfileno3
+        if "NH4-N" in self.contaminant_list:
             self.plumesnh4 = arcpy.Describe(c_plumesnh4).catalogPath if not self.is_file_path(
                 c_plumesnh4) else c_plumesnh4
             self.outfilenh4 = c_outfilenh4
+        if "PO4-P" in self.contaminant_list:
+            self.plumesp = arcpy.Describe(c_plumesp).catalogPath if not self.is_file_path(
+                c_plumesp) else c_plumesp
+            self.outfilep = c_outfilep
 
     def calculate_load_estimation(self):
 
-        data = []
-        with arcpy.da.SearchCursor(self.plumesno3, ["massInRate", "massDNRate", "WBId_plume"]) as cursor:
-            for row in cursor:
-                data.append(row)
-        segments = pd.DataFrame(data, columns=["massInRate", "massDNRate", "WBId_plume"])
-        no3_load = segments.groupby("WBId_plume").sum()
-        no3_load = no3_load.reset_index()
-        no3_load.loc[no3_load['WBId_plume'] == -1, 'massDNRate'] = no3_load.loc[no3_load['WBId_plume'] == -1,
-                                                                                'massInRate']
-        no3_load = no3_load.assign(Massoutput=no3_load["massInRate"] - no3_load["massDNRate"])
-        no3_load = no3_load.assign(Massoutputrisk=no3_load["Massoutput"] * self.risk_factor)
-        no3_load = no3_load.rename(columns={"WBId_plume": "Waterbody FID", "Massoutput": "Mass Output Load [mg/d]",
-                                            "Massoutputrisk": "Mass Output Load * Risk Factor [mg/d]",
-                                            "massInRate": "Mass Input Load [mg/d]",
-                                            "massDNRate": "Mass Removal Rate [mg/d]"})
-        no3_load = no3_load[["Waterbody FID", "Mass Output Load [mg/d]", "Mass Output Load * Risk Factor [mg/d]",
-                             "Mass Input Load [mg/d]", "Mass Removal Rate [mg/d]"]]
-        no3_load = no3_load[no3_load["Waterbody FID"] != -1]
-        arcpy.AddMessage(no3_load)
-        if os.path.exists(self.outfileno3):
-            try:
-                os.remove(self.outfileno3)
-            except PermissionError:
-                arcpy.AddMessage("Please close the file: " + self.outfileno3)
-                return
-        no3_load.to_csv(self.outfileno3, index=False)
-
-        if self.whether_nh4:
+        if "NH4-N" in self.contaminant_list:
             data = []
-            with arcpy.da.SearchCursor(self.plumesnh4, ["massInRate", "massDNRate", "WBId_plume"]) as cursor:
+            with arcpy.da.SearchCursor(self.plumesnh4, ["massInRate", "massDNRate", "load", "WBId_plume"]) as cursor:
                 for row in cursor:
                     data.append(row)
-            segments = pd.DataFrame(data, columns=["massInRate", "massDNRate", "WBId_plume"])
+            segments = pd.DataFrame(data, columns=["massInRate", "massDNRate", "load", "WBId_plume"])
+            nh4segments = segments.copy()
             nh4_load = segments.groupby("WBId_plume").sum()
             nh4_load = nh4_load.reset_index()
             nh4_load.loc[nh4_load['WBId_plume'] == -1, 'massDNRate'] = nh4_load.loc[nh4_load['WBId_plume'] == -1,
@@ -94,6 +84,64 @@ class LoadEstimation:
                     arcpy.AddMessage("Please close the file: " + self.outfilenh4)
                     return
             nh4_load.to_csv(self.outfilenh4, index=False)
+
+        if "NO3-N" in self.contaminant_list:
+            data = []
+            with arcpy.da.SearchCursor(self.plumesno3, ["massInRate", "massDNRate", "load", "WBId_plume"]) as cursor:
+                for row in cursor:
+                    data.append(row)
+            segments = pd.DataFrame(data, columns=["massInRate", "massDNRate", "load", "WBId_plume"])
+            if "NH4-N" in self.contaminant_list:
+                segments["massInRate"] = segments["massInRate"] + nh4segments["massDNRate"]
+            no3_load = segments.groupby("WBId_plume").sum()
+            no3_load = no3_load.reset_index()
+            no3_load.loc[no3_load['WBId_plume'] == -1, 'massDNRate'] = no3_load.loc[no3_load['WBId_plume'] == -1,
+                                                                                    'massInRate']
+            no3_load = no3_load.assign(Massoutput=no3_load["massInRate"] - no3_load["massDNRate"])
+            no3_load = no3_load.assign(Massoutputrisk=no3_load["Massoutput"] * self.risk_factor)
+            no3_load = no3_load.rename(columns={"WBId_plume": "Waterbody FID", "Massoutput": "Mass Output Load [mg/d]",
+                                                "Massoutputrisk": "Mass Output Load * Risk Factor [mg/d]",
+                                                "massInRate": "Mass Input Load [mg/d]",
+                                                "massDNRate": "Mass Removal Rate [mg/d]"})
+            no3_load = no3_load[["Waterbody FID", "Mass Output Load [mg/d]", "Mass Output Load * Risk Factor [mg/d]",
+                                 "Mass Input Load [mg/d]", "Mass Removal Rate [mg/d]"]]
+            no3_load = no3_load[no3_load["Waterbody FID"] != -1]
+            arcpy.AddMessage(no3_load)
+            if os.path.exists(self.outfileno3):
+                try:
+                    os.remove(self.outfileno3)
+                except PermissionError:
+                    arcpy.AddMessage("Please close the file: " + self.outfileno3)
+                    return
+            no3_load.to_csv(self.outfileno3, index=False)
+
+        if "PO4-P" in self.contaminant_list:
+            data = []
+            with arcpy.da.SearchCursor(self.plumesp, ["massInRate", "massDNRate", "load", "WBId_plume"]) as cursor:
+                for row in cursor:
+                    data.append(row)
+            segments = pd.DataFrame(data, columns=["massInRate", "massDNRate", "load", "WBId_plume"])
+            p_load = segments.groupby("WBId_plume").sum()
+            p_load = p_load.reset_index()
+            p_load.loc[p_load['WBId_plume'] == -1, 'massDNRate'] = p_load.loc[p_load['WBId_plume'] == -1,
+                                                                              'massInRate']
+            p_load = p_load.assign(Massoutput=p_load["massInRate"] - p_load["massDNRate"])
+            p_load = p_load.assign(Massoutputrisk=p_load["Massoutput"] * self.risk_factor)
+            p_load = p_load.rename(columns={"WBId_plume": "Waterbody FID", "Massoutput": "Mass Output Load [mg/d]",
+                                            "Massoutputrisk": "Mass Output Load * Risk Factor [mg/d]",
+                                            "massInRate": "Mass Input Load [mg/d]",
+                                            "massDNRate": "Mass Removal Rate [mg/d]"})
+            p_load = p_load[["Waterbody FID", "Mass Output Load [mg/d]", "Mass Output Load * Risk Factor [mg/d]",
+                             "Mass Input Load [mg/d]", "Mass Removal Rate [mg/d]"]]
+            p_load = p_load[p_load["Waterbody FID"] != -1]
+            arcpy.AddMessage(p_load)
+            if os.path.exists(self.outfilep):
+                try:
+                    os.remove(self.outfilep)
+                except PermissionError:
+                    arcpy.AddMessage("Please close the file: " + self.outfilep)
+                    return
+            p_load.to_csv(self.outfilep, index=False)
 
     @staticmethod
     def is_file_path(input_string):

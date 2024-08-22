@@ -74,13 +74,17 @@ adsorption_default = {"clay":            [1.46, 1.50],
 
 
 class VZMOD:
-    def __init__(self, soiltypes, hlr, alpha, ks, thetar, thetas, n, knit, toptnit, beltanit, e2, e3, fs, fwp, Swp,
-                 Sl, Sh, kdnt, toptdnt, beltadnt, e1, Sdnt, kd, rho, Temp, Tran, NH4, NO3, DTW, dist,
+    def __init__(self, types_of_contaminants, soiltypes, hlr, alpha, ks, thetar, thetas, n,
+                 knit, toptnit, beltanit, e2, e3, fs, fwp, Swp, Sl, Sh, kdnt, toptdnt, beltadnt, e1, Sdnt,
+                 kd, rho, Temp, disp, NH4, NO3, DTW, dist,
+                 phoschoice, rprep, kl, pmax, phoskd, phos,
                  options, output_file, hetero_ks_theta=0, calc_DTW=0, multi_soil_type=0,
                  septic_tank=None, hydraulic_conductivity=None, soil_porosity=None, DEM=None,
                  smoothed_DEM=None, soil_type=None):
         """Initialize the load estimation module.
         """
+        self.types_of_contaminants = types_of_contaminants
+
         self.soiltypes = soiltypes
         self.hlr = hlr
         self.alpha = alpha
@@ -109,11 +113,18 @@ class VZMOD:
         self.kd = kd
         self.rho = rho
         self.Temp = Temp
-        self.Tran = Tran
+        self.disp = disp
         self.NH4 = NH4
         self.NO3 = NO3
         self.DTW = DTW
         self.dist = dist
+
+        self.phoschoice = phoschoice
+        self.rprep = rprep
+        self.kl = kl
+        self.pmax = pmax
+        self.phoskd = phoskd
+        self.phos = phos
 
         self.multi_ostds = options
         self.hetero_ks_theta = hetero_ks_theta
@@ -130,6 +141,7 @@ class VZMOD:
         if self.multi_ostds:
             self.septic_tank = arcpy.Describe(septic_tank).catalogPath if not self.is_file_path(
                 septic_tank) else septic_tank
+            self.tmp_septictank = None
             self.workdir = os.path.dirname(self.septic_tank)
             if self.hetero_ks_theta:
                 self.hydraulic_conductivity = arcpy.Describe(hydraulic_conductivity).catalogPath if not (
@@ -149,27 +161,25 @@ class VZMOD:
     def runVZMOD(self):
         arcpy.env.workspace = os.path.abspath(self.workdir)
 
-        total_CNH4 = np.zeros((Nlayer, 1))
-        total_CNO3 = np.zeros((Nlayer, 1))
-        total_theta = np.zeros((Nlayer, 1))
-        total_fsw_nit = np.zeros((Nlayer, 1))
-        total_fsw_dnt = np.zeros((Nlayer, 1))
-
         file = open(self.output_file, "w")
-        file.write('Depth    CNH4       CNO3     Theta   fsw_nit    fsw_dnt'+'\n')
+        file.write("ArcNLET VZMOD Module \n")
+
         if self.multi_ostds:
             DTW_hete, hydr_hete, poro_hete, soil_hete = self.arcgis_map(self.septic_tank, self.hydraulic_conductivity,
                                                                         self.soil_porosity, self.dist, self.DEM,
                                                                         self.smoothed_DEM, self.soil_type)
             if self.hetero_ks_theta or self.calc_DTW or self.multi_soil_type:
+                if (self.hetero_ks_theta or self.calc_DTW) and (not self.multi_soil_type):
+                    para = self.get_parameters()
                 if self.hetero_ks_theta:
                     nlen = len(hydr_hete)
                 if self.calc_DTW:
                     nlen = len(DTW_hete)
+                    out_depth = np.array(DTW_hete) * 100
+                else:
+                    out_depth = self.DTW
                 if self.multi_soil_type:
                     nlen = len(soil_hete)
-                if (self.hetero_ks_theta or self.calc_DTW) and (not self.multi_soil_type):
-                    para = self.get_parameters()
 
                 for i in range(nlen):
                     arcpy.AddMessage("Calculating for septic tank {}\n".format(i))
@@ -178,50 +188,185 @@ class VZMOD:
                     if self.multi_soil_type:
                         para = self.get_parameters(soil_hete[i])
                     if self.hetero_ks_theta:
-                        para['ks'] = hydr_hete[i]*100
+                        para['ks'] = hydr_hete[i] * 100
                         para['thetas'] = poro_hete[i]
                     if self.calc_DTW:
-                        para['newDTW'] = DTW_hete[i]*100
+                        para['newDTW'] = DTW_hete[i] * 100
 
                     theta = self.singlflow(para)
-                    CNH4, CNO3, fsw_nit, fsw_dnt = self.singlesolute(theta, para, file)
+
+                    if self.types_of_contaminants.lower() == "nitrogen":
+                        CNH4, CNO3, fsw_nit, fsw_dnt = self.singlesolute(theta, para)
+                        arcpy.AddMessage("Depth(cm)   C_NH4(mg/l)   C_NO3(mg/l)   Theta   FSW_Nit   FSW_Dnt \n")
+                        file.write("Depth(cm)   C_NH4(mg/l)   C_NO3(mg/l)   Theta   FSW_Nit   FSW_Dnt \n")
+                        for jj in range(len(CNH4)):
+                            arcpy.AddMessage(
+                                "{0:8.2f}   {1:8.3f}   {2:8.3f}   {3:8.3f}   {4:8.3f}   {5:8.3f} \n".format(
+                                    para['newDTW'] / Nlayer * jj, CNH4[jj], CNO3[jj], theta[jj], fsw_nit[jj], fsw_dnt[jj]))
+                            file.write(
+                                "{0:8.2f}   {1:8.3f}   {2:8.3f}   {3:8.3f}   {4:8.3f}   {5:8.3f} \n".format(
+                                    para['newDTW'] / Nlayer * jj, CNH4[jj], CNO3[jj], theta[jj], fsw_nit[jj], fsw_dnt[jj]))
+                    elif self.types_of_contaminants.lower() == "phosphorus":
+                        if self.phoschoice.lower() == "langmuir":
+                            CP, AP = self.singlphos_steady(para, theta)
+                        else:
+                            CP = self.phos_linear(para, theta)
+                        arcpy.AddMessage("Depth(cm)   C_P(mg/l)\n")
+                        file.write("Depth(cm)   C_P(mg/l) \n")
+                        for jj in range(len(CP)):
+                            arcpy.AddMessage(
+                                "{0:8.2f}   {1:8.3f} \n".format(para['newDTW'] / Nlayer * jj, CP[jj]))
+                            file.write(
+                                "{0:8.2f}   {1:8.3f} \n".format(para['newDTW'] / Nlayer * jj, CP[jj]))
+                    else:
+                        CNH4, CNO3, fsw_nit, fsw_dnt = self.singlesolute(theta, para)
+                        if self.phoschoice.lower() == "langmuir":
+                            CP, AP = self.singlphos_steady(para, theta)
+                        else:
+                            CP = self.phos_linear(para, theta)
+                        arcpy.AddMessage(
+                            "Depth(cm)   C_NH4(mg/l)   C_NO3(mg/l)   Theta   FSW_Nit   FSW_Dnt   C_P(mg/l)  \n")
+                        file.write(
+                            "Depth(cm)   C_NH4(mg/l)   C_NO3(mg/l)   Theta   FSW_Nit   FSW_Dnt   C_P(mg/l)  \n")
+                        for jj in range(len(CNH4)):
+                            arcpy.AddMessage(
+                                "{0:8.2f}   {1:8.3f}   {2:8.3f}   {3:8.3f}   {4:8.3f}   {5:8.3f}   {6:8.3f} \n".format(
+                                    para['newDTW'] / Nlayer * jj, CNH4[jj], CNO3[jj], theta[jj], fsw_nit[jj],
+                                    fsw_dnt[jj], CP[jj]))
+                            file.write(
+                                "{0:8.2f}   {1:8.3f}   {2:8.3f}   {3:8.3f}   {4:8.3f}   {5:8.3f}   {6:8.3f} \n".format(
+                                    para['newDTW'] / Nlayer * jj, CNH4[jj], CNO3[jj], theta[jj], fsw_nit[jj],
+                                    fsw_dnt[jj], CP[jj]))
 
                     if i == 0:
-                        total_CNH4 = CNH4
-                        total_CNO3 = CNO3
                         total_theta = theta
-                        total_fsw_nit = fsw_nit
-                        total_fsw_dnt = fsw_dnt
+                        if self.types_of_contaminants.lower() == "nitrogen":
+                            total_CNH4 = CNH4
+                            total_CNO3 = CNO3
+                            total_CP = np.full(Nlayer, np.nan)
+                        elif self.types_of_contaminants.lower() == "phosphorus":
+                            total_CNH4 = np.full(Nlayer, np.nan)
+                            total_CNO3 = np.full(Nlayer, np.nan)
+                            total_CP = CP
+                        else:
+                            total_CNH4 = CNH4
+                            total_CNO3 = CNO3
+                            total_CP = CP
                     else:
-                        total_CNH4 = np.vstack((total_CNH4, CNH4))
-                        total_CNO3 = np.vstack((total_CNO3, CNO3))
                         total_theta = np.vstack((total_theta, theta))
-                        total_fsw_nit = np.vstack((total_fsw_nit, fsw_nit))
-                        total_fsw_dnt = np.vstack((total_fsw_dnt, fsw_dnt))
-                self.create_shapefile(total_CNH4[:, -1], total_CNO3[:, -1])
+                        if self.types_of_contaminants.lower() == "nitrogen":
+                            total_CNH4 = np.vstack((total_CNH4, CNH4))
+                            total_CNO3 = np.vstack((total_CNO3, CNO3))
+                            total_CP = np.full((Nlayer, 1), np.nan)
+                        elif self.types_of_contaminants.lower() == "phosphorus":
+                            total_CNH4 = np.full((Nlayer, 1), np.nan)
+                            total_CNO3 = np.full((Nlayer, 1), np.nan)
+                            total_CP = np.vstack((total_CP, CP))
+                        else:
+                            total_CNH4 = np.vstack((total_CNH4, CNH4))
+                            total_CNO3 = np.vstack((total_CNO3, CNO3))
+                            total_CP = np.vstack((total_CP, CP))
+                self.add_shapefile(total_CNH4[:, -1], total_CNO3[:, -1], total_CP[:, -1], out_depth)
             else:
-                arcpy.AddMessage("Calculating the load estimation for single source...")
-                arcpy.AddMessage("Depth     CNH4     CNO3")
-                para = self.get_parameters()
-                theta = self.singlflow(para)
-                CNH4, CNO3, fsw_nit, fsw_dnt = self.singlesolute(theta, para, file)
-                total_CNH4 = CNH4
-                total_CNO3 = CNO3
-                total_theta = theta
-                total_fsw_nit = fsw_nit
-                total_fsw_dnt = fsw_dnt
-                self.create_shapefile(total_CNH4[-1], total_CNO3[-1])
+                arcpy.AddMessage("Calculating the load estimation for single source... \n")
+                if self.types_of_contaminants.lower() == "nitrogen":
+                    arcpy.AddMessage("Depth(cm)   C_NH4(mg/l)   C_NO3(mg/l)   Theta   FSW_Nit   FSW_Dnt \n")
+                    file.write("Depth(cm)   C_NH4(mg/l)   C_NO3(mg/l)   Theta   FSW_Nit   FSW_Dnt \n")
+                    para = self.get_parameters()
+                    theta = self.singlflow(para)
+                    CNH4, CNO3, fsw_nit, fsw_dnt = self.singlesolute(theta, para)
+                    for jj in range(len(CNH4)):
+                        arcpy.AddMessage(
+                            "{0:8.2f}   {1:8.3f}   {2:8.3f}   {3:8.3f}   {4:8.3f}   {5:8.3f} \n".format(
+                                para['newDTW'] / Nlayer * jj, CNH4[jj], CNO3[jj], theta[jj], fsw_nit[jj], fsw_dnt[jj]))
+                        file.write(
+                            "{0:8.2f}   {1:8.3f}   {2:8.3f}   {3:8.3f}   {4:8.3f}   {5:8.3f} \n".format(
+                                para['newDTW'] / Nlayer * jj, CNH4[jj], CNO3[jj], theta[jj], fsw_nit[jj], fsw_dnt[jj]))
+                    self.add_shapefile(CNH4[-1], CNO3[-1], None, para['newDTW'])
+                elif self.types_of_contaminants.lower() == "phosphorus":
+                    arcpy.AddMessage("Depth(cm)   C_P(mg/l)  \n")
+                    file.write("Depth(cm)   C_P(mg/l)  \n")
+                    para = self.get_parameters()
+                    theta = self.singlflow(para)
+                    if self.phoschoice.lower() == "langmuir":
+                        CP, AP = self.singlphos_steady(para, theta)
+                    else:
+                        CP = self.phos_linear(para, theta)
+                    for jj in range(len(CP)):
+                        arcpy.AddMessage(
+                            "{0:8.2f}   {1:8.3f} \n".format(para['newDTW'] / Nlayer * jj, CP[jj]))
+                        file.write(
+                            "{0:8.2f}   {1:8.3f} \n".format(para['newDTW'] / Nlayer * jj, CP[jj]))
+                    self.add_shapefile(None, None, CP[-1], para['newDTW'])
+                else:
+                    arcpy.AddMessage(
+                        "Depth(cm)   C_NH4(mg/l)   C_NO3(mg/l)   Theta   FSW_Nit   FSW_Dnt   C_P(mg/l) \n")
+                    file.write(
+                        "Depth(cm)   C_NH4(mg/l)   C_NO3(mg/l)   Theta   FSW_Nit   FSW_Dnt   C_P(mg/l) \n")
+                    para = self.get_parameters()
+                    theta = self.singlflow(para)
+                    CNH4, CNO3, fsw_nit, fsw_dnt = self.singlesolute(theta, para)
+                    if self.phoschoice.lower() == "langmuir":
+                        CP, AP = self.singlphos_steady(para, theta)
+                    else:
+                        CP = self.phos_linear(para, theta)
+                    for jj in range(len(CNH4)):
+                        arcpy.AddMessage(
+                            "{0:8.2f}   {1:8.3f}   {2:8.3f}   {3:8.3f}   {4:8.3f}   {5:8.3f}   {6:8.3f} \n".format(
+                                para['newDTW'] / Nlayer * jj, CNH4[jj], CNO3[jj], theta[jj], fsw_nit[jj], fsw_dnt[jj],
+                                CP[jj]))
+                        file.write(
+                            "{0:8.2f}   {1:8.3f}   {2:8.3f}   {3:8.3f}   {4:8.3f}   {5:8.3f}   {6:8.3f} \n".format(
+                                para['newDTW'] / Nlayer * jj, CNH4[jj], CNO3[jj], theta[jj], fsw_nit[jj], fsw_dnt[jj],
+                                CP[jj]))
+                    self.add_shapefile(CNH4[-1], CNO3[-1], CP[-1], para['newDTW'])
         else:
             arcpy.AddMessage("Calculating the load estimation for single source...")
-            arcpy.AddMessage("Depth     CNH4     CNO3")
-            para = self.get_parameters()
-            theta = self.singlflow(para)
-            CNH4, CNO3, fsw_nit, fsw_dnt = self.singlesolute(theta, para, file)
-            total_CNH4 = CNH4
-            total_CNO3 = CNO3
-            total_theta = theta
-            total_fsw_nit = fsw_nit
-            total_fsw_dnt = fsw_dnt
+            if self.types_of_contaminants.lower() == "nitrogen":
+                arcpy.AddMessage("Depth(cm)   C_NH4(mg/l)   C_NO3(mg/l)   Theta   FSW_Nit   FSW_Dnt \n")
+                file.write("Depth(cm)   C_NH4(mg/l)   C_NO3(mg/l)   Theta   FSW_Nit   FSW_Dnt \n")
+                para = self.get_parameters()
+                theta = self.singlflow(para)
+                CNH4, CNO3, fsw_nit, fsw_dnt = self.singlesolute(theta, para)
+                for jj in range(len(CNH4)):
+                    arcpy.AddMessage(
+                        "{0:8.2f}   {1:8.3f}   {2:8.3f}   {3:8.3f}   {4:8.3f}   {5:8.3f} \n".format(
+                            para['newDTW'] / Nlayer * jj, CNH4[jj], CNO3[jj], theta[jj], fsw_nit[jj], fsw_dnt[jj]))
+                    file.write(
+                        "{0:8.2f}   {1:8.3f}   {2:8.3f}   {3:8.3f}   {4:8.3f}   {5:8.3f} \n".format(
+                            para['newDTW'] / Nlayer * jj, CNH4[jj], CNO3[jj], theta[jj], fsw_nit[jj], fsw_dnt[jj]))
+            elif self.types_of_contaminants.lower() == "phosphorus":
+                arcpy.AddMessage("Depth(cm)   C_P(mg/l)\n")
+                file.write("Depth(cm)   C_P(mg/l)\n")
+                para = self.get_parameters()
+                theta = self.singlflow(para)
+                if self.phoschoice.lower() == "langmuir":
+                    CP, AP = self.singlphos_steady(para, theta)
+                else:
+                    CP = self.phos_linear(para, theta)
+                for jj in range(len(CP)):
+                    arcpy.AddMessage(
+                        "{0:8.2f}   {1:8.3f} \n".format(para['newDTW'] / Nlayer * jj, CP[jj]))
+                    file.write("{0:8.2f}   {1:8.3f} \n".format(para['newDTW'] / Nlayer * jj, CP[jj]))
+            else:
+                arcpy.AddMessage("Depth(cm)   C_NH4(mg/l)   C_NO3(mg/l)   Theta   FSW_Nit   FSW_Dnt   C_P(mg/l) \n")
+                file.write("Depth(cm)   C_NH4(mg/l)   C_NO3(mg/l)   Theta   FSW_Nit   FSW_Dnt   C_P(mg/l) \n")
+                para = self.get_parameters()
+                theta = self.singlflow(para)
+                CNH4, CNO3, fsw_nit, fsw_dnt = self.singlesolute(theta, para)
+                if self.phoschoice.lower() == "langmuir":
+                    CP, AP = self.singlphos_steady(para, theta)
+                else:
+                    CP = self.phos_linear(para, theta)
+                for jj in range(len(CNH4)):
+                    arcpy.AddMessage(
+                        "{0:8.2f}   {1:8.3f}   {2:8.3f}   {3:8.3f}   {4:8.3f}   {5:8.3f}   {6:8.3f} \n".format(
+                            para['newDTW'] / Nlayer * jj, CNH4[jj], CNO3[jj], theta[jj], fsw_nit[jj], fsw_dnt[jj],
+                            CP[jj]))
+                    file.write(
+                        "{0:8.2f}   {1:8.3f}   {2:8.3f}   {3:8.3f}   {4:8.3f}   {5:8.3f}   {6:8.3f} \n".format(
+                            para['newDTW'] / Nlayer * jj, CNH4[jj], CNO3[jj], theta[jj], fsw_nit[jj], fsw_dnt[jj],
+                            CP[jj]))
         file.close()
         pass
 
@@ -255,11 +400,18 @@ class VZMOD:
         para['rho'] = self.rho
 
         para['Temp'] = self.Temp
-        para['Tran'] = self.Tran
+        para['disp'] = self.disp
         para['NH4'] = self.NH4
         para['NO3'] = self.NO3
         para['DTW'] = self.DTW
         para['newDTW'] = self.DTW
+
+        para['phoschoice'] = self.phoschoice
+        para['rprep'] = self.rprep
+        para['kl'] = self.kl
+        para['phoskd'] = self.phoskd
+        para['phos'] = self.phos
+        para['Smax'] = self.pmax
 
         if self.multi_soil_type:
             soiltype_list = ["clay", "clay loam", "loam", "loamy sand", "sand", "sandy clay", "sandy clay loam",
@@ -277,15 +429,15 @@ class VZMOD:
                     for pname, index in variablename[k]:
                         if k == 0:
                             if pname != "hlr":
-                                para[pname] = hydraulic_default[soiltype.lower()][index-1]
+                                para[pname] = hydraulic_default[soiltype.lower()][index - 1]
                         elif k == 1:
                             pass
                         elif k == 2:
                             if pname == "e1":
-                                para[pname] = denitrification_default[soiltype.lower()][index-1]
+                                para[pname] = denitrification_default[soiltype.lower()][index - 1]
                         elif k == 3:
                             if pname != "rho":
-                                para[pname] = adsorption_default[soiltype.lower()][index-1]
+                                para[pname] = adsorption_default[soiltype.lower()][index - 1]
 
             except IndexError:
                 arcpy.AddMessage("Error: soil type {} is wrong!".format(soiltype))
@@ -329,8 +481,8 @@ class VZMOD:
                     temp0 = 1 - pow(se1, 1 / para['m'])
                     temp1 = 1 - pow(temp0, para['m'])
                     dk = para['ks'] * pow(se1, -0.5) * dse * (
-                                0.5 * pow(temp1, 2) + 2 * temp1 * pow(temp0, para['m'] - 1) * pow(se1, (1 - para['m']) /
-                                                                                                  para['m']))
+                            0.5 * pow(temp1, 2) + 2 * temp1 * pow(temp0, para['m'] - 1) * pow(se1, (1 - para['m']) /
+                                                                                              para['m']))
                     dfh = 0.5 * (k0 + k1) / thickness + 0.5 * (h - head[-1] + thickness) / thickness * dk
                     h2 = h - fh / dfh
                     if abs((h2 - h) / h) < 0.01:
@@ -353,16 +505,9 @@ class VZMOD:
             head.append(h)
         theta.reverse()
         head.reverse()
-        # head = np.array(head)
-        # theta = np.array(theta)
-        # se = (theta - para['thetar']) / (para['thetas'] - para['thetar'])
-        # kh = para['ks']* pow(se, 0.5) * pow((1 - pow((1 - pow(se, 1 / para['m'])), para['m'])), 2)
-        # q = np.zeros(100)
-        # for i in range(100):
-        #     q[i] = (kh[i] + kh[i+1]) / 2 * (head[i] - head[i+1] + thickness) / thickness
-        return theta
+        return np.array(theta)
 
-    def singlesolute(self, theta, para, ff, ooo=1):
+    def singlesolute(self, theta, para):
 
         thickness = para['newDTW'] / Nlayer
         f1_nit = []
@@ -391,7 +536,7 @@ class VZMOD:
             f1_nit.append(para["knit"] * (theta[layer] + para["kd"] * para["rho"]) * fsw_nit * para['ft_nit'])
             f1_dnt.append(para["kdnt"] * para['ft_dnt'] * fsw_dnt * theta[layer])
 
-            E.append(theta[layer] * para['Tran'])
+            E.append(theta[layer] * para['disp'])
 
             single_fsw_nit.append(fsw_nit)
             single_fsw_dnt.append(fsw_dnt)
@@ -403,17 +548,17 @@ class VZMOD:
 
         for nd in range(1, Nlayer + 1):
             a.append((0.5 / thickness) * (-E[nd - 1] - E[nd]) - 0.5 * para['hlr'] + (
-                        f1_nit[nd - 1] + f1_nit[nd]) * thickness / 12.0)
+                    f1_nit[nd - 1] + f1_nit[nd]) * thickness / 12.0)
             c.append((0.5 / thickness) * (-E[nd - 1] - E[nd]) + 0.5 * para['hlr'] + (
-                        f1_nit[nd - 1] + f1_nit[nd]) * thickness / 12.0)
+                    f1_nit[nd - 1] + f1_nit[nd]) * thickness / 12.0)
             f.append(0.0)
             if nd == Nlayer:
                 b.append((0.5 / thickness) * (E[nd - 1] + E[nd]) - 0.5 * para['hlr'] + (
-                            f1_nit[nd - 1] + 3.0 * f1_nit[nd]) * thickness / 12.0)
+                        f1_nit[nd - 1] + 3.0 * f1_nit[nd]) * thickness / 12.0)
 
             else:
                 b.append((0.5 / thickness) * (E[nd - 1] + 2.0 * E[nd] + E[nd + 1]) + (
-                            f1_nit[nd - 1] + 6.0 * f1_nit[nd] + f1_nit[nd + 1]) * thickness / 12.0)
+                        f1_nit[nd - 1] + 6.0 * f1_nit[nd] + f1_nit[nd + 1]) * thickness / 12.0)
 
         b[Nlayer] = b[Nlayer] + para['hlr']
 
@@ -428,19 +573,19 @@ class VZMOD:
         c = []
         for nd in range(1, Nlayer + 1):
             a.append((0.5 / thickness) * (-E[nd - 1] - E[nd]) - 0.5 * para['hlr'] + (
-                        f1_dnt[nd - 1] + f1_dnt[nd]) * thickness / 12.0)
+                    f1_dnt[nd - 1] + f1_dnt[nd]) * thickness / 12.0)
             c.append((0.5 / thickness) * (-E[nd - 1] - E[nd]) + 0.5 * para['hlr'] + (
-                        f1_dnt[nd - 1] + f1_dnt[nd]) * thickness / 12.0)
+                    f1_dnt[nd - 1] + f1_dnt[nd]) * thickness / 12.0)
             if nd == Nlayer:
                 b.append((0.5 / thickness) * (E[nd - 1] + E[nd]) - 0.5 * para['hlr'] + (
-                            f1_dnt[nd - 1] + 3.0 * f1_dnt[nd]) * thickness / 12.0)
+                        f1_dnt[nd - 1] + 3.0 * f1_dnt[nd]) * thickness / 12.0)
                 f.append(1.0 / 6.0 * thickness * (f1_nit[nd - 1] * CNH4[nd - 1] + 2.0 * f1_nit[nd] * CNH4[nd]))
             else:
                 b.append((0.5 / thickness) * (E[nd - 1] + 2.0 * E[nd] + E[nd + 1]) + (
-                            f1_dnt[nd - 1] + 6.0 * f1_dnt[nd] + f1_dnt[nd + 1]) * thickness / 12.0)
+                        f1_dnt[nd - 1] + 6.0 * f1_dnt[nd] + f1_dnt[nd + 1]) * thickness / 12.0)
                 f.append(1.0 / 6.0 * thickness * (
-                            f1_nit[nd - 1] * CNH4[nd - 1] + 4.0 * f1_nit[nd] * CNH4[nd] + f1_nit[nd + 1] * CNH4[
-                        nd + 1]))
+                        f1_nit[nd - 1] * CNH4[nd - 1] + 4.0 * f1_nit[nd] * CNH4[nd] + f1_nit[nd + 1] * CNH4[
+                    nd + 1]))
 
         b[Nlayer] = b[Nlayer] + para['hlr']
         CNO3 = tridiagonal_matrix(a, b, c, f)
@@ -448,42 +593,121 @@ class VZMOD:
             if CNO3[i] <= 0.0:
                 CNO3[i] = 0.0
 
-        for layer in range(0, Nlayer + 1):
-            if ooo:
-                arcpy.AddMessage('')
-                arcpy.AddMessage(
-                    '{:6.2f}   {:6.3f}   {:6.3f}   {:6.3f}   {:6.3f}   {:6.3f}'.format(thickness * layer, CNH4[layer],
-                                                                                       CNO3[layer], theta[layer],
-                                                                                       single_fsw_nit[layer],
-                                                                                       single_fsw_dnt[layer]) + '\n')
-            ff.write('{:6.2f}   {:6.3f}   {:6.3f}   {:6.3f}   {:6.3f}   {:6.3f}'.format(thickness * layer, CNH4[layer],
-                                                                                        CNO3[layer], theta[layer],
-                                                                                        single_fsw_nit[layer],
-                                                                                        single_fsw_dnt[layer]) + '\n')
+        return np.array(CNH4), np.array(CNO3), np.array(single_fsw_nit), np.array(single_fsw_dnt)
 
-        return CNH4, CNO3, single_fsw_nit, single_fsw_dnt
+    def phos_linear(self, para, theta):
+        thickness = para['newDTW'] / Nlayer
+        f1 = []
+        E = []
+
+        for layer in range(0, Nlayer + 1):
+            s = (theta[layer] - para['thetar']) / (para['thetas'] - para['thetar'])
+            f1.append(para["rprep"] * ((theta[layer] + para["phoskd"] * para["rho"]) + 1))
+            E.append(theta[layer] * para['disp'])
+
+        f = [para['hlr'] * para['phos']]
+        a = []
+        b = [(0.5 / thickness) * (E[0] + E[1]) + 0.5 * para['hlr'] + (3.0 * f1[0] + f1[1]) * thickness / 12.0]
+        c = []
+
+        for nd in range(1, Nlayer + 1):
+            a.append((0.5 / thickness) * (-E[nd - 1] - E[nd]) - 0.5 * para['hlr'] + (
+                    f1[nd - 1] + f1[nd]) * thickness / 12.0)
+            c.append((0.5 / thickness) * (-E[nd - 1] - E[nd]) + 0.5 * para['hlr'] + (
+                    f1[nd - 1] + f1[nd]) * thickness / 12.0)
+            f.append(0.0)
+            if nd == Nlayer:
+                b.append((0.5 / thickness) * (E[nd - 1] + E[nd]) - 0.5 * para['hlr'] + (
+                        f1[nd - 1] + 3.0 * f1[nd]) * thickness / 12.0)
+
+            else:
+                b.append((0.5 / thickness) * (E[nd - 1] + 2.0 * E[nd] + E[nd + 1]) + (
+                        f1[nd - 1] + 6.0 * f1[nd] + f1[nd + 1]) * thickness / 12.0)
+
+        b[Nlayer] = b[Nlayer] + para['hlr']
+
+        CP = tridiagonal_matrix(a, b, c, f)
+        for j in range(len(CP)):
+            if CP[j] <= 0.0:
+                CP[j] = 0.0
+        return CP
+
+    def singlphos_steady(self, para, theta):
+
+        thickness = para['newDTW'] / Nlayer
+
+        thetad = para["disp"] * theta
+
+        Cinit = np.linspace(para['phos'], 0, Nlayer + 1)
+        fc = np.zeros((Nlayer + 1))
+        dfc = np.zeros((Nlayer + 1))
+        iter = 0
+
+        while True:
+            if iter == 0:
+                cold = Cinit
+            for layer in range(Nlayer + 1):
+                kc = para['kl'] * cold[layer] / (1 + para['kl'] * cold[layer])
+                if layer == 0:
+                    da = 0
+                    db = math.sqrt(thetad[layer] * thetad[layer + 1]) / thickness
+                    fc[layer] = db * (cold[layer + 1] - cold[layer]) / thickness - \
+                                para['hlr'] * (cold[layer] - para['phos']) / thickness - \
+                                (theta[layer] * cold[layer] + para['rho'] * para['Smax'] * kc) * para['rprep']
+                    dfc[layer] = (- db / thickness - para['hlr'] / thickness - theta[layer] * para['rprep']
+                                  - para['rho'] * para['rprep'] * para['Smax'] * 1 / (1 + para['kl'] * cold[layer]) ** 2)
+                elif layer == Nlayer:
+                    da = math.sqrt(thetad[layer - 1] * thetad[layer]) / thickness
+                    db = 0
+                    fc[layer] = da * (cold[layer - 1] - cold[layer]) / thickness - \
+                                para['hlr'] * (cold[layer] - cold[layer - 1]) / thickness - \
+                                (theta[layer] * cold[layer] + para['rho'] * para['Smax'] * kc) * para['rprep']
+                    dfc[layer] = (- da / thickness - para['hlr'] / thickness  - theta[layer] * para['rprep']
+                                  - para['rho'] * para['rprep'] * para['Smax'] * 1 / (1 + para['kl'] * cold[layer]) ** 2)
+                else:
+                    da = math.sqrt(thetad[layer - 1] * thetad[layer]) / thickness
+                    db = math.sqrt(thetad[layer] * thetad[layer + 1]) / thickness
+                    fc[layer] = (da * (cold[layer - 1] - cold[layer]) + db * (cold[layer + 1] - cold[layer])) / \
+                                thickness - para['hlr'] * (cold[layer] - cold[layer-1]) / thickness - \
+                                (theta[layer] * cold[layer] + para['rho'] * para['Smax'] * kc) * para['rprep']
+                    dfc[layer] = (- (da + db) / thickness - para['hlr'] / thickness - theta[layer] * para['rprep']
+                                 - para['rho'] * para['rprep'] * para['Smax'] * 1 / (1 + para['kl'] * cold[layer]) ** 2)
+
+            cnew = cold - fc / dfc
+            is_close = np.isclose(cold, cnew, rtol=1e-4)
+            if is_close.all():
+                break
+            else:
+                cold = cnew
+                iter += 1
+        # ffc = np.array(ffc)
+        # np.savetxt("ffc.csv", ffc, delimiter=",")
+        return cnew, cnew * para['kl']/ (1 + para['kl'] * cnew) * 100
 
     def arcgis_map(self, septictankfile, hydraulicfile, porosityfile, dist, DEMfile, smoothedDEMfile, soilfile):
         arcpy.env.workspace = self.workdir
+        tmp = os.path.join(self.workdir, "tmp_shapefile.shp")
+        self.tmp_septictank = tmp
+        arcpy.management.CopyFeatures(septictankfile, tmp)
         field = []
 
         if self.hetero_ks_theta:
-            arcpy.sa.ExtractMultiValuesToPoints(septictankfile,
+            arcpy.sa.ExtractMultiValuesToPoints(tmp,
                                                 [[hydraulicfile, "hydro_con"], [porosityfile, "porosity"]], "NONE")
             field.append("hydro_con")
             field.append("porosity")
         if self.calc_DTW:
-            arcpy.sa.ExtractMultiValuesToPoints(septictankfile, [[DEMfile, "DEM"], [smoothedDEMfile, "smthDEM"]],
+            arcpy.sa.ExtractMultiValuesToPoints(tmp, [[DEMfile, "DEM"], [smoothedDEMfile, "smthDEM"]],
                                                 "NONE")
             field.append("DEM")
             field.append("smthDEM")
         if self.multi_soil_type:
-            arcpy.sa.ExtractMultiValuesToPoints(septictankfile, [[soilfile, "soiltype"]], "NONE")
+            arcpy.sa.ExtractMultiValuesToPoints(tmp, [[soilfile, "soiltype"]], "NONE")
             field.append("soiltype")
 
         data = []
         if bool(field):
-            with arcpy.da.SearchCursor(septictankfile, field) as cursor:
+            with arcpy.da.SearchCursor(tmp, field) as cursor:
                 for row in cursor:
                     data.append(row)
 
@@ -496,32 +720,109 @@ class VZMOD:
             hydr_hete[hydr_hete < 0] = 10
             poro_hete[poro_hete < 0] = 0.4
 
-            arcpy.management.DeleteField(septictankfile, field)
+            # arcpy.management.Delete(tmp)
             return DTW_hete, hydr_hete, poro_hete, soil_hete
         else:
             return None, None, None, None
 
-    def create_shapefile(self, CH4, CO3):
+    def add_shapefile(self, CH4, CO3, CP, depth):
         fieldnameNO3 = "no3_conc"
         fieldnameNH4 = "nh4_conc"
+        fieldnameP = "P_conc"
+        depthname = "Depth"
 
-        field_name = [field.name.lower() for field in arcpy.ListFields(self.septic_tank)]
-        if fieldnameNO3 not in field_name:
-            arcpy.management.AddField(self.septic_tank, fieldnameNO3, "DOUBLE")
-        if fieldnameNH4 not in field_name:
-            arcpy.management.AddField(self.septic_tank, fieldnameNH4, "DOUBLE")
+        field_name = [field.name.lower() for field in arcpy.ListFields(self.tmp_septictank)]
+        if self.types_of_contaminants.lower() == "nitrogen":
+            if fieldnameNO3 not in field_name:
+                arcpy.management.AddField(self.tmp_septictank, fieldnameNO3, "DOUBLE")
+            if fieldnameNH4 not in field_name:
+                arcpy.management.AddField(self.tmp_septictank, fieldnameNH4, "DOUBLE")
+            if depthname not in field_name:
+                arcpy.management.AddField(self.tmp_septictank, depthname, "DOUBLE")
 
-        with arcpy.da.UpdateCursor(self.septic_tank, ["FID", fieldnameNO3, fieldnameNH4]) as cursor:
-            for row in cursor:
-                if self.multi_soil_type or self.calc_DTW or self.hetero_ks_theta:
-                    fid = row[0]
-                    row[1] = max(CO3[fid], 0.0001)
-                    row[2] = max(CH4[fid], 0.0001)
-                    cursor.updateRow(row)
-                else:
-                    row[1] = max(CO3, 0.0001)
-                    row[2] = max(CH4, 0.0001)
-                    cursor.updateRow(row)
+            with arcpy.da.UpdateCursor(self.tmp_septictank, ["FID", fieldnameNO3, fieldnameNH4, depthname]) as cursor:
+                for row in cursor:
+                    if self.multi_soil_type or self.calc_DTW or self.hetero_ks_theta:
+                        fid = row[0]
+                        row[1] = max(CO3[fid], 0.0001)
+                        row[2] = max(CH4[fid], 0.0001)
+                        if self.calc_DTW:
+                            row[4] = max(depth[fid], 0.1)
+                        else:
+                            row[4] = max(self.DTW, 0.1)
+                        cursor.updateRow(row)
+                    else:
+                        row[1] = max(CO3, 0.0001)
+                        row[2] = max(CH4, 0.0001)
+                        if self.calc_DTW:
+                            row[4] = max(depth[fid], 0.1)
+                        else:
+                            row[4] = max(self.DTW, 0.1)
+                        cursor.updateRow(row)
+
+        elif self.types_of_contaminants.lower() == "phosphorus":
+            if fieldnameP not in field_name:
+                arcpy.management.AddField(self.tmp_septictank, fieldnameP, "DOUBLE")
+            if depthname not in field_name:
+                arcpy.management.AddField(self.tmp_septictank, depthname, "DOUBLE")
+
+            with arcpy.da.UpdateCursor(self.tmp_septictank, ["FID", fieldnameP, depthname]) as cursor:
+                for row in cursor:
+                    if self.multi_soil_type or self.calc_DTW or self.hetero_ks_theta:
+                        fid = row[0]
+                        row[1] = max(CP[fid], 0.0001)
+                        if self.calc_DTW:
+                            row[4] = max(depth[fid], 0.1)
+                        else:
+                            row[4] = max(self.DTW, 0.1)
+                        cursor.updateRow(row)
+                    else:
+                        row[1] = max(CP, 0.0001)
+                        if self.calc_DTW:
+                            row[4] = max(depth[fid], 0.1)
+                        else:
+                            row[4] = max(self.DTW, 0.1)
+                        cursor.updateRow(row)
+
+        else:
+            try:
+                if fieldnameNO3 not in field_name:
+                    arcpy.management.AddField(self.tmp_septictank, fieldnameNO3, "DOUBLE")
+                if fieldnameNH4 not in field_name:
+                    arcpy.management.AddField(self.tmp_septictank, fieldnameNH4, "DOUBLE")
+                if fieldnameP not in field_name:
+                    arcpy.management.AddField(self.tmp_septictank, fieldnameP, "DOUBLE")
+                if depthname not in field_name:
+                    arcpy.management.AddField(self.tmp_septictank, depthname, "DOUBLE")
+            except Exception as e:
+                arcpy.AddMessage("Error: {}".format(e))
+                arcpy.AddMessage("Please make sure the file is unlocked and try again.")
+                arcpy.AddError("Error!")
+
+            with arcpy.da.UpdateCursor(self.tmp_septictank, ["FID", fieldnameNO3,
+                                                          fieldnameNH4, fieldnameP, depthname]) as cursor:
+                for row in cursor:
+                    if self.multi_soil_type or self.calc_DTW or self.hetero_ks_theta:
+                        fid = row[0]
+                        row[1] = max(CO3[fid], 0.0001)
+                        row[2] = max(CH4[fid], 0.0001)
+                        row[3] = max(CP[fid], 0.0001)
+                        if self.calc_DTW:
+                            row[4] = max(depth[fid], 0.1)
+                        else:
+                            row[4] = max(self.DTW, 0.1)
+                        cursor.updateRow(row)
+                    else:
+                        row[1] = max(CO3, 0.0001)
+                        row[2] = max(CH4, 0.0001)
+                        row[3] = max(CP, 0.0001)
+                        if self.calc_DTW:
+                            row[4] = max(depth[fid], 0.1)
+                        else:
+                            row[4] = max(self.DTW, 0.1)
+                        cursor.updateRow(row)
+        arcpy.management.Delete(self.septic_tank)
+        arcpy.management.Rename(self.tmp_septictank, os.path.basename(self.septic_tank))
 
     @staticmethod
     def is_file_path(input_string):
@@ -549,30 +850,56 @@ def tridiagonal_matrix(a, b, c, f, n=Nlayer + 1):
 # ======================================================================
 # Main program for debugging
 if __name__ == '__main__':
-    arcpy.env.workspace = "C:\\Users\\Wei\\Downloads\\Orlando\\debug"
+    arcpy.env.workspace = "C:\\Users\\Wei\\Downloads\\lakeshore_example\\2_lakeshore_example_phosphorus\\3_VZMOD_module\\Inputs"
     # arcpy.env.workspace = ".\\test_pro"
 
-    options = True
-    hetero_Ks_thetas = False
-    calc_DTW = False
-    multi_soil_type = False
+    types_of_contaminants = "nitrogen and phosphorus"
 
-    septic_tank = os.path.join(arcpy.env.workspace, "Lake_Buchanan_OSTDS_Project.shp")
-    hydraulic_conductivity = os.path.join(arcpy.env.workspace, "hydr_cond_ProjectRaster.tif")
-    soil_porosity = os.path.join(arcpy.env.workspace, "porosity_ProjectRaster.tif")
-    DEM = os.path.join(arcpy.env.workspace, "lakeshore")
-    smoothed_DEM = os.path.join(arcpy.env.workspace, "00smth")
-    soiltypefile = os.path.join(arcpy.env.workspace, "soiltypes_ProjectRaster.tif")
+    options = True
+    hetero_Ks_thetas = True
+    calc_DTW = False
+    multi_soil_type = True
+
+    septic_tank = os.path.join(arcpy.env.workspace, "PotentialSepticTankLocations.shp")
+    hydraulic_conductivity = os.path.join(arcpy.env.workspace, "hydr_cond")
+    soil_porosity = os.path.join(arcpy.env.workspace, "porosity")
+    DEM = None  # os.path.join(arcpy.env.workspace, "01-islanddem_3m.tif")
+    smoothed_DEM = None  # os.path.join(arcpy.env.workspace, "03-smth4052")
+    soiltypefile = os.path.join(arcpy.env.workspace, "soiltype")
 
     soiltype = "loam"
-    hlr = 2.342
+    hlr = 2.0
     alpha = 0.011
     ks = 12.04
     thetar = 0.061
     thetas = 0.399
     n = 1.474
 
-    knit = 0.162
+    # soiltype = "sand"
+    # hlr = 2.0
+    # alpha = 0.035
+    # ks = 642.98
+    # thetar = 0.053
+    # thetas = 0.375
+    # n = 3.180
+
+    # soiltype = "clay"
+    # hlr = 2.0
+    # alpha = 0.015
+    # ks = 14.75
+    # thetar = 0.098
+    # thetas = 0.459
+    # n = 1.260
+    #
+    # soiltype = "silt"
+    # hlr = 2.0
+    # alpha = 0.007
+    # ks = 43.74
+    # thetar = 0.050
+    # thetas = 0.489
+    # n = 1.677
+
+    knit = 2.9
     toptnit = 25.0
     beltanit = 0.347
     e2 = 2.267
@@ -583,29 +910,48 @@ if __name__ == '__main__':
     Sl = 0.665
     Sh = 0.809
 
-    kdnt = 0.354
+    kdnt = 0.025
     toptdnt = 26.0
     beltadnt = 0.347
-    e1 = 3.774
+    e1 = 2.865
     Sdnt = 0.0
 
     kd = 0.35
     rho = 1.5
-
     Temp = 25.5
-    Tran = 4.32
+    disp = 4.32
 
-    NH4 = 40
-    NO3 = 0.04
+    NH4 = 60
+    NO3 = 1
+    dist = 0
     DTW = 150
-    dist = 41.15
 
-    output_file_name = "results.txt"
+    phoschoice = "langmuir"
+    rprep = 0.002
+    phoskd = 15.1
+    kl = 0.2
+    pmax = 237
+    phos = 10
 
-    vzmod = VZMOD(soiltype, hlr, alpha, ks, thetar, thetas, n, knit, toptnit, beltanit, e2, e3, fs, fwp, Swp,
-                  Sl, Sh, kdnt, toptdnt, beltadnt, e1, Sdnt, kd, rho, Temp, Tran, NH4, NO3, DTW, dist,
+    # for ii in range(100):
+    #     pmax = pmax_array[ii]
+    filename = "output.txt"
+    output_file_name = os.path.join(arcpy.env.workspace, filename)
+
+    vzmod = VZMOD(types_of_contaminants, soiltype, hlr, alpha, ks, thetar, thetas, n,
+                  knit, toptnit, beltanit, e2, e3, fs, fwp, Swp, Sl, Sh, kdnt, toptdnt, beltadnt, e1, Sdnt,
+                  kd, rho, Temp, disp, NH4, NO3, DTW, dist,
+                  phoschoice, rprep, kl, pmax, phoskd, phos,
                   options, output_file_name, hetero_Ks_thetas, calc_DTW, multi_soil_type,
                   septic_tank, hydraulic_conductivity, soil_porosity, DEM, smoothed_DEM, soiltypefile)
     vzmod.runVZMOD()
+
+    # vzmod = VZMOD(types_of_contaminants, soiltype, hlr, alpha, ks, thetar, thetas, n,
+    #               knit, toptnit, beltanit, e2, e3, fs, fwp, Swp, Sl, Sh, kdnt, toptdnt, beltadnt, e1, Sdnt,
+    #               kd, rho, Temp, disp, NH4, NO3, DTW, dist,
+    #               rprep, kl, pmax, phos,
+    #               options, output_file_name, hetero_Ks_thetas, calc_DTW, multi_soil_type,
+    #               septic_tank, hydraulic_conductivity, soil_porosity, DEM, smoothed_DEM, soiltypefile)
+    # vzmod.runVZMOD()
 
     print("Tests successful!")

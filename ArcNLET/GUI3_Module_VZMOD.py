@@ -81,6 +81,7 @@ class InterfaceVZMOD(object):
     def getParameterInfo(self) -> list:
         """Define parameter definitions.
         """
+
         Option = arcpy.Parameter(name="Soil types",
                                  displayName="Soil types",
                                  datatype="String",
@@ -93,7 +94,7 @@ class InterfaceVZMOD(object):
         Option.value = "Clay"
 
         hydroparam0 = arcpy.Parameter(name="Hydraulic Loading Rate",
-                                      displayName="Hydraulic Loading Rate (cm/d)",
+                                      displayName="Hydraulic Loading Rate [cm/d]",
                                       datatype="GPDouble",
                                       parameterType="Required",  # Required|Optional|Derived
                                       direction="Input",  # Input|Output
@@ -103,7 +104,7 @@ class InterfaceVZMOD(object):
         hydroparam0.value = hydraulic_default[Option.value][0]
 
         hydroparam1 = arcpy.Parameter(name="\u0251",
-                                      displayName="\u0251 (-)",
+                                      displayName="\u0251 [-]",
                                       datatype="GPDouble",
                                       parameterType="Required",  # Required|Optional|Derived
                                       direction="Input",  # Input|Output
@@ -113,7 +114,7 @@ class InterfaceVZMOD(object):
         hydroparam1.value = hydraulic_default[Option.value][1]
 
         hydroparam2 = arcpy.Parameter(name="Ks",
-                                      displayName="Ks (cm/d)",
+                                      displayName="Ks [cm/d]",
                                       datatype="GPDouble",
                                       parameterType="Required",  # Required|Optional|Derived
                                       direction="Input",  # Input|Output
@@ -123,7 +124,7 @@ class InterfaceVZMOD(object):
         hydroparam2.value = hydraulic_default[Option.value][2]
 
         hydroparam3 = arcpy.Parameter(name="\u03B8r",
-                                      displayName="\u03B8r (-)",
+                                      displayName="\u03B8r [-]",
                                       datatype="GPDouble",
                                       parameterType="Required",  # Required|Optional|Derived
                                       direction="Input",  # Input|Output
@@ -132,7 +133,7 @@ class InterfaceVZMOD(object):
         hydroparam3.value = 0.098
 
         hydroparam4 = arcpy.Parameter(name="\u03B8s",
-                                      displayName="\u03B8s (-)",
+                                      displayName="\u03B8s [-]",
                                       datatype="GPDouble",
                                       parameterType="Required",  # Required|Optional|Derived
                                       direction="Input",  # Input|Output
@@ -141,7 +142,7 @@ class InterfaceVZMOD(object):
         hydroparam4.value = 0.459
 
         hydroparam5 = arcpy.Parameter(name="n",
-                                      displayName="n (-)",
+                                      displayName="n [-]",
                                       datatype="GPDouble",
                                       parameterType="Required",  # Required|Optional|Derived
                                       direction="Input",  # Input|Output
@@ -150,7 +151,7 @@ class InterfaceVZMOD(object):
         hydroparam5.value = 1.26
 
         nitriparam0 = arcpy.Parameter(name="Knit",
-                                      displayName="Knit (1/d)",
+                                      displayName="Knit [1/d]",
                                       datatype="GPDouble",
                                       parameterType="Required",  # Required|Optional|Derived
                                       direction="Input",  # Input|Output
@@ -159,7 +160,7 @@ class InterfaceVZMOD(object):
         nitriparam0.value = 2.9
 
         nitriparam1 = arcpy.Parameter(name="Topt-nit",
-                                      displayName="Topt-nit (\u2103)",
+                                      displayName="Topt-nit [\u2103]",
                                       datatype="GPDouble",
                                       parameterType="Required",  # Required|Optional|Derived
                                       direction="Input",  # Input|Output
@@ -168,7 +169,7 @@ class InterfaceVZMOD(object):
         nitriparam1.value = 25.0
 
         nitriparam2 = arcpy.Parameter(name="\u03B2nit",
-                                      displayName="\u03B2nit (-)",
+                                      displayName="\u03B2nit [-]",
                                       datatype="GPDouble",
                                       parameterType="Required",  # Required|Optional|Derived
                                       direction="Input",  # Input|Output
@@ -177,7 +178,7 @@ class InterfaceVZMOD(object):
         nitriparam2.value = 0.347
 
         nitriparam3 = arcpy.Parameter(name="e2",
-                                      displayName="e2 (-)",
+                                      displayName="e2 [-]",
                                       datatype="GPDouble",
                                       parameterType="Required",  # Required|Optional|Derived
                                       direction="Input",  # Input|Output
@@ -186,7 +187,7 @@ class InterfaceVZMOD(object):
         nitriparam3.value = 2.267
 
         nitriparam4 = arcpy.Parameter(name="e3",
-                                      displayName="e3 (-)",
+                                      displayName="e3 [-]",
                                       datatype="GPDouble",
                                       parameterType="Required",  # Required|Optional|Derived
                                       direction="Input",  # Input|Output
@@ -195,7 +196,7 @@ class InterfaceVZMOD(object):
         nitriparam4.value = 1.104
 
         nitriparam5 = arcpy.Parameter(name="fs",
-                                      displayName="fs (-)",
+                                      displayName="fs [-]",
                                       datatype="GPDouble",
                                       parameterType="Required",  # Required|Optional|Derived
                                       direction="Input",  # Input|Output
@@ -204,7 +205,7 @@ class InterfaceVZMOD(object):
         nitriparam5.value = 0.0
 
         nitriparam6 = arcpy.Parameter(name="fwp",
-                                      displayName="fwp (-)",
+                                      displayName="fwp [-]",
                                       datatype="GPDouble",
                                       parameterType="Required",  # Required|Optional|Derived
                                       direction="Input",  # Input|Output
@@ -213,7 +214,7 @@ class InterfaceVZMOD(object):
         nitriparam6.value = 0.0
 
         nitriparam7 = arcpy.Parameter(name="Swp",
-                                      displayName="Swp (-)",
+                                      displayName="Swp [-]",
                                       datatype="GPDouble",
                                       parameterType="Required",  # Required|Optional|Derived
                                       direction="Input",  # Input|Output
@@ -222,7 +223,7 @@ class InterfaceVZMOD(object):
         nitriparam7.value = 0.154
 
         nitriparam8 = arcpy.Parameter(name="Sl",
-                                      displayName="Sl (-)",
+                                      displayName="Sl [-]",
                                       datatype="GPDouble",
                                       parameterType="Required",  # Required|Optional|Derived
                                       direction="Input",  # Input|Output
@@ -231,7 +232,7 @@ class InterfaceVZMOD(object):
         nitriparam8.value = 0.665
 
         nitriparam9 = arcpy.Parameter(name="Sh",
-                                      displayName="Sh (-)",
+                                      displayName="Sh [-]",
                                       datatype="GPDouble",
                                       parameterType="Required",  # Required|Optional|Derived
                                       direction="Input",  # Input|Output
@@ -240,7 +241,7 @@ class InterfaceVZMOD(object):
         nitriparam9.value = 0.809
 
         denitparam0 = arcpy.Parameter(name="Kdnt",
-                                      displayName="Kdnt (1/d)",
+                                      displayName="Kdnt [1/d]",
                                       datatype="GPDouble",
                                       parameterType="Required",  # Required|Optional|Derived
                                       direction="Input",  # Input|Output
@@ -249,7 +250,7 @@ class InterfaceVZMOD(object):
         denitparam0.value = 0.025
 
         denitparam1 = arcpy.Parameter(name="Topt-dnt",
-                                      displayName="Topt-dnt (\u2103)",
+                                      displayName="Topt-dnt [\u2103]",
                                       datatype="GPDouble",
                                       parameterType="Required",  # Required|Optional|Derived
                                       direction="Input",  # Input|Output
@@ -258,7 +259,7 @@ class InterfaceVZMOD(object):
         denitparam1.value = 26.0
 
         denitparam2 = arcpy.Parameter(name="\u03B2dnt",
-                                      displayName="\u03B2dnt (-)",
+                                      displayName="\u03B2dnt [-]",
                                       datatype="GPDouble",
                                       parameterType="Required",  # Required|Optional|Derived
                                       direction="Input",  # Input|Output
@@ -267,7 +268,7 @@ class InterfaceVZMOD(object):
         denitparam2.value = 0.347
 
         denitparam3 = arcpy.Parameter(name="e1",
-                                      displayName="e1 (-)",
+                                      displayName="e1 [-]",
                                       datatype="GPDouble",
                                       parameterType="Required",  # Required|Optional|Derived
                                       direction="Input",  # Input|Output
@@ -276,7 +277,7 @@ class InterfaceVZMOD(object):
         denitparam3.value = 3.774
 
         denitparam4 = arcpy.Parameter(name="Sdnt",
-                                      displayName="Sdnt (-)",
+                                      displayName="Sdnt [-]",
                                       datatype="GPDouble",
                                       parameterType="Required",  # Required|Optional|Derived
                                       direction="Input",  # Input|Output
@@ -284,74 +285,124 @@ class InterfaceVZMOD(object):
                                       )
         denitparam4.value = 0.0
 
-        adsorparam0 = arcpy.Parameter(name="kd",
-                                      displayName="kd (cm\u00B3/g)",
+        nadsorparam = arcpy.Parameter(name="kd for NH\u2084-N",
+                                      displayName="kd for NH\u2084-N [cm\u00B3/g]",
                                       datatype="GPDouble",
                                       parameterType="Required",  # Required|Optional|Derived
                                       direction="Input",  # Input|Output
-                                      category="Adsorption Params"
+                                      category="NH\u2084-N Adsorption Params"
                                       )
-        adsorparam0.value = 1.46
+        nadsorparam.value = 1.46
 
-        adsorparam1 = arcpy.Parameter(name="\u03C1",
-                                      displayName="\u03C1 (g/cm\u00B3)",
+        nDispparam = arcpy.Parameter(name="Dispersion coefficient",
+                                     displayName="Dispersion coefficient [cm\u00B2/d]",
+                                     datatype="GPDouble",
+                                     parameterType="Required",  # Required|Optional|Derived
+                                     direction="Input",  # Input|Output
+                                     category="Dispersion, Bulk Density and Temperature"
+                                     )
+        nDispparam.value = 4.32
+
+        bulkdensity = arcpy.Parameter(name="\u03C1",
+                                      displayName="\u03C1 [g/cm\u00B3]",
                                       datatype="GPDouble",
                                       parameterType="Required",  # Required|Optional|Derived
                                       direction="Input",  # Input|Output
-                                      category="Adsorption Params"
+                                      category="Dispersion, Bulk Density and Temperature"
                                       )
-        adsorparam1.value = 1.50
+        bulkdensity.value = 1.50
 
-        Tempparam0 = arcpy.Parameter(name="Temperature Parameter",
-                                     displayName="Temperature param (\u2103)",
+        Tempparam = arcpy.Parameter(name="Temperature",
+                                    displayName="Temperature [\u2103]",
+                                    datatype="GPDouble",
+                                    parameterType="Required",  # Required|Optional|Derived
+                                    direction="Input",  # Input|Output
+                                    category="Dispersion, Bulk Density and Temperature"
+                                    )
+        Tempparam.value = 25.5
+
+        phosparam0 = arcpy.Parameter(name="Sorption isotherm",
+                                     displayName="Sorption isotherm",
+                                     datatype="String",
+                                     parameterType="Required",  # Required|Optional|Derived
+                                     direction="Input",
+                                     category="Phosphorus Params")
+        phoschoices = ["Langmuir", "Linear"]
+        phosparam0.filter.list = phoschoices
+        phosparam0.value = "Langmuir"
+
+        phosparam1 = arcpy.Parameter(name="Precipitation rate [mg/kg 1/day]",
+                                     displayName="Rprecip [mg/kg 1/day]",
                                      datatype="GPDouble",
                                      parameterType="Required",  # Required|Optional|Derived
-                                     direction="Input",  # Input|Output
-                                     category="Temperature and Transport Params"
-                                     )
-        Tempparam0.value = 25.5
+                                     direction="Input",
+                                     category="Phosphorus Params")
+        phosparam1.value = 0.0002
 
-        Tempparam1 = arcpy.Parameter(name="Transport Parameter",
-                                     displayName="Transport param (cm\u00B2/d)",
+        phosparam2 = arcpy.Parameter(name="The coefficient in langmuir equation [L/mg]",
+                                     displayName="Langmuir coefficient [L/mg]",
                                      datatype="GPDouble",
                                      parameterType="Required",  # Required|Optional|Derived
-                                     direction="Input",  # Input|Output
-                                     category="Temperature and Transport Params"
-                                     )
-        Tempparam1.value = 4.32
+                                     direction="Input",
+                                     category="Phosphorus Params")
+        phosparam2.value = 0.2
 
-        Initparam0 = arcpy.Parameter(name="Concentration of NH\u2084",
-                                     displayName="Concentration of NH\u2084 (mg/L)",
+        phosparam3 = arcpy.Parameter(name="Maximum sorption capacity [mg P / kg]",
+                                     displayName="Maximum sorption capacity [mg P / kg]",
+                                     datatype="GPDouble",
+                                     parameterType="Required",  # Required|Optional|Derived
+                                     direction="Input",
+                                     category="Phosphorus Params")
+        phosparam3.value = 237
+
+        phosparam4 = arcpy.Parameter(name="Linear distribution coefficient [L/kg]",
+                                     displayName="Linear distribution coefficient [L/kg]",
+                                     datatype="GPDouble",
+                                     parameterType="Required",  # Required|Optional|Derived
+                                     direction="Input",
+                                     category="Phosphorus Params")
+        phosparam4.value = 15.1
+
+        Initparam0 = arcpy.Parameter(name="Concentration of NH\u2084-N",
+                                     displayName="Concentration of NH\u2084-N [mg/L]",
                                      datatype="GPDouble",
                                      parameterType="Required",  # Required|Optional|Derived
                                      direction="Input"  # Input|Output
                                      )
         Initparam0.value = 60.0
 
-        Initparam1 = arcpy.Parameter(name="Concentration of NO\u2083",
-                                     displayName="Concentration of NO\u2083 (mg/L)",
+        Initparam1 = arcpy.Parameter(name="Concentration of NO\u2083-N",
+                                     displayName="Concentration of NO\u2083-N [mg/L]",
                                      datatype="GPDouble",
                                      parameterType="Required",  # Required|Optional|Derived
                                      direction="Input"  # Input|Output
                                      )
         Initparam1.value = 1.0
 
-        Initparam2 = arcpy.Parameter(name="Depth to Water Table",
-                                     displayName="Depth to water table (cm)",
+        Initparam2 = arcpy.Parameter(name="Concentration of dissolved P [mg P/L]",
+                                     displayName="Concentration of dissolved P [mg P/L]",
                                      datatype="GPDouble",
-                                     parameterType="Optional",  # Required|Optional|Derived
+                                     parameterType="Required",  # Required|Optional|Derived
                                      direction="Input"  # Input|Output
                                      )
-        Initparam2.value = 150
+        Initparam2.value = 10.0
 
-        Initparam3 = arcpy.Parameter(name="Distance",
-                                     displayName="Distance (cm)",
+        Initparam3 = arcpy.Parameter(name="Depth to Water Table",
+                                     displayName="Depth to water table [cm]",
                                      datatype="GPDouble",
                                      parameterType="Optional",  # Required|Optional|Derived
                                      direction="Input"  # Input|Output
                                      )
-        Initparam3.value = 0
-        Initparam3.enabled = False
+        Initparam3.value = 150
+
+        Initparam4 = arcpy.Parameter(name="Distance",
+                                     displayName="Distance [cm]",
+                                     datatype="GPDouble",
+                                     parameterType="Optional",  # Required|Optional|Derived
+                                     direction="Input"  # Input|Output
+                                     )
+        Initparam4.value = 0
+        Initparam4.enabled = False
 
         outputfile0 = arcpy.Parameter(name="Output profile results",
                                       displayName="Output profile results (text file)",
@@ -360,96 +411,108 @@ class InterfaceVZMOD(object):
                                       direction="Output"  # Input|Output
                                       )
         outputfile0.value = "Results.txt"
+        outputfile0.enabled = True
 
-        inputfile0 = arcpy.Parameter(name="Single or multiple OSTDS",
+        inputfile0 = arcpy.Parameter(name="Types of contaminants",
+                                 displayName="Types of contaminants",
+                                 datatype="String",
+                                 parameterType="Required",  # Required|Optional|Derived
+                                 direction="Input",  # Input|Output
+                                 )
+        choices = ["Nitrogen", "Phosphorus", "Nitrogen and Phosphorus"]
+        inputfile0.filter.list = choices
+        inputfile0.value = "Nitrogen"
+
+        inputfile1 = arcpy.Parameter(name="Single or multiple OSTDS",
                                      displayName="Single or multiple OSTDS",
                                      datatype="String",
                                      parameterType="Required",  # Required|Optional|Derived
                                      direction="Input"  # Input|Output
                                      )
         choices = ["Single OSTDS", "Multiple OSTDS"]
-        inputfile0.filter.list = choices
-        inputfile0.value = "Single OSTDS"
+        inputfile1.filter.list = choices
+        inputfile1.value = "Single OSTDS"
 
-        inputfile1 = arcpy.Parameter(name="Heterogeneous Ks and \u03B8s",
+        inputfile2 = arcpy.Parameter(name="Heterogeneous Ks and \u03B8s",
                                      displayName="Heterogeneous Ks and \u03B8s",
                                      datatype="GPBoolean",
                                      parameterType="Optional",  # Required|Optional|Derived
                                      direction="Input"  # Input|Output
                                      )
-        inputfile1.value = 0
-        inputfile1.parameterDependencies = [inputfile0.name]
+        inputfile2.value = 0
+        inputfile2.parameterDependencies = [inputfile1.name]
 
-        inputfile2 = arcpy.Parameter(name="Calculate depth to water table",
+        inputfile3 = arcpy.Parameter(name="Calculate depth to water table",
                                      displayName="Calculate depth to water table",
                                      datatype="GPBoolean",
                                      parameterType="Optional",  # Required|Optional|Derived
                                      direction="Input"  # Input|Output
                                      )
-        inputfile2.value = 0
-        inputfile2.parameterDependencies = [inputfile0.name]
+        inputfile3.value = 0
+        inputfile3.parameterDependencies = [inputfile1.name]
 
-        inputfile3 = arcpy.Parameter(name="Multiple soil types",
+        inputfile4 = arcpy.Parameter(name="Multiple soil types",
                                      displayName="Multiple soil types",
                                      datatype="GPBoolean",
                                      parameterType="Optional",  # Required|Optional|Derived
                                      direction="Input"  # Input|Output
                                      )
-        inputfile3.value = 0
-        inputfile3.parameterDependencies = [inputfile0.name]
+        inputfile4.value = 0
+        inputfile4.parameterDependencies = [inputfile1.name]
 
-        inputfile4 = arcpy.Parameter(name="Septic tank sources (point)",
+        inputfile5 = arcpy.Parameter(name="Septic tank sources (point)",
                                      displayName="Septic tank sources (point)",
                                      datatype="GPFeatureLayer",
                                      parameterType="Optional",  # Required|Optional|Derived
                                      direction="Input"  # Input|Output
                                      )
-        inputfile4.filter.list = ["Point"]
-        inputfile4.parameterDependencies = [inputfile0.name]
+        inputfile5.filter.list = ["Point"]
+        inputfile5.parameterDependencies = [inputfile1.name]
 
-        inputfile5 = arcpy.Parameter(name="Hydraulic conductivity (raster)",
+        inputfile6 = arcpy.Parameter(name="Hydraulic conductivity (raster)",
                                      displayName="Hydraulic conductivity (raster)",
                                      datatype="GPRasterLayer",
                                      parameterType="Optional",  # Required|Optional|Derived
                                      direction="Input"  # Input|Output
                                      )
 
-        inputfile6 = arcpy.Parameter(name="Soil porosity (raster)",
+        inputfile7 = arcpy.Parameter(name="Soil porosity (raster)",
                                      displayName="Soil porosity (raster)",
                                      datatype="GPRasterLayer",
                                      parameterType="Optional",  # Required|Optional|Derived
                                      direction="Input"  # Input|Output
                                      )
 
-        inputfile7 = arcpy.Parameter(name="DEM file (raster)",
+        inputfile8 = arcpy.Parameter(name="DEM file (raster)",
                                      displayName="DEM file (raster)",
                                      datatype="GPRasterLayer",
                                      parameterType="Optional",  # Required|Optional|Derived
                                      direction="Input"  # Input|Output
                                      )
 
-        inputfile8 = arcpy.Parameter(name="Smoothed DEM (raster)",
+        inputfile9 = arcpy.Parameter(name="Smoothed DEM (raster)",
                                      displayName="Smoothed DEM (raster)",
                                      datatype="GPRasterLayer",
                                      parameterType="Optional",  # Required|Optional|Derived
                                      direction="Input"  # Input|Output
                                      )
 
-        inputfile9 = arcpy.Parameter(name="Soil types (raster)",
-                                     displayName="Soil types (raster)",
-                                     datatype="GPRasterLayer",
-                                     parameterType="Optional",  # Required|Optional|Derived
-                                     direction="Input"  # Input|Output
-                                     )
+        inputfile10 = arcpy.Parameter(name="Soil types (raster)",
+                                      displayName="Soil types (raster)",
+                                      datatype="GPRasterLayer",
+                                      parameterType="Optional",  # Required|Optional|Derived
+                                      direction="Input"  # Input|Output
+                                      )
 
         return [inputfile0, inputfile1, inputfile2, inputfile3, inputfile4,                            # 0 - 4
-                inputfile5, inputfile6, inputfile7, inputfile8, inputfile9,                            # 5 - 9
-                Option, hydroparam0, hydroparam1, hydroparam2, hydroparam3, hydroparam4, hydroparam5,  # 10 - 16
-                nitriparam0, nitriparam1, nitriparam2, nitriparam3, nitriparam4,                       # 17 - 21
-                nitriparam5, nitriparam6, nitriparam7, nitriparam8, nitriparam9,                       # 22 - 26
-                denitparam0, denitparam1, denitparam2, denitparam3, denitparam4,                       # 27 - 31
-                adsorparam0, adsorparam1, Tempparam0, Tempparam1,                                      # 32 - 35
-                Initparam0, Initparam1, Initparam2, Initparam3, outputfile0]                           # 36 - 40
+                inputfile5, inputfile6, inputfile7, inputfile8, inputfile9, inputfile10,               # 5 - 10
+                Option, hydroparam0, hydroparam1, hydroparam2, hydroparam3, hydroparam4, hydroparam5,  # 11 - 17
+                nitriparam0, nitriparam1, nitriparam2, nitriparam3, nitriparam4,                       # 18 - 22
+                nitriparam5, nitriparam6, nitriparam7, nitriparam8, nitriparam9,                       # 23 - 27
+                denitparam0, denitparam1, denitparam2, denitparam3, denitparam4,                       # 28 - 32
+                nadsorparam, nDispparam, bulkdensity, Tempparam,                                       # 33 - 36
+                phosparam0, phosparam1, phosparam2, phosparam3, phosparam4,                            # 37 - 41
+                Initparam0, Initparam1, Initparam2, Initparam3, Initparam4, outputfile0]               # 42 - 47
 
     def isLicensed(self) -> bool:
         """Set whether tool is licensed to execute.
@@ -466,33 +529,135 @@ class InterfaceVZMOD(object):
         """Modify the values and properties of parameters before internal
         validation is performed.  This method is called whenever a parameter
         has been changed."""
-        if parameters[10].altered:
-            if not parameters[10].hasBeenValidated:
-                parameters[11].value = hydraulic_default[parameters[10].valueAsText][0]
-                parameters[12].value = hydraulic_default[parameters[10].valueAsText][1]
-                parameters[13].value = hydraulic_default[parameters[10].valueAsText][2]
-                parameters[14].value = hydraulic_default[parameters[10].valueAsText][3]
-                parameters[15].value = hydraulic_default[parameters[10].valueAsText][4]
-                parameters[16].value = hydraulic_default[parameters[10].valueAsText][5]
-                parameters[17].value = nitrification_default[parameters[10].valueAsText][0]
-                parameters[18].value = nitrification_default[parameters[10].valueAsText][1]
-                parameters[19].value = nitrification_default[parameters[10].valueAsText][2]
-                parameters[20].value = nitrification_default[parameters[10].valueAsText][3]
-                parameters[21].value = nitrification_default[parameters[10].valueAsText][4]
-                parameters[22].value = nitrification_default[parameters[10].valueAsText][5]
-                parameters[23].value = nitrification_default[parameters[10].valueAsText][6]
-                parameters[24].value = nitrification_default[parameters[10].valueAsText][7]
-                parameters[25].value = nitrification_default[parameters[10].valueAsText][8]
-                parameters[26].value = nitrification_default[parameters[10].valueAsText][9]
-                parameters[27].value = denitrification_default[parameters[10].valueAsText][0]
-                parameters[28].value = denitrification_default[parameters[10].valueAsText][1]
-                parameters[29].value = denitrification_default[parameters[10].valueAsText][2]
-                parameters[30].value = denitrification_default[parameters[10].valueAsText][3]
-                parameters[31].value = denitrification_default[parameters[10].valueAsText][4]
-                parameters[32].value = adsorption_default[parameters[10].valueAsText][0]
-                parameters[33].value = adsorption_default[parameters[10].valueAsText][1]
+        if parameters[0].altered:
+            if parameters[0].value == "Nitrogen and Phosphorus":
+                parameters[18].enabled = True
+                parameters[19].enabled = True
+                parameters[20].enabled = True
+                parameters[21].enabled = True
+                parameters[22].enabled = True
+                parameters[23].enabled = True
+                parameters[24].enabled = True
+                parameters[25].enabled = True
+                parameters[26].enabled = True
+                parameters[27].enabled = True
+                parameters[28].enabled = True
+                parameters[29].enabled = True
+                parameters[30].enabled = True
+                parameters[31].enabled = True
+                parameters[32].enabled = True
+                parameters[33].enabled = True
+                parameters[34].enabled = True
+                parameters[35].enabled = True
+                parameters[36].enabled = True
+                parameters[37].enabled = True
+                if parameters[37].altered:
+                    if parameters[37].value == "Langmuir":
+                        parameters[38].enabled = True
+                        parameters[39].enabled = True
+                        parameters[40].enabled = True
+                        parameters[41].enabled = False
+                    elif parameters[37].value == "Linear":
+                        parameters[38].enabled = True
+                        parameters[39].enabled = False
+                        parameters[40].enabled = False
+                        parameters[41].enabled = True
+                parameters[42].enabled = True
+                parameters[43].enabled = True
+                parameters[44].enabled = True
+                parameters[45].enabled = True
+            elif parameters[0].value == "Nitrogen":
+                parameters[18].enabled = True
+                parameters[19].enabled = True
+                parameters[20].enabled = True
+                parameters[21].enabled = True
+                parameters[22].enabled = True
+                parameters[23].enabled = True
+                parameters[24].enabled = True
+                parameters[25].enabled = True
+                parameters[26].enabled = True
+                parameters[27].enabled = True
+                parameters[28].enabled = True
+                parameters[29].enabled = True
+                parameters[30].enabled = True
+                parameters[31].enabled = True
+                parameters[32].enabled = True
+                parameters[33].enabled = True
+                parameters[34].enabled = True
+                parameters[35].enabled = True
+                parameters[36].enabled = True
+                parameters[37].enabled = False
+                parameters[38].enabled = False
+                parameters[39].enabled = False
+                parameters[40].enabled = False
+                parameters[41].enabled = False
+                parameters[42].enabled = True
+                parameters[43].enabled = True
+                parameters[44].enabled = False
+                parameters[45].enabled = True
+            elif parameters[0].value == "Phosphorus":
+                parameters[18].enabled = False
+                parameters[19].enabled = False
+                parameters[20].enabled = False
+                parameters[21].enabled = False
+                parameters[22].enabled = False
+                parameters[23].enabled = False
+                parameters[24].enabled = False
+                parameters[25].enabled = False
+                parameters[26].enabled = False
+                parameters[27].enabled = False
+                parameters[28].enabled = False
+                parameters[29].enabled = False
+                parameters[30].enabled = False
+                parameters[31].enabled = False
+                parameters[32].enabled = False
+                parameters[33].enabled = False
+                parameters[34].enabled = True
+                parameters[35].enabled = True
+                parameters[36].enabled = False
+                parameters[37].enabled = True
+                if parameters[37].altered:
+                    if parameters[37].value == "Langmuir":
+                        parameters[38].enabled = True
+                        parameters[39].enabled = True
+                        parameters[40].enabled = True
+                        parameters[41].enabled = False
+                    elif parameters[37].value == "Linear":
+                        parameters[38].enabled = True
+                        parameters[39].enabled = False
+                        parameters[40].enabled = False
+                        parameters[41].enabled = True
+                parameters[42].enabled = False
+                parameters[43].enabled = False
+                parameters[44].enabled = True
+                parameters[45].enabled = True
+
+        if parameters[11].altered:
+            if not parameters[11].hasBeenValidated:
+                parameters[12].value = hydraulic_default[parameters[11].valueAsText][0]
+                parameters[13].value = hydraulic_default[parameters[11].valueAsText][1]
+                parameters[14].value = hydraulic_default[parameters[11].valueAsText][2]
+                parameters[15].value = hydraulic_default[parameters[11].valueAsText][3]
+                parameters[16].value = hydraulic_default[parameters[11].valueAsText][4]
+                parameters[17].value = hydraulic_default[parameters[11].valueAsText][5]
+                parameters[18].value = nitrification_default[parameters[11].valueAsText][0]
+                parameters[19].value = nitrification_default[parameters[11].valueAsText][1]
+                parameters[20].value = nitrification_default[parameters[11].valueAsText][2]
+                parameters[21].value = nitrification_default[parameters[11].valueAsText][3]
+                parameters[22].value = nitrification_default[parameters[11].valueAsText][4]
+                parameters[23].value = nitrification_default[parameters[11].valueAsText][5]
+                parameters[24].value = nitrification_default[parameters[11].valueAsText][6]
+                parameters[25].value = nitrification_default[parameters[11].valueAsText][7]
+                parameters[26].value = nitrification_default[parameters[11].valueAsText][8]
+                parameters[27].value = nitrification_default[parameters[11].valueAsText][9]
+                parameters[28].value = denitrification_default[parameters[11].valueAsText][0]
+                parameters[29].value = denitrification_default[parameters[11].valueAsText][1]
+                parameters[30].value = denitrification_default[parameters[11].valueAsText][2]
+                parameters[31].value = denitrification_default[parameters[11].valueAsText][3]
+                parameters[32].value = denitrification_default[parameters[11].valueAsText][4]
+                parameters[33].value = adsorption_default[parameters[11].valueAsText][0]
+                parameters[35].value = adsorption_default[parameters[11].valueAsText][1]
         else:
-            parameters[11].value = None
             parameters[12].value = None
             parameters[13].value = None
             parameters[14].value = None
@@ -515,57 +680,61 @@ class InterfaceVZMOD(object):
             parameters[31].value = None
             parameters[32].value = None
             parameters[33].value = None
+            parameters[35].value = None
 
-        if parameters[0].altered:
-            if parameters[0].value == "Multiple OSTDS":
-                parameters[1].enabled = True
+        if parameters[1].altered:
+            if parameters[1].value == "Multiple OSTDS":
                 parameters[2].enabled = True
                 parameters[3].enabled = True
                 parameters[4].enabled = True
-                if parameters[4].altered and parameters[4].value:
-                    parameters[40].value = os.path.join(os.path.dirname(parameters[4].valueAsText), "Results.txt")
-                if parameters[1].altered and parameters[1].value:
-                    parameters[5].enabled = True
-                    parameters[6].enabled = True
-                    parameters[13].enabled = False
-                    parameters[15].enabled = False
-                else:
-                    parameters[5].enabled = False
-                    parameters[6].enabled = False
-                    parameters[13].enabled = True
-                    parameters[15].enabled = True
+                parameters[5].enabled = True
+                if parameters[5].altered and parameters[5].value:
+                    parameters[47].value = os.path.join(os.path.dirname(parameters[5].valueAsText), "Results.txt")
                 if parameters[2].altered and parameters[2].value:
+                    parameters[6].enabled = True
                     parameters[7].enabled = True
-                    parameters[8].enabled = True
-                    parameters[38].enabled = False
-                    parameters[39].enabled = True
+                    parameters[14].enabled = False
+                    parameters[16].enabled = False
                 else:
+                    parameters[6].enabled = False
                     parameters[7].enabled = False
-                    parameters[8].enabled = False
-                    parameters[38].enabled = True
-                    parameters[39].enabled = False
+                    parameters[14].enabled = True
+                    parameters[16].enabled = True
                 if parameters[3].altered and parameters[3].value:
+                    parameters[8].enabled = True
                     parameters[9].enabled = True
-                    parameters[10].enabled = False
-                    parameters[12].enabled = False
+                    parameters[45].enabled = False
+                    parameters[46].enabled = True
+                else:
+                    parameters[8].enabled = False
+                    parameters[9].enabled = False
+                    parameters[45].enabled = True
+                    parameters[46].enabled = False
+                if parameters[4].altered and parameters[4].value:
+                    parameters[10].enabled = True
+                    parameters[11].enabled = False
                     parameters[13].enabled = False
                     parameters[14].enabled = False
                     parameters[15].enabled = False
                     parameters[16].enabled = False
-                    parameters[30].enabled = False
-                    parameters[32].enabled = False
+                    parameters[17].enabled = False
+                    parameters[31].enabled = False
+                    parameters[33].enabled = False
                 else:
-                    parameters[9].enabled = False
-                    parameters[10].enabled = True
-                    parameters[12].enabled = True
+                    parameters[10].enabled = False
+                    parameters[11].enabled = True
                     parameters[13].enabled = True
                     parameters[14].enabled = True
                     parameters[15].enabled = True
                     parameters[16].enabled = True
-                    parameters[30].enabled = True
-                    parameters[32].enabled = True
+                    parameters[17].enabled = True
+                    if parameters[2].altered and parameters[2].value:
+                        parameters[14].enabled = False
+                        parameters[16].enabled = False
+                    if parameters[0].value == "Nitrogen" or parameters[0].value == "Nitrogen and Phosphorus":
+                        parameters[31].enabled = True
+                        parameters[33].enabled = True
             else:
-                parameters[1].enabled = False
                 parameters[2].enabled = False
                 parameters[3].enabled = False
                 parameters[4].enabled = False
@@ -574,69 +743,76 @@ class InterfaceVZMOD(object):
                 parameters[7].enabled = False
                 parameters[8].enabled = False
                 parameters[9].enabled = False
-                parameters[10].enabled = True
-                parameters[12].enabled = True
+                parameters[10].enabled = False
+                parameters[11].enabled = True
                 parameters[13].enabled = True
                 parameters[14].enabled = True
                 parameters[15].enabled = True
                 parameters[16].enabled = True
-                parameters[30].enabled = True
-                parameters[32].enabled = True
-                parameters[38].enabled = True
-                parameters[39].enabled = False
+                parameters[17].enabled = True
+                if parameters[0].value == "Nitrogen" or parameters[0].value == "Nitrogen and Phosphorus":
+                    parameters[31].enabled = True
+                    parameters[33].enabled = True
+                parameters[45].enabled = True
+                parameters[46].enabled = False
         return
 
     def updateMessages(self, parameters) -> None:
         """Modify the messages created by internal validation for each tool
         parameter.  This method is called after internal validation."""
-        if parameters[11].value is not None and parameters[11].value < 0:
-            parameters[11].setErrorMessage("Hydraulic loading rate must be greater than 0.")
         if parameters[12].value is not None and parameters[12].value < 0:
-            parameters[12].setErrorMessage("Alpha must be greater than 0.")
+            parameters[12].setErrorMessage("Hydraulic loading rate must be greater than 0.")
         if parameters[13].value is not None and parameters[13].value < 0:
-            parameters[13].setErrorMessage("Ks must be greater than 0.")
-        if parameters[14].value is not None:
-            if parameters[14].value < 0:
-                parameters[14].setErrorMessage("Theta_r must be greater than 0.")
-            elif parameters[14].value > 1:
-                parameters[14].setErrorMessage("Theta_r must be less than 1.")
+            parameters[13].setErrorMessage("\u0251 must be greater than 0.")
+        if parameters[14].value is not None and parameters[14].value < 0:
+            parameters[14].setErrorMessage("Ks must be greater than 0.")
         if parameters[15].value is not None:
             if parameters[15].value < 0:
-                parameters[15].setErrorMessage("Theta_s must be greater than 0.")
+                parameters[15].setErrorMessage("\u03B8r must be greater than 0.")
             elif parameters[15].value > 1:
-                parameters[15].setErrorMessage("Theta_s must be less than 1.")
-        if parameters[16].value is not None and parameters[16].value < 0:
-            parameters[16].setErrorMessage("n must be greater than 0.")
-
+                parameters[15].setErrorMessage("\u03B8r must be less than 1.")
+        if parameters[16].value is not None:
+            if parameters[16].value < 0:
+                parameters[16].setErrorMessage("\u03B8s must be greater than 0.")
+            elif parameters[16].value > 1:
+                parameters[16].setErrorMessage("\u03B8s must be less than 1.")
         if parameters[17].value is not None and parameters[17].value < 0:
-            parameters[17].setErrorMessage("Knit must be greater than 0.")
-        if parameters[24].value is not None and parameters[24].value < 0:
-            parameters[24].setErrorMessage("Swp must be greater than 0.")
+            parameters[17].setErrorMessage("n must be greater than 0.")
+
+        if parameters[18].value is not None and parameters[18].value < 0:
+            parameters[18].setErrorMessage("Knit must be greater than 0.")
         if parameters[25].value is not None and parameters[25].value < 0:
-            parameters[25].setErrorMessage("Sl must be greater than 0.")
+            parameters[25].setErrorMessage("Swp must be greater than 0.")
         if parameters[26].value is not None and parameters[26].value < 0:
-            parameters[26].setErrorMessage("Sh must be greater than 0.")
-
+            parameters[27].setErrorMessage("Sl must be greater than 0.")
         if parameters[27].value is not None and parameters[27].value < 0:
-            parameters[27].setErrorMessage("Kdnt must be greater than 0.")
-        if parameters[31].value is not None and parameters[31].value < 0:
-            parameters[31].setErrorMessage("Sdnt must be greater than 0.")
+            parameters[27].setErrorMessage("Sh must be greater than 0.")
 
+        if parameters[28].value is not None and parameters[28].value < 0:
+            parameters[28].setErrorMessage("Kdnt must be greater than 0.")
         if parameters[32].value is not None and parameters[32].value < 0:
-            parameters[32].setErrorMessage("kd must be greater than 0.")
+            parameters[32].setErrorMessage("Sdnt must be greater than 0.")
+
         if parameters[33].value is not None and parameters[33].value < 0:
-            parameters[33].setErrorMessage("rho must be greater than 0.")
+            parameters[33].setErrorMessage("kd must be greater than 0.")
+        if parameters[34].value is not None and parameters[34].value < 0:
+            parameters[34].setErrorMessage("Dispersion coefficient must be greater than 0.")
         if parameters[35].value is not None and parameters[35].value < 0:
-            parameters[35].setErrorMessage("Transport parameter must be greater than 0.")
+            parameters[35].setErrorMessage("\u03C1 must be greater than 0.")
 
-        if parameters[36].value is not None and parameters[36].value < 0:
-            parameters[36].setErrorMessage("NH4 must be greater than 0.")
-        if parameters[37].value is not None and parameters[37].value < 0:
-            parameters[37].setErrorMessage("NO3 must be greater than 0.")
+        if parameters[38].value is not None and parameters[38].value < 0:
+            parameters[38].setErrorMessage("Rprecip must be greater than 0.")
+        if parameters[39].value is not None and parameters[39].value < 0:
+            parameters[39].setErrorMessage("Langmuir coefficient must be greater than 0.")
+        if parameters[40].value is not None and parameters[40].value < 0:
+            parameters[40].setErrorMessage("Maximum sorption capacity must be greater than 0.")
 
-        if parameters[40].altered and parameters[40].value is not None:
-            if not parameters[40].valueAsText.endswith(".txt"):
-                parameters[40].setErrorMessage("Output file should be a text file.")
+        if parameters[42].value is not None and parameters[42].value < 0:
+            parameters[42].setErrorMessage("NH4-N concentration must be greater than 0.")
+        if parameters[43].value is not None and parameters[43].value < 0:
+            parameters[43].setErrorMessage("NO3-N concentration must be greater than 0.")
+        if parameters[44].value is not None and parameters[44].value < 0:
+            parameters[44].setErrorMessage("Phosphate concentration must be greater than 0.")
 
     def execute(self, parameters, messages) -> None:
         """This is the code that executes when you click the "Run" button."""
@@ -649,62 +825,73 @@ class InterfaceVZMOD(object):
         for param in parameters:
             self.describeParameter(messages, param)
 
-        if parameters[0].value == "Multiple OSTDS":
+        types_of_contaminants = parameters[0].valueAsText
+        options = None
+        if parameters[1].value == "Multiple OSTDS":
             options = True
-        elif parameters[0].value == "Single OSTDS":
+        elif parameters[1].value == "Single OSTDS":
             options = False
-        hetero_Ks_thetas = parameters[1].value
-        calc_DTW = parameters[2].value
-        multi_soil_type = parameters[3].value
+        hetero_Ks_thetas = parameters[2].value
+        calc_DTW = parameters[3].value
+        multi_soil_type = parameters[4].value
 
-        septic_tank = parameters[4].valueAsText
-        hydraulic_conductivity = parameters[5].valueAsText
-        soil_porosity = parameters[6].valueAsText
-        DEM = parameters[7].valueAsText
-        smoothed_DEM = parameters[8].valueAsText
-        soiltypefile = parameters[9].valueAsText
+        septic_tank = parameters[5].valueAsText
+        hydraulic_conductivity = parameters[6].valueAsText
+        soil_porosity = parameters[7].valueAsText
+        DEM = parameters[8].valueAsText
+        smoothed_DEM = parameters[9].valueAsText
+        soiltypefile = parameters[10].valueAsText
 
-        soiltype = parameters[10].valueAsText
-        hlr = parameters[11].value
-        alpha = parameters[12].value
-        ks = parameters[13].value
-        thetar = parameters[14].value
-        thetas = parameters[15].value
-        n = parameters[16].value
+        soiltype = parameters[11].valueAsText
+        hlr = parameters[12].value
+        alpha = parameters[13].value
+        ks = parameters[14].value
+        thetar = parameters[15].value
+        thetas = parameters[16].value
+        n = parameters[17].value
 
-        knit = parameters[17].value
-        toptnit = parameters[18].value
-        beltanit = parameters[19].value
-        e2 = parameters[20].value
-        e3 = parameters[21].value
-        fs = parameters[22].value
-        fwp = parameters[23].value
-        Swp = parameters[24].value
-        Sl = parameters[25].value
-        Sh = parameters[26].value
+        knit = parameters[18].value
+        toptnit = parameters[19].value
+        beltanit = parameters[20].value
+        e2 = parameters[21].value
+        e3 = parameters[22].value
+        fs = parameters[23].value
+        fwp = parameters[24].value
+        Swp = parameters[25].value
+        Sl = parameters[26].value
+        Sh = parameters[27].value
 
-        kdnt = parameters[27].value
-        toptdnt = parameters[28].value
-        beltadnt = parameters[29].value
-        e1 = parameters[30].value
-        Sdnt = parameters[31].value
+        kdnt = parameters[28].value
+        toptdnt = parameters[29].value
+        beltadnt = parameters[30].value
+        e1 = parameters[31].value
+        Sdnt = parameters[32].value
 
-        kd = parameters[32].value
-        rho = parameters[33].value
+        kd = parameters[33].value
+        dispn = parameters[34].value
 
-        Temp = parameters[34].value
-        Tran = parameters[35].value
+        rho = parameters[35].value
+        Temp = parameters[36].value
 
-        NH4 = parameters[36].value
-        NO3 = parameters[37].value
-        DTW = parameters[38].value
-        dist = parameters[39].value
+        phoschoice = parameters[37].value
+        rprep = parameters[38].value
+        kl = parameters[39].value
+        pmax = parameters[40].value
+        phoskd = parameters[41].value
 
-        output_file = parameters[40].valueAsText
+        NH4 = parameters[42].value
+        NO3 = parameters[43].value
+        phos = parameters[44].value
+        DTW = parameters[45].value
+        dist = parameters[46].value
+
+        output_file = parameters[47].valueAsText
 
         try:
-            vzmod = VZMOD(soiltype, hlr, alpha, ks, thetar, thetas, n, knit, toptnit, beltanit, e2, e3, fs, fwp, Swp,
-                          Sl, Sh, kdnt, toptdnt, beltadnt, e1, Sdnt, kd, rho, Temp, Tran, NH4, NO3, DTW, dist,
+            vzmod = VZMOD(types_of_contaminants, soiltype, hlr, alpha, ks, thetar, thetas, n,
+                          knit, toptnit, beltanit, e2, e3, fs, fwp, Swp, Sl, Sh, kdnt, toptdnt, beltadnt, e1, Sdnt,
+                          kd, rho, Temp, dispn, NH4, NO3, DTW, dist,
+                          phoschoice, rprep, kl, pmax, phoskd, phos,
                           options, output_file, hetero_Ks_thetas, calc_DTW, multi_soil_type,
                           septic_tank, hydraulic_conductivity, soil_porosity, DEM, smoothed_DEM, soiltypefile)
             vzmod.runVZMOD()
