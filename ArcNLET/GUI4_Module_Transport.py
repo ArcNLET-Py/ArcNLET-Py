@@ -126,7 +126,7 @@ class InterfaceTransport(object):
                                   datatype="String",
                                   parameterType="Required",  # Required|Optional|Derived
                                   direction="Input",  # Input|Output
-                                  category="Options",  # Category
+                                  category="Solution Options",  # Category
                                   )
         choices = ['DomenicoRobbinsSS2D', 'DomenicoRobbinsSSDecay2D']
         option0.filter.type = "ValueList"
@@ -138,7 +138,7 @@ class InterfaceTransport(object):
                                   datatype="Long",
                                   parameterType="Required",  # Required|Optional|Derived
                                   direction="Input",  # Input|Output
-                                  category="Options",  # Category
+                                  category="Solution Options",  # Category
                                   )
         option1.value = 48
 
@@ -147,7 +147,7 @@ class InterfaceTransport(object):
                                   datatype="String",
                                   parameterType="Required",  # Required|Optional|Derived
                                   direction="Input",  # Input|Output
-                                  category="Options",  # Category
+                                  category="Solution Options",  # Category
                                   )
         choices = ['Spline', 'Polyorder1', 'Polyorder2']
         option2.filter.type = "ValueList"
@@ -159,7 +159,7 @@ class InterfaceTransport(object):
                                   datatype="Double",
                                   parameterType="Required",  # Required|Optional|Derived
                                   direction="Input",  # Input|Output
-                                  category="Options",  # Category
+                                  category="Solution Options",  # Category
                                   )
         option3.value = 0.000001
 
@@ -168,7 +168,7 @@ class InterfaceTransport(object):
                                   datatype="String",
                                   parameterType="Required",  # Required|Optional|Derived
                                   direction="Input",  # Input|Output
-                                  category="Options",  # Category
+                                  category="Solution Options",  # Category
                                   )
         choices = ['None', 'Medium', 'Full']
         option4.filter.type = "ValueList"
@@ -180,7 +180,7 @@ class InterfaceTransport(object):
                                   datatype="String",
                                   parameterType="Required",  # Required|Optional|Derived
                                   direction="Input",  # Input|Output
-                                  category="Options",  # Category
+                                  category="Solution Options",  # Category
                                   )
         choices = ['Specified Input Mass Rate', 'Specified Z']
         option5.filter.type = "ValueList"
@@ -192,7 +192,7 @@ class InterfaceTransport(object):
                                   datatype="Long",
                                   parameterType="Optional",  # Required|Optional|Derived
                                   direction="Input",  # Input|Output
-                                  category="Options",  # Category
+                                  category="Solution Options",  # Category
                                   )
         option6.value = 400
 
@@ -201,7 +201,7 @@ class InterfaceTransport(object):
                                  datatype="Double",
                                  parameterType="Optional",  # Required|Optional|Derived
                                  direction="Input",  # Input|Output
-                                 category="Plume Parameters",  # Category
+                                 category="Source Plane Parameters",  # Category
                                  )
         param0.enabled = True
         param0.value = 20000
@@ -211,7 +211,7 @@ class InterfaceTransport(object):
                                  datatype="Double",
                                  parameterType="Required",  # Required|Optional|Derived
                                  direction="Input",  # Input|Output
-                                 category="Plume Parameters",  # Category
+                                 category="Source Plane Parameters",  # Category
                                  )
         param1.enabled = False
         param1.value = 1000
@@ -221,7 +221,7 @@ class InterfaceTransport(object):
                                  datatype="Double",
                                  parameterType="Required",  # Required|Optional|Derived
                                  direction="Input",  # Input|Output
-                                 category="Plume Parameters",  # Category
+                                 category="Source Plane Parameters",  # Category
                                  )
         param2.value = 12
 
@@ -230,7 +230,7 @@ class InterfaceTransport(object):
                                  datatype="Double",
                                  parameterType="Optional",  # Required|Optional|Derived
                                  direction="Input",  # Input|Output
-                                 category="Plume Parameters",  # Category
+                                 category="Source Plane Parameters",  # Category
                                  )
         param3.enabled = False
         param3.value = 1.5
@@ -240,7 +240,7 @@ class InterfaceTransport(object):
                                   datatype="GPBoolean",
                                   parameterType="Required",  # Required|Optional|Derived
                                   direction="Input",  # Input|Output
-                                  category="Plume Parameters",  # Category
+                                  category="Source Plane Parameters",  # Category
                                   )
         param4.value = 1
 
@@ -249,7 +249,7 @@ class InterfaceTransport(object):
                                  datatype="Double",
                                  parameterType="Optional",  # Required|Optional|Derived
                                  direction="Input",  # Input|Output
-                                 category="Plume Parameters",  # Category
+                                 category="Source Plane Parameters",  # Category
                                  )
         param5.value = 3.0
 
@@ -258,7 +258,7 @@ class InterfaceTransport(object):
                                  datatype="Double",
                                  parameterType="Required",  # Required|Optional|Derived
                                  direction="Input",  # Input|Output
-                                 category="Plume Parameters",  # Category
+                                 category="Source Plane Parameters",  # Category
                                  )
         param6.value = 0.8
 
@@ -267,7 +267,7 @@ class InterfaceTransport(object):
                                  datatype="Double",
                                  parameterType="Required",  # Required|Optional|Derived
                                  direction="Input",  # Input|Output
-                                 category="Plume Parameters",  # Category
+                                 category="Source Plane Parameters",  # Category
                                  )
         param7.value = 1000
 
@@ -276,12 +276,12 @@ class InterfaceTransport(object):
                                  datatype="Double",
                                  parameterType="Optional",  # Required|Optional|Derived
                                  direction="Input",  # Input|Output
-                                 category="Plume Parameters",  # Category
+                                 category="Source Plane Parameters",  # Category
                                  )
         param8.value = 1.42
 
-        no3param0 = arcpy.Parameter(name="NO\u2083-N Concentration",
-                                    displayName="NO\u2083-N Concentration [mg/l]",
+        no3param0 = arcpy.Parameter(name="Concentration of NO\u2083-N",
+                                    displayName="Concentration of NO\u2083-N [mg/l]",
                                     datatype="Double",
                                     parameterType="Required",  # Required|Optional|Derived
                                     direction="Input",  # Input|Output
@@ -316,8 +316,8 @@ class InterfaceTransport(object):
                                     )
         no3param3.value = 0.008
 
-        nh4param0 = arcpy.Parameter(name="NH\u2084-N Concentration",
-                                    displayName="NH\u2084-N Concentration [mg/l]",
+        nh4param0 = arcpy.Parameter(name="Concentration of NH\u2084-N",
+                                    displayName="Concentration of NH\u2084-N [mg/l]",
                                     datatype="Double",
                                     parameterType="Optional",  # Required|Optional|Derived
                                     direction="Input",  # Input|Output
@@ -361,8 +361,8 @@ class InterfaceTransport(object):
                                     )
         nh4param5.value = 2
 
-        phosparam0 = arcpy.Parameter(name="Dissolved P Concentration [mg P/L]",
-                                     displayName="Dissolved P Concentration [mg P/L]",
+        phosparam0 = arcpy.Parameter(name="Concentration of PO\u2084-P [mg/l]",
+                                     displayName="Concentration of PO\u2084-P [mg/l]",
                                      datatype="Double",
                                      parameterType="Optional",  # Required|Optional|Derived
                                      direction="Input",  # Input|Output
@@ -370,8 +370,8 @@ class InterfaceTransport(object):
                                      )
         phosparam0.value = 2
 
-        phosparam1 = arcpy.Parameter(name="Dissolved P Dispersivity \u03B1L [m]",
-                                     displayName="Dissolved P Dispersivity \u03B1L [m]",
+        phosparam1 = arcpy.Parameter(name="PO\u2084-P Dispersivity \u03B1L [m]",
+                                     displayName="PO\u2084-P Dispersivity \u03B1L [m]",
                                      datatype="Double",
                                      parameterType="Optional",  # Required|Optional|Derived
                                      direction="Input",  # Input|Output
@@ -379,8 +379,8 @@ class InterfaceTransport(object):
                                      )
         phosparam1.value = 2.113
 
-        phosparam2 = arcpy.Parameter(name="Dissolved P Dispersivity \u03B1TH [m]",
-                                     displayName="Dissolved P Dispersivity \u03B1TH [m]",
+        phosparam2 = arcpy.Parameter(name="PO\u2084-P Dispersivity \u03B1TH [m]",
+                                     displayName="PO\u2084-P Dispersivity \u03B1TH [m]",
                                      datatype="Double",
                                      parameterType="Optional",  # Required|Optional|Derived
                                      direction="Input",  # Input|Output
@@ -388,23 +388,23 @@ class InterfaceTransport(object):
                                      )
         phosparam2.value = 0.234
 
-        phosparam3 = arcpy.Parameter(name="Sorption isotherm",
-                                     displayName="Sorption isotherm",
-                                     datatype="String",
-                                     parameterType="Required",  # Required|Optional|Derived
-                                     direction="Input",
-                                     category="Phosphorus Parameters")
-        phoschoices = ["Langmuir", "Linear"]
-        phosparam3.filter.list = phoschoices
-        phosparam3.value = "Linear"
-
-        phosparam4 = arcpy.Parameter(name="Precipitation rate [mg/kg 1/day]",
+        phosparam3 = arcpy.Parameter(name="Precipitation rate [mg/kg 1/day]",
                                      displayName="Rprecip [mg/kg 1/day]",
                                      datatype="GPDouble",
                                      parameterType="Required",  # Required|Optional|Derived
                                      direction="Input",
                                      category="Phosphorus Parameters")
-        phosparam4.value = 0.0002
+        phosparam3.value = 0.0002
+
+        phosparam4 = arcpy.Parameter(name="Sorption isotherm",
+                                     displayName="Sorption isotherm",
+                                     datatype="String",
+                                     parameterType="Required",  # Required|Optional|Derived
+                                     direction="Input",
+                                     category="Phosphorus Parameters")
+        phoschoices = ["Linear", "Langmuir"]
+        phosparam4.filter.list = phoschoices
+        phosparam4.value = "Linear"
 
         phosparam5 = arcpy.Parameter(name="Linear distribution coefficient [L/kg]",
                                      displayName="Linear distribution coefficient [L/kg]",
@@ -467,12 +467,12 @@ class InterfaceTransport(object):
                 parameters[38].enabled = True
                 parameters[39].enabled = True
                 parameters[40].enabled = True
-                if parameters[39].altered:
-                    if parameters[39].value == "Langmuir":
+                if parameters[40].altered:
+                    if parameters[40].value == "Langmuir":
                         parameters[42].enabled = True
                         parameters[43].enabled = True
                         parameters[41].enabled = False
-                    elif parameters[39].value == "Linear":
+                    elif parameters[40].value == "Linear":
                         parameters[42].enabled = False
                         parameters[43].enabled = False
                         parameters[41].enabled = True
@@ -519,12 +519,12 @@ class InterfaceTransport(object):
                 parameters[38].enabled = True
                 parameters[39].enabled = True
                 parameters[40].enabled = True
-                if parameters[39].altered:
-                    if parameters[39].value == "Langmuir":
+                if parameters[40].altered:
+                    if parameters[40].value == "Langmuir":
                         parameters[42].enabled = True
                         parameters[43].enabled = True
                         parameters[41].enabled = False
-                    elif parameters[39].value == "Linear":
+                    elif parameters[40].value == "Linear":
                         parameters[42].enabled = False
                         parameters[43].enabled = False
                         parameters[41].enabled = True
@@ -761,8 +761,8 @@ class InterfaceTransport(object):
             parameters[37].setErrorMessage("P dispersivity alphaL must be a positive number.")
         if parameters[38].value is not None and parameters[38].value < 0:
             parameters[38].setErrorMessage("P dispersivity alphaTH must be a positive number.")
-        if parameters[40].value is not None and parameters[40].value < 0:
-            parameters[40].setErrorMessage("P precipitation rate must be a positive number.")
+        if parameters[39].value is not None and parameters[39].value < 0:
+            parameters[39].setErrorMessage("P precipitation rate must be a positive number.")
         if parameters[42].value is not None and parameters[42].value < 0:
             parameters[42].setErrorMessage("Langmuir coefficient must be a positive number.")
         if parameters[43].value is not None and parameters[43].value < 0:
