@@ -38,11 +38,11 @@ similar to ArcNLET, and it should be conceptually straightforward for
 ArcNLET users to use ArcNLET-Py.
 
 ArcNLET-Py simulates the fate and transport of nitrogen (including both
-ammonium and nitrate) in a surficial groundwater aquifer originating
-from onsite sewage treatment and disposal system systems (OSTDS),
-a.k.a., septic tanks. ArcNLET-Py produces estimated values of ammonium
-and/or nitrate load to specified surface water bodies. The primary
-functions performed by ArcNLET-Py are to:
+ammonium and nitrate) and phosphorus (as phosphate, PO4-P) in a surficial
+groundwater aquifer originating from onsite sewage treatment and disposal
+systems (OSTDS), a.k.a., septic tanks. ArcNLET-Py produces estimated
+values of ammonium, nitrate, and phosphate load to specified surface
+water bodies. The primary functions performed by ArcNLET-Py are to:
 
 -  Aid in preparing data that represents the soil hydraulic properties
    (e.g., hydraulic conductivity and porosity) within the domain
@@ -65,28 +65,33 @@ functions performed by ArcNLET-Py are to:
    transport and calculate the final nitrate load to target water
    bodies.
 
+-  Simulate reactive transport of phosphorus in the vertical direction
+   from an OSTDS drainfield to the groundwater table and estimate the
+   subsequent phosphate load reaching surface water bodies.
+
 The impetus behind developing the original ArcNLET and ArcNLET-Py is to
-have a simplified nitrogen transformation and transport model that is
-easy to implement, integrated into a geographic information system (GIS)
-for ease of data management, and uses input data that are available in
-the public domain. Traditional numerical models for groundwater flow and
-contaminant transport, such as the Modular Three-Dimensional
-Finite-Difference Groundwater Flow Model (MODFLOW), Modular
-Three-Dimensional Particle Tracking Model (MODPATH), and Modular
-Three-Dimensional Multispecies Transport Model for Simulation (MT3DMS)
-can simulate nitrogen fate and transport under complicated field
-conditions and produce simulated results that may agree well with field
-measurements. Developing these models and generating such agreement
-requires extensive data collection of the study area and an experienced
-modeler. An approach involving traditional modeling tools may not be
-ideal for obtaining quick but realistic estimates of nitrogen loads to
-surface water bodies since traditional modeling processes can be
-difficult and time-consuming. Additionally, traditional tools do not
-integrate well with GIS. As a result, a simplified model is developed to
-address the concerns with traditional modeling software. An outcome of
-the simplified model is that it becomes possible to integrate the
-modeling toolbox effectively within the GIS framework and to use the
-advanced spatial analysis tools made available by the GIS.
+have a simplified nitrogen and phosphorus transformation and transport
+model that is easy to implement, integrated into a geographic information
+system (GIS) for ease of data management, and uses input data that are
+available in the public domain. Traditional numerical models for
+groundwater flow and contaminant transport, such as the Modular
+Three-Dimensional Finite-Difference Groundwater Flow Model (MODFLOW),
+Modular Three-Dimensional Particle Tracking Model (MODPATH), and Modular
+Three-Dimensional Multispecies Transport Model for Simulation (MT3DMS),
+can simulate nitrogen and phosphorus fate and transport under complicated
+field conditions and produce simulated results that may agree well with
+field measurements. Developing these models and generating such
+agreement requires extensive data collection of the study area and an
+experienced modeler. An approach involving traditional modeling tools
+may not be ideal for obtaining quick but realistic estimates of
+nitrogen and phosphorus loads to surface water bodies since traditional
+modeling processes can be difficult and time-consuming. Additionally,
+traditional tools do not integrate well with GIS. As a result, a
+simplified model is developed to address the concerns with traditional
+modeling software. An outcome of the simplified model is that it
+becomes possible to integrate the modeling toolbox effectively within
+the GIS framework and to use the advanced spatial analysis tools made
+available by the GIS.
 
 The model is implemented as a Python Toolbox for ArcGIS Pro from the
 Environmental Systems Research Institute, Inc. (Esri). Integrating this
@@ -204,6 +209,8 @@ Table 1‑1: Abbreviations
 |             |    septic tank is an example of an OSTDS.              |
 +-------------+--------------------------------------------------------+
 |    RAM      |    Randon Access Memory                                |
++-------------+--------------------------------------------------------+
+|    PO4      |    Phosphate                                           |
 +-------------+--------------------------------------------------------+
 |    SA       |    Spatial Analyst (extension for ArcGIS)              |
 +-------------+--------------------------------------------------------+
