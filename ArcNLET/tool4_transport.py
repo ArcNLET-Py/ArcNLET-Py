@@ -1835,11 +1835,11 @@ if __name__ == '__main__':
     phosparam0 = 2
     phosparam1 = 2.113
     phosparam2 = 0.234
-    phosparam3 = 0.002
+    phosparam3 = 0.0002
     phosparam4 = 'Linear'
     phosparam5 = 15.1
     phosparam6 = 0.2
-    phosparam7 = 700
+    phosparam7 = 237
 
     # name = ['ls', 's', 'scl', 'sl']
     # for ii in range(4):

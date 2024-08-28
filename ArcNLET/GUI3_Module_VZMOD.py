@@ -68,6 +68,19 @@ adsorption_default = {"Clay":            [1.46, 1.50],
                       "Silty Clay Loam": [1.46, 1.50],
                       "Silty Loam":      [0.35, 1.50]}
 
+phosphorus_default = {"Clay":            [873, 0],
+                      "Clay Loam":       [690, 0],
+                      "Loam":            [690, 0],
+                      "Loamy Sand":      [188, 0],
+                      "Sand":            [188, 0],
+                      "Sandy Clay":      [873, 0],
+                      "Sandy Clay Loam": [690, 0],
+                      "Sandy Loam":      [383, 0],
+                      "Silt":            [690, 0],
+                      "Silty Clay":      [873, 0],
+                      "Silty Clay Loam": [690, 0],
+                      "Silty Loam":      [690, 0]}
+
 
 class InterfaceVZMOD(object):
     """This class has the methods to define the interface of the tool."""
@@ -327,7 +340,7 @@ class InterfaceVZMOD(object):
                                      parameterType="Required",  # Required|Optional|Derived
                                      direction="Input",
                                      category="Phosphorus Params")
-        phosparam0.value = 0.0002
+        phosparam0.value = 0.002
 
         phosparam1 = arcpy.Parameter(name="Sorption isotherm",
                                      displayName="Sorption isotherm",
@@ -657,6 +670,7 @@ class InterfaceVZMOD(object):
                 parameters[32].value = denitrification_default[parameters[11].valueAsText][4]
                 parameters[33].value = adsorption_default[parameters[11].valueAsText][0]
                 parameters[35].value = adsorption_default[parameters[11].valueAsText][1]
+                parameters[40].value = phosphorus_default[parameters[11].valueAsText][0]
         else:
             parameters[12].value = None
             parameters[13].value = None
@@ -681,6 +695,7 @@ class InterfaceVZMOD(object):
             parameters[32].value = None
             parameters[33].value = None
             parameters[35].value = None
+            # parameters[40].value = None
 
         if parameters[1].altered:
             if parameters[1].value == "Multiple OSTDS":
