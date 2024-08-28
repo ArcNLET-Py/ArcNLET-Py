@@ -27,17 +27,15 @@ Module also simulates the mass of ammonium and nitrate removed by adsorption,
 nitrification, and denitrification from the plumes originating from the
 OSTDS. Furthermore, the module has a mass output load estimation for
 each water body (indexed by FID) and plumes that do not intersect a
-water body. The Load Estimation Module (Figure 2‑15) calculates the load
+water body. The Load Estimation Module (Figure 5-1) calculates the load
 to the target water body by summing the individual contributions of each
 plume for each water body.
 
 .. figure:: ./media/loadestimationMedia/media/image1.png
    :align: center
    :alt: A screenshot of a computer screen Description automatically generated
-   :width: 4.5in
-   :height: 2.61111in
 
-   Figure 2‑15: The Load Estimation Module.
+   Figure 5-1: The Load Estimation Module.
 
 Input
 -----
@@ -51,7 +49,7 @@ Input
    -  **Nitrogen and Phosphorus:** Allows for the simultaneous modeling of 
       both nitrogen and phosphorus species, providing a comprehensive assessment 
       of nutrient transport.\ 
--  **Consideration of NH\ 4:** This option, shown in Figure 2‑16, allows
+-  **Consideration of NH\ 4:** This option, shown in Figure 5-2, allows
    for the consideration of NH\ :sub:`4`. By default, this option is
    unchecked. There are several options revealed when considering NH\ :sub:`4`:\ 
    a. **Input Plumes NH\ 4 info (Point):** The Transport Module produces
@@ -67,10 +65,8 @@ Input
 .. figure:: ./media/loadestimationMedia/media/image2.png
    :align: center
    :alt: A screenshot of a computer Description automatically generated
-   :width: 5.2in
-   :height: 3.32767in
 
-   Figure 2‑16: The Load Estimation Module with Consideration of NH\ :sub:`4`.
+   Figure 5-2: The Load Estimation Module with Consideration of NH\ :sub:`4`.
 
 -  **Input Plumes NO\ 3 info (Point)**: The Transport Module produces the
    auxiliary “\_info” file associated with the plume’s raster. The
@@ -122,7 +118,7 @@ e. **Mass input load:** The total input mass flux rate into groundwater
    due to the constant concentration plane source of the Domenico solution,
    taking into account both advection and dispersion.
 
-.. table:: Table 5-1: NH4 Plumes Information
+Table 5-1: NH4 plumes information.
 
    +----------------+-------------------------+--------------------------------+-------------------------+-----------------------+
    | Waterbody FID  | Mass Output Load [mg/d] | Mass Output Load * Risk Factor | Mass Input Load [mg/d]  | Mass Removal Rate     |
@@ -131,7 +127,7 @@ e. **Mass input load:** The total input mass flux rate into groundwater
    |       30       |      58.96497036        |           58.96497036          |      58.96497036        |          0            |
    +----------------+-------------------------+--------------------------------+-------------------------+-----------------------+
 
-.. table:: Table 5-2: NO3 Plumes Information
+Table 5-2: NO3 plumes information.
 
    +----------------+-------------------------+--------------------------------+-------------------------+-----------------------+
    | Waterbody FID  | Mass Output Load [mg/d] | Mass Output Load * Risk Factor | Mass Input Load [mg/d]  | Mass Removal Rate     |
@@ -140,7 +136,7 @@ e. **Mass input load:** The total input mass flux rate into groundwater
    |       30       |      776388.7734        |          776388.7734           |     19409127.84         |     18632739.06       |
    +----------------+-------------------------+--------------------------------+-------------------------+-----------------------+
 
-.. table:: Table 5-3: PO4 Plumes Information
+Table 5-3: PO4 plumes information.
 
    +----------------+-------------------------+--------------------------------+-------------------------+-----------------------+
    | Waterbody FID  | Mass Output Load [mg/d] | Mass Output Load * Risk Factor | Mass Input Load [mg/d]  | Mass Removal Rate     |
@@ -152,7 +148,7 @@ e. **Mass input load:** The total input mass flux rate into groundwater
 Troubleshooting
 ---------------
 
-Table 2‑9 lists some possible issues encountered during model execution,
+Table 5-4 lists some possible issues encountered during model execution,
 a probable cause, and a possible solution. The error messages may appear
 for reasons other than those listed. If you cannot find a solution to
 the issue, then please submit a [New issue] in the ArcNLET-Py GitHub
@@ -161,7 +157,7 @@ GitHub <https://github.com/ArcNLET-Py/ArcNLET-Py/issues>`__) as
 described in the GitHub instructions at `Creating an issue - GitHub
 Docs <https://docs.github.com/en/issues/tracking-your-work-with-issues/creating-an-issue>`__.
 
-Table 2‑9: The Load Estimation Module troubleshooting guide.
+Table 5-4: The Load Estimation Module troubleshooting guide.
 
 +---------------------+-----------------------+-----------------------+
 |    Error            |    Cause              |    Solution           |

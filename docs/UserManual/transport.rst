@@ -80,8 +80,6 @@ Load Estimation Module to determine load from OSTDS to surficial water bodies.
 .. figure:: ./media/transportMedia/media/image1.png
    :align: center
    :alt: A screenshot of a computer Description automatically generated
-   :width: 4.32651in
-   :height: 7.94328in
    
    Figure 4-1: The Transport Module.
 

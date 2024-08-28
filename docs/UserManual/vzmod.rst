@@ -179,8 +179,6 @@ procedure:
 .. figure:: ./media/vzmodMedia/media/image4.png
    :align: center
    :alt: A graph of water level Description automatically generated
-   :width: 4.73413in
-   :height: 3.99342in
 
    Figure 3-3: Linear regression curve between the measured water level and the
    smoothed DEM.
@@ -535,8 +533,6 @@ VZMOD in various environments such as Python or Microsoft Excel.
 .. figure:: ./media/vzmodMedia/media/image10.png
    :align: center
    :alt: A screenshot of a computer Description automatically generated
-   :width: 5.10488in
-   :height: 3.34422in
 
    Figure 3-12: An excerpt from the results.txt file for the Lakeshore example.
 
