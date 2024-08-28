@@ -64,15 +64,13 @@ properties is described below.
 .. figure:: ./media/groundwaterflowMedia/media/image1.png
    :align: center
    :alt: A screenshot of a computer Description automatically generated
-   :width: 4.57356in
-   :height: 6.02167in
 
    Figure 1-1: The Groundwater Flow Module in the Geoprocessing Pane.
 
 Input Layers
 ------------
 
--  **Input DEM [L] (raster):** Used to generate an approximation of the
+-  **Input DEM [m] (raster):** Used to generate an approximation of the
    water table. This input must be a raster layer (preferably in GRID
    format). Note that a higher resolution DEM does not necessarily give
    better results since a coarser DEM may better approximate the water
@@ -84,7 +82,7 @@ Input Layers
    flows. This input is also used when the **Fill Sinks** option is
    selected.
 
--  **Input Hydraulic conductivity [L/T] (raster):** Must be a raster
+-  **Input Hydraulic conductivity [m/d] (raster):** Must be a raster
    layer. This input represents a map of hydraulic conductivity for the
    domain. The linear units of the hydraulic conductivity must be the
    same as the units of the DEM. For example, if the DEM has linear
@@ -135,15 +133,37 @@ Options and Parameters
    cells of the smoothed DEM immediately bordering a water body to flow in
    unnatural directions.\ 
 
--  **Merge Water bodies:** During the smoothing
-   process, the elevation at water bodies always increases, and this
-   artificially decreases the control of water bodies on groundwater flow,
-   given that groundwater discharges to the water bodies. One solution is
-   to merge the original DEM where the water bodies are located with the
-   smoothed DEM, and this restores the control of water bodies on
-   groundwater flow. The merging may be done several times until reasonable
-   groundwater flow paths are obtained in the Particle Tracking
-   Module.\ 
+-  **Merge Water bodies:** During the smoothing process, the elevation at 
+   water bodies often increases, which artificially decreases the control 
+   of water bodies on groundwater flow, since groundwater typically discharges 
+   to these water bodies. To address this, the original DEM where the water 
+   bodies are located can be merged with the smoothed DEM, which helps restore 
+   the influence of water bodies on groundwater flow. This merging process may 
+   be repeated several times until reasonable groundwater flow paths are obtained 
+   in the Particle Tracking Module.
+
+   - **Smoothing Factor after Merging:** After merging, additional smoothing 
+     iterations can be applied to ensure that the integration of the water bodies 
+     with the smoothed DEM results in realistic groundwater flow paths. The 
+     smoothing factor controls the number of these iterations, and adjusting it 
+     allows for fine-tuning the impact of the merging process on the flow paths.
+
+   - **Changing Smoothing Cell:** By adjusting the size of the smoothing cell, 
+     the user can control the level of detail applied during the smoothing process. 
+     Decreasing the neighborhood size can enhance the resolution of the smoothing 
+     near surface water bodies, generating more accurate gradients. This is 
+     particularly useful for guiding particles to flow into natural features like 
+     ditches, canals, and lakes rather than becoming trapped in artificial 'gaps' 
+     at the edge of these water features.
+
+   - **Smoothing Cell after Merging:** This parameter allows for further 
+     customization of the smoothing process after merging. By decreasing the size 
+     of the smoothing cell and merging water body elevations into the smoothed DEM, 
+     the model can better simulate the natural gradients that direct particles 
+     toward surface water bodies. This approach improves the representation of 
+     groundwater flow by creating realistic paths that lead particles into water 
+     bodies, enhancing the accuracy of flow modeling in areas with complex surface 
+     water features.
 
 -  **Z-Factor:** If the horizontal measurement units of the input
    DEM are different than the vertical units, the Z-factor value serves as
@@ -158,24 +178,24 @@ Options and Parameters
 Outputs
 -------
 
--  **Velocity Magnitude [L/T]:** Each cell in this raster represents the
+-  **Velocity Magnitude [m/d]:** Each cell in this raster represents the
    magnitude of the seepage velocity in the same units as the hydraulic
    conductivity. The output format is a GRID raster.\ 
 -  **Output Velocity Direction [°wrt N]:** Each cell in this raster 
    represents the direction component of the seepage velocity 
    in degrees clockwise from the grid north. The output format is a GRID 
    raster.\ 
--  **(Optional) Output Hydraulic Gradient:** If named, it enables the 
-   output of the raster of hydraulic gradient magnitude. The 
-   output format is a GRID raster. This 
-   output is for informational purposes only (e.g., for examining the
-   gradient values) and is not required in the other modules.\ 
--  **(Optional) Output Smoothed DEM:** The smoothed DEM represents 
+-  **(Optional) Output Smoothed DEM (VZMOD required):** The smoothed DEM represents 
    the subdued replica of the topology provided by the input DEM. 
    This DEM represents the shape of groundwater. This DEM does not 
    represent the elevation of the
    groundwater. The smoothed DEM can be used as a data input in the VZMOD
    module.
+-  **(Optional) Output Hydraulic Gradient:** If named, it enables the 
+   output of the raster of hydraulic gradient magnitude. The 
+   output format is a GRID raster. This 
+   output is for informational purposes only (e.g., for examining the
+   gradient values) and is not required in the other modules.\ 
 
 Notes:
 

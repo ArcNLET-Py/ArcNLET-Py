@@ -41,7 +41,9 @@ profiles are saved for post-processing.
 
 .. rst-class:: center 
 
-|image1|
+.. figure:: ./media/vzmodMedia/media/image1.png
+   :align: center
+   :alt: A screenshot of a computer Description automatically generated
 
 .. raw:: html
 
@@ -70,19 +72,8 @@ and transformation of NH\ :sub:`4`, NO\ :sub:`3`, and PO\ :sub:`4`\ :sup:`3-`
 in the vadose zone and estimating their concentrations at the water table.
 
 .. figure:: ./media/vzmodMedia/media/image2.png
-   :align: left
+   :align: center
    :alt: A screenshot of a computer Description automatically generated
-   :width: 3in
-
-.. figure:: ./media/vzmodMedia/media/image3.png
-   :align: right
-   :alt: A screenshot of a computer Description automatically generated
-   :width: 3in
-
-   .. figure:: ./media/vzmodMedia/media/image11.png
-   :align: right
-   :alt: A screenshot of a computer Description automatically generated
-   :width: 3in
 
 .. raw:: html
 
@@ -236,7 +227,6 @@ Each option reveals different parameter inputs:
 .. figure:: ./media/vzmodMedia/media/image12.png
    :align: center
    :alt: A screenshot of a computer Description automatically generated
-   :width: 5.03195in
 
    Figure 3-4: Nitrogen in VZMOD.
 
@@ -249,7 +239,6 @@ Each option reveals different parameter inputs:
 .. figure:: ./media/vzmodMedia/media/image13.png
    :align: center
    :alt: A screenshot of a computer Description automatically generated
-   :width: 5.03195in
 
    Figure 3-5: Phosphorous in VZMOD.
 
@@ -261,7 +250,6 @@ Each option reveals different parameter inputs:
 .. figure:: ./media/vzmodMedia/media/image14.png
    :align: center
    :alt: A screenshot of a computer Description automatically generated
-   :width: 5.03195in
 
    Figure 3-6: Nitrogen and phosphorus in VZMOD.
 
@@ -280,8 +268,6 @@ Transport** **Params** values, which are shown in Figure 3-2.
 .. figure:: ./media/vzmodMedia/media/image5.png
    :align: center
    :alt: A screenshot of a computer Description automatically generated
-   :width: 5.03195in
-   :height: 3.28171in
 
    Figure 3-7: VZMOD for a single OSTDS.
 
@@ -313,8 +299,6 @@ described below.
 .. figure:: ./media/vzmodMedia/media/image6.png
    :align: center
    :alt: A screenshot of a computer Description automatically generated
-   :width: 4.94861in
-   :height: 4.32352in
 
    Figure 3-8: Modeling multiple OSTDS in VZMOD.
 
@@ -350,8 +334,6 @@ described below.
 .. figure:: ./media/vzmodMedia/media/image15.png
    :align: center
    :alt: A screenshot of a computer Description automatically generated
-   :width: 4.94861in
-   :height: 4.32352in
 
    Figure 3-9: Modeling multiple OSTDS and heterogeneous Ks and θs in VZMOD.
 
@@ -392,8 +374,6 @@ which needs to be calibrated. The data inputs are described below.
 .. figure:: ./media/vzmodMedia/media/image8.png
    :align: center
    :alt: A screenshot of a computer Description automatically generated
-   :width: 5.02153in
-   :height: 5.21948in
 
    Figure 3-10: Modeling multiple OSTDS and calculating the depth to the water table in VZMOD.
 
@@ -414,8 +394,6 @@ input requirements are below.
 .. figure:: ./media/vzmodMedia/media/image9.png
    :align: center
    :alt: A screenshot of a computer Description automatically generated
-   :width: 5.02153in
-   :height: 4.30268in
 
    Figure 3-11: Modeling Multiple OSTDS and Multiple soil types in VZMOD.
 
@@ -423,8 +401,9 @@ Options and Parameters
 ----------------------
 
 **Options**
+
 -  **Types of Contaminants:** This option allows the user to select either
-   Nitrogen or Phosphorous, or Nitrogen and Phosphorous.
+   **Nitrogen**, **Phosphorous**, or **Nitrogen and Phosphorous**.\ 
 -  **Single or Multiple OSTDS:** This option allows the user to calculate a
    **Single OSTDS** or **Multiple OSTDS**. Multiple OSTDS need to be input
    using a shapefile.\ 
@@ -439,12 +418,16 @@ Options and Parameters
 -  **Concentration of NO\ 3 (mg/L):** This value represents the
    OSTDS effluent concentration of nitrate. This information is gathered
    from trusted reports or ground-truthing effluent concentration via a
-   monitoring well.\ 
--  **Depth to water table (cm):** This parameter is available for estimating
-   a **Single OSTDS** or **Multiple OSTDS**. The depth to the water table
-   variable represents the depth from the infiltrative surface to the water
-   table. Please note that this variable changes to **Distance (cm)** when
-   using the **Calculate depth to water table** option.
+   monitoring well.\
+-  **Concentration of (PO\ :sub:`4`\ :sup:`3-`) (mg/L):** This value 
+   represents the OSTDS effluent concentration of phosphate. This information 
+   is gathered from trusted reports or ground-truthing effluent concentration 
+   via a monitoring well.\ 
+-  **Distance (cm):** This parameter is available for estimating
+   a **Single OSTDS** or **Multiple OSTDS**. The distacne variable represents 
+   the depth from the infiltrative surface to the water table. Please note 
+   that this variable changes to **Distance (cm)** when using the 
+   **Calculate depth to water table** option.
 
 **Hydraulic Parameters**
 
@@ -484,50 +467,61 @@ Options and Parameters
    rate.\ 
 -  **Topt-dnt (°C):** This is the optimum soil temperature for
    denitrification.\ 
--  **e1 (-):** This represents the empirical coefficient for the
-   saturation function of denitrification.\ 
 -  **βdnt (-):** This is the empirical coefficient for the temperature function
    of denitrification.\ 
+-  **e1 (-):** This represents the empirical coefficient for the
+   saturation function of denitrification.\ 
 -  **Sdnt (-):** Represents the threshold degree of saturation for denitrification.    
 
 **(NH\ :sub:`4`-N) Adsorption Parameters**
 
--  **kd (cm\ 3/g):** The distribution coefficient describes the adsorbed
-   concentrations.\ 
+-  **kd for NH\ :sub:`4`-N (cm\ 3/g):** The distribution coefficient describes the 
+   adsorbed concentrations.\ 
 
 **Dispersion, Bulk Density, and Temperature Parameters**
 
 -  **Dispersion coefficient (cm\ :sup:`2`/d)**: Represents the dispersion of contaminants in the soil.
--  **ρ (g/cm\ :sup:`3`)**: Bulk density of the soil.
+-  **ρ (g/cm\ :sup:`3`)**: Bulk density of the soil.\ 
 -  **Temperature (°C)**: Soil temperature affecting chemical reactions and microbial activity.
 
 **Phosphorus Parameters**
 
--  **Sorption isotherms**:
-   -  **Linear**: Includes parameters for **Rprecip** and **Linear distribution coefficient**.
-   -  **Langmuir**: Includes parameters for **Rprecip**, **Langmuir coefficient**, and **maximum sorption capacity**.
+-  **Rprecip:** The precipitation rate.
+-  **Sorption isotherms:**
+   -  **Linear:** Includes parameters for **Linear distribution coefficient**. The linear 
+      distribution coefficient (𝐾𝑑) represents the ratio of a solute's concentration 
+      adsorbed onto the soil to its concentration in the soil solution, 
+      assuming a proportional and reversible adsorption process.\ 
+   -  **Langmuir:** Includes parameters for the **Langmuir coefficient**, and the 
+      **Maximum sorption capacity (mg P/kg)**. The Langmuir coefficient is a parameter 
+      that represents the affinity between the adsorbent surface and the solute, 
+      describing how strongly the solute binds to the adsorption sites. The maximum 
+      sorption capacity refers to the total amount of solute that can be adsorbed onto the 
+      surface at saturation, indicating the limit beyond which no additional solute can be 
+      adsorbed regardless of its concentration in the solution.
 
 Outputs
 -------
 
 The output files are saved in the folder specified by the users in the
-**Output folder** field. The output folder should already exist.
-Otherwise, VZMOD raises an error and stops running. For the simulation
-with **Single OSTDS** selected, VZMOD generates an output file called
-results.txt. The output file name is not specified by the users but by
-VZMOD. If the output folder is not empty, when a new simulation is
-completed, the old output files are overwritten by the new output files.
-The results.txt file of **Single OSTDS** has the following columns:
+**Output profile results (text file)** field. The output folder should 
+already exist. Otherwise, VZMOD raises an error and stops running. 
+For the simulation with **Single OSTDS** selected, VZMOD generates an 
+output file called results.txt. The output file name is not specified 
+by the users but by VZMOD. If the output folder is not empty, when a new 
+simulation is completed, the old output files are overwritten by the new 
+output files. The results.txt file of **Single OSTDS** has the following 
+columns:
 
+-  Depth(cm): This column is the depth below the drainfield (cm).
 -  Theta: This column is the calculated soil moisture at depth.
--  Depth: This column is the depth below the drainfield (cm).
--  fsw_nit: This column is the first-order reaction rate of nitrification
+-  FSW_Nit: This column is the first-order reaction rate of nitrification
    adjusted for soil saturation at depth.
--  fsw_dnt: This column is the first-order reaction rate of denitrification
+-  FSW_Dnt: This column is the first-order reaction rate of denitrification
    adjusted for soil saturation at depth.
--  CPO4: This column is the calculated phosphate concentration at depth.
--  CNH4: This column is the calculated ammonium concentrations at depth.
--  CNO3: This column is the calculated nitrate concentrations at depth.
+-  C_NH4-N (mg/l): This column is the calculated ammonium concentrations at depth.
+-  C_NO3-N (mg/l): This column is the calculated nitrate concentrations at depth.
+-  C_PO4-P (mg/l): This column is the calculated phosphate concentration at depth.
 
 An example of the result.txt text file is shown in Figure 3-12. When
 VZMOD is used at the neighborhood scale with Multiple OSTDS, the
@@ -550,8 +544,8 @@ If **Multiple OSTDS** checked, then VZMOD generates an additional output file,
 which is a point shapefile called **septictanks.shp** that is stored in the 
 user-specified output folder. The new file is the same as the input 
 **Septic tank sources (point)** file. If the **Types of Contaminants** is set to
-**Nitrogen and Phosphorous**, then there will be three new fields named CNH4, 
-CNO3, and CPO4. These new fields store the simulated concentrations at the 
+**Nitrogen and Phosphorous**, then there will be three new fields named C_NH4-N, 
+C_NO3-N, and C_PO4-P. These new fields store the simulated concentrations at the 
 groundwater table for each OSTDS. This updated septic tank file is a data input 
 in the other ArcNLET-Py modules.
 
@@ -594,8 +588,3 @@ Table 3-1: The VZMOD Module troubleshooting guide.
 |    error is in the       |                     |                     |
 |    Messages pane.        |                     |                     |
 +--------------------------+---------------------+---------------------+
-
-.. |image1| image:: ./media/vzmodMedia/media/image1.png
-   :align: middle
-   :width: 6.60353in
-   :height: 6.14583in

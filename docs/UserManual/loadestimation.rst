@@ -20,10 +20,10 @@ for nitrogen plumes that do not intersect a water body, which receives
 the unique water body feature identification of -1.
 
 The Load Estimation Module uses the Transport Module output to simulate
-the mass input load of ammonium and nitrate entering the surface water
-body. As a reminder, the Transport Module outputs include the mass
-concentration of each plume for each OSTDS. The Load Estimation Module
-also simulates the mass of ammonium and nitrate removed by adsorption,
+the mass input load of ammonium, nitrate, and/or phosphare entering the 
+surface water body. As a reminder, the Transport Module outputs include 
+the mass concentration of each plume for each OSTDS. The Load Estimation 
+Module also simulates the mass of ammonium and nitrate removed by adsorption,
 nitrification, and denitrification from the plumes originating from the
 OSTDS. Furthermore, the module has a mass output load estimation for
 each water body (indexed by FID) and plumes that do not intersect a
@@ -42,19 +42,27 @@ plume for each water body.
 Input
 -----
 
+-  **Types of Contaminats:** This setting allows the user to select which type 
+   of contaminants to model. The three options are:\ 
+   -  **Nitrogen:** Focuses on modeling nitrogen species, including ammonium 
+      (NH\ :sub:`4`\ :sup:`+`) and nitrate (NO\ :sub:`3`\ :sup:`-`).\    
+   -  **Phosphorus:** Models phosphorus transport in the form of phosphate 
+      (PO\ :sub:`4`\ :sup:`3-`), accounting for adsorption processes.\    
+   -  **Nitrogen and Phosphorus:** Allows for the simultaneous modeling of 
+      both nitrogen and phosphorus species, providing a comprehensive assessment 
+      of nutrient transport.\ 
 -  **Consideration of NH\ 4:** This option, shown in Figure 2‑16, allows
    for the consideration of NH\ :sub:`4`. By default, this option is
-   unchecked. There are several options revealed when considering NH\ :sub:`4`:
-
-a. **Input Plumes NH\ 4 info (Point):** The Transport Module produces
-   the auxiliary “\_info” file for NH\ :sub:`4` associated with the
-   plume’s raster. The information in this file’s attribute table should
-   not be manually modified.\ 
-b. **Output Results for NH\ 4:** The output is a list showing the
-   calculated load values for each water body. The default file name is
-   the same as the input plumes “\_info” shapefile, and the extension
-   is CSV. The default storage location is the same as the input plume
-   shapefile.
+   unchecked. There are several options revealed when considering NH\ :sub:`4`:\ 
+   a. **Input Plumes NH\ 4 info (Point):** The Transport Module produces
+      the auxiliary “\_info” file for NH\ :sub:`4` associated with the
+      plume’s raster. The information in this file’s attribute table should
+      not be manually modified.\ 
+   b. **Output Results for NH\ 4:** The output is a list showing the
+      calculated load values for each water body. The default file name is
+      the same as the input plumes “\_info” shapefile, and the extension
+      is CSV. The default storage location is the same as the input plume
+      shapefile.
 
 .. figure:: ./media/loadestimationMedia/media/image2.png
    :align: center
@@ -69,8 +77,10 @@ b. **Output Results for NH\ 4:** The output is a list showing the
    information in this file’s attribute table should not be manually
    modified. Only point feature layers whose names have the “\_info” suffix
    are shown in the dropdown menu.\ 
--  **Input Plumes NH\ 4 info (Point)**: This file is the same as the
-   **Input Plumes NO\ 3 info (Point)** file but is for ammonium.
+-  **Input Plimes P info (Point):** The auxiliary info file for phosphorus associated 
+   with the plumes raster calculated by the transport module. The information 
+   contained in the attribute table of this file should not be manually modified.\ 
+
 
 Options and Parameters
 ----------------------
@@ -85,12 +95,12 @@ Options and Parameters
 Outputs
 -------
 
--  **Output Results for NO\ 3:** The output is a list showing the calculated 
-   load values for each water body. The output is exported to a tabular format, 
-   which can be opened in any spreadsheet program. A water body feature ID of
-   -1 in the designation for all plumes that did not intersect a water body. 
-   The output columns are: 
-
+-  **Output Results for NH\ 4**, **Output Results for NO\ 3**, and 
+   **Output Results for P:** The output is a list showing the calculated 
+   load values for each water body and can be seen in Tables 5-1 - 5-3 below. 
+   The output is exported to a tabular format, which can be opened in any 
+   spreadsheet program. A water body feature ID of -1 in the designation 
+   for all plumes that did not intersect a water body. The output columns are:\ 
 a. **Water body FID:** The Water body FID indicates where all flow paths
    terminate. The water body corresponding to this FID can be determined
    using the ArcGIS Pro Information tool or by opening the attribute table
@@ -112,8 +122,32 @@ e. **Mass input load:** The total input mass flux rate into groundwater
    due to the constant concentration plane source of the Domenico solution,
    taking into account both advection and dispersion.
 
--  **Output Results for NH\ 4:** The content of this output file is the
-   same as that of the **Output Results for NO\ 3** but for ammonium.
+.. table:: Table 5-1: NH4 Plumes Information
+
+   +----------------+-------------------------+--------------------------------+-------------------------+-----------------------+
+   | Waterbody FID  | Mass Output Load [mg/d] | Mass Output Load * Risk Factor | Mass Input Load [mg/d]  | Mass Removal Rate     |
+   |                |                         | [mg/d]                         |                         | [mg/d]                |
+   +================+=========================+================================+=========================+=======================+
+   |       30       |      58.96497036        |           58.96497036          |      58.96497036        |          0            |
+   +----------------+-------------------------+--------------------------------+-------------------------+-----------------------+
+
+.. table:: Table 5-2: NO3 Plumes Information
+
+   +----------------+-------------------------+--------------------------------+-------------------------+-----------------------+
+   | Waterbody FID  | Mass Output Load [mg/d] | Mass Output Load * Risk Factor | Mass Input Load [mg/d]  | Mass Removal Rate     |
+   |                |                         | [mg/d]                         |                         | [mg/d]                |
+   +================+=========================+================================+=========================+=======================+
+   |       30       |      776388.7734        |          776388.7734           |     19409127.84         |     18632739.06       |
+   +----------------+-------------------------+--------------------------------+-------------------------+-----------------------+
+
+.. table:: Table 5-3: PO4 Plumes Information
+
+   +----------------+-------------------------+--------------------------------+-------------------------+-----------------------+
+   | Waterbody FID  | Mass Output Load [mg/d] | Mass Output Load * Risk Factor | Mass Input Load [mg/d]  | Mass Removal Rate     |
+   |                |                         | [mg/d]                         |                         | [mg/d]                |
+   +================+=========================+================================+=========================+=======================+
+   |       30       |      27856.8685         |          27856.8685            |     450516.4046         |     422659.5361       |
+   +----------------+-------------------------+--------------------------------+-------------------------+-----------------------+
 
 Troubleshooting
 ---------------
