@@ -165,7 +165,12 @@ Acronyms and Abbreviations
    the first time they appear. Table 1 is a list of acronyms and
    abbreviations used in this manual:
 
-Table 1: Abbreviations
+.. raw:: html
+
+   <div style="text-align:center;">
+      Table 1: Abbreviations
+   </div>
+   <br></br>
 
 +-------------+--------------------------------------------------------+
 |             |    ArcGIS Pro Nitrogen Loading and Estimation Toolbox  |

@@ -89,7 +89,8 @@ Outputs
    extracted from the SSURGO database are used to generate the three
    output files described above.
 
-Notes:
+Notes
+-----
 
 -  The tools extracted SSURGO data from the website
    https://sdmdataaccess.nrcs.usda.gov. Therefore, the Preprocessing
@@ -114,7 +115,12 @@ GitHub <https://github.com/ArcNLET-Py/ArcNLET-Py/issues>`__) as
 described in the GitHub instructions at `Creating an issue - GitHub
 Docs <https://docs.github.com/en/issues/tracking-your-work-with-issues/creating-an-issue>`__.
 
-Table 0-1: The Preprocessing Module troubleshooting guide.
+.. raw:: html
+
+   <div style="text-align:center;">
+      Table 0-1: The Preprocessing Module troubleshooting guide.
+   </div>
+   <br> <!-- Add a line break here --></br>
 
 +--------------------------+---------------------+---------------------+
 |    **Error**             |    **Cause**        |    **Solution**     |

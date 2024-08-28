@@ -142,28 +142,28 @@ Options and Parameters
    be repeated several times until reasonable groundwater flow paths are obtained 
    in the Particle Tracking Module.
 
-   - **Smoothing Factor after Merging:** After merging, additional smoothing 
-     iterations can be applied to ensure that the integration of the water bodies 
-     with the smoothed DEM results in realistic groundwater flow paths. The 
-     smoothing factor controls the number of these iterations, and adjusting it 
-     allows for fine-tuning the impact of the merging process on the flow paths.
+   a. **Smoothing Factor after Merging:** After merging, additional smoothing 
+      iterations can be applied to ensure that the integration of the water bodies 
+      with the smoothed DEM results in realistic groundwater flow paths. The 
+      smoothing factor controls the number of these iterations, and adjusting it 
+      allows for fine-tuning the impact of the merging process on the flow paths.
 
-   - **Changing Smoothing Cell:** By adjusting the size of the smoothing cell, 
-     the user can control the level of detail applied during the smoothing process. 
-     Decreasing the neighborhood size can enhance the resolution of the smoothing 
-     near surface water bodies, generating more accurate gradients. This is 
-     particularly useful for guiding particles to flow into natural features like 
-     ditches, canals, and lakes rather than becoming trapped in artificial 'gaps' 
-     at the edge of these water features.
+   b. **Changing Smoothing Cell:** By adjusting the size of the smoothing cell, 
+      the user can control the level of detail applied during the smoothing process. 
+      Decreasing the neighborhood size can enhance the resolution of the smoothing 
+      near surface water bodies, generating more accurate gradients. This is 
+      particularly useful for guiding particles to flow into natural features like 
+      ditches, canals, and lakes rather than becoming trapped in artificial 'gaps' 
+      at the edge of these water features.
 
-   - **Smoothing Cell after Merging:** This parameter allows for further 
-     customization of the smoothing process after merging. By decreasing the size 
-     of the smoothing cell and merging water body elevations into the smoothed DEM, 
-     the model can better simulate the natural gradients that direct particles 
-     toward surface water bodies. This approach improves the representation of 
-     groundwater flow by creating realistic paths that lead particles into water 
-     bodies, enhancing the accuracy of flow modeling in areas with complex surface 
-     water features.
+   c. **Smoothing Cell after Merging:** This parameter allows for further 
+      customization of the smoothing process after merging. By decreasing the size 
+      of the smoothing cell and merging water body elevations into the smoothed DEM, 
+      the model can better simulate the natural gradients that direct particles 
+      toward surface water bodies. This approach improves the representation of 
+      groundwater flow by creating realistic paths that lead particles into water 
+      bodies, enhancing the accuracy of flow modeling in areas with complex surface 
+      water features.
 
 -  **Z-Factor:** If the horizontal measurement units of the input
    DEM are different than the vertical units, the Z-factor value serves as
@@ -197,7 +197,8 @@ Outputs
    output is for informational purposes only (e.g., for examining the
    gradient values) and is not required in the other modules.\ 
 
-Notes:
+Notes
+-----
 
 -  Inputs from geodatabases are not supported at this time. All datasets
    must be shapefile-based.
@@ -226,7 +227,12 @@ GitHub <https://github.com/ArcNLET-Py/ArcNLET-Py/issues>`__) as
 described in the GitHub instructions at `Creating an issue - GitHub
 Docs <https://docs.github.com/en/issues/tracking-your-work-with-issues/creating-an-issue>`__.
 
-Table 1-1: The Groundwater Flow Module troubleshooting guide.
+.. raw:: html
+
+   <div style="text-align:center;">
+      Table 1-1: The Groundwater Flow Module troubleshooting guide.
+   </div>
+   <br> <!-- Add a line break here --></br>
 
 +--------------------------+---------------------+---------------------+
 |    **Error**             |    **Cause**        |    **Solution**     |

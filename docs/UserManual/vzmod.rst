@@ -39,20 +39,12 @@ Using VZMOD for a **Single OSTDS,** these parameters solve the flow and
 nutrient transport equations sequentially, and the concentration
 profiles are saved for post-processing.
 
-.. rst-class:: center 
-
 .. figure:: ./media/vzmodMedia/media/image1.png
    :align: center
    :alt: A screenshot of a computer Description automatically generated
 
-.. raw:: html
-
-   <div style="text-align:center;">
    Figure 3-1: Flowchart for VZMOD.
-   </div>
-   <br> <!-- Add a line break here --></br>
-..
-
+   
 VZMOD can also be used for **Multiple OSTDS** at a neighborhood scale.
 In that case, **Heterogeneous Ks and θs**, **Calculate depth to water
 table**, and **Multiple soil types** are selected. Then, data are needed

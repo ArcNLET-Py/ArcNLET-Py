@@ -24,8 +24,6 @@ More details of using the sink filling option are given below.
 .. figure:: ./media/particletrackingMedia/media/image1.png
    :align: center
    :alt: A screenshot of a computer Description automatically generated
-   :width: 4.57356in
-   :height: 4.42167in
 
    Figure 2-1: The Particle Tracking Module.
 
@@ -71,7 +69,7 @@ Options and Parameters
    one-half of the velocity-direction raster cell size, determined by
    the DEM resolution. This value should only be changed if the default
    does not provide satisfactory results, as explained in the
-   troubleshooting notes and Figure 2‑4.\ 
+   troubleshooting notes and Figure 2‑2.\ 
 
 -  **Step Size [L]:** The length of each flow path segment (in
    map units). The default is automatically calculated to equal the value
@@ -103,7 +101,12 @@ advanced uses of the software (e.g., visualization discussed in Section
 5.11); general users do not need to understand the meaning of each item
 of the table.
 
-Table 2-1: The Particle Tracking Module field list guide.
+.. raw:: html
+
+   <div style="text-align:center;">
+      Table 2-1: The Particle Tracking Module field list guide.
+   </div>
+   <br> <!-- Add a line break here --></br>
 
 +--------------------+-------------------------------------------------+
 |    **Field Name**  |    **Description**                              |
@@ -152,7 +155,7 @@ Table 2-1: The Particle Tracking Module field list guide.
 Troubleshooting
 ---------------
 
-Table 2‑4 lists a possible issue encountered during model execution, a
+Table 2‑2 lists a possible issue encountered during model execution, a
 probable cause, and a possible solution. Note that the error messages
 may appear for reasons other than those listed. If you cannot find a
 solution to the issue, then please submit a [New issue] in the
@@ -161,7 +164,12 @@ GitHub <https://github.com/ArcNLET-Py/ArcNLET-Py/issues>`__) as
 described in the GitHub instructions at `Creating an issue - GitHub
 Docs <https://docs.github.com/en/issues/tracking-your-work-with-issues/creating-an-issue>`__.
 
-Table 2‑4: The Particle Tracking Module troubleshooting guide.
+.. raw:: html
+
+   <div style="text-align:center;">
+      Table 2‑2: The Particle Tracking Module troubleshooting guide.
+   </div>
+   <br> <!-- Add a line break here --></br>
 
 +---------------------+-----------------------+-----------------------+
 |    **Error**        |    **Cause**          |    **Solution**       |
@@ -176,16 +184,16 @@ Table 2‑4: The Particle Tracking Module troubleshooting guide.
 Particle paths may travel through a water body, depending on the value
 of the **W.B. Raster Resolution** parameter and the **Step Size**
 parameter. This phenomenon is related to the **Step Size,** as explained
-in Figure 2‑4a, which shows a small creek that is 6 m wide. The thin
+in Figure 2‑2a, which shows a small creek that is 6 m wide. The thin
 blue lines represent flow paths. Note that the leftmost line crosses the
 creek while the other four exhibit the expected behavior and do not
 cross it. This behavior is because the leftmost particle path does not
-“see” the creek, as demonstrated in Figure 2‑4b when the creek is
+“see” the creek, as demonstrated in Figure 2‑2b when the creek is
 converted from a polygon to a raster with a 1 m cell size. The particle
 tracking algorithm detects whether the path has reached the water body
 by checking whether the starting or ending point of the flow path
 segment overlaps a raster cell that represents a water body. The red
-feature in Figure 2‑4b shows the segment “skips” over the creek because
+feature in Figure 2‑2b shows the segment “skips” over the creek because
 the segment length is too large and is positioned so that neither the
 starting nor ending points coincide with the creek's location. This
 situation may be remedied by selecting a smaller value for the **Step
@@ -198,17 +206,17 @@ Size** parameter.
 .. raw:: html
 
    <div style="text-align:center;">
-      Figure 2‑4: Possible scenarios of the particle paths crossing a thin 
-      waterbody. The paths pass the water body (Figure 2‑4a (left)). The cell 
-      sizes of (Figure 2‑4b(center)) and (Figures Figure 2‑4c(right)) are 1 
+      Figure 2‑2: Possible scenarios of the particle paths crossing a thin 
+      waterbody. The paths pass the water body (Figure 2‑2a (left)). The cell 
+      sizes of (Figure 2‑2b(center)) and (Figures Figure 2‑2c(right)) are 1 
       meter and 5 meters, respectively.
    </div>
    <br> <!-- Add a line break here --></br>
    
 Another possible reason for a flow line to cross the creek is that the
 **W.B. Raster Resolution** is too large to represent the creek
-accurately. This scenario is shown in Figure 2‑4c in the area indicated
-by the red box. In Figure 2‑4c, the creek is illustrated with a raster
+accurately. This scenario is shown in Figure 2‑2c in the area indicated
+by the red box. In Figure 2‑2c, the creek is illustrated with a raster
 resolution of 5 m. In this case, because of the coarse resolution, there
 may be a gap in the water body's raster representation, enabling the
 flow path to “leak” through the gap indicated by the region within the
