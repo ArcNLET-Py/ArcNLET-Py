@@ -72,6 +72,18 @@ adsorption_default = {"clay":            [1.46, 1.50],
                       "silty clay loam": [1.46, 1.50],
                       "silty loam":      [0.35, 1.50]}
 
+phosphorus_default = {"Clay":            [873, 0],
+                      "Clay Loam":       [690, 0],
+                      "Loam":            [690, 0],
+                      "Loamy Sand":      [188, 0],
+                      "Sand":            [188, 0],
+                      "Sandy Clay":      [873, 0],
+                      "Sandy Clay Loam": [690, 0],
+                      "Sandy Loam":      [383, 0],
+                      "Silt":            [690, 0],
+                      "Silty Clay":      [873, 0],
+                      "Silty Clay Loam": [690, 0],
+                      "Silty Loam":      [690, 0]}
 
 class VZMOD:
     def __init__(self, types_of_contaminants, soiltypes, hlr, alpha, ks, thetar, thetas, n,
@@ -424,8 +436,9 @@ class VZMOD:
                                       ("fwp", 7), ("Swp", 8), ("Sl", 9), ("Sh", 10)]
                 denitrification_name = [("kdnt", 1), ("toptdnt", 2), ("beltadnt", 3), ("e1", 4), ("Sdnt", 5)]
                 adsorption_name = [("kd", 1), ("rho", 2)]
+                phosphorus_name = [("Smax", 1), ("none", 2)]
 
-                variablename = [hydraulic_name, nitrification_name, denitrification_name, adsorption_name]
+                variablename = [hydraulic_name, nitrification_name, denitrification_name, adsorption_name, phosphorus_name]
                 for k in range(4):
                     for pname, index in variablename[k]:
                         if k == 0:
@@ -439,6 +452,9 @@ class VZMOD:
                         elif k == 3:
                             if pname != "rho":
                                 para[pname] = adsorption_default[soiltype.lower()][index - 1]
+                        elif k == 4:
+                            if pname != "none":
+                                para[pname] = phosphorus_default[soiltype.lower()][index - 1]
 
             except IndexError:
                 arcpy.AddMessage("Error: soil type {} is wrong!".format(soiltype))
@@ -656,7 +672,7 @@ class VZMOD:
                                 para['hlr'] * (cold[layer] - para['phos']) / thickness - \
                                 (theta[layer] * cold[layer] + para['rho'] * para['Smax'] * kc) * para['rprep']
                     dfc[layer] = (- db / thickness - para['hlr'] / thickness - theta[layer] * para['rprep']
-                                  - para['rho'] * para['rprep'] * para['Smax'] * 1 / (1 + para['kl'] * cold[layer]) ** 2)
+                                  - para['rho'] * para['rprep'] * para['Smax'] * para['kl'] / (1 + para['kl'] * cold[layer]) ** 2)
                 elif layer == Nlayer:
                     da = math.sqrt(thetad[layer - 1] * thetad[layer]) / thickness
                     db = 0
@@ -664,7 +680,7 @@ class VZMOD:
                                 para['hlr'] * (cold[layer] - cold[layer - 1]) / thickness - \
                                 (theta[layer] * cold[layer] + para['rho'] * para['Smax'] * kc) * para['rprep']
                     dfc[layer] = (- da / thickness - para['hlr'] / thickness  - theta[layer] * para['rprep']
-                                  - para['rho'] * para['rprep'] * para['Smax'] * 1 / (1 + para['kl'] * cold[layer]) ** 2)
+                                  - para['rho'] * para['rprep'] * para['Smax'] * para['kl'] / (1 + para['kl'] * cold[layer]) ** 2)
                 else:
                     da = math.sqrt(thetad[layer - 1] * thetad[layer]) / thickness
                     db = math.sqrt(thetad[layer] * thetad[layer + 1]) / thickness
@@ -672,7 +688,7 @@ class VZMOD:
                                 thickness - para['hlr'] * (cold[layer] - cold[layer-1]) / thickness - \
                                 (theta[layer] * cold[layer] + para['rho'] * para['Smax'] * kc) * para['rprep']
                     dfc[layer] = (- (da + db) / thickness - para['hlr'] / thickness - theta[layer] * para['rprep']
-                                 - para['rho'] * para['rprep'] * para['Smax'] * 1 / (1 + para['kl'] * cold[layer]) ** 2)
+                                 - para['rho'] * para['rprep'] * para['Smax'] * para['kl'] / (1 + para['kl'] * cold[layer]) ** 2)
 
             cnew = cold - fc / dfc
             is_close = np.isclose(cold, cnew, rtol=1e-4)
@@ -870,12 +886,12 @@ if __name__ == '__main__':
     arcpy.env.workspace = "C:\\Users\\Wei\\Downloads\\lakeshore_example\\1_lakeshore_example_complex\\3_VZMOD_module\\Inputs"
     # arcpy.env.workspace = ".\\test_pro"
 
-    types_of_contaminants = "nitrogen"
+    types_of_contaminants = "nitrogen and phosphorus"
 
-    options = True
-    hetero_Ks_thetas = True
+    options = False
+    hetero_Ks_thetas = False
     calc_DTW = False
-    multi_soil_type = True
+    multi_soil_type = False
 
     septic_tank = os.path.join(arcpy.env.workspace, "PotentialSepticTankLocations.shp")
     hydraulic_conductivity = os.path.join(arcpy.env.workspace, "hydr_cond")
@@ -883,22 +899,22 @@ if __name__ == '__main__':
     DEM = None  # os.path.join(arcpy.env.workspace, "01-islanddem_3m.tif")
     smoothed_DEM = None  # os.path.join(arcpy.env.workspace, "03-smth4052")
     soiltypefile = os.path.join(arcpy.env.workspace, "soiltype")
-
-    soiltype = "loam"
-    hlr = 2.0
-    alpha = 0.011
-    ks = 12.04
-    thetar = 0.061
-    thetas = 0.399
-    n = 1.474
-
-    # soiltype = "sand"
+    #
+    # soiltype = "loam"
     # hlr = 2.0
-    # alpha = 0.035
-    # ks = 642.98
-    # thetar = 0.053
-    # thetas = 0.375
-    # n = 3.180
+    # alpha = 0.011
+    # ks = 12.04
+    # thetar = 0.061
+    # thetas = 0.399
+    # n = 1.474
+
+    soiltype = "sand"
+    hlr = 2.0
+    alpha = 0.035
+    ks = 642.98
+    thetar = 0.053
+    thetas = 0.375
+    n = 3.180
 
     # soiltype = "clay"
     # hlr = 2.0
@@ -927,7 +943,7 @@ if __name__ == '__main__':
     Sl = 0.665
     Sh = 0.809
 
-    kdnt = 0.025
+    kdnt = 0.08
     toptdnt = 26.0
     beltadnt = 0.347
     e1 = 2.865
@@ -943,25 +959,27 @@ if __name__ == '__main__':
     dist = 0
     DTW = 150
 
-    phoschoice = "langmuir"
+    phoschoice = "Linear"
     rprep = 0.002
-    phoskd = 15.1
+    phoskd_array = np.linspace(0, 100, 100)
+
     kl = 0.2
     pmax = 237
     phos = 10
 
-    # for ii in range(100):
-    #     pmax = pmax_array[ii]
-    filename = "output.txt"
-    output_file_name = os.path.join(arcpy.env.workspace, filename)
+    path = "C:\\Users\\Wei\\Downloads\\lakeshore_example\\2_lakeshore_example_phosphorus\\3_VZMOD_module\\Outputs"
+    for ii in range(100):
+        phoskd = phoskd_array[ii]
+        filename = "output_{:02d}.txt".format(ii)
+        output_file_name = os.path.join(path, filename)
 
-    vzmod = VZMOD(types_of_contaminants, soiltype, hlr, alpha, ks, thetar, thetas, n,
-                  knit, toptnit, beltanit, e2, e3, fs, fwp, Swp, Sl, Sh, kdnt, toptdnt, beltadnt, e1, Sdnt,
-                  kd, rho, Temp, disp, NH4, NO3, DTW, dist,
-                  phoschoice, rprep, kl, pmax, phoskd, phos,
-                  options, output_file_name, hetero_Ks_thetas, calc_DTW, multi_soil_type,
-                  septic_tank, hydraulic_conductivity, soil_porosity, DEM, smoothed_DEM, soiltypefile)
-    vzmod.runVZMOD()
+        vzmod = VZMOD(types_of_contaminants, soiltype, hlr, alpha, ks, thetar, thetas, n,
+                      knit, toptnit, beltanit, e2, e3, fs, fwp, Swp, Sl, Sh, kdnt, toptdnt, beltadnt, e1, Sdnt,
+                      kd, rho, Temp, disp, NH4, NO3, DTW, dist,
+                      phoschoice, rprep, kl, pmax, phoskd, phos,
+                      options, output_file_name, hetero_Ks_thetas, calc_DTW, multi_soil_type,
+                      septic_tank, hydraulic_conductivity, soil_porosity, DEM, smoothed_DEM, soiltypefile)
+        vzmod.runVZMOD()
 
     # vzmod = VZMOD(types_of_contaminants, soiltype, hlr, alpha, ks, thetar, thetas, n,
     #               knit, toptnit, beltanit, e2, e3, fs, fwp, Swp, Sl, Sh, kdnt, toptdnt, beltadnt, e1, Sdnt,
