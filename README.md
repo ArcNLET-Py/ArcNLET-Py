@@ -1,6 +1,6 @@
 # ArcNLET-Py: ArcGIS Pro Python Toolbox
 
-ArcNLET-Py, the Python version of the ArcGIS-Based Nitrogen Load Estimation Toolbox, is developed for ArcGIS Pro. It facilitates the study of nitrogen fate and transport in surficial groundwater aquifers.
+ArcNLET-Py, the Python version of the ArcGIS-Based Nitrogen Load Estimation Toolbox, is developed for ArcGIS Pro. It facilitates the study of nitrogen fate and transport in surficial groundwater aquifers. ArcNLET now includes advanced functionalities for modeling phosphorus transport and estimating phosphorus loads.
 
 ## Introduction
 
@@ -16,6 +16,7 @@ ArcNLET-Py serves a crucial role in simulating the movement and transformation o
 - **Reactive Transport Simulation**: Simulates the vertical transport of ammonium and nitrate.
 - **Groundwater Flow Evaluation**: Calculates flow directions and magnitudes at OSTDS locations.
 - **Nitrogen Plume Estimation**: Determines nitrogen travel paths and estimates plume formation.
+- **Phosphorus Plume Estimation**: Models phosphorus transport using Langmuir and Linear isotherms.
 - **Load Calculation**: Computes nitrate-nitrogen loss and final nitrate load to water bodies.
 
 ## Module Overview
@@ -37,17 +38,18 @@ Each module is designed to function cohesively, providing a comprehensive analys
       <img src="docs/UserManual/media/mdMedia/media/image3.png" alt="Particle Tracking Module" width="400"/>
    </p>
 
-4. **3-VZMOD (Vadose Zone Model)**: Optional module for vertical soil flow estimation.
+4. **3-VZMOD (Vadose Zone Model)**: Optional module for vertical soil flow estimation. This module now supports the simulation of vertical phosphorus transport.
+
    <p align="center">
       <img src="docs/UserManual/media/mdMedia/media/image11.png" alt="VZMOD Module" width="400"/>
    </p>
 
-5. **4-Transport**: Simulates NH4/NO3 plume movement using an analytical solution.
+5. **4-Transport**: Simulates the movement of contaminants, including nitrogen, phosphorus, or both, through groundwater systems.
    <p align="center">
       <img src="docs/UserManual/media/mdMedia/media/image20.png" alt="Transport Module" width="400"/>
    </p>
 
-6. **5-Load Estimation**: Calculates NH4/NO3 mass load-input, -output, and -removal.
+6. **5-Load Estimation**: Calculates NH4/NO3 and PO4 mass load-input, -output, and -removal.
    <p align="center">
       <img src="docs/UserManual/media/mdMedia/media/image21.png" alt="Load Estimation Module" width="400"/>
    </p>
