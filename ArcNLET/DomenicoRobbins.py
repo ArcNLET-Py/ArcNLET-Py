@@ -55,7 +55,7 @@ class DomenicoRobbins:
             self.dz = 0
             self.Z = 0
             self.t = -1
-            if self.k <= 0:
+            if self.k < 0:
                 raise ValueError("Decay constant must be greater than 0")
             self.decay_sqrt = math.sqrt(1 + (4 * self.k * self.dx / self.v))
         elif self.name == "DomenicoRobbins2DModified":

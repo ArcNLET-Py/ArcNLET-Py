@@ -321,23 +321,23 @@ class InterfaceVZMOD(object):
                                     )
         Tempparam.value = 25.5
 
-        phosparam0 = arcpy.Parameter(name="Sorption isotherm",
-                                     displayName="Sorption isotherm",
-                                     datatype="String",
-                                     parameterType="Required",  # Required|Optional|Derived
-                                     direction="Input",
-                                     category="Phosphorus Params")
-        phoschoices = ["Langmuir", "Linear"]
-        phosparam0.filter.list = phoschoices
-        phosparam0.value = "Langmuir"
-
-        phosparam1 = arcpy.Parameter(name="Precipitation rate [mg/kg 1/day]",
+        phosparam0 = arcpy.Parameter(name="Precipitation rate [mg/kg 1/day]",
                                      displayName="Rprecip [mg/kg 1/day]",
                                      datatype="GPDouble",
                                      parameterType="Required",  # Required|Optional|Derived
                                      direction="Input",
                                      category="Phosphorus Params")
-        phosparam1.value = 0.0002
+        phosparam0.value = 0.0002
+
+        phosparam1 = arcpy.Parameter(name="Sorption isotherm",
+                                     displayName="Sorption isotherm",
+                                     datatype="String",
+                                     parameterType="Required",  # Required|Optional|Derived
+                                     direction="Input",
+                                     category="Phosphorus Params")
+        phoschoices = ["Linear", "Langmuir"]
+        phosparam1.filter.list = phoschoices
+        phosparam1.value = "Linear"
 
         phosparam2 = arcpy.Parameter(name="The coefficient in langmuir equation [L/mg]",
                                      displayName="Langmuir coefficient [L/mg]",
@@ -379,8 +379,8 @@ class InterfaceVZMOD(object):
                                      )
         Initparam1.value = 1.0
 
-        Initparam2 = arcpy.Parameter(name="Concentration of dissolved P [mg P/L]",
-                                     displayName="Concentration of dissolved P [mg P/L]",
+        Initparam2 = arcpy.Parameter(name="Concentration of PO\u2084-P [mg/L]",
+                                     displayName="Concentration of PO\u2084-P [mg/L]",
                                      datatype="GPDouble",
                                      parameterType="Required",  # Required|Optional|Derived
                                      direction="Input"  # Input|Output
@@ -410,7 +410,7 @@ class InterfaceVZMOD(object):
                                       parameterType="Required",  # Required|Optional|Derived
                                       direction="Output"  # Input|Output
                                       )
-        outputfile0.value = "Results.txt"
+        outputfile0.value = os.path.join(os.getcwd(), "Results.txt")
         outputfile0.enabled = True
 
         inputfile0 = arcpy.Parameter(name="Types of contaminants",
@@ -550,15 +550,15 @@ class InterfaceVZMOD(object):
                 parameters[34].enabled = True
                 parameters[35].enabled = True
                 parameters[36].enabled = True
-                parameters[37].enabled = True
-                if parameters[37].altered:
-                    if parameters[37].value == "Langmuir":
-                        parameters[38].enabled = True
+                parameters[38].enabled = True
+                if parameters[38].altered:
+                    if parameters[38].value == "Langmuir":
+                        parameters[37].enabled = True
                         parameters[39].enabled = True
                         parameters[40].enabled = True
                         parameters[41].enabled = False
-                    elif parameters[37].value == "Linear":
-                        parameters[38].enabled = True
+                    elif parameters[38].value == "Linear":
+                        parameters[37].enabled = True
                         parameters[39].enabled = False
                         parameters[40].enabled = False
                         parameters[41].enabled = True
@@ -615,15 +615,15 @@ class InterfaceVZMOD(object):
                 parameters[34].enabled = True
                 parameters[35].enabled = True
                 parameters[36].enabled = False
-                parameters[37].enabled = True
-                if parameters[37].altered:
-                    if parameters[37].value == "Langmuir":
-                        parameters[38].enabled = True
+                parameters[38].enabled = True
+                if parameters[38].altered:
+                    if parameters[38].value == "Langmuir":
+                        parameters[37].enabled = True
                         parameters[39].enabled = True
                         parameters[40].enabled = True
                         parameters[41].enabled = False
-                    elif parameters[37].value == "Linear":
-                        parameters[38].enabled = True
+                    elif parameters[38].value == "Linear":
+                        parameters[37].enabled = True
                         parameters[39].enabled = False
                         parameters[40].enabled = False
                         parameters[41].enabled = True
@@ -688,8 +688,9 @@ class InterfaceVZMOD(object):
                 parameters[3].enabled = True
                 parameters[4].enabled = True
                 parameters[5].enabled = True
-                if parameters[5].altered and parameters[5].value:
-                    parameters[47].value = os.path.join(os.path.dirname(parameters[5].valueAsText), "Results.txt")
+                # if parameters[5].altered and parameters[5].value:
+                #     if not parameters[47].hasBeenValidated:
+                #         parameters[47].value = os.path.join(os.path.dirname(parameters[5].valueAsText), "Results.txt")
                 if parameters[2].altered and parameters[2].value:
                     parameters[6].enabled = True
                     parameters[7].enabled = True
@@ -800,8 +801,8 @@ class InterfaceVZMOD(object):
         if parameters[35].value is not None and parameters[35].value < 0:
             parameters[35].setErrorMessage("\u03C1 must be greater than 0.")
 
-        if parameters[38].value is not None and parameters[38].value < 0:
-            parameters[38].setErrorMessage("Rprecip must be greater than 0.")
+        if parameters[37].value is not None and parameters[37].value < 0:
+            parameters[37].setErrorMessage("Rprecip must be greater than 0.")
         if parameters[39].value is not None and parameters[39].value < 0:
             parameters[39].setErrorMessage("Langmuir coefficient must be greater than 0.")
         if parameters[40].value is not None and parameters[40].value < 0:
@@ -873,8 +874,8 @@ class InterfaceVZMOD(object):
         rho = parameters[35].value
         Temp = parameters[36].value
 
-        phoschoice = parameters[37].value
-        rprep = parameters[38].value
+        phoschoice = parameters[38].value
+        rprep = parameters[37].value
         kl = parameters[39].value
         pmax = parameters[40].value
         phoskd = parameters[41].value

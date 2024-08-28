@@ -45,6 +45,7 @@ class Transport:
         """Initialize the transport module
         """
         self.pixeltype = "32_BIT_FLOAT"
+        self.minimum_correction = True
         self.type_of_contaminants = type_of_contaminants
         self.whether_nh4 = c_whethernh4
 
@@ -148,8 +149,8 @@ class Transport:
 
             self.phos_dispx = phosparam1
             self.phos_dispyz = phosparam2
-            self.phos_choice = phosparam3
-            self.phos_prep = phosparam4
+            self.phos_choice = phosparam4
+            self.phos_prep = phosparam3
             self.phos_kd = phosparam5
             self.phos_kl = phosparam6
             self.phos_smax = phosparam7
@@ -1014,7 +1015,14 @@ class Transport:
                         else:
                             angle = - angle
                         pivot_point = "" + str(xvalue) + " " + str(yvalue)
+                        factor = 1
+                        if arcpy.Raster(plume_name).maximum < 1E-1 and self.minimum_correction:
+                            factor = int(10 / arcpy.Raster(plume_name).maximum)
+                            plume_name = arcpy.sa.Times(plume_name, factor)
                         arcpy.management.Rotate(plume_name, name, angle, pivot_point, "NEAREST")
+                        if factor != 1 and self.minimum_correction:
+                            name = arcpy.sa.Times(name, 1 / factor)
+                            factor = 1
                         warped_plumes.append(name)
                     else:
                         center_pts, body_pts = self.get_control_points(plume_array, True)
@@ -1024,7 +1032,7 @@ class Transport:
 
                         results = self.get_target_points_gis(segment, center_pts, body_pts, xvalue, yvalue)
                         target_center_pts, origin_center_pts, target_body_pts, origin_body_pts = results
-                        if len(target_center_pts) > 10:
+                        if len(target_center_pts) >= 10:
                             source_control_points = np.vstack((origin_center_pts, origin_body_pts))
                             target_control_points = np.vstack((target_center_pts, target_body_pts))
                         else:
@@ -1056,8 +1064,15 @@ class Transport:
                         try:
                             if body_pts is None:
                                 raise Exception("No body points")
+                            factor = 1
+                            if arcpy.Raster(plume_name).maximum < 1E-1 and self.minimum_correction:
+                                factor = int(10 / arcpy.Raster(plume_name).maximum)
+                                plume_name = arcpy.sa.Times(plume_name, factor)
                             arcpy.management.Warp(plume_name, source_control_points, target_control_points, name,
                                                   self.warp_method.upper(), "BILINEAR")
+                            if factor != 1 and self.minimum_correction:
+                                name = arcpy.sa.Times(name, 1 / factor)
+                                factor = 1
                             if arcpy.Describe(
                                 name).meanCellHeight == 0 or arcpy.Describe(name).meanCellWidth == 0 or arcpy.Raster(
                                 name).maximum is None or arcpy.Raster(name).maximum < self.threshold:
@@ -1094,11 +1109,24 @@ class Transport:
                                 angle = - angle
                             pivot_point = "" + str(xvalue) + " " + str(yvalue)
                             try:
+                                if index == 0:
+                                    name = r'memory\rnh4_{}'.format(pathid)
+                                elif index == 1:
+                                    name = r'memory\rno3_{}'.format(pathid)
+                                else:
+                                    name = r'memory\rphos_{}'.format(pathid)
                                 if arcpy.Exists(name):
                                     arcpy.management.Delete(name)
                             except:
                                 print("Delete failed")
+                            factor = 1
+                            if arcpy.Raster(plume_name).maximum < 1E-1 and self.minimum_correction:
+                                factor = int(10 / arcpy.Raster(plume_name).maximum)
+                                plume_name = arcpy.sa.Times(plume_name, factor)
                             arcpy.management.Rotate(plume_name, name, angle, pivot_point, "NEAREST")
+                            if factor != 1 and self.minimum_correction:
+                                name = arcpy.sa.Times(name, 1 / factor)
+                                factor = 1
                             warped_plumes.append(name)
                 except Exception as e:
                     arcpy.AddMessage("[Error] Plume {} cannot be warped.".format(pathid) + str(e))
@@ -1136,7 +1164,14 @@ class Transport:
                             continue
 
                         arcpy.env.snapRaster = output_raster_list[index]
+                        factor = 1
+                        if max_value < 1E-1 and self.minimum_correction:
+                            factor = int(10 / max_value)
+                            name = arcpy.sa.Times(name, factor)
                         arcpy.management.Resample(name, fname, str(self.plume_cell_size), "NEAREST")
+                        if factor != 1 and self.minimum_correction:
+                            fname = arcpy.sa.Times(fname, 1 / factor)
+                            factor = 1
                         arcpy.env.snapRaster = None
                     except Exception as e:
                         continue
@@ -1426,11 +1461,11 @@ class Transport:
         center_pts = index_array[::int(warp_ctrl_pt_spacing)]
         if (plumelen - 1) % warp_ctrl_pt_spacing != 0:
             center_pts = np.append(center_pts, plumelen - 1)
-        if plumelen > 5:
-            values_to_add = np.array([1, 2, 3, 4, 5])
-        else:
-            values_to_add = np.arange(1, plumelen)
-        center_pts = np.sort(np.append(center_pts, values_to_add))
+        # if plumelen > 5:
+        #     values_to_add = np.array([1, 2, 3, 4, 5])
+        # else:
+        #     values_to_add = np.arange(1, plumelen)
+        # center_pts = np.sort(np.append(center_pts, values_to_add))
         center_pts = np.unique(center_pts)
         if len(center_pts) < 10:
             return center_pts, None
@@ -1754,12 +1789,12 @@ def delete_temp_files(folder):
 # Main program for debugging
 if __name__ == '__main__':
     # for i in range(1):
-    arcpy.env.workspace = "C:\\Users\\Wei\\Downloads\\ArcNLET-Model-1-TurkeyCreek\\Phos\\04-Regional"
+    arcpy.env.workspace = "C:\\Users\\Wei\\Downloads\\lakeshore_example\\2_lakeshore_example_phosphorus\\4_Transport_module\\Inputs"
 
     types_of_contaminants = "Nitrogen and Phosphorus"  # Nitrogen, Phosphorus, Nitrogen and Phosphorus
     whethernh4 = True
     # source_location = os.path.join(arcpy.env.workspace, "01-OSTDS.shp")
-    water_bodies = os.path.join(arcpy.env.workspace, "01-waterbodies.shp")
+    water_bodies = os.path.join(arcpy.env.workspace, "waterbodies.shp")
     # particlepath = os.path.join(arcpy.env.workspace, "01-pathssy.shp")
 
     # no3output = os.path.join(arcpy.env.workspace, "dno3")
@@ -1773,35 +1808,35 @@ if __name__ == '__main__':
     option1 = 48
     option2 = "Spline"
     option3 = 0.000001
-    option4 = "none"  # post process, none, medium, full
+    option4 = "medium"  # post process, none, medium, full
     option5 = "Specified z"  # input mass rate or z
     maxnum = 400
 
     param0 = 20000
     param1 = 1000
-    param2 = 6
+    param2 = 12
     param3 = 1.5
     param4 = True
     param5 = 3.0
-    param6 = 0.4
+    param6 = 0.8
     param7 = 1000
     param8 = 1.42
 
     no3param0 = 40
     no3param1 = 2.113
     no3param2 = 0.234
-    no3param3 = 0.008
+    no3param3 = 0.04
     nh4param0 = 5
     nh4param1 = 2.113
     nh4param2 = 0.234
-    nh4param3 = 0.0001
+    nh4param3 = 0 # 0.0001
     nh4param4 = 2
 
     phosparam0 = 2
     phosparam1 = 2.113
     phosparam2 = 0.234
-    phosparam3 = 'Linear'
-    phosparam4 = 0.0002
+    phosparam3 = 0.002
+    phosparam4 = 'Linear'
     phosparam5 = 15.1
     phosparam6 = 0.2
     phosparam7 = 700
@@ -1842,16 +1877,16 @@ if __name__ == '__main__':
         #         print("Total time: {}".format(end_time - start_time))
         #         print("Tests successful!")
 
-    source_location = os.path.join(arcpy.env.workspace, "01-septictanks_Clip.shp")
-    particlepath = os.path.join(arcpy.env.workspace, "02-paths.shp")
+    source_location = os.path.join(arcpy.env.workspace, "PotentialSepticTankLocations.shp")
+    particlepath = os.path.join(arcpy.env.workspace, "paths50.shp")
 
     no3output = os.path.join(arcpy.env.workspace, "demono3")
     nh4output = os.path.join(arcpy.env.workspace, "demonh4")
     no3output_info = "demono3_info.shp"
     nh4output_info = "demonh4_info.shp"
 
-    phosoutput = os.path.join(arcpy.env.workspace, "demop")
-    phosoutput_info = "demop_info.shp"
+    phosoutput = os.path.join(arcpy.env.workspace, "demopo4")
+    phosoutput_info = "demopo4_info.shp"
 
     arcpy.AddMessage("starting geoprocessing")
     start_time = datetime.datetime.now()
