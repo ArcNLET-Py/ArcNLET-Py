@@ -3,7 +3,7 @@
 0-Preprocessing
 ===============
 
-The purpose of the Preprocessing Module (Figure 2‑1) is to automatically
+The purpose of the Preprocessing Module (Figure 0-1) is to automatically
 extract soil properties from the SSURGO database to prepare three input
 files for ArcNLET-Py. Soil properties that this module can prepare
 include hydraulic conductivity, porosity, and soil types.
@@ -22,7 +22,7 @@ accuracy issues (i.e., missing ditches and canals).
    :width: 3.62973in
    :height: 5.52734in
 
-   Figure 2‑1: The Preprocessing Module in the Geoprocessing Pane.
+   Figure 0-1: The Preprocessing Module in the Geoprocessing Pane.
 
 Input Layers
 ------------
@@ -104,7 +104,7 @@ Notes:
 Troubleshooting
 ---------------
 
-Troubleshooting Table 2‑1 lists some possible issues encountered during
+Troubleshooting Table 0-1 lists some possible issues encountered during
 model execution, a possible cause, and a suggested solution. Note that
 the error messages may appear for reasons other than those listed. If
 you cannot find a solution to the issue, then please submit a [New
@@ -114,7 +114,7 @@ GitHub <https://github.com/ArcNLET-Py/ArcNLET-Py/issues>`__) as
 described in the GitHub instructions at `Creating an issue - GitHub
 Docs <https://docs.github.com/en/issues/tracking-your-work-with-issues/creating-an-issue>`__.
 
-Table 2‑1: The Preprocessing Module troubleshooting guide.
+Table 0-1: The Preprocessing Module troubleshooting guide.
 
 +--------------------------+---------------------+---------------------+
 |    **Error**             |    **Cause**        |    **Solution**     |

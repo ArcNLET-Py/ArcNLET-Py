@@ -45,7 +45,7 @@ aquifer. In other words, unsaturated flow, flow to or from confined
 aquifers, and the interactions between groundwater and surface water are
 not considered. Additionally, recharge is also not considered.
 
-The mandatory outputs of the Groundwater Flow Module (Figure 2‑2) are
+The mandatory outputs of the Groundwater Flow Module (Figure 1-1) are
 two raster datasets representing the magnitude and direction components
 of the groundwater flow velocity vector. The module has the optional
 raster outputs for hydraulic gradient and the smoothed DEM. The smoothed
@@ -67,7 +67,7 @@ properties is described below.
    :width: 4.57356in
    :height: 6.02167in
 
-   Figure 2‑2: The Groundwater Flow Module in the Geoprocessing Pane.
+   Figure 1-1: The Groundwater Flow Module in the Geoprocessing Pane.
 
 Input Layers
 ------------
@@ -197,7 +197,7 @@ Notes:
 Troubleshooting
 ---------------
 
-Table 2‑2 lists two possible issues encountered during model execution,
+Table 1-1 lists two possible issues encountered during model execution,
 their possible causes, and suggested solutions. Note that the error
 messages may appear for reasons other than those listed. If you cannot
 find a solution to the issue, you can submit a [New issue] in the
@@ -206,7 +206,7 @@ GitHub <https://github.com/ArcNLET-Py/ArcNLET-Py/issues>`__) as
 described in the GitHub instructions at `Creating an issue - GitHub
 Docs <https://docs.github.com/en/issues/tracking-your-work-with-issues/creating-an-issue>`__.
 
-Table 2‑2: The Groundwater Flow Module troubleshooting guide.
+Table 1-1: The Groundwater Flow Module troubleshooting guide.
 
 +--------------------------+---------------------+---------------------+
 |    **Error**             |    **Cause**        |    **Solution**     |

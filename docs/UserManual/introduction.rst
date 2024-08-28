@@ -38,7 +38,7 @@ similar to ArcNLET, and it should be conceptually straightforward for
 ArcNLET users to use ArcNLET-Py.
 
 ArcNLET-Py simulates the fate and transport of nitrogen (including both
-ammonium and nitrate) and phosphorus (as phosphate, PO4-P) in a surficial
+ammonium and nitrate) and phosphorus (as phosphate, PO\ :sub:`4`\ :sup:`3-`) in a surficial
 groundwater aquifer originating from onsite sewage treatment and disposal
 systems (OSTDS), a.k.a., septic tanks. ArcNLET-Py produces estimated
 values of ammonium, nitrate, and phosphate load to specified surface
@@ -162,10 +162,10 @@ Acronyms and Abbreviations
 --------------------------
 
    In this manual, abbreviated acronyms or terms are spelled out in full
-   the first time they appear. Table 1‑1 is a list of acronyms and
+   the first time they appear. Table 1 is a list of acronyms and
    abbreviations used in this manual:
 
-Table 1‑1: Abbreviations
+Table 1: Abbreviations
 
 +-------------+--------------------------------------------------------+
 |             |    ArcGIS Pro Nitrogen Loading and Estimation Toolbox  |

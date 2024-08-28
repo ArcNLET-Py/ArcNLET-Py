@@ -3,7 +3,7 @@
 2-Particle Tracking
 ===================
 
-The Particle Tracking Module (Figure 2‑3) estimates the path along which
+The Particle Tracking Module (Figure 2-1) estimates the path along which
 a synthetic particle travels from an OSTDS, which is the point where the
 effluent enters the surficial aquifer, to a receiving water body. The
 flow field is based on the Groundwater Flow Module outputs, which are
@@ -27,7 +27,7 @@ More details of using the sink filling option are given below.
    :width: 4.57356in
    :height: 4.42167in
 
-   Figure 2‑3: The Particle Tracking Module.
+   Figure 2-1: The Particle Tracking Module.
 
 Input Layers
 ------------
@@ -96,14 +96,14 @@ Outputs
    Each entry in the shapefile’s attribute table corresponds to a single
    segment.
 
-Table 2‑3 shows the fields in the shapefile’s attribute table. The
+Table 2-1 shows the fields in the shapefile’s attribute table. The
 Transport Module calculates the average velocity and porosity values
 using this table. Details of the attribute table are only needed for
 advanced uses of the software (e.g., visualization discussed in Section
 5.11); general users do not need to understand the meaning of each item
 of the table.
 
-Table 2‑3: The Particle Tracking Module field list guide.
+Table 2-1: The Particle Tracking Module field list guide.
 
 +--------------------+-------------------------------------------------+
 |    **Field Name**  |    **Description**                              |
