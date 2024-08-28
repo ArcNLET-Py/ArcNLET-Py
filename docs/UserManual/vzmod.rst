@@ -5,36 +5,38 @@
 
 The Vadose Zone MODel (VZMOD) is a tool that simulates the
 transformation and one-dimensional (1-D) vertical transport of
-NH\ :sub:`4` and NO\ :sub:`3` in the vadose zone beneath the drain field
-of an OSTDS. Since this module aims to simulate long-term, vertical
-migration of OSTDS effluent from a drainfield in the Soil Treatment Unit
-(STU) to groundwater, the vadose zone flow and nitrogen transport are
+NH\ :sub:`4`, NO\ :sub:`3`, and PO\ :sub:`4`\ :sup:`3-` in the
+vadose zone beneath the drain field of an OSTDS. Since this
+module aims to simulate long-term, vertical migration of OSTDS
+effluent from a drainfield in the Soil Treatment Unit (STU) to
+groundwater, the vadose zone flow and nutrient transport are
 assumed to be in a steady state. VZMOD simulates the adsorption and
-nitrification processes of ammonium (NH\ :sub:`4`\ :sup:`+`) and the
-denitrification process of nitrate (NO\ :sub:`3`\ :sup:`-`) occurring in
-the vadose zone. For each septic system, VZMOD produces vertical
-profiles of NH\ :sub:`4` and NO\ :sub:`3` concentrations in the vadose
-zone and estimates the concentrations of NH\ :sub:`4`\ :sup:`+` and
-NO\ :sub:`3`\ :sup:`-` at the water table. Similar to other modules of
-ArcNLET-Py, the conceptual model of VZMOD simplifies nitrogen fate and
-transport, reduces the nitrogen modeling data requirement, and
-efficiently manages data and pre- and post-processing.
+nitrification processes of ammonium (NH\ :sub:`4`\ :sup:`+`), the
+denitrification process of nitrate (NO\ :sub:`3`\ :sup:`-`), and
+the adsorption processes affecting phosphate (PO\ :sub:`4`\ :sup:`3-`)
+occurring in the vadose zone. For each septic system, VZMOD produces
+vertical profiles of NH\ :sub:`4`, NO\ :sub:`3`, and PO\ :sub:`4`\ :sup:`3-`
+concentrations in the vadose zone and estimates the concentrations of NH\ :sub:`4`\ :sup:`+`,
+NO\ :sub:`3`\ :sup:`-`, and PO\ :sub:`4`\ :sup:`3-` at the water table.
+Similar to other modules of ArcNLET-Py, the conceptual model of VZMOD 
+simplifies nutrient fate and transport, reduces the modeling data 
+requirement, and efficiently manages data and pre- and post-processing.
 
 Running VZMOD is optional for ArcNLET-Py, and it is only needed when
-nitrogen transport in the vadose zone is of interest to the users, i.e.,
-when spatially distributed ammonium and nitrate concentrations at the
-water table are needed. Alternatively, the module can stand alone
+nutrient transport in the vadose zone is of interest to the users, i.e.,
+when spatially distributed ammonium, nitrate, and phosphate concentrations 
+at the water table are needed. Alternatively, the module can stand alone
 without the aid of the rest of the ArcNLET-Py toolbox to simulate
-nitrogen transformation and transport from an OSTDS in various soil
+nutrient transformation and transport from an OSTDS in various soil
 types. When used with the entire ArcNLET-Py toolset, VZMOD can simulate
-nitrogen transformation and 1-D transport from multiple septic systems
+nutrient transformation and 1-D transport from multiple septic systems
 in the vadose zone with heterogeneous soil hydraulic parameters. The
 module reads input hydraulic conductivity and soil porosity raster
 layers to assign heterogeneous parameters for individual OSTDS. Figure
 2‑5 shows the flow chart for VZMOD. The first step is to read the flow,
-nitrogen transformation, and transport parameters for a given soil type.
+nutrient transformation, and transport parameters for a given soil type.
 Using VZMOD for a **Single OSTDS,** these parameters solve the flow and
-nitrogen transport equations sequentially, and the concentration
+nutrient transport equations sequentially, and the concentration
 profiles are saved for post-processing.
 
 .. rst-class:: center 
@@ -53,30 +55,38 @@ VZMOD can also be used for **Multiple OSTDS** at a neighborhood scale.
 In that case, **Heterogeneous Ks and θs**, **Calculate depth to water
 table**, and **Multiple soil types** are selected. Then, data are needed
 to consider the spatial variability of **Septic tank sources (point)**,
-**Hydraulic conductivity (raster)**, and **Soil porosity (raster).** As
+**Hydraulic conductivity (raster)**, and **Soil porosity (raster)**. As
 shown in Figure 2‑6, three datasets representing **Septic tank sources
 (point)**, **DEM file (raster)**, and **Smoothed DEM (raster)** are used
 to **Calculate DTW**, where DTW stands for Depth To Water table. The
 next step is determining whether homogeneous or heterogeneous hydraulic
-conductivity (Ks) and porosity (θs) are used. The homogenous parameter
+conductivity (Ks) and porosity (θs) are used. The homogeneous parameter
 values are those read from the VZMOD Geoprocessing Pane when VZMOD is
 used for a **Single OSTDS**. The heterogeneous data are extracted from
 the **Hydraulic conductivity (raster)** and **Soil porosity (raster)**
 to the **Septic tank source (point)** locations. After this, VZMOD
-solves the flow and transport models for each OSTDS.
+solves the flow and transport models for each OSTDS, simulating the movement
+and transformation of NH\ :sub:`4`, NO\ :sub:`3`, and PO\ :sub:`4`\ :sup:`3-`
+in the vadose zone and estimating their concentrations at the water table.
 
 .. figure:: ./media/vzmodMedia/media/image2.png
    :align: left
    :alt: A screenshot of a computer Description automatically generated
    :width: 3in
-   :height: 4.5818in
-
 
 .. figure:: ./media/vzmodMedia/media/image3.png
    :align: right
    :alt: A screenshot of a computer Description automatically generated
    :width: 3in
-   :height: 4.35636in
+
+.. raw:: html
+
+   <div style="clear: both;"></div>
+
+.. figure:: ./media/vzmodMedia/media/image11.png
+   :alt: A screenshot of a computer Description automatically generated
+   :width: 3in
+   :class: center
 
 .. raw:: html
 
@@ -92,30 +102,30 @@ variability of hydraulic conductivity, soil porosity, soil types, and
 the DTW. The second is for inputting the model parameters. The list of
 the input parameters of VZMOD, their units required for the simulation,
 and descriptions of the parameters are described below. Based on an
-extensive literature review, McCray et al. (2005, 2010) provided the
+extensive literature review, McCray et al. (2005, 2010) provided the
 spreadsheet-based analytical flow and transport model (STUMOD) with
 default values for hydraulic, temperature, nitrification, effluent,
 denitrification, and adsorption parameters. The default values are used
 in VZMOD, except that the values of the first-order reaction rate of
 nitrification (**K\ nit**) and denitrification (**K\ dnt**) are from
-McCray et al. (2005). In addition, the values of dispersion coefficient
+McCray et al. (2005). In addition, the values of dispersion coefficient
 (**D**), temperature (**T**), and depth to water table (**DTW**) are
 determined by the users since they are site-specific. Users should
 specify appropriate **D**, **T,** and **DTW** values for the site(s).
-The hydraulic parameters, the coefficient, **e\ 1**, of saturation
+The hydraulic parameters, the coefficient, **e\ 1**, of the saturation
 function of denitrification, and the coefficient, **k\ d**, of
 adsorption are specific to soil types, and other parameters are the same
 for different soil types. Note that the default parameters are provided
 as a reference, and users of VZMOD are responsible for determining
-appropriate values for their own nitrogen modeling.
+appropriate values for their own nutrient modeling.
 
 The desired functionality of VZMOD dictates the input files. This
 process is automated in VZMOD. When VZMOD is used for modeling multiple
 septic systems, the user must select **Multiple OSTDS** from the Single
 or multiple OSTDS from the drop-down menu. This selection activates the
 options for **Heterogeneous K\ s and θ\ s**, **Calculate depth to water
-table**, **Multiple soil types**, and reveals the drown-down menu for
-the **Septic tank source (point)**. The user can use **Heterogeneous
+table**, **Multiple soil types**, and reveals the drop-down menu for the
+**Septic tank source (point)**. The user can use **Heterogeneous
 K\ s and θ\ s** and **Calculate depth to water table** separately or
 jointly. Likewise, when selecting **Multiple soil types**, the drop-down
 for the input **Soil types (raster)** is available, and the hydraulic
@@ -128,6 +138,16 @@ the input raster layers of heterogeneous saturated hydraulic
 conductivity and soil porosity (approximately equal to the saturated
 water content). The files are also Groundwater Flow Module input data
 and can be generated using the Preprocessing Module or data from SSURGO.
+
+VZMOD now supports modeling for different types of contaminants, including 
+**Phosphorus**, and **Nitrogen and Phosphorus**. When phosphorus is selected,
+additional parameters become available, including sorption isotherms options 
+such as **Linear** (with parameters for **Rprecip** and 
+**Linear distribution coefficient**) and **Langmuir** (with parameters for 
+**Rprecip**, **Langmuir coefficient**, and **maximum sorption capacity**). 
+These additional options provide flexibility in simulating phosphorus 
+adsorption and transport processes in different soil conditions, enabling more
+accurate predictions of phosphorus fate in the vadose zone.
 
 When selecting **Calculate depth to water table**, the user must input
 the **DEM file (raster)** and the **Smoothed DEM (raster)**. This
@@ -184,28 +204,74 @@ table for the Julington Creek Neighborhood.
 Input Layers
 ------------
 
-The input requirements for the VZMOD are described in detail below. The
-sections are organized by the functionality of the module due to VZMOD’s
-many combinations of functionalities. For example, the user can choose
-to model either a **Single OSTDS** or **Multiple OSTDS**. Likewise, when
-**Multiple OSTDS** are selected, there are many options (i.e.,
-**Heterogeneous Ks and θs**, **Calculate depth to water table**, and
-**Multiple soil types**) revealed for the user that have separate data
-requirements (i.e., **Septic tank sources (point)**, **Hydraulic
-conductivity (raster)**, and **Soil porosity (raster)** to name a few.).
-The user may choose to use the aforementioned options and data
-separately or as a mixture based on the available data and needed
-results for the study area. As a modeler, you may only be interested in
-analyzing **Multiple OSTDS** with **Heterogeneous Ks and θs** that have
-**Multiple soil types** in the study area, and VZMOD gives the
-flexibility to pick and choose the aspects that are relevant to you. The
-workflows and data requirements for each VZMOD deployment are detailed
-separately below. Please remember that you must decide which combination
-of inputs and options works best for you.
+The input requirements for VZMOD are described in detail below. The sections 
+are organized by the functionality of the module due to VZMOD’s many 
+combinations of functionalities. The first step is to choose the 
+**Types of Contaminants**, which includes options for **Nitrogen**,
+**Phosphorus**, or **Nitrogen and Phosphorus**. This selection influences
+the additional parameters and input options that will be revealed, such as 
+those related to nitrification, denitrification, adsorption, and phosphorus 
+sorption isotherms.
+
+After selecting the contaminant type, the user can choose to model either a 
+**Single OSTDS** or **Multiple OSTDS**. When **Multiple OSTDS** is selected,
+there are additional options (i.e., **Heterogeneous Ks and θs**,
+**Calculate depth to water table**, and **Multiple soil types**) revealed 
+that have separate data requirements (e.g., **Septic tank sources (point)**,
+**Hydraulic conductivity (raster)**, and **Soil porosity (raster)**). The user
+may choose to use these options and data separately or in combination based on 
+the available data and the specific needs of the study area. For example, you 
+may only be interested in analyzing **Multiple OSTDS** with 
+**Heterogeneous Ks and θs** that have **Multiple soil types** in the study area. 
+VZMOD provides the flexibility to pick and choose the aspects that are relevant 
+to your modeling objectives. The workflows and data requirements for each VZMOD 
+deployment are detailed separately below. Remember that you must decide which 
+combination of inputs and options works best for you.
+
+**Types of Contaminants**
+
+Selecting the contaminant type is the first step in setting up a VZMOD model. 
+Each option reveals different parameter inputs:
+
+-  **Nitrogen**: This option (Figure 2-8) enables parameters related to ammonium 
+   (NH\ :sub:`4`\ :sup:`+`) and nitrate (NO\ :sub:`3`\ :sup:`-`) transformation 
+   and transport, including nitrification and denitrification processes.
+
+.. figure:: ./media/vzmodMedia/media/image12.png
+   :align: center
+   :alt: A screenshot of a computer Description automatically generated
+   :width: 5.03195in
+
+   Figure 2‑8: Nitrogen in VZMOD.
+
+-  **Phosphorus**: Selecting phosphorus (Figure 2-9) will activate phosphorus-specific 
+   parameters, including sorption isotherm options such as **Linear** (with 
+   parameters for **Rprecip** and **Linear distribution coefficient**) and 
+   **Langmuir** (with parameters for **Rprecip**, **Langmuir coefficient**, 
+   and **maximum sorption capacity**).
+
+.. figure:: ./media/vzmodMedia/media/image13.png
+   :align: center
+   :alt: A screenshot of a computer Description automatically generated
+   :width: 5.03195in
+
+   Figure 2‑9: Phosphorous in VZMOD.
+
+-  **Nitrogen and Phosphorus**: This option, shown in Figure 2-10 includes 
+   both nitrogen and phosphorus parameters, combining nitrification, 
+   denitrification, and phosphorus adsorption processes for comprehensive 
+   nutrient modeling.
+
+.. figure:: ./media/vzmodMedia/media/image14.png
+   :align: center
+   :alt: A screenshot of a computer Description automatically generated
+   :width: 5.03195in
+
+   Figure 2‑10: Nitrogen and phosphorus in VZMOD.
 
 **Single OSTDS**
 
-Analyzing a **Single OSTDS** utilizing VZMOD (Figure 2‑8) is the most
+Analyzing a **Single OSTDS** utilizing VZMOD (Figure 2-11) is the most
 straightforward process, only requiring the user to select the **Soil
 types** from the dropdown menu, the **Output folder**, and to use the
 default or update the **Hydraulic Params**, **Nitrification Params¸
@@ -221,14 +287,14 @@ Transport** **Params** values, which are shown in Figure 2‑6.
    :width: 5.03195in
    :height: 3.28171in
 
-   Figure 2‑8: VZMOD for a single OSTDS.
+   Figure 2-11: VZMOD for a single OSTDS.
 
 The Figure shows the selection for using only the **Single OSTDS**
 option in VZMOD.
 
 **Multiple OSTDS**
 
-Modeling **Multiple OSTDS** (Figure 2‑9) requires more data inputs than
+Modeling **Multiple OSTDS** (Figure 2-12) requires more data inputs than
 a **Single OSTDS**. Selecting **Multiple OSTDS** reveals the options to
 use data inputs for **Heterogeneous Ks and θs**, **Calculate depth to
 water table**, and **Multiple soil types**. As the user selects each
@@ -254,12 +320,12 @@ described below.
    :width: 4.94861in
    :height: 4.32352in
 
-   Figure 2‑9: Modeling multiple OSTDS in VZMOD.
+   Figure 2-12: Modeling multiple OSTDS in VZMOD.
 
 **Multiple OSTDS with Heterogeneous Ks and θs**
 
 **Heterogeneous Ks and θs:** The heterogeneous Ks and θs option is shown
-in Figure 2‑10. If checked, the parameters Ks and θs in the block of
+in Figure 2-13. If checked, the parameters Ks and θs in the block of
 **Hydraulic Params** are disabled, and the two boxes for the **Hydraulic
 conductivity (raster)** and the **Soil porosity (raster)** are
 activated. The boxes input the module’s raster layers of heterogeneous
@@ -285,20 +351,17 @@ described below.
 -  **Soil types:** When **Multiple OSTDS** and **Heterogeneous Ks and θs**
    are selected, then the soil type is one of the USDA soil types.
 
-.. rst-class:: center 
+.. figure:: ./media/vzmodMedia/media/image15.png
+   :align: center
+   :alt: A screenshot of a computer Description automatically generated
+   :width: 4.94861in
+   :height: 4.32352in
 
-|image2|
-
-.. raw:: html
-
-   <div  style="text-align:center;">
-   Figure 2‑10: Modeling multiple OSTDS and heterogeneous Ks and θs in VZMOD.
-   </div>
-   <br> <!-- Add a line break here --></br>
+   Figure 2-13: Modeling multiple OSTDS and heterogeneous Ks and θs in VZMOD.
 
 **Multiple OSTDS with Calculate Depth to Water Table**
 
-**Calculate depth to water table:** This option (Figure 2‑11) allows
+**Calculate depth to water table:** This option (Figure 2‑14) allows
 users to input two raster images by selecting the **DEM (raster)** and
 the **Smoothed DEM (raster)**. This function calculates the depth from
 the infiltrative surface to the water table for each OSTDS. The DEM
@@ -336,12 +399,12 @@ which needs to be calibrated. The data inputs are described below.
    :width: 5.02153in
    :height: 5.21948in
 
-   Figure 2‑11: Modeling multiple OSTDS and calculating the depth to the water table in VZMOD.
+   Figure 2‑14: Modeling multiple OSTDS and calculating the depth to the water table in VZMOD.
 
 **Multiple OSTDS with Multiple Soil Types**
 
 **Multiple soil types:** Modeling multiple soil types is shown in Figure
-2‑12. If selected, the parameters α, Ks, θr, θs, n, e1, and kd are
+2‑15. If selected, the parameters α, Ks, θr, θs, n, e1, and kd are
 disabled, and the **Soil types (raster)** option is active. The data
 input requirements are below.
 
@@ -358,13 +421,14 @@ input requirements are below.
    :width: 5.02153in
    :height: 4.30268in
 
-   Figure 2‑12: Modeling Multiple OSTDS and Multiple soil types in VZMOD.
+   Figure 2‑15: Modeling Multiple OSTDS and Multiple soil types in VZMOD.
 
 Options and Parameters
 ----------------------
 
 **Options**
-
+-  **Types of Contaminants:** This option allows the user to select either
+   Nitrogen or Phosphorous, or Nitrogen and Phosphorous.
 -  **Single or Multiple OSTDS:** This option allows the user to calculate a
    **Single OSTDS** or **Multiple OSTDS**. Multiple OSTDS need to be input
    using a shapefile.\ 
@@ -430,17 +494,22 @@ Options and Parameters
    of denitrification.\ 
 -  **Sdnt (-):** Represents the threshold degree of saturation for denitrification.    
 
-**Adsorption Parameters**
+**(NH\ :sub:`4`-N) Adsorption Parameters**
 
 -  **kd (cm\ 3/g):** The distribution coefficient describes the adsorbed
    concentrations.\ 
--  **ρ (g/cm\ 3):** Represents the bulk density of the soil. 
 
-**Temperature and Transport Parameters**
+**Dispersion, Bulk Density, and Temperature Parameters**
 
--  **Temperature parm** **(°C):** This value represents the temperature of
-   the soil.\ 
--  **Transport parm (cm\ 2/d):** This is the dispersion coefficient. 
+-  **Dispersion coefficient (cm\ :sup:`2`/d)**: Represents the dispersion of contaminants in the soil.
+-  **ρ (g/cm\ :sup:`3`)**: Bulk density of the soil.
+-  **Temperature (°C)**: Soil temperature affecting chemical reactions and microbial activity.
+
+**Phosphorus Parameters**
+
+-  **Sorption isotherms**:
+   -  **Linear**: Includes parameters for **Rprecip** and **Linear distribution coefficient**.
+   -  **Langmuir**: Includes parameters for **Rprecip**, **Langmuir coefficient**, and **maximum sorption capacity**.
 
 Outputs
 -------
@@ -455,6 +524,7 @@ completed, the old output files are overwritten by the new output files.
 The results.txt file of **Single OSTDS** has the following columns:
 
 -  Depth: This column is the depth below the drainfield (cm).
+-  CPO4: This column is the calculated phosphate concentration at depth.
 -  CNH4: This column is the calculated ammonium concentrations at depth.
 -  CNO3: This column is the calculated nitrate concentrations at depth.
 -  Theta: This column is the calculated soil moisture at depth.
@@ -463,7 +533,7 @@ The results.txt file of **Single OSTDS** has the following columns:
 -  fsw_dnt: This column is the first-order reaction rate of denitrification
    adjusted for soil saturation at depth.
 
-An example of the result.txt text file is shown in Figure 2‑13. When
+An example of the result.txt text file is shown in Figure 2‑16. When
 VZMOD is used at the neighborhood scale with Multiple OSTDS, the
 concentration data for every OSTDS are separated with the line
 “Calculating for septic tank X” added to the beginning of each data
@@ -478,7 +548,7 @@ VZMOD in various environments such as Python or Microsoft Excel.
    :width: 5.10488in
    :height: 3.34422in
 
-   Figure 2‑13: An excerpt from the results.txt file for the Lakeshore example.
+   Figure 2‑16: An excerpt from the results.txt file for the Lakeshore example.
 
 If **Multiple OSTDS** is checked, VZMOD generates an additional output
 file, a point shapefile called **septictanks.shp** stored in the
@@ -532,7 +602,3 @@ Table 2‑5: The VZMOD Module troubleshooting guide.
    :align: middle
    :width: 6.60353in
    :height: 6.14583in
-.. |image2| image:: ./media/vzmodMedia/media/image7.png
-   :align: middle
-   :width: 5.02153in
-   :height: 5.21944in

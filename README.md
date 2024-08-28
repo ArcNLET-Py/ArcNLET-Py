@@ -1,12 +1,12 @@
 # ArcNLET-Py: ArcGIS Pro Python Toolbox
 
-ArcNLET-Py, the Python version of the ArcGIS-Based Nitrogen Load Estimation Toolbox, is developed for ArcGIS Pro. It facilitates the study of nitrogen fate and transport in surficial groundwater aquifers.
+ArcNLET-Py, the Python version of the ArcGIS-Based Nitrogen Load Estimation Toolbox, is developed for ArcGIS Pro. It facilitates the study of nitrogen fate and transport in surficial groundwater aquifers. ArcNLET now includes advanced functionalities for modeling phosphorus transport and estimating phosphorus loads.
 
 ## Introduction
 
 Developed at the Department of Earth, Ocean, and Atmospheric Science at Florida State University, ArcNLET-Py builds upon its predecessor, ArcNLET, which was created using Visual Basic for ArcMap. With the shift to ArcGIS Pro, the toolbox is now written in Python, offering several new features and an intuitive user interface.
 
-![ArcNLET-Py Nitrogen Plumes](docs/html/_images/image411.png)
+![ArcNLET-Py Nitrogen Plumes](docs/UserManual/media/mdMedia/media/image147.png)
 
 ArcNLET-Py serves a crucial role in simulating the movement and transformation of nitrogen, primarily originating from onsite sewage treatment and disposal systems (OSTDS). It estimates the ammonium and nitrate load to surface water bodies and integrates seamlessly with GIS for efficient data management.
 
@@ -16,6 +16,7 @@ ArcNLET-Py serves a crucial role in simulating the movement and transformation o
 - **Reactive Transport Simulation**: Simulates the vertical transport of ammonium and nitrate.
 - **Groundwater Flow Evaluation**: Calculates flow directions and magnitudes at OSTDS locations.
 - **Nitrogen Plume Estimation**: Determines nitrogen travel paths and estimates plume formation.
+- **Phosphorus Plume Estimation**: Models phosphorus transport using Langmuir and Linear isotherms.
 - **Load Calculation**: Computes nitrate-nitrogen loss and final nitrate load to water bodies.
 
 ## Module Overview
@@ -24,32 +25,33 @@ Each module is designed to function cohesively, providing a comprehensive analys
 
 1. **0-Preprocessing**: Prepares soil datasets from SSURGO.
    <p align="center">
-      <img src="docs/html/_images/image38.png" alt="Preprocessing Module" width="400"/>
+      <img src="docs/UserManual/media/mdMedia/media/image1.png" alt="Preprocessing Module" width="400"/>
    </p>
 
 2. **1-Groundwater Flow**: Approximates water table using smoothed topography.
    <p align="center">
-      <img src="docs/html/_images/image1.png" alt="Groundwater Flow Module" width="400"/>
+      <img src="docs/UserManual/media/mdMedia/media/image2.png" alt="Groundwater Flow Module" width="400"/>
    </p>
 
 3. **2-Particle Tracking**: Calculates flow paths based on groundwater velocity.
    <p align="center">
-      <img src="docs/html/_images/image28.png" alt="Particle Tracking Module" width="400"/>
+      <img src="docs/UserManual/media/mdMedia/media/image3.png" alt="Particle Tracking Module" width="400"/>
    </p>
 
-4. **3-VZMOD (Vadose Zone Model)**: Optional module for vertical soil flow estimation.
+4. **3-VZMOD (Vadose Zone Model)**: Optional module for vertical soil flow estimation. This module now supports the simulation of vertical phosphorus transport.
+
    <p align="center">
-      <img src="docs/html/_images/image88.png" alt="VZMOD Module" width="400"/>
+      <img src="docs/UserManual/media/mdMedia/media/image11.png" alt="VZMOD Module" width="400"/>
    </p>
 
-5. **4-Transport**: Simulates NH4/NO3 plume movement using an analytical solution.
+5. **4-Transport**: Simulates the movement of contaminants, including nitrogen, phosphorus, or both, through groundwater systems.
    <p align="center">
-      <img src="docs/html/_images/image87.png" alt="Transport Module" width="400"/>
+      <img src="docs/UserManual/media/mdMedia/media/image20.png" alt="Transport Module" width="400"/>
    </p>
 
-6. **5-Load Estimation**: Calculates NH4/NO3 mass load-input, -output, and -removal.
+6. **5-Load Estimation**: Calculates NH4/NO3 and PO4 mass load-input, -output, and -removal.
    <p align="center">
-      <img src="docs/html/_images/image22.png" alt="Load Estimation Module" width="400"/>
+      <img src="docs/UserManual/media/mdMedia/media/image21.png" alt="Load Estimation Module" width="400"/>
    </p>
 
 ## Requirements
@@ -68,14 +70,14 @@ ArcNLET V4.0 was developed based on ArcGIS Pro 3.1.3. The built-in arcpy package
 2. Open the SourceCode folder,
 
    <p align="center">
-      <img src="docs/html/_images/image12.png" alt="SourceCode Folder" width="400"/>
+      <img src="docs/UserManual/media/mdMedia/media/image34.png" alt="SourceCode Folder" width="400"/>
    </p>
 
 3. Click SourceCode -> ArcNLET.pyt -> ArcNLET, and then choose the tool Groundwater Flow,
 4. Use the lakeshore example for description. Click on the folder icon behind each input box to select the individual input file, and write the name of the output file. Change the parameter values, and click the run button.
 
    <p align="center">
-      <img src="docs/html/_images/image74.png" alt="Groundwater Flow Tool" width="400"/>
+      <img src="docs/UserManual/media/mdMedia/media/image88.png" alt="Groundwater Flow Tool" width="400"/>
    </p>
 
 5. The model will then start running. The results will be automatically displayed in Contents of ArcGIS Pro.
