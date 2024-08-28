@@ -394,7 +394,7 @@ class InterfaceTransport(object):
                                      parameterType="Required",  # Required|Optional|Derived
                                      direction="Input",
                                      category="Phosphorus Parameters")
-        phosparam3.value = 0.0002
+        phosparam3.value = 0.002
 
         phosparam4 = arcpy.Parameter(name="Sorption isotherm",
                                      displayName="Sorption isotherm",
