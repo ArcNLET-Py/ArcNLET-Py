@@ -402,7 +402,7 @@ Options and Parameters
    of the USDA soil types. When **Multiple OSTDS** and
    **Multiple Soil types** are selected, the soil type file prepared using
    the pre-processing module is used here.\ 
--  **Concentration of NH\ 4 (mg/L**): This value represents the OSTDS
+-  **Concentration of NH .. raw:: html <div><sub>4</sub></div> (mg/L**): This value represents the OSTDS
    effluent concentration of ammonium. This information is gathered from
    trusted reports or ground-truthing effluent concentration via a monitoring
    well.\ 
@@ -550,7 +550,11 @@ GitHub <https://github.com/ArcNLET-Py/ArcNLET-Py/issues>`__) as
 described in the GitHub instructions at `Creating an issue - GitHub
 Docs <https://docs.github.com/en/issues/tracking-your-work-with-issues/creating-an-issue>`__.
 
-Table 3-1: The VZMOD Module troubleshooting guide.
+.. raw:: html
+
+   <div style="text-align:center;">
+      Table 3-1: The VZMOD Module troubleshooting guide.
+   </div>
 
 +--------------------------+---------------------+---------------------+
 |    **Error**             |    **Cause**        |    **Solution**     |
