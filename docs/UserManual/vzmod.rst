@@ -123,10 +123,11 @@ VZMOD now supports modeling for different types of contaminants, including
 additional parameters become available, including sorption isotherms options 
 such as **Linear** (with parameters for **Rprecip** and 
 **Linear distribution coefficient**) and **Langmuir** (with parameters for 
-**Rprecip**, **Langmuir coefficient**, and **maximum sorption capacity**). 
-These additional options provide flexibility in simulating phosphorus 
-adsorption and transport processes in different soil conditions, enabling more
-accurate predictions of phosphorus fate in the vadose zone.
+**Rprecip**, **Langmuir coefficient**, and **maximum sorption capacity**), 
+which are from McCray et al. (2005). These additional options provide flexibility 
+in simulating phosphorus adsorption and transport processes in different soil 
+conditions, enabling more accurate predictions of phosphorus fate in the 
+vadose zone.
 
 When selecting **Calculate depth to water table**, the user must input
 the **DEM file (raster)** and the **Smoothed DEM (raster)**. This
@@ -409,7 +410,7 @@ Options and Parameters
    OSTDS effluent concentration of nitrate. This information is gathered
    from trusted reports or ground-truthing effluent concentration via a
    monitoring well.\
--  **Concentration of (PO\ :sub:`4`\ :sup:`3-`) (mg/L):** This value 
+-  **Concentration of** ``(PO\ :sub:`4`\ :sup:`3-`)`` **(mg/L):** This value 
    represents the OSTDS effluent concentration of phosphate. This information 
    is gathered from trusted reports or ground-truthing effluent concentration 
    via a monitoring well.\ 

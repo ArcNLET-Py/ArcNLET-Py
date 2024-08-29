@@ -40,10 +40,10 @@ separate modules as follows:
 The modules are each described in detail below.
 
 Subsections:
-- :ref:`preprocessing` for preprocessing steps.
-- :ref:`groundwaterflow` for understanding groundwater flow.
-- :ref:`particletracking` on particle tracking.
-- :ref:`vzmod` for vertical zone modeling.
-- :ref:`transport` for transport modeling.
+- :ref:`preprocessing` for preprocessing steps.\ 
+- :ref:`groundwaterflow` for understanding groundwater flow.\ 
+- :ref:`particletracking` on particle tracking.\ 
+- :ref:`vzmod` for vertical zone modeling.\ 
+- :ref:`transport` for transport modeling.\ 
 - :ref:`loadestimation` for load estimation techniques.
 
