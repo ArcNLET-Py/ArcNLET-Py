@@ -410,7 +410,7 @@ Options and Parameters
    OSTDS effluent concentration of nitrate. This information is gathered
    from trusted reports or ground-truthing effluent concentration via a
    monitoring well.\
--  **Concentration of** ``(PO\ :sub:`4`\ :sup:`3-`)`` **(mg/L):** This value 
+-  **Concentration of (PO<sub>4</sub><sup>3-</>) (mg/L):** This value 
    represents the OSTDS effluent concentration of phosphate. This information 
    is gathered from trusted reports or ground-truthing effluent concentration 
    via a monitoring well.\ 
