@@ -7,17 +7,6 @@ Preparing Input Data
    :local:
    :depth: 2
 
-4.1 Obtaining the Data
-4.2 OSTDS Locations
-4.3 Projections
-4.4 Clipping
-4.5 Merging Line and Water Bodies Features
-4.6 Excessive DEM Smoothing
-4.7 DEM Burning
-4.8 Multiple Smoothings
-4.9 Processing LiDAR data
-4.10 LiDAR DEM Updating Water Bodies
-
 This section describes several topics for preparing data for ArcNLET-Py.
 The advanced features of ArcNLET-Py are described via two real-world
 applications in the Eggleston Heights and Julington Creek neighborhoods
@@ -87,8 +76,6 @@ The method outlined describes obtaining a National Elevation Dataset
 .. figure:: ./media/preparinginputdataMedia/media/image1.png
    :align: center
    :alt: A screenshot of a map Description automatically generated
-   :width: 7.20833in
-   :height: 3.68333in
 
    Figure 4‑1: Downloading DEM data using TNM Download.
 
@@ -101,23 +88,27 @@ such as the National Hydrography Dataset using the USGS TNM Download
 
 1. Go to `TNM Download v2 (nationalmap.gov) 
    <https://apps.nationalmap.gov/downloader/>`__, and open the Map Viewer.
+
 2. Zoom to the area of interest.
+
 3. Select [Map Extent/Geometry] as the Area of Interest.
+
 4. Under the [Hydrography (NHDPlus HR, NHD, WBD)] menu, select
    [NHDPlus High Resolution (NHDPlus HR)] and
    [National Hydrography Dataset (NHD)].
+
 5. Click the [Search Products] button.
+
 6. Select the desired area to download by clicking [Download Link
    (ZIP)] (make sure it is large enough to encompass the region of
    interest). You may need to download more than one file to converge the
    entire area.
+
 7. After selection, a window appears with the download link.
 
 .. figure:: ./media/preparinginputdataMedia/media/image2.png
    :align: center
    :alt: A screenshot of a map Description automatically generated
-   :width: 6.84624in
-   :height: 3.46401in
 
    Figure 4‑2: Downloading NHD data.
 
@@ -161,8 +152,6 @@ coordinate system, NAD_1983_UTM_Zone_17N, in this example.
 .. figure:: ./media/preparinginputdataMedia/media/image3.png
    :align: center
    :alt: A screenshot of a computer Description automatically generated
-   :width: 5.6in
-   :height: 4.78745in
 
    Figure 4‑3: Using the Project Raster tool for clipping the DEM.
 
@@ -179,8 +168,6 @@ in Figure 4‑6.
 .. figure:: ./media/preparinginputdataMedia/media/image4.png
    :align: center
    :alt: A map of a river Description automatically generated
-   :width: 7.20833in
-   :height: 5.07639in
 
    Figure 4‑4: The clipped and projected input data. 
 
@@ -191,16 +178,12 @@ level in blue.
 .. figure:: ./media/preparinginputdataMedia/media/image5.png
    :align: center
    :alt: A screenshot of a computer Description automatically generated
-   :width: 7.20833in
-   :height: 3.32569in
 
    Figure 4‑5: Check for floating point pixel type in layer properties.
 
 .. figure:: ./media/preparinginputdataMedia/media/image6.png
    :align: center
    :alt: A screenshot of a computer Description automatically generated
-   :width: 7.20833in
-   :height: 4.74236in
 
    Figure 4‑6: Setting the coordinate system in the map properties.
 
@@ -219,8 +202,6 @@ edges of the domain do not affect the results.
 .. figure:: ./media/preparinginputdataMedia/media/image7.png
    :align: center
    :alt: A map of water with red dots Description automatically generated
-   :width: 7.20833in
-   :height: 5.925in
 
    Figure 4‑7: Area of interest within the DEM. 
 
@@ -238,8 +219,6 @@ options can be left as default.
 .. figure:: ./media/preparinginputdataMedia/media/image8.png
    :align: center
    :alt: A screenshot of a computer Description automatically generated
-   :width: 5.5in
-   :height: 5.43504in
 
    Figure 4‑8: Creating a blank polygon feature class.
 
@@ -254,16 +233,12 @@ ribbon (Figure 4‑10).
 .. figure:: ./media/preparinginputdataMedia/media/image9.png
    :align: center
    :alt: A screenshot of a computer Description automatically generated
-   :width: 5.36533in
-   :height: 2.73997in
 
    Figure 4‑9: Define a new clipping region.
 
 .. figure:: ./media/preparinginputdataMedia/media/image10.png
    :align: center
    :alt: A screenshot of a computer Description automatically generated
-   :width: 5.2in
-   :height: 2.99955in
 
    Figure 4‑10: Saving the edits.
 
@@ -273,8 +248,6 @@ similar to the rectangular region shown in Figure 4‑11.
 .. figure:: ./media/preparinginputdataMedia/media/image11.png
    :align: center
    :alt: A blue and yellow background with black lines Description automatically generated
-   :width: 7.20833in
-   :height: 5.11111in
 
    Figure 4‑11: The newly defined clipping region.
    
@@ -294,16 +267,12 @@ the clip features, select the clipping region.
 .. figure:: ./media/preparinginputdataMedia/media/image12.png
    :align: center
    :alt: A screenshot of a computer Description automatically generated
-   :width: 5.2924in
-   :height: 3.81303in
 
    Figure 4‑12: Extract by Mask dialog.
 
 .. figure:: ./media/preparinginputdataMedia/media/image13.png
    :align: center
    :alt: A screenshot of a computer Description automatically generated
-   :width: 5.3445in
-   :height: 2.37533in
 
    Figure 4‑13: Clipping with features.
 
@@ -321,9 +290,17 @@ using the procedure outlined below:
    set to a value that appropriately represents the features and is the
    same or more significant than the DEM cell size. A buffer of 5 meters
    on each side of the line should be sufficient for this case.
+
 2. Use the Merge geoprocessing tool of the Data Management toolbox to
    combine the buffered lines into the water body polygon feature class.
-   a. (Optional) Delete any overlapping polygons by removing parts of the buffered flow lines that cover the water body polygons. Find hidden lines by selecting entries from the attribute table and checking if they lay underneath a larger polygon. Merging features reduce the number of water bodies in the shapefile, making it easier to analyze results.
+
+   a. (Optional) Delete any overlapping polygons by removing parts of the 
+      buffered flow lines that cover the water body polygons. Find hidden 
+      lines by selecting entries from the attribute table and checking if 
+      they lay underneath a larger polygon. Merging features reduce the 
+      number of water bodies in the shapefile, making it easier to 
+      analyze results.
+
 3. Ensure the final result is in the UTM coordinate system.
 
 Excessive DEM Smoothing
@@ -364,8 +341,6 @@ intersecting the water body in question).
 .. figure:: ./media/preparinginputdataMedia/media/image14.png
    :align: center
    :alt: A screenshot of a computer screen Description automatically generated
-   :width: 7.21in
-   :height: 5.41174in
    
    Figure 4‑14: Effect of smoothing on the location of peaks and valleys.   
 
@@ -442,7 +417,8 @@ profiles shows that:
    LiDAR DEM can reflect ditches, including intermittent ones, at the
    local scale. The LiDAR DEM is projected to the NAD 1983 UTM Zone 17N
    coordinate system, and the elevation unit is converted from foot to
-   meter. 
+   meter.
+
 2. The profile in the middle, titled Resampled LiDAR DEM (10 x 10
    m\ :sup:`2`), is for the resampled (projected) DEM, from 5 × 5
    ft\ :sup:`2` to 10 × 10 m\ :sup:`2` resolution. (Note that using a
@@ -456,6 +432,7 @@ profiles shows that:
    increase the resampling resolution; in the discussion below, the
    resolution is empirically increased from 10 × 10 m\ :sup:`2` to 5 × 5
    m\ :sup:`2`.
+
 3. The profile at the right, Smoothed DEM (SmthFactor=60),
    is the smoothed DEM obtained after 60 times of smoothing of the
    resampled DEM. While large-scale spatial variability is preserved,
@@ -480,8 +457,6 @@ are valuable for record keeping and determining the best solution.
 .. figure:: ./media/preparinginputdataMedia/media/image15.png
    :align: center
    :alt: A screenshot of a computer screen Description automatically generated
-   :width: 6in
-   :height: 4.09174in
 
    Figure 4‑15: Simulated flow paths from OSTDS with smoothing.
 
@@ -501,40 +476,60 @@ are as follows:
 1. When resampling the [LiDAR DEM] (Figure 4‑15 (left)), determine the
    appropriate resolution so that local ditches are retained in the
    [resampled DEM].
-   a. Although this step may be automated, it remains empirical at this stage. The results are presented below for the resolution of 5 × 5 m\ :sup:`2`.
+
+   a. Although this step may be automated, it remains empirical at this 
+      stage. The results are presented below for the resolution of 5 × 5 m\ :sup:`2`.
+
 2. Extract the elevations of water bodies, including the ditches,
    from the [resampled DEM] (Figure 4‑15(middle)). Extract by Mask
    in the SA Toolbox in ArcGIS can extract the elevation values
    using water body data (raster or polygon).
-   a. The extracted elevations are merged into the [smoothed DEM] in a later step so that the ditches can control groundwater flow paths calculated from the [smoothed DED].   
+
+   a. The extracted elevations are merged into the [smoothed DEM] in a 
+      later step so that the ditches can control groundwater flow paths 
+      calculated from the [smoothed DED]. 
+
 3. Conduct smoothing by running the Groundwater Flow Module. As shown
    below, the ditches may disappear after smoothing, although they
    are retained in the [resampled DEM]. Since the [smoothed DEM] is
    needed for the next step, we need to type a file name into the
    [(Optional) Output Soothed DEM] filed to save the DEM.
-   a. Including the [Smoothing Factor] value in the output file name is good practice.   
+
+   a. Including the [Smoothing Factor] value in the output file name is good practice.  
+
 4. Add the extracted elevation of water bodies obtained from the
    [resampled DEM] to the [smoothed DEM]. Merging these datasets can
    be done using the Mosaic function in the Data Management Toolbox
    in ArcGIS.
+
    a. This step warrants that the [smoothed DEM] at ditches is lower than that of nearby OSTDS.
+
    b. Since the ditch elevations were not used to calculate the hydraulic gradient, the 
    hydraulic gradient is still the same as that of [smoothed DEM] output in the above 
    step. In other words, the ditches still do not control groundwater flow paths toward the 
    ditches for some OSTDS.
+
 5. To use the elevation of the ditches added to the [smoothed DEM],
    conduct another round of smoothing in the Groundwater Flow Module
    so that the ditches added in the step above are used to calculate the
    hydraulic gradient near the ditches.
-   a. The [Smoothing Factor] value should be small, i.e., 2, because a large value for the [Smoothing Factor] may, once again, eliminate the ditches.
+
+   a. The [Smoothing Factor] value should be small, i.e., 2, because a large 
+      value for the [Smoothing Factor] may, once again, eliminate the ditches.
+
    b. This step changes the hydraulic gradient near the ditches.
+
 6. Run the Particle Tracking Module to simulate the flow paths.
    If the flow paths are unsatisfactory, repeat Steps 4 and 5 until the
    expectation is met. Repeating the process results in the ditches
    having more control of groundwater flow paths.
-   a. If hydraulic head measurements are available, then use them as the criteria to determine when to stop the iterative process.
-   b. While this procedure is empirical, it may be automated if the procedure is accepted. For example, the water body elevation can automatically be added to the [smoothed DEM] before each smoothing iteration. 
 
+   a. If hydraulic head measurements are available, then use them as the criteria 
+      to determine when to stop the iterative process.
+
+   b. While this procedure is empirical, it may be automated if the procedure is 
+      accepted. For example, the water body elevation can automatically be added 
+      to the [smoothed DEM] before each smoothing iteration. 
 
 The results of the above operations are seen in Figure 4‑16, which plots
 the simulated groundwater flow path and several profiles. The results
@@ -545,16 +540,19 @@ profile is discussed below:
    Original LiDAR DEM (5 x 5 ft\ :sup:`2`), is based on the original LiDAR 
    DEM with 5 × 5 ft\ :sup:`2` resolution provided by the FDEP. It is the 
    same as the profile shown in Figure 4‑16 (left).
+
 -  The profile in the middle of row 1, titled Resampled LiDAR DEM 
    (5 x 5 m\ :sup:`2`), is based on the resampled DEM produced in Step 1
    above by resampling the LiDAR DEM to 5 × 5 m\ :sup:`2` resolution.
    The profile shows that the two ditches are retained with this resolution,
    while small-scale variability disappears after the resampling.
+
 -  The profile at the right of row 1, titled Smoothed DEM 
    (Smoothing Factor=60), is the smoothed DEM generated by the Groundwater
    Flow Module using a smoothing factor of 60, which is the result of 
    Step 3. It shows that the two ditches disappear due to the smoothing,
    although they were retained in Step 1.
+
 -  The profile at the left of row 2, title Smoothed DEM (60) + Water Bodies
    (WB), is the DEM after adding the extracted elevations of water bodies to
    the smoothed DEM. The extracted elevation file is represented with a WB
@@ -567,6 +565,7 @@ profile is discussed below:
    cases, away from the adjacent ditch. After the hydraulic gradient is
    adjusted for using the ditch data, groundwater flow paths are impacted
    by the proximal ditch and flow rightward and leftward towards the ditch. 
+
 -  The profile in the middle of row 2, titled Smoothed DEM (60) + WB (2),
    is the DEM after smoothing the DEM twice using a smoothing factor of 2
    in the Groundwater Flow Module. This profile shows that the hydraulic
@@ -576,10 +575,12 @@ profile is discussed below:
    towards the ditch. After the smoothing, the gradient near the ditch
    becomes leftward and rightward towards the ditch, implying that
    groundwater flows into the ditch for the adjacent OSTDS. 
+
 -  The profile at the right of row 2, titled Smoothed DEM (60) + WB (2) + WB,
    is based on the raster Smoothed DEM (60) + WB (2) from the plot in the
    middle of row 2. The results are obtained by adding the water body
    elevations back to said raster from the step above.
+
 -  The profile in row 3, titled Smoothed DEM + WB (2) + WB (2), is based on
    smoothing the raster file for the plot Smoothed DEM (60) + WB (2) + WB
    twice using the Groundwater Flow Module. Since this profile is similar
@@ -590,8 +591,6 @@ profile is discussed below:
 .. figure:: ./media/preparinginputdataMedia/media/image16.png
    :align: center
    :alt: A screenshot of a computer screen Description automatically generated
-   :width: 6in
-   :height: 4.79746in
 
    Figure 4‑16: Simulated flow paths from OSTDS with ditches.
 
@@ -629,8 +628,6 @@ in Figure 4‑17, top) cannot be reflected in the NED DEM data (Figure
 .. figure:: ./media/preparinginputdataMedia/media/image17.png
    :align: center
    :alt: A satellite image of a neighborhood Description automatically generated
-   :width: 5.5in
-   :height: 5.48363in
 
    Figure 4‑17: Ditch coverage and 1/3 arc-second DEM (bottom). 
 
@@ -655,17 +652,11 @@ before, a finer resolution may result in a longer computation time of
 smoothing. Users determine the tradeoff between finer resolution and
 reasonable computation time to meet their project needs.
 
-.. rst-class:: center 
-
-|A green and yellow map Description automatically generated|\ 
-|A green and yellow background Description automatically generated|
-
-.. raw:: html
-
-   <div  style="text-align:center;">
+.. figure:: ./media/preparinginputdataMedia/media/image18.png
+   :align: center
+   :alt: A satellite image of a neighborhood Description automatically generated
+  
    4‑18: LiDAR data before and after projecting. Figure
-   </div>
-   <br> <!-- Add a line break here --></br>
 
 The DEM before projecting (left) and using projecting to change
 resolution from 1 × 1 m\ :sup:`2` to 10 × 10 m\ :sup:`2` (right). The
@@ -690,8 +681,6 @@ resolutions to select the resolution appropriate to their project needs.
 .. figure:: ./media/preparinginputdataMedia/media/image20.png
    :align: center
    :alt: A screenshot of a computer Description automatically generated
-   :width: 5.28199in
-   :height: 4.74024in
 
    Figure 4‑19: Projecting the LiDAR data. 
 
@@ -779,14 +768,6 @@ aerial (left) and after aerial (right) updating.
    </div>
    <br> <!-- Add a line break here --></br>
 
-.. |A green and yellow map Description automatically generated| image:: ./media/preparinginputdataMedia/media/image18.png
-   :align: middle
-   :width: 3in
-   :height: 2.27741in
-.. |A green and yellow background Description automatically generated| image:: ./media/preparinginputdataMedia/media/image19.png
-   :align: middle
-   :width: 3in
-   :height: 2.28in
 .. |A green screen with a red circle Description automatically generated| image:: ./media/preparinginputdataMedia/media/image21.png
    :align: middle
    :width: 3.10516in

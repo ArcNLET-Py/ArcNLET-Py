@@ -471,23 +471,23 @@ for each plume.
 Additionally, the presence and consistency of the fields are checked to
 ensure the parameters exist in the data. There are two options for plume
 outputs. The first option is the default. The second option is enabled
-by checking the box for the **Consideration of NH\ :sub:`4`\ -N**. The raster
+by checking the box for the :raw-html:`<strong>Consideration of NH<sub>4</sub>-N</strong>`. The raster
 output options are as follows:  
 
 -  :raw-html:`<strong>Output Plumes of NO<sub>3</sub>-N (raster):</strong>` This is the name of the output
-   raster file of the :raw-html:`<strong>NO<sub>3</sub><sup>-</sup>` concentration plumes. Note
+   raster file of the :raw-html:`<strong>NO<sub>3</sub><sup>-</sup></strong>` concentration plumes. Note
    that the “_info” shapefile has the same file name and location as the
    raster.
 
 -  :raw-html:`<strong>Output Plumes of NH<sub>4</sub>-N (raster):</strong>` This is the file name and
-   location of the optional raster for the :raw-html:`<strong>NH<sub>4</sub><sup>+</sup>` plumes.
+   location of the optional raster for the :raw-html:`<strong>NH<sub>4</sub><sup>+</sup></strong>` plumes.
    Note that the “_info” shapefile has the same file name and location as
    your raster.
 
--  **Output Plumes of P (raster):** This is the name of the output raster file
-   for phosphate :raw-html(PO\ :sub:`4`\ :sup:`3-`) concentration plumes, showing
+-  :raw-html:`<strong>Output Plumes of P (raster):</strong>` This is the name of the output raster file
+   for phosphate :raw-html:`<strong>(PO<sub>4</sub><sup>3-</sup>)</strong>` concentration plumes, showing
    the spatial distribution of phosphorus concentrations. Similar to the other
-   outputs, the associated “\_info” shapefile has the same file name and location as
+   outputs, the associated “_info” shapefile has the same file name and location as
    the raster.
 
 .. raw:: html
