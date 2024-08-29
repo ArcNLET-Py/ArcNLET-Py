@@ -71,7 +71,7 @@ Options and Parameters
    one-half of the velocity-direction raster cell size, determined by
    the DEM resolution. This value should only be changed if the default
    does not provide satisfactory results, as explained in the
-   troubleshooting notes and Figure 2‑2.\ 
+   troubleshooting notes and Figure 2‑2. 
 
 -  **Step Size [L]:** The length of each flow path segment (in
    map units). The default is automatically calculated to equal the value

@@ -90,36 +90,43 @@ Input Layers
 
 -  **Types of Contaminants:** This option allows users to select the type 
    of contaminants to be modeled in the transport simulation. The three 
-   available options are as follows.    
+   available options are as follows.
+
    a.  **Nitrogen:** This selection enables the modeling of nitrogen species, 
-         specifically ammonium (NH\ :sub:`4`\ :sup:`+`) and nitrate 
-         (NO\ :sub:`3`\ :sup:`-`). When this option is selected, input fields 
-         related to nitrogen transformation processes, such as nitrification 
-         and denitrification, become available.\ 
+       specifically ammonium (NH\ :sub:`4`\ :sup:`+`) and nitrate 
+       (NO\ :sub:`3`\ :sup:`-`). When this option is selected, input fields 
+       related to nitrogen transformation processes, such as nitrification 
+       and denitrification, become available.
+
    b.  **Phosphorus:** This selection focuses on the transport of phosphorus in 
-         the form of phosphate (PO\ :sub:`4`\ :sup:`3-`). Input fields related to 
-         phosphorus adsorption processes, including options for linear and Langmuir 
-         sorption isotherms, are revealed to provide detailed modeling of phosphorus 
-         behavior in the subsurface.\ 
+       the form of phosphate (PO\ :sub:`4`\ :sup:`3-`). Input fields related to 
+       phosphorus adsorption processes, including options for linear and Langmuir 
+       sorption isotherms, are revealed to provide detailed modeling of phosphorus 
+       behavior in the subsurface.
+
    c.  **Nitrogen and Phosphorus:** This option enables the simultaneous modeling 
-         of both nitrogen (ammonium and nitrate) and phosphorus (phosphate) species. 
-         It activates input fields for nitrogen transformation processes and 
-         phosphorus adsorption, allowing for a comprehensive assessment of nutrient 
-         transport and interaction within the study area.\
+       of both nitrogen (ammonium and nitrate) and phosphorus (phosphate) species. 
+       It activates input fields for nitrogen transformation processes and 
+       phosphorus adsorption, allowing for a comprehensive assessment of nutrient 
+       transport and interaction within the study area.
+
 -  :raw-html:`<strong>Consideration of NH<sub>4</sub>-N:</strong>` This option allows for estimating the
    load of ammonium (NH\ :sub:`4`\ :sup:`+`) to surface water bodies. By 
    default, this option is unchecked. Utilizing this option increases 
    computation time. There are several input fields revealed when 
    considering NH\ :sub:`4`\ :sup:`+`.
+
 -  **Input Source locations (point):** This layer specifies the areas of
    the contaminant sources. This point feature class may optionally
    contain several numeric (FLOAT) fields in its attribute table that
    allow for the specification of transport parameters on a
    source-by-source basis. The fields that are permitted are described
-   in Table 4‑1.\ 
+   in Table 4‑1.
+
 -  **Input Water bodies (polygon):** Specifies the locations of water
    bodies. It is the same input used in the Particle Tracking
-   Module.\ 
+   Module.
+
 -  **Input Particle Paths (polyline):** The particle paths
    correspond with the **Source locations** and are the output file of the
    Particle Tracking Module. The Transport Module uses this file to
@@ -127,7 +134,11 @@ Input Layers
    mean) along each flow path. These values are then used for the
    calculation of each plume.
 
-:raw-hrml:`<div style="text-align:center;">Table 4‑1: Optional parameters in the attribute table of the source locations file.</div>`
+.. raw:: html
+
+   <div style="text-align:center;">
+      Table 4‑1: Optional parameters in the attribute table of the source locations file.
+   </div>
 +--------------+-----------------------------------+-------------------+
 | **Field      | **Description**                   | **Corresponding   |
 | Name**       |                                   | Parameter**       |
@@ -154,14 +165,17 @@ Options and Parameters
 ----------------------
 
 -  **Solution type:** The form of the Domenico solution to use. The
-   available options are:\ 
-   a. **DomenicoRobbinsSS2D**: The two-dimensional, steady-state Domenico
+   available options are:
+
+   a. **DomenicoRobbinsSS2D:** The two-dimensional, steady-state Domenico
       solution without decay (i.e., denitrification). This is a legacy method,
       and it is retained for understanding the impact of denitrification. This
       solution should not be used for OSTDS modeling because denitrification
-      is always expected to occur.\ 
-   b. **DomenicoRobbinsSSDecay2D**: The two-dimensional, steady-state 
-      Domenico solution with decay. This solution should always be used.\ 
+      is always expected to occur.
+
+   b. **DomenicoRobbinsSSDecay2D:** The two-dimensional, steady-state 
+      Domenico solution with decay. This solution should always be used.
+
 -  **Plume warping control point spacing [Cells]:** This parameter is used
    to warp the plume to specific flow paths. It specifies the number of
    cells along the plume centerline (starting from the OSTDS location)
@@ -172,7 +186,8 @@ Options and Parameters
    centerline. The warping **Method** includes three options: spline,
    first-order polynomial (also called affine transformation), and
    second-order polynomial. The default method is the second-order
-   polynomial transformation.\ 
+   polynomial transformation.
+
    a. A smaller **Plume warping control point spacing** yields a more
       accurate warp at the expense of a longer computation time. The
       computation time depends on the **Method** used for warping.
@@ -192,22 +207,27 @@ Options and Parameters
       for the number of points cannot be met, the warp fails, and the
       plume is discarded. If many plumes are discarded for this reason,
       a possible solution is to increase the plume resolution (i.e.,
-      decrease the **Plume Cell Size** value).\ 
+      decrease the **Plume Cell Size** value).
+
 -  **Plume warping methods:** The warping algorithm to use. More details
    of the wrapping methods can be found on the Esri website at
    https://pro.arcgis.com/en/pro-app/latest/tool-reference/data-management/warp.htm.
-   ArcNLET-Py has the following three options:\ 
+   ArcNLET-Py has the following three options:
+
    a. **Spline:** This option is for the thin-plate spline
       transformation. This method has the best overall result regarding
-      computational time and numerical accuracy.\ 
+      computational time and numerical accuracy.
+
    b. **Polynomial2:** This selection is for the second-order polynomial
       transformation. This transformation can be used in exceptional
       cases where the flow paths are simple and are generally
       arc-shaped. This transformation is the default, as it yields
-      slightly more accurate results than the Spline method does.\ 
+      slightly more accurate results than the Spline method does.
+
    c. **Polynomial1**: This selection is for the first-order polynomial
       (affine) transformation. This transformation should only be used
-      for troubleshooting or when the flow path is straight.\ 
+      for troubleshooting or when the flow path is straight.
+
 -  :raw-html:`<strong>Threshold Concentration [M/L<sup>3</sup>]:</strong>` By default, the threshold value
    is set to 10-6 for ammonium and nitrate concentrations. If a
    concentration in a cell is smaller than the threshold value, it is
@@ -221,27 +241,31 @@ Options and Parameters
    those of NH4_conc and NO3_conc. For example, if the units of NO3_conc
    are in mg/L, then the default of 1E-6 mg/l should be sufficient for
    most applications. If the concentration units are not in mg/L, this
-   value should be changed to the equivalent value in the correct units.\ 
+   value should be changed to the equivalent value in the correct units.
+
 -  **Post-processing**: This setting controls how plumes intersecting
    water bodies are handled:
 
    a. **None:** When the plumes reach a water body, the plume terminates
       with a straight line perpendicular to the flow direction. This
       option is for troubleshooting or when the other methods are too
-      slow.\ 
+      slow.
+
    b. **Medium:** Plumes are all post-processed as a single raster.
       Plumes that reach a water body are terminated with a shape that
       conforms to the shape of the water body boundary. This option
       works in cases where the configuration of the water bodies is
       simple (e.g., a single large water body). This setting is the
-      default selection.\ 
+      default selection.
+
    c. **Full:** Plumes are processed individually. This option is the
       slowest of the three and, depending on the number of plumes, is
       significantly slower than the **Medium** option. **Medium** and
       **Full** produce the same result when only a single plume exists.
       In cases where plumes appear to cross small creeks, ditches, or
       other complicated water body configurations, this option or the
-      **None** option should be used.\ 
+      **None** option should be used.
+
 -  **Domenico Boundary:** A mass balance calculation requiring either
    specifying or estimating the inflow mass rate from an OSTDS. When the
    inflow mass rate is specified, ArcNLET-Py needs to estimate the
@@ -250,7 +274,8 @@ Options and Parameters
    Although a 2D version of the Domenico solution is used, the Z value
    is required since it converts the 2D solution into a pseudo-3D form
    by extending the 2D solution vertically downwards. There are two
-   options for this variable:\ 
+   options for this variable:
+
    a. **Specified Input Mass Rate:** Setting the **Domenico Boundary**
       to this option enables the **Mass input [M/T]**. The value of the
       **Mass input** (**M\ in)** parameter represents a known input mass
@@ -266,15 +291,18 @@ Options and Parameters
       is the maximum Z value of the Domenico source plane that limits 
       the value of Z, and the default is 3 meters. Note that the value 
       for **Source Dimension Z [L]** is automatically estimated when using 
-      the **Specified Input Mass Rate** option.\ 
+      the **Specified Input Mass Rate** option.
+
    b. **Specified Z:** Setting the **Domenico Boundary** parameter to
       this option enables the **Source Dimension Z [L]** allocation. The
       mass units of **M\ in** are automatically calculated. The Z value
-      is based on the measured plume’s thickness.\ 
+      is based on the measured plume’s thickness.
+
 -  **Source Plane Parameters:** The user can determine which option to use 
    based on available information. For example, if only the inflow mass 
    rate is available from a report, the first option should be used. If a 
-   reasonable Z value is available, the second option should be used.\ 
+   reasonable Z value is available, the second option should be used.
+
    -  **Source Dimension Y (m)** and **Source Dimension Z (m):** The 
       dimensions are in map units and should be the same as the DEM unit. 
       The source plane represents the **Source Dimension Y [L]** (Y) 
@@ -289,7 +317,8 @@ Options and Parameters
       If the **Domenico Boundary** parameter is set to **Specified Input Mass Rate**, 
       the **Source Dimension Z** value is calculated automatically. 
       If the **Domenico Boundary** parameter is set to **Specified Z**, 
-      then the **Mass Input** value is calculated automatically.\ 
+      then the **Mass Input** value is calculated automatically.
+
    -  **Plume cell size [L]**: The grid resolution in map units over which
       the Domenico solution is evaluated. Smaller values yield
       higher-resolution plumes at the expense of increased computation time
@@ -305,7 +334,8 @@ Options and Parameters
       The units of this parameter must have the same length units as the
       groundwater flow velocity magnitude. Although a general guideline is
       provided for reasonable values of this parameter, the smaller the
-      **Plume cell size**, the more accurate the solution.\
+      **Plume cell size**, the more accurate the solution.
+
    -  **Volume Conversion Factor:** This factor converts volumes calculated
       from the units of length to the volume units used for concentration.
       For example, if the value of NO3_conc was specified using the unit of
@@ -314,9 +344,11 @@ Options and Parameters
       flow velocity magnitude units) are in meters, the conversion factor
       is 1,000 since 1,000 liters equals one cubic meter. The correct
       conversion factor is CRITICAL to calculate the nitrate load
-      correctly.\
+      correctly.
+
 -  :raw-html:`<strong>Bulk Density [M/L<sup>3</sup>]:</strong>` The bulk density of the soil. By default,
       this value is 1.42 g/cm\ :sup:`3`.
+
 -  **Nitrogen Parameters:**
 
    a.  :raw-html:`<strong>NO<sub>3</sub>-N Concentration [M/L<sup>3</sup>]:</strong>` The concentration of the source
@@ -326,6 +358,7 @@ Options and Parameters
       field, then the :raw-html:`<strong>NO<sub>3</sub>-N Concentrations [M/L<sup>3</sup>]</strong>` input field is
       removed from the Geoprocessing Pane, and the values in the :raw-html:`<strong>Input
       Source locations (point)</strong>` attribute table are used.
+
    b. :raw-html:`<strong>NH<sub>4</sub>-N Concentration [M/L<sup>3</sup>]:</strong>` The NH:raw-html:`<sub>4</sub>` concentration
       of the source plane. If the input source locations (shapefile)
       contain a column named nh4_conc, then the value in the input file
@@ -337,36 +370,45 @@ Options and Parameters
       then the :raw-html:`<strong>NH<sub>4</sub>-N Concentrations [M/L<sup>3</sup>]</strong>` input field is removed
       from the Geoprocessing Pane, and the values in the :raw-html:`<strong>Input Source
       locations (point)</strong>` attribute table are used.
+
 -  **Dispersivities:** These approximate values for a given soil type's
    horizontal and longitudinal dispersivities may be obtained from the
    literature (e.g., Freeze and Cherry, 1979). The defaults are based on
    a model by USGS scientists of the Naval Air Station in Jacksonville.
    This number should be changed accordingly if the map units are not
-   meters. This parameter has two settings:\ 
+   meters. This parameter has two settings:
+
    a. :raw-html:`<strong>NO<sub>3</sub> Dispersivity αL [L]:</strong>` This is for the longitudinal
       dispersivity of :raw-html:`NO<sub>3</sub>`. The default is 2.113 m/day.
+
    b. :raw-html:`<strong>NO<sub>3</sub> Dispersivity αTH [L]:</strong>` This parameter represents the
       horizontal dispersivity of :raw-html:`NO<sub>3</sub>`. The default value is
       0.234 meters.
+
    c. :raw-html:`<strong>NH<sub>4</sub>-N Dispersivity αL [L]:</strong>` This is the longitudinal
       dispersivity for :raw-html:`NH<sub>4</sub><sup>+</sup>`. By default, the value is
       2.113 meters.
+
    d. :raw-html:`<strong>NH<sub>4</sub>-N Dispersivity αTH [L]:</strong>` This is the horizontal
       transverse dispersivity of :raw-html:`NH<sub>4</sub><sup>+</sup>`. By default, the
       value is set to 0.234 meters.
+
    e. :raw-html:`<strong>kd for NH<sub>4</sub>-N cm<sup>3</sup>/g:</strong>` AKA the 
       :raw-html:`<strong>Adsorption coefficient [L<sup>3</sup>/M]:</strong>` The measure of how much
       :raw-html:`NH<sub>4</sub><sup>+</sup>` is adsorbed by the soil at a given temperature
       and pH. By default, this value is set to 2 g/:raw-html:`cm<sup>3</sup>`.
+
 -  **Denitrification Decay Rate [1/T]:** This represents the first-order
    decay constant. This constant controls the amount of nitrate loss due
    to denitrification. An approximate value may be obtained from the
    literature (e.g., McCray, 2005). The default value is 0.008
-   day\ :sup:`-1`.\ 
+   day\ :sup:`-1`.
+
 -  **Nitrification Decay Rate [1/T]:** This is the first-order decay
    constant for NH\ :sub:`4`\ :sup:`+`. This constant controls the
    amount of ammonium loss due to nitrification. By default, the value
-   is 0.0001 day-1.\
+   is 0.0001 day-1.
+
 -  **Phosphorus Parameters:** These parameters allow for modeling 
    of phosphate transport in the subsurface environment, considering both 
    its movement and interactions with soil particles. Accurate specification 
@@ -376,25 +418,34 @@ Options and Parameters
 
    a. :raw-html:`<strong>Concentration of PO<sub>4</sub>-P [mg/l]:</strong>` The initial concentration 
       of phosphate-phosphorus in the source plane.
+
    b. :raw-html:`<strong>PO<sub>4</sub>-P Dispersivity αL [m]:</strong>` Longitudinal dispersivity for 
       phosphate-phosphorus. The default is 2.113 meters.
+
    c. :raw-html:`<strong>PO<sub>4</sub>-P Dispersivity αTH [m]:</strong>` Horizontal transverse dispersivity 
       for phosphate-phosphorus. The default value is 0.234 meters.
+
    d. :raw-html:`<strong>Rprecip [mg/kg<sup>1</sup>/day]:</strong>` Represents the rate of precipitation for phosphate. 
       The default value is 0.002 mg/kg/day.
+
 -  **Sorption isotherm:** The sorption isotherm defines how phosphate interacts 
    with soil particles, either through a linear relationship or via Langmuir adsorption, 
    which accounts for both the affinity of phosphate to soil and the maximum capacity 
-   of soil to adsorb phosphate.\   
+   of soil to adsorb phosphate.
+
    **Linear:** The linear option assumes a constant, proportional relationship between 
-   phosphate concentration and soil adsorption.\   
+   phosphate concentration and soil adsorption.
+
    - **Linear distribution coefficient [L/kg]:** Represents the linear relationship 
      between adsorbed phosphate and its concentration in the solution. The default 
-     value is 15.1 L/kg.\ 
+     value is 15.1 L/kg.
+
    **Langmuir:** The Langmuir option models phosphate adsorption with a fixed maximum 
-   capacity and varying affinity.\   
+   capacity and varying affinity.
+
    - **Langmuir coefficient [L/mg]:** Indicates the affinity of phosphate for adsorption 
-     sites. The default value is 0.2 L/mg.\    
+     sites. The default value is 0.2 L/mg.
+
    - **Maximum sorption capacity [mg P/kg]:** The total amount of phosphate that can be 
      adsorbed onto the soil surface at saturation. The default value is 237 mg P/kg.
 
@@ -427,17 +478,23 @@ output options are as follows:
    raster file of the :raw-html:`<strong>NO<sub>3</sub><sup>-</sup>` concentration plumes. Note
    that the “_info” shapefile has the same file name and location as the
    raster.
+
 -  :raw-html:`<strong>Output Plumes of NH<sub>4</sub>-N (raster):</strong>` This is the file name and
    location of the optional raster for the :raw-html:`<strong>NH<sub>4</sub><sup>+</sup>` plumes.
    Note that the “_info” shapefile has the same file name and location as
    your raster.
+
 -  **Output Plumes of P (raster):** This is the name of the output raster file
-   for phosphate (PO\ :sub:`4`\ :sup:`3-`) concentration plumes, showing
+   for phosphate :raw-html(PO\ :sub:`4`\ :sup:`3-`) concentration plumes, showing
    the spatial distribution of phosphorus concentrations. Similar to the other
    outputs, the associated “\_info” shapefile has the same file name and location as
    the raster.
 
-:raw-hrml:`<div style="text-align:center;">Table 4‑2: The field descriptions for the plumes auxiliary file.</div>`
+.. raw:: html
+
+   <div style="text-align:center;">
+      Table 4‑2: The field descriptions for the plumes auxiliary file.
+   </div>
 +-------------------------+--------------------------------------------+
 |    **Field Name**       |    **Description**                         |
 +=========================+============================================+
@@ -586,7 +643,11 @@ GitHub <https://github.com/ArcNLET-Py/ArcNLET-Py/issues>`__) as
 described in the GitHub instructions at `Creating an issue - GitHub
 Docs <https://docs.github.com/en/issues/tracking-your-work-with-issues/creating-an-issue>`__.
 
-:raw-hrml:`<div style="text-align:center;">Table 4‑3: The Transport Module troubleshooting guide.</div>`
+.. raw:: html
+
+   <div style="text-align:center;">
+      Table 4‑3: The Transport Module troubleshooting guide.
+   </div>
 +---------------------+-----------------------+-----------------------+
 |    **Error**        |    **Cause**          |    **Solution**       |
 +=====================+=======================+=======================+

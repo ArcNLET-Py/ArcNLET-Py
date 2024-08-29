@@ -46,12 +46,15 @@ Input
    of contaminants to model. The three options are:
 
    -  **Nitrogen:** Focuses on modeling nitrogen species, including ammonium 
-      (NH\ :sub:`4`\ :sup:`+`) and nitrate (NO\ :sub:`3`\ :sup:`-`).\    
+      (NH\ :sub:`4`\ :sup:`+`) and nitrate (NO\ :sub:`3`\ :sup:`-`).
+
    -  **Phosphorus:** Models phosphorus transport in the form of phosphate 
-      (PO\ :sub:`4`\ :sup:`3-`), accounting for adsorption processes.\    
+      (PO\ :sub:`4`\ :sup:`3-`), accounting for adsorption processes.
+
    -  **Nitrogen and Phosphorus:** Allows for the simultaneous modeling of 
       both nitrogen and phosphorus species, providing a comprehensive assessment 
-      of nutrient transport.\ 
+      of nutrient transport.
+
 -  :raw-html:`<strong>Consideration of NH<sub>4</sub>:</strong>` This option, shown in Figure 5-2, allows
    for the consideration of NH\ :sub:`4`. By default, this option is
    unchecked. There are several options revealed when considering NH\ :sub:`4`:
@@ -60,6 +63,7 @@ Input
       the auxiliary “_info” file for :raw-html:`<strong>NH<sub>4</sub></strong>` associated with the
       plume’s raster. The information in this file’s attribute table should
       not be manually modified.
+
    b. :raw-html:`<strong>Output Results for NH<sub>4</sub>:</strong>` The output is a list showing the
       calculated load values for each water body. The default file name is
       the same as the input plumes “_info” shapefile, and the extension
@@ -76,10 +80,11 @@ Input
    auxiliary “\_info” file associated with the plume’s raster. The
    information in this file’s attribute table should not be manually
    modified. Only point feature layers whose names have the “\_info” suffix
-   are shown in the dropdown menu.\ 
+   are shown in the dropdown menu.
+
 -  **Input Plimes P info (Point):** The auxiliary info file for phosphorus associated 
    with the plumes raster calculated by the transport module. The information 
-   contained in the attribute table of this file should not be manually modified.\ 
+   contained in the attribute table of this file should not be manually modified.
 
 
 Options and Parameters
@@ -106,46 +111,62 @@ Outputs
       terminate. The water body corresponding to this FID can be determined
       using the ArcGIS Pro Information tool or by opening the attribute table
       of the water bodies feature class and selecting the entry with the
-      corresponding FID. The selection is then shown on the map.\ 
+      corresponding FID. The selection is then shown on the map.
+
    b. **Mass output load:** The total estimated nitrate load to the water
       body with the given FID in mass units per time. The unit of mass is the
       same as the mass unit used in the source concentration (e.g., mg in mg/L).
       The unit of time is the same as the time unit used in the velocity flow
       field units calculated by the flow module (e.g., day in meter/day). This
       output load equals the **Mass removal rate** subtracted from the **Mass
-      input load.** \ 
+      input load.** 
+   
    c. **Mass output load x Risk Factor:** The **Mass output load**
-      multiplied by the **Risk Factor**.\ 
+      multiplied by the **Risk Factor**.
+
    d. **Mass removal rate:** The total amount of mass removed due to
       denitrification, modeled as a first-order decay process in mass units
-      per time. The units are the same as the units of **Mass output load**.\ 
+      per time. The units are the same as the units of **Mass output load**.
+
    e. **Mass input load:** The total input mass flux rate into groundwater
       due to the constant concentration plane source of the Domenico solution,
       taking into account both advection and dispersion.
 
-:raw-hrml:`<div style="text-align:center;">Table 5-1: NH4 plumes information.</div>`
-   +----------------+-------------------------+--------------------------------+-------------------------+-----------------------+
-   | Waterbody FID  | Mass Output Load [mg/d] | Mass Output Load * Risk Factor | Mass Input Load [mg/d]  | Mass Removal Rate     |
-   |                |                         | [mg/d]                         |                         | [mg/d]                |
-   +================+=========================+================================+=========================+=======================+
-   |       30       |      58.96497036        |           58.96497036          |      58.96497036        |          0            |
-   +----------------+-------------------------+--------------------------------+-------------------------+-----------------------+
+.. raw:: html
 
-:raw-hrml:`<div style="text-align:center;">Table 5-2: NO3 plumes information.</div>`
-   +----------------+-------------------------+--------------------------------+-------------------------+-----------------------+
-   | Waterbody FID  | Mass Output Load [mg/d] | Mass Output Load * Risk Factor | Mass Input Load [mg/d]  | Mass Removal Rate     |
-   |                |                         | [mg/d]                         |                         | [mg/d]                |
-   +================+=========================+================================+=========================+=======================+
-   |       30       |      776388.7734        |          776388.7734           |     19409127.84         |     18632739.06       |
-   +----------------+-------------------------+--------------------------------+-------------------------+-----------------------+
+   <div style="text-align:center;">
+      Table 5-1: NH4 plumes information.
+   </div>
++----------------+-------------------------+--------------------------------+-------------------------+-----------------------+
+| Waterbody FID  | Mass Output Load [mg/d] | Mass Output Load * Risk Factor | Mass Input Load [mg/d]  | Mass Removal Rate     |
+|                |                         | [mg/d]                         |                         | [mg/d]                |
++================+=========================+================================+=========================+=======================+
+|       30       |      58.96497036        |           58.96497036          |      58.96497036        |          0            |
++----------------+-------------------------+--------------------------------+-------------------------+-----------------------+
 
-:raw-hrml:`<div style="text-align:center;">Table 5-3: PO4 plumes information.</div>`
-   +----------------+-------------------------+--------------------------------+-------------------------+-----------------------+
-   | Waterbody FID  | Mass Output Load [mg/d] | Mass Output Load * Risk Factor | Mass Input Load [mg/d]  | Mass Removal Rate     |
-   |                |                         | [mg/d]                         |                         | [mg/d]                |
-   +================+=========================+================================+=========================+=======================+
-   |       30       |      27856.8685         |          27856.8685            |     450516.4046         |     422659.5361       |
-   +----------------+-------------------------+--------------------------------+-------------------------+-----------------------+
+.. raw:: html
+
+   <div style="text-align:center;">
+      Table 5-2: NO3 plumes information.
+   </div>
++----------------+-------------------------+--------------------------------+-------------------------+-----------------------+
+| Waterbody FID  | Mass Output Load [mg/d] | Mass Output Load * Risk Factor | Mass Input Load [mg/d]  | Mass Removal Rate     |
+|                |                         | [mg/d]                         |                         | [mg/d]                |
++================+=========================+================================+=========================+=======================+
+|       30       |      776388.7734        |          776388.7734           |     19409127.84         |     18632739.06       |
++----------------+-------------------------+--------------------------------+-------------------------+-----------------------+
+
+.. raw:: html
+
+   <div style="text-align:center;">
+      Table 5-3: PO4 plumes information.
+   </div>
++----------------+-------------------------+--------------------------------+-------------------------+-----------------------+
+| Waterbody FID  | Mass Output Load [mg/d] | Mass Output Load * Risk Factor | Mass Input Load [mg/d]  | Mass Removal Rate     |
+|                |                         | [mg/d]                         |                         | [mg/d]                |
++================+=========================+================================+=========================+=======================+
+|       30       |      27856.8685         |          27856.8685            |     450516.4046         |     422659.5361       |
++----------------+-------------------------+--------------------------------+-------------------------+-----------------------+
 
 Troubleshooting
 ---------------
@@ -159,7 +180,11 @@ GitHub <https://github.com/ArcNLET-Py/ArcNLET-Py/issues>`__) as
 described in the GitHub instructions at `Creating an issue - GitHub
 Docs <https://docs.github.com/en/issues/tracking-your-work-with-issues/creating-an-issue>`__.
 
-:raw-hrml:`<div style="text-align:center;">Table 5-4: The Load Estimation Module troubleshooting guide.</div>`
+.. raw:: html
+
+   <div style="text-align:center;">
+      Table 5-4: The Load Estimation Module troubleshooting guide.
+   </div>   
 +---------------------+-----------------------+-----------------------+
 |    Error            |    Cause              |    Solution           |
 +=====================+=======================+=======================+

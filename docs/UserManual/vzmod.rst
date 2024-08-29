@@ -285,7 +285,8 @@ described below.
 
 -  **Septic tank sources (point):** A point feature layer specifying the
    OSTDS locations. Note that this is the same input as the Particle
-   Tracking Module.\ 
+   Tracking Module.
+
 -  **Soil types:** When **Multiple OSTDS,** the soil type
    is one of the USDA soil types.
 
@@ -307,7 +308,8 @@ described below.
 
 -  **Septic tank sources (point):** A point feature layer specifying the
    OSTDS locations. Note that this is the same input as the Particle
-   Tracking Module.\ 
+   Tracking Module.
+
 -  **Hydraulic conductivity (raster):** This is the same
    input as the Groundwater Flow Module. This must be a raster layer with
    the units of meters per day. This input represents a map of hydraulic
@@ -346,20 +348,24 @@ which needs to be calibrated. The data inputs are described below.
 
 -  **Septic tank sources (point):** A point feature layer specifying the
    OSTDS locations. Note that this is the same input as the Particle
-   Tracking Module.\ 
+   Tracking Module.
+
 -  **DEM file (raster):** This is the same input as the Groundwater Flow
    Module. The DEM is used to generate an approximation of the water 
    table. This input must be a raster layer (preferably in GRID
    format) with the units of meters. Note that a higher resolution DEM does
    not necessarily give better results since a coarser DEM may better
-   approximate the water table (Wolock and Price, 1994). 
+   approximate the water table (Wolock and Price, 1994).
+
 -  **Smoothed DEM (raster):** The smoothed DEM is an optional output
    of the Groundwater Flow Module and should be in the units of meters.
    The smoothed DEM represents the subdued replica of the topology
    provided by the input DEM. This DEM represents the shape of the
-   groundwater and does not represent the elevation of the groundwater. 
+   groundwater and does not represent the elevation of the groundwater.
+
 -  **Soil types:** When    **Multiple OSTDS** and **Calculate depth to water table**
-   are selected, then the soil type is one of the USDA soil types.\ 
+   are selected, then the soil type is one of the USDA soil types.
+
 -  **Distance (cm):** The distance is the value of A – B discussed above.
    The Distance is the length from the infiltrative surface to the water table,
    which needs to be calibrated.
@@ -379,7 +385,8 @@ input requirements are below.
 
 -  **Septic tank sources (point):** A point feature layer specifying the
    OSTDS locations. Note that this is the same input as the Particle
-   Tracking Module.\ 
+   Tracking Module.
+
 -  **Soil types:** When **Multiple OSTDS** and **Multiple
    Soil types** are selected, the soil type file prepared using the
    pre-processing module is used here.
@@ -396,26 +403,32 @@ Options and Parameters
 **Options**
 
 -  **Types of Contaminants:** This option allows the user to select either
-   **Nitrogen**, **Phosphorous**, or **Nitrogen and Phosphorous**.\ 
+   **Nitrogen**, **Phosphorous**, or **Nitrogen and Phosphorous**.
+
 -  **Single or Multiple OSTDS:** This option allows the user to calculate a
    **Single OSTDS** or **Multiple OSTDS**. Multiple OSTDS need to be input
-   using a shapefile.\ 
+   using a shapefile.
+
 -  **Soil types:** When **Single OSTDS** is selected, the soil type is one
    of the USDA soil types. When **Multiple OSTDS** and
    **Multiple Soil types** are selected, the soil type file prepared using
-   the pre-processing module is used here.\ 
+   the pre-processing module is used here.
+
 -  :raw-html:`<strong>Concentration of NH<sub>4</sub> (mg/L):</strong>` This value represents the OSTDS
    effluent concentration of ammonium. This information is gathered from
    trusted reports or ground-truthing effluent concentration via a monitoring
-   well.\ 
+   well.
+
 -  :raw-html:`<strong>Concentration of NO<sub>3</sub> (mg/L):</strong>` This value represents the
    OSTDS effluent concentration of nitrate. This information is gathered
    from trusted reports or ground-truthing effluent concentration via a
-   monitoring well.\
+   monitoring well.
+
 -  :raw-html:`<strong>Concentration of (PO<sub>4</sub><sup>3-</sup>) (mg/L):</strong>` This value represents 
    the OSTDS effluent concentration of phosphate. This information is gathered 
    from trusted reports or ground-truthing effluent concentration via a 
-   monitoring well.\ 
+   monitoring well.
+
 -  **Distance (cm):** This parameter is available for estimating
    a **Single OSTDS** or **Multiple OSTDS**. The distacne variable represents 
    the depth from the infiltrative surface to the water table. Please note 
@@ -426,47 +439,65 @@ Options and Parameters
 
 -  **Hydraulic Loading Rate (cm/d):** The hydraulic loading rate represents
    the average daily volume of effluent discharged for an OSTDS during a
-   specified period.\ 
+   specified period.
+
 -  **α (-):** This is the parameter of the van Genuchten water retention
-   function.\ 
--  **Ks (cm/d):** This value represents the saturated hydraulic conductivity.\ 
--  **θr (-):** Represents the residual moisture content of the soil.\ 
--  **θs (-):** Represents the saturated moisture content of the soil.\ 
+   function.
+
+-  **Ks (cm/d):** This value represents the saturated hydraulic conductivity.
+
+-  **θr (-):** Represents the residual moisture content of the soil.
+
+-  **θs (-):** Represents the saturated moisture content of the soil.
+
 -  **n (-):** This is the value for the van Genuchten water retention function.
 
 **Nitrification Parameters**
 
--  **Knit (1/d):** This is the maximum first-order nitrification rate.\ 
+-  **Knit (1/d):** This is the maximum first-order nitrification rate.
+
 -  **Topt-nit (°C):** This value represents the optimum soil temperature for
-   nitrification.\ 
+   nitrification.
+
 -  **βnit (-):** This is the value for the empirical coefficient for the
-   temperature function of nitrification.\ 
+   temperature function of nitrification.
+   
 -  **e2 (-):** Represents the empirical coefficient for the saturation
-   function of nitrification.\ 
+   function of nitrification.
+
 -  **e3 (-):** This is the empirical coefficient for the saturation function
-   of nitrification.\ 
+   of nitrification.
+
 -  **fs (-):** This is the saturation function of the nitrification at full
-   saturation.\ 
+   saturation.
+
 -  **fwp (-):** Represents the saturation function of nitrification at the
-   wilting point.\ 
--  **Swp (-):** This is the degree of saturation at the wilting point.\ 
+   wilting point.
+
+-  **Swp (-):** This is the degree of saturation at the wilting point.
+
 -  **Sl (-):** Represents the lower limit of relative saturation for 
-   nitrification.\ 
+   nitrification.
+
 -  **Sh (-):** This is the upper limit of relative saturation for nitrification.   
 
 **Denitrification Parameters**
 
 -  **Kdnt (1/d):** Represents the maximum first-order denitrification
-   rate.\ 
+   rate.
+
 -  **Topt-dnt (°C):** This is the optimum soil temperature for
-   denitrification.\ 
+   denitrification.
+
 -  **βdnt (-):** This is the empirical coefficient for the temperature function
-   of denitrification.\ 
+   of denitrification.
+
 -  **e1 (-):** This represents the empirical coefficient for the
-   saturation function of denitrification.\ 
+   saturation function of denitrification.
+
 -  **Sdnt (-):** Represents the threshold degree of saturation for denitrification.    
 
-**(NH\ :sub:`4`-N) Adsorption Parameters**
+:raw-html:`<strong>(NH<sub>4</sub>-N) Adsorption Parameters</strong>`
 
 -  :raw-html:`<strong>kd for NH<sub>4</sub>-N (cm<sup>3</sup>/g):</strong>` The distribution 
    coefficient describes the adsorbed concentrations.
@@ -475,24 +506,29 @@ Options and Parameters
 
 -  :raw-html:`<strong>Dispersion coefficient (cm<sup>2</sup>/d):</strong>` Represents the 
    dispersion of contaminants in the soil.
--  :raw-html:`<strong>ρ (g/cm<sup>3</sup>):</strong>` Bulk density of the soil.\ 
+
+-  :raw-html:`<strong>ρ (g/cm<sup>3</sup>):</strong>` Bulk density of the soil.
+
 -  **Temperature (°C)**: Soil temperature affecting chemical reactions and microbial activity.
 
 **Phosphorus Parameters**
 
 -  **Rprecip:** The precipitation rate.
+
 -  **Sorption isotherms:**
-   -  **Linear:** Includes parameters for **Linear distribution coefficient**. The linear 
-      distribution coefficient (𝐾𝑑) represents the ratio of a solute's concentration 
-      adsorbed onto the soil to its concentration in the soil solution, 
-      assuming a proportional and reversible adsorption process.\ 
-   -  **Langmuir:** Includes parameters for the **Langmuir coefficient**, and the 
-      **Maximum sorption capacity (mg P/kg)**. The Langmuir coefficient is a parameter 
-      that represents the affinity between the adsorbent surface and the solute, 
-      describing how strongly the solute binds to the adsorption sites. The maximum 
-      sorption capacity refers to the total amount of solute that can be adsorbed onto the 
-      surface at saturation, indicating the limit beyond which no additional solute can be 
-      adsorbed regardless of its concentration in the solution.
+
+   a.  **Linear:** Includes parameters for **Linear distribution coefficient**. The linear 
+       distribution coefficient (𝐾𝑑) represents the ratio of a solute's concentration 
+       adsorbed onto the soil to its concentration in the soil solution, 
+       assuming a proportional and reversible adsorption process.
+
+   b.  **Langmuir:** Includes parameters for the **Langmuir coefficient**, and the 
+       **Maximum sorption capacity (mg P/kg)**. The Langmuir coefficient is a parameter 
+       that represents the affinity between the adsorbent surface and the solute, 
+       describing how strongly the solute binds to the adsorption sites. The maximum 
+       sorption capacity refers to the total amount of solute that can be adsorbed onto the 
+       surface at saturation, indicating the limit beyond which no additional solute can be 
+       adsorbed regardless of its concentration in the solution.
 
 Outputs
 -------
@@ -508,13 +544,19 @@ output files. The results.txt file of **Single OSTDS** has the following
 columns:
 
 -  Depth(cm): This column is the depth below the drainfield (cm).
+
 -  Theta: This column is the calculated soil moisture at depth.
+
 -  FSW_Nit: This column is the first-order reaction rate of nitrification
    adjusted for soil saturation at depth.
+
 -  FSW_Dnt: This column is the first-order reaction rate of denitrification
    adjusted for soil saturation at depth.
+
 -  C_NH4-N (mg/l): This column is the calculated ammonium concentrations at depth.
+
 -  C_NO3-N (mg/l): This column is the calculated nitrate concentrations at depth.
+
 -  C_PO4-P (mg/l): This column is the calculated phosphate concentration at depth.
 
 An example of the result.txt text file is shown in Figure 3-12. When

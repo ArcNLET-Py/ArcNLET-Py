@@ -133,7 +133,7 @@ Options and Parameters
    the smoothed, unfilled DEM in areas where water bodies are present can
    be helpful in limited circumstances where sink-filling has caused the
    cells of the smoothed DEM immediately bordering a water body to flow in
-   unnatural directions.\ 
+   unnatural directions.
 
 -  **Merge Water bodies:** During the smoothing process, the elevation at 
    water bodies often increases, which artificially decreases the control 
