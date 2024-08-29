@@ -404,7 +404,6 @@ Options and Parameters
    the pre-processing module is used here.\
 .. role:: raw-html(raw)
    :format: html
-
 -  :raw-html:`<strong>Concentration of NH<sub>4</sub> (mg/L):</strong>` This value represents the OSTDS
    effluent concentration of ammonium. This information is gathered from
    trusted reports or ground-truthing effluent concentration via a monitoring
