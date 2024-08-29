@@ -1,4 +1,7 @@
 .. _vzmod:
+.. role:: raw-html(raw)
+   :format: html
+   :nowrap:
 
 3-VZMOD
 =======
@@ -402,9 +405,7 @@ Options and Parameters
    of the USDA soil types. When **Multiple OSTDS** and
    **Multiple Soil types** are selected, the soil type file prepared using
    the pre-processing module is used here.\
-.. role:: raw-html(raw)
-   :format: html
--  :raw-html:`<strong>Concentration of NH<sub>4</sub> (mg/L):</strong>` This value represents the OSTDS
+-  **Concentration of NH\ :raw-html:`<sub>`4:raw-html:`</sub>` (mg/L):** This value represents the OSTDS
    effluent concentration of ammonium. This information is gathered from
    trusted reports or ground-truthing effluent concentration via a monitoring
    well.\ 
