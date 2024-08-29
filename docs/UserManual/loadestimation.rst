@@ -1,4 +1,6 @@
 .. _loadestimation:
+.. role:: raw-html(raw)
+   :format: html
 
 5-Load Estimation
 =================
@@ -41,7 +43,8 @@ Input
 -----
 
 -  **Types of Contaminats:** This setting allows the user to select which type 
-   of contaminants to model. The three options are:\ 
+   of contaminants to model. The three options are:
+
    -  **Nitrogen:** Focuses on modeling nitrogen species, including ammonium 
       (NH\ :sub:`4`\ :sup:`+`) and nitrate (NO\ :sub:`3`\ :sup:`-`).\    
    -  **Phosphorus:** Models phosphorus transport in the form of phosphate 
@@ -49,16 +52,17 @@ Input
    -  **Nitrogen and Phosphorus:** Allows for the simultaneous modeling of 
       both nitrogen and phosphorus species, providing a comprehensive assessment 
       of nutrient transport.\ 
--  **Consideration of NH\ 4:** This option, shown in Figure 5-2, allows
+-  :raw-html:`<strong>Consideration of NH<sub>4</sub>:</strong>` This option, shown in Figure 5-2, allows
    for the consideration of NH\ :sub:`4`. By default, this option is
-   unchecked. There are several options revealed when considering NH\ :sub:`4`:\ 
-   a. **Input Plumes NH\ 4 info (Point):** The Transport Module produces
-      the auxiliary “\_info” file for NH\ :sub:`4` associated with the
+   unchecked. There are several options revealed when considering NH\ :sub:`4`:
+
+   a. :raw-html:`<strong>Input Plumes NH<sub>4</sub> info (Point):</strong>` The Transport Module produces
+      the auxiliary “_info” file for :raw-html:`<strong>NH<sub>4</sub></strong>` associated with the
       plume’s raster. The information in this file’s attribute table should
-      not be manually modified.\ 
-   b. **Output Results for NH\ 4:** The output is a list showing the
+      not be manually modified.
+   b. :raw-html:`<strong>Output Results for NH<sub>4</sub>:</strong>` The output is a list showing the
       calculated load values for each water body. The default file name is
-      the same as the input plumes “\_info” shapefile, and the extension
+      the same as the input plumes “_info” shapefile, and the extension
       is CSV. The default storage location is the same as the input plume
       shapefile.
 
@@ -68,7 +72,7 @@ Input
 
    Figure 5-2: The Load Estimation Module with Consideration of NH\ :sub:`4`.
 
--  **Input Plumes NO\ 3 info (Point)**: The Transport Module produces the
+-  :raw-html:`<strong>Input Plumes NO<sub>3</sub> info (Point):</strong>` The Transport Module produces the
    auxiliary “\_info” file associated with the plume’s raster. The
    information in this file’s attribute table should not be manually
    modified. Only point feature layers whose names have the “\_info” suffix
@@ -96,30 +100,30 @@ Outputs
    load values for each water body and can be seen in Tables 5-1 - 5-3 below. 
    The output is exported to a tabular format, which can be opened in any 
    spreadsheet program. A water body feature ID of -1 in the designation 
-   for all plumes that did not intersect a water body. The output columns are:\ 
-a. **Water body FID:** The Water body FID indicates where all flow paths
-   terminate. The water body corresponding to this FID can be determined
-   using the ArcGIS Pro Information tool or by opening the attribute table
-   of the water bodies feature class and selecting the entry with the
-   corresponding FID. The selection is then shown on the map.\ 
-b. **Mass output load:** The total estimated nitrate load to the water
-   body with the given FID in mass units per time. The unit of mass is the
-   same as the mass unit used in the source concentration (e.g., mg in mg/L).
-   The unit of time is the same as the time unit used in the velocity flow
-   field units calculated by the flow module (e.g., day in meter/day). This
-   output load equals the **Mass removal rate** subtracted from the **Mass
-   input load.** \ 
-c. **Mass output load x Risk Factor:** The **Mass output load**
-   multiplied by the **Risk Factor**.\ 
-d. **Mass removal rate:** The total amount of mass removed due to
-   denitrification, modeled as a first-order decay process in mass units
-   per time. The units are the same as the units of **Mass output load**.\ 
-e. **Mass input load:** The total input mass flux rate into groundwater
-   due to the constant concentration plane source of the Domenico solution,
-   taking into account both advection and dispersion.
+   for all plumes that did not intersect a water body. The output columns are:
 
-Table 5-1: NH4 plumes information.
+   a. **Water body FID:** The Water body FID indicates where all flow paths
+      terminate. The water body corresponding to this FID can be determined
+      using the ArcGIS Pro Information tool or by opening the attribute table
+      of the water bodies feature class and selecting the entry with the
+      corresponding FID. The selection is then shown on the map.\ 
+   b. **Mass output load:** The total estimated nitrate load to the water
+      body with the given FID in mass units per time. The unit of mass is the
+      same as the mass unit used in the source concentration (e.g., mg in mg/L).
+      The unit of time is the same as the time unit used in the velocity flow
+      field units calculated by the flow module (e.g., day in meter/day). This
+      output load equals the **Mass removal rate** subtracted from the **Mass
+      input load.** \ 
+   c. **Mass output load x Risk Factor:** The **Mass output load**
+      multiplied by the **Risk Factor**.\ 
+   d. **Mass removal rate:** The total amount of mass removed due to
+      denitrification, modeled as a first-order decay process in mass units
+      per time. The units are the same as the units of **Mass output load**.\ 
+   e. **Mass input load:** The total input mass flux rate into groundwater
+      due to the constant concentration plane source of the Domenico solution,
+      taking into account both advection and dispersion.
 
+:raw-hrml:`<div style="text-align:center;">Table 5-1: NH4 plumes information.</div>`
    +----------------+-------------------------+--------------------------------+-------------------------+-----------------------+
    | Waterbody FID  | Mass Output Load [mg/d] | Mass Output Load * Risk Factor | Mass Input Load [mg/d]  | Mass Removal Rate     |
    |                |                         | [mg/d]                         |                         | [mg/d]                |
@@ -127,8 +131,7 @@ Table 5-1: NH4 plumes information.
    |       30       |      58.96497036        |           58.96497036          |      58.96497036        |          0            |
    +----------------+-------------------------+--------------------------------+-------------------------+-----------------------+
 
-Table 5-2: NO3 plumes information.
-
+:raw-hrml:`<div style="text-align:center;">Table 5-2: NO3 plumes information.</div>`
    +----------------+-------------------------+--------------------------------+-------------------------+-----------------------+
    | Waterbody FID  | Mass Output Load [mg/d] | Mass Output Load * Risk Factor | Mass Input Load [mg/d]  | Mass Removal Rate     |
    |                |                         | [mg/d]                         |                         | [mg/d]                |
@@ -136,8 +139,7 @@ Table 5-2: NO3 plumes information.
    |       30       |      776388.7734        |          776388.7734           |     19409127.84         |     18632739.06       |
    +----------------+-------------------------+--------------------------------+-------------------------+-----------------------+
 
-Table 5-3: PO4 plumes information.
-
+:raw-hrml:`<div style="text-align:center;">Table 5-3: PO4 plumes information.</div>`
    +----------------+-------------------------+--------------------------------+-------------------------+-----------------------+
    | Waterbody FID  | Mass Output Load [mg/d] | Mass Output Load * Risk Factor | Mass Input Load [mg/d]  | Mass Removal Rate     |
    |                |                         | [mg/d]                         |                         | [mg/d]                |
@@ -157,8 +159,7 @@ GitHub <https://github.com/ArcNLET-Py/ArcNLET-Py/issues>`__) as
 described in the GitHub instructions at `Creating an issue - GitHub
 Docs <https://docs.github.com/en/issues/tracking-your-work-with-issues/creating-an-issue>`__.
 
-Table 5-4: The Load Estimation Module troubleshooting guide.
-
+:raw-hrml:`<div style="text-align:center;">Table 5-4: The Load Estimation Module troubleshooting guide.</div>`
 +---------------------+-----------------------+-----------------------+
 |    Error            |    Cause              |    Solution           |
 +=====================+=======================+=======================+

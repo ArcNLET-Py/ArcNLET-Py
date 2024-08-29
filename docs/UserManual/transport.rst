@@ -1,4 +1,6 @@
 .. _transport:
+.. role:: raw-html(raw)
+   :format: html
 
 4-Transport
 ===========
@@ -88,33 +90,33 @@ Input Layers
 
 -  **Types of Contaminants:** This option allows users to select the type 
    of contaminants to be modeled in the transport simulation. The three 
-   available options are:\    
-   -  **Nitrogen:** This selection enables the modeling of nitrogen species, 
-      specifically ammonium (NH\ :sub:`4`\ :sup:`+`) and nitrate 
-      (NO\ :sub:`3`\ :sup:`-`). When this option is selected, input fields 
-      related to nitrogen transformation processes, such as nitrification 
-      and denitrification, become available.\ 
-   -  **Phosphorus:** This selection focuses on the transport of phosphorus in 
-      the form of phosphate (PO\ :sub:`4`\ :sup:`3-`). Input fields related to 
-      phosphorus adsorption processes, including options for linear and Langmuir 
-      sorption isotherms, are revealed to provide detailed modeling of phosphorus 
-      behavior in the subsurface.\ 
-   -  **Nitrogen and Phosphorus:** This option enables the simultaneous modeling 
-      of both nitrogen (ammonium and nitrate) and phosphorus (phosphate) species. 
-      It activates input fields for nitrogen transformation processes and 
-      phosphorus adsorption, allowing for a comprehensive assessment of nutrient 
-      transport and interaction within the study area.\ 
--  **Consideration of NH\ :sub:`4`\ -N:** This option allows for estimating the
-   load of ammonium (NH\ :sub:`4`\ :sup:`+`) to surface water bodies. By
-   default, this option is unchecked. Utilizing this option increases
-   computation time. There are several input fields revealed when
-   considering NH\ :sub:`4`\ :sup:`+`.\ 
+   available options are as follows.    
+   a.  **Nitrogen:** This selection enables the modeling of nitrogen species, 
+         specifically ammonium (NH\ :sub:`4`\ :sup:`+`) and nitrate 
+         (NO\ :sub:`3`\ :sup:`-`). When this option is selected, input fields 
+         related to nitrogen transformation processes, such as nitrification 
+         and denitrification, become available.\ 
+   b.  **Phosphorus:** This selection focuses on the transport of phosphorus in 
+         the form of phosphate (PO\ :sub:`4`\ :sup:`3-`). Input fields related to 
+         phosphorus adsorption processes, including options for linear and Langmuir 
+         sorption isotherms, are revealed to provide detailed modeling of phosphorus 
+         behavior in the subsurface.\ 
+   c.  **Nitrogen and Phosphorus:** This option enables the simultaneous modeling 
+         of both nitrogen (ammonium and nitrate) and phosphorus (phosphate) species. 
+         It activates input fields for nitrogen transformation processes and 
+         phosphorus adsorption, allowing for a comprehensive assessment of nutrient 
+         transport and interaction within the study area.\
+-  :raw-html:`<strong>Consideration of NH<sub>4</sub>-N:</strong>` This option allows for estimating the
+   load of ammonium (NH\ :sub:`4`\ :sup:`+`) to surface water bodies. By 
+   default, this option is unchecked. Utilizing this option increases 
+   computation time. There are several input fields revealed when 
+   considering NH\ :sub:`4`\ :sup:`+`.
 -  **Input Source locations (point):** This layer specifies the areas of
    the contaminant sources. This point feature class may optionally
    contain several numeric (FLOAT) fields in its attribute table that
    allow for the specification of transport parameters on a
    source-by-source basis. The fields that are permitted are described
-   in Table 2‑6.\ 
+   in Table 4‑1.\ 
 -  **Input Water bodies (polygon):** Specifies the locations of water
    bodies. It is the same input used in the Particle Tracking
    Module.\ 
@@ -125,9 +127,7 @@ Input Layers
    mean) along each flow path. These values are then used for the
    calculation of each plume.
 
-Table 2‑6: Optional parameters in the attribute table of the source
-locations file.
-
+:raw-hrml:`<div style="text-align:center;">Table 4‑1: Optional parameters in the attribute table of the source locations file.</div>`
 +--------------+-----------------------------------+-------------------+
 | **Field      | **Description**                   | **Corresponding   |
 | Name**       |                                   | Parameter**       |
@@ -208,7 +208,7 @@ Options and Parameters
    c. **Polynomial1**: This selection is for the first-order polynomial
       (affine) transformation. This transformation should only be used
       for troubleshooting or when the flow path is straight.\ 
--  **Threshold Concentration [M/L\ 3]:** By default, the threshold value
+-  :raw-html:`<strong>Threshold Concentration [M/L<sup>3</sup>]:</strong>` By default, the threshold value
    is set to 10-6 for ammonium and nitrate concentrations. If a
    concentration in a cell is smaller than the threshold value, it is
    not used for the plume calculation. This value can speed up
@@ -223,7 +223,8 @@ Options and Parameters
    most applications. If the concentration units are not in mg/L, this
    value should be changed to the equivalent value in the correct units.\ 
 -  **Post-processing**: This setting controls how plumes intersecting
-   water bodies are handled:\ 
+   water bodies are handled:
+
    a. **None:** When the plumes reach a water body, the plume terminates
       with a straight line perpendicular to the flow direction. This
       option is for troubleshooting or when the other methods are too
@@ -254,8 +255,7 @@ Options and Parameters
       to this option enables the **Mass input [M/T]**. The value of the
       **Mass input** (**M\ in)** parameter represents a known input mass
       rate, in units of mass per time, from the constant concentration
-      source plane. The mass unit must be the same as that of **NO\ :sub:`3`\ -N
-      Concentration** (C0)\ **,** and/or the **PO\ 4 Concentration** (C0)\ **,**. 
+      source plane. The mass unit must be the same as that of :raw-html:`<strong>NO<sub>3</sub>-N Concentration</strong>` (C0), and/or the :raw-html:`<strong>PO<sub>4</sub> Concentration</strong>` (C0),
       The time units must be the same as the time units of the groundwater 
       flow velocity magnitude. A 20,000 mg/day value per OSTDS is a 
       reasonable starting point. Using a specified mass inflow rate 
@@ -315,48 +315,49 @@ Options and Parameters
       is 1,000 since 1,000 liters equals one cubic meter. The correct
       conversion factor is CRITICAL to calculate the nitrate load
       correctly.\
-   -  **Bulk Density [M/L\ 3]:** The bulk density of the soil. By default,
+-  :raw-html:`<strong>Bulk Density [M/L<sup>3</sup>]:</strong>` The bulk density of the soil. By default,
       this value is 1.42 g/cm\ :sup:`3`.
--  **Nitrogen Parameters:** 
-   a.  **NO\ :sub:`3`\ -N Concentration [M/L\ 3]:** The concentration of the source
+-  **Nitrogen Parameters:**
+
+   a.  :raw-html:`<strong>NO<sub>3</sub>-N Concentration [M/L<sup>3</sup>]:</strong>` The concentration of the source
       plane. Its range is between 0 and 80 mg/L, and the default is 40
-      units (e.g., mg/L). If there are data in the **Input Source locations
-      (point)** (i.e., the exported shapefile form VZMOD) in the No3_conc
-      field, then the **NO\ :sub:`3`\ -N Concentrations [M/L\ 3]** input field is
-      removed from the Geoprocessing Pane, and the values in the **Input
-      Source locations (point)** attribute table are used.\ 
-   b. **NH\ :sub:`4`\ -N Concentration [M/L\ 3]:** The NH\ :sub:`4` concentration
+      units (e.g., mg/L). If there are data in the :raw-html:`<strong>Input Source locations
+      (point)</strong>` (i.e., the exported shapefile from VZMOD) in the No3_conc
+      field, then the :raw-html:`<strong>NO<sub>3</sub>-N Concentrations [M/L<sup>3</sup>]</strong>` input field is
+      removed from the Geoprocessing Pane, and the values in the :raw-html:`<strong>Input
+      Source locations (point)</strong>` attribute table are used.
+   b. :raw-html:`<strong>NH<sub>4</sub>-N Concentration [M/L<sup>3</sup>]:</strong>` The NH:raw-html:`<sub>4</sub>` concentration
       of the source plane. If the input source locations (shapefile)
       contain a column named nh4_conc, then the value in the input file
       is used. This field allows users to enter different initial
       concentrations for different OSTDS. If not, the input value here
       is the initial value for all OSTDS. By default, the value is 10
-      mg/L. If there are data in the **Input Source locations (point)**
-      (i.e., the exported shapefile form VZMOD) in the nh4_conc field,
-      then the **NH\ :sub:`4`\ -N Concentrations [M/L\ 3]** input field is removed
-      from the Geoprocessing Pane, and the values in the **Input Source
-      locations (point)** attribute table are used.\ 
+      mg/L. If there are data in the :raw-html:`<strong>Input Source locations (point)</strong>`
+      (i.e., the exported shapefile from VZMOD) in the nh4_conc field,
+      then the :raw-html:`<strong>NH<sub>4</sub>-N Concentrations [M/L<sup>3</sup>]</strong>` input field is removed
+      from the Geoprocessing Pane, and the values in the :raw-html:`<strong>Input Source
+      locations (point)</strong>` attribute table are used.
 -  **Dispersivities:** These approximate values for a given soil type's
    horizontal and longitudinal dispersivities may be obtained from the
    literature (e.g., Freeze and Cherry, 1979). The defaults are based on
    a model by USGS scientists of the Naval Air Station in Jacksonville.
    This number should be changed accordingly if the map units are not
    meters. This parameter has two settings:\ 
-   a. **NO3 Dispersivity αL [L]:** This is for the longitudinal
-      dispersivity of NO\ :sub:`3`. The default is 2.113 m/day.\ 
-   b. **NO3 Dispersivity αTH [L]:** This parameter represents the
-      horizontal dispersivity of NO\ :sub:`3`. The default value is
-      0.234 meters.\ 
-   c. **NH\ :sub:`4`\ -N Dispersivity α\ L [L]:** This is the longitudinal
-      dispersivity for NH\ :sub:`4`\ :sup:`+`. By default, the value is
-      2.113 meters.\ 
-   d. **NH\ :sub:`4`\ -N Dispersivity α\ TH [L]:** This is the horizontal
-      transverse dispersivity of NH\ :sub:`4`\ :sup:`+`. By default, the
-      value is set to 0.234 meters.\ 
-   e. **kd for NH\ :sub:`4`\ -N cm\ 3 /g:** AKA the 
-      **Adsorption coefficient [L\ 3/M]:** The measure of how much
-      NH\ :sub:`4`\ :sup:`+` is adsorbed by the soil at a given temperature
-      and pH. By default, this value is set to 2 g/cm\ :sub:`3`.
+   a. :raw-html:`<strong>NO<sub>3</sub> Dispersivity αL [L]:</strong>` This is for the longitudinal
+      dispersivity of :raw-html:`NO<sub>3</sub>`. The default is 2.113 m/day.
+   b. :raw-html:`<strong>NO<sub>3</sub> Dispersivity αTH [L]:</strong>` This parameter represents the
+      horizontal dispersivity of :raw-html:`NO<sub>3</sub>`. The default value is
+      0.234 meters.
+   c. :raw-html:`<strong>NH<sub>4</sub>-N Dispersivity αL [L]:</strong>` This is the longitudinal
+      dispersivity for :raw-html:`NH<sub>4</sub><sup>+</sup>`. By default, the value is
+      2.113 meters.
+   d. :raw-html:`<strong>NH<sub>4</sub>-N Dispersivity αTH [L]:</strong>` This is the horizontal
+      transverse dispersivity of :raw-html:`NH<sub>4</sub><sup>+</sup>`. By default, the
+      value is set to 0.234 meters.
+   e. :raw-html:`<strong>kd for NH<sub>4</sub>-N cm<sup>3</sup>/g:</strong>` AKA the 
+      :raw-html:`<strong>Adsorption coefficient [L<sup>3</sup>/M]:</strong>` The measure of how much
+      :raw-html:`NH<sub>4</sub><sup>+</sup>` is adsorbed by the soil at a given temperature
+      and pH. By default, this value is set to 2 g/:raw-html:`cm<sup>3</sup>`.
 -  **Denitrification Decay Rate [1/T]:** This represents the first-order
    decay constant. This constant controls the amount of nitrate loss due
    to denitrification. An approximate value may be obtained from the
@@ -371,15 +372,16 @@ Options and Parameters
    its movement and interactions with soil particles. Accurate specification 
    of these parameters helps in simulating the behavior of phosphate, 
    ensuring a realistic assessment of its potential impact on groundwater 
-   quality and the surrounding ecosystem.\    
-   a. **Concentration of PO\ :sub:`4`\ -P [mg/l]:** The initial concentration 
-      of phosphate-phosphorus in the source plane.\    
-   b. **PO\ :sub:`4`\ -P Dispersivity αL [m]:** Longitudinal dispersivity for 
-      phosphate-phosphorus. The default is 2.113 meters.\    
-   c. **PO\ :sub:`4`\ -P Dispersivity αTH [m]:** Horizontal transverse dispersivity 
-      for phosphate-phosphorus. The default value is 0.234 meters.\    
-   d. **Rprecip [mg/kg 1/day]:** Represents the rate of precipitation for phosphate. 
-      The default value is 0.002 mg/kg/day.\ 
+   quality and the surrounding ecosystem.
+
+   a. :raw-html:`<strong>Concentration of PO<sub>4</sub>-P [mg/l]:</strong>` The initial concentration 
+      of phosphate-phosphorus in the source plane.
+   b. :raw-html:`<strong>PO<sub>4</sub>-P Dispersivity αL [m]:</strong>` Longitudinal dispersivity for 
+      phosphate-phosphorus. The default is 2.113 meters.
+   c. :raw-html:`<strong>PO<sub>4</sub>-P Dispersivity αTH [m]:</strong>` Horizontal transverse dispersivity 
+      for phosphate-phosphorus. The default value is 0.234 meters.
+   d. :raw-html:`<strong>Rprecip [mg/kg<sup>1</sup>/day]:</strong>` Represents the rate of precipitation for phosphate. 
+      The default value is 0.002 mg/kg/day.
 -  **Sorption isotherm:** The sorption isotherm defines how phosphate interacts 
    with soil particles, either through a linear relationship or via Langmuir adsorption, 
    which accounts for both the affinity of phosphate to soil and the maximum capacity 
@@ -409,7 +411,7 @@ used to calculate the plume, the warping, and post-processing methods,
 to name a few). Since the Load Estimation Module uses some of this
 information, the values in the attribute table should not be modified
 manually. For reference purposes, the field descriptions of the “\_info”
-file are given in Table 2‑7. In the table, the Load Estimation Module
+file are given in Table 4‑2. In the table, the Load Estimation Module
 uses the fields indicated with an asterisk to calculate loads. The
 fields not used for calculation are for informational/archival purposes.
 They should not be modified as they serve to record the parameters used
@@ -419,15 +421,15 @@ Additionally, the presence and consistency of the fields are checked to
 ensure the parameters exist in the data. There are two options for plume
 outputs. The first option is the default. The second option is enabled
 by checking the box for the **Consideration of NH\ :sub:`4`\ -N**. The raster
-output options are as follows:-  
+output options are as follows:  
 
--  **Output Plumes of NO\ :sub:`3`\ -N (raster):** This is the name of the output
-   raster file of the NO\ :sub:`3`\ :sup:`-` concentration plumes. Note
-   that the “\_info” shapefile has the same file name and location as the
-   raster.\ 
--  **Output Plumes of NH\ :sub:`4`\ -N (raster):** This is the file name and
-   location of the optional raster for the NH\ :sub:`4`\ :sup:`+` plumes.
-   Note that the “\_info” shapefile has the same file name and location as
+-  :raw-html:`<strong>Output Plumes of NO<sub>3</sub>-N (raster):</strong>` This is the name of the output
+   raster file of the :raw-html:`<strong>NO<sub>3</sub><sup>-</sup>` concentration plumes. Note
+   that the “_info” shapefile has the same file name and location as the
+   raster.
+-  :raw-html:`<strong>Output Plumes of NH<sub>4</sub>-N (raster):</strong>` This is the file name and
+   location of the optional raster for the :raw-html:`<strong>NH<sub>4</sub><sup>+</sup>` plumes.
+   Note that the “_info” shapefile has the same file name and location as
    your raster.
 -  **Output Plumes of P (raster):** This is the name of the output raster file
    for phosphate (PO\ :sub:`4`\ :sup:`3-`) concentration plumes, showing
@@ -435,15 +437,14 @@ output options are as follows:-
    outputs, the associated “\_info” shapefile has the same file name and location as
    the raster.
 
-Table 2‑7: The field descriptions for the plumes auxiliary file.
-
+:raw-hrml:`<div style="text-align:center;">Table 4‑2: The field descriptions for the plumes auxiliary file.</div>`
 +-------------------------+--------------------------------------------+
 |    **Field Name**       |    **Description**                         |
 +=========================+============================================+
 | PathID                  | This is the PathID of the flow paths that  |
 |                         | generate a particular plume. Values in     |
 |                         | this field correspond to values of the     |
-|                         | PathID field of Table 2‑3.                 |
+|                         | PathID field of Table 2‑1.                 |
 +-------------------------+--------------------------------------------+
 | Is2D                    | 1 – Indicates the plume is pseudo 3D.      |
 |                         |                                            |
@@ -576,7 +577,7 @@ Table 2‑7: The field descriptions for the plumes auxiliary file.
 Troubleshooting
 ---------------
 
-Table 2‑8 lists possible issues encountered during model execution,
+Table 4‑3 lists possible issues encountered during model execution,
 probable causes, and possible solutions. Note that the error messages
 may appear for reasons other than those listed. If you cannot find a
 solution to the issue, then please submit a [New issue] in the
@@ -585,8 +586,7 @@ GitHub <https://github.com/ArcNLET-Py/ArcNLET-Py/issues>`__) as
 described in the GitHub instructions at `Creating an issue - GitHub
 Docs <https://docs.github.com/en/issues/tracking-your-work-with-issues/creating-an-issue>`__.
 
-Table 2‑8: The Transport Module troubleshooting guide.
-
+:raw-hrml:`<div style="text-align:center;">Table 4‑3: The Transport Module troubleshooting guide.</div>`
 +---------------------+-----------------------+-----------------------+
 |    **Error**        |    **Cause**          |    **Solution**       |
 +=====================+=======================+=======================+

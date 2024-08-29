@@ -1,4 +1,6 @@
 .. _introduction:
+.. role:: raw-html(raw)
+   :format: html
 
 ======================================================================================================
 ArcNLET-Py: A Python Version of ArcGIS-Based Nitrogen Load Estimation Toolbox Developed for ArcGIS Pro
@@ -170,7 +172,6 @@ Acronyms and Abbreviations
    <div style="text-align:center;">
       Table 1: Abbreviations
    </div>
-
 +-------------+--------------------------------------------------------+
 |             |    ArcGIS Pro Nitrogen Loading and Estimation Toolbox  |
 |  ArcNLET-Py |    for Python                                          |

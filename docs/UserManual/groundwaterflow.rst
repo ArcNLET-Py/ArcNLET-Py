@@ -1,4 +1,6 @@
 .. _groundwaterflow:
+.. role:: raw-html(raw)
+   :format: html
 
 1-Groundwater Flow
 ==================
@@ -232,7 +234,6 @@ Docs <https://docs.github.com/en/issues/tracking-your-work-with-issues/creating-
    <div style="text-align:center;">
       Table 1-1: The Groundwater Flow Module troubleshooting guide.
    </div>
-
 +--------------------------+---------------------+---------------------+
 |    **Error**             |    **Cause**        |    **Solution**     |
 +==========================+=====================+=====================+

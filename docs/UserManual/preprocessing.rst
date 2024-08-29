@@ -1,4 +1,6 @@
 .. _preprocessing:
+.. role:: raw-html(raw)
+   :format: html
 
 0-Preprocessing
 ===============
@@ -120,7 +122,6 @@ Docs <https://docs.github.com/en/issues/tracking-your-work-with-issues/creating-
    <div style="text-align:center;">
       Table 0-1: The Preprocessing Module troubleshooting guide.
    </div>
-
 +--------------------------+---------------------+---------------------+
 |    **Error**             |    **Cause**        |    **Solution**     |
 +==========================+=====================+=====================+

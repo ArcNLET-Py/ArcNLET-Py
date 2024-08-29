@@ -408,14 +408,14 @@ Options and Parameters
    effluent concentration of ammonium. This information is gathered from
    trusted reports or ground-truthing effluent concentration via a monitoring
    well.\ 
--  **Concentration of NO\ 3 (mg/L):** This value represents the
+-  :raw-html:`<strong>Concentration of NO<sub>3</sub> (mg/L):</strong>` This value represents the
    OSTDS effluent concentration of nitrate. This information is gathered
    from trusted reports or ground-truthing effluent concentration via a
    monitoring well.\
--  **Concentration of (PO<sub>4</sub><sup>3-</>) (mg/L):** This value 
-   represents the OSTDS effluent concentration of phosphate. This information 
-   is gathered from trusted reports or ground-truthing effluent concentration 
-   via a monitoring well.\ 
+-  :raw-html:`<strong>Concentration of (PO<sub>4</sub><sup>3-</sup>) (mg/L):</strong>` This value represents 
+   the OSTDS effluent concentration of phosphate. This information is gathered 
+   from trusted reports or ground-truthing effluent concentration via a 
+   monitoring well.\ 
 -  **Distance (cm):** This parameter is available for estimating
    a **Single OSTDS** or **Multiple OSTDS**. The distacne variable represents 
    the depth from the infiltrative surface to the water table. Please note 
@@ -468,13 +468,14 @@ Options and Parameters
 
 **(NH\ :sub:`4`-N) Adsorption Parameters**
 
--  **kd for NH\ :sub:`4`-N (cm\ 3/g):** The distribution coefficient describes the 
-   adsorbed concentrations.\ 
+-  :raw-html:`<strong>kd for NH<sub>4</sub>-N (cm<sup>3</sup>/g):</strong>` The distribution 
+   coefficient describes the adsorbed concentrations.
 
 **Dispersion, Bulk Density, and Temperature Parameters**
 
--  **Dispersion coefficient (cm\ :sup:`2`/d)**: Represents the dispersion of contaminants in the soil.
--  **ρ (g/cm\ :sup:`3`)**: Bulk density of the soil.\ 
+-  :raw-html:`<strong>Dispersion coefficient (cm<sup>2</sup>/d):</strong>` Represents the 
+   dispersion of contaminants in the soil.
+-  :raw-html:`<strong>ρ (g/cm<sup>3</sup>):</strong>` Bulk density of the soil.\ 
 -  **Temperature (°C)**: Soil temperature affecting chemical reactions and microbial activity.
 
 **Phosphorus Parameters**
@@ -557,7 +558,6 @@ Docs <https://docs.github.com/en/issues/tracking-your-work-with-issues/creating-
    <div style="text-align:center;">
       Table 3-1: The VZMOD Module troubleshooting guide.
    </div>
-
 +--------------------------+---------------------+---------------------+
 |    **Error**             |    **Cause**        |    **Solution**     |
 +==========================+=====================+=====================+

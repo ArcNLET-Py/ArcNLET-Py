@@ -1,4 +1,6 @@
 .. _simplifiedmodel:
+.. role:: raw-html(raw)
+   :format: html
 
 Simplified Model of Nitrogen and Phosphorus Transformation and Transport
 =======================================================================
