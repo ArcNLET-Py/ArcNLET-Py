@@ -106,7 +106,6 @@ of the table.
    <div style="text-align:center;">
       Table 2-1: The Particle Tracking Module field list guide.
    </div>
-   <br> <!-- Add a line break here --></br>
 
 +--------------------+-------------------------------------------------+
 |    **Field Name**  |    **Description**                              |
@@ -169,7 +168,6 @@ Docs <https://docs.github.com/en/issues/tracking-your-work-with-issues/creating-
    <div style="text-align:center;">
       Table 2‑2: The Particle Tracking Module troubleshooting guide.
    </div>
-   <br> <!-- Add a line break here --></br>
 
 +---------------------+-----------------------+-----------------------+
 |    **Error**        |    **Cause**          |    **Solution**       |

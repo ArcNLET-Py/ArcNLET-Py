@@ -232,7 +232,6 @@ Docs <https://docs.github.com/en/issues/tracking-your-work-with-issues/creating-
    <div style="text-align:center;">
       Table 1-1: The Groundwater Flow Module troubleshooting guide.
    </div>
-   <br> <!-- Add a line break here --></br>
 
 +--------------------------+---------------------+---------------------+
 |    **Error**             |    **Cause**        |    **Solution**     |

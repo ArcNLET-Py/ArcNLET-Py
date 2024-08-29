@@ -170,7 +170,6 @@ Acronyms and Abbreviations
    <div style="text-align:center;">
       Table 1: Abbreviations
    </div>
-   <br></br>
 
 +-------------+--------------------------------------------------------+
 |             |    ArcGIS Pro Nitrogen Loading and Estimation Toolbox  |
