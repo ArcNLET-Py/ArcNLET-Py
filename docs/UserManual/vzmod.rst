@@ -1,8 +1,7 @@
 .. _vzmod:
 .. role:: raw-html(raw)
    :format: html
-   :nowrap:
-   
+
 3-VZMOD
 =======
 
