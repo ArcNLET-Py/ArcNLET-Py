@@ -52,7 +52,7 @@ The method outlined describes obtaining a National Elevation Dataset
 (NED) DEM from the USGS Seamless Server.
 
 1. Using the National Map Download (TNM) v2 (`Figure
-   4‑1 <#_bookmark111>`__):
+   7‑1 <#_bookmark111>`__):
 
    a. Go to `TNM Download v2
       (nationalmap.gov) <https://apps.nationalmap.gov/downloader/>`__,
@@ -77,14 +77,14 @@ The method outlined describes obtaining a National Elevation Dataset
    :align: center
    :alt: A screenshot of a map Description automatically generated
 
-   Figure 4‑1: Downloading DEM data using TNM Download.
+   Figure 7‑1: Downloading DEM data using TNM Download.
 
 Although the water body data for this example was obtained from the
 FDEP, water body data can be obtained from publicly available sources
 such as the National Hydrography Dataset using the USGS TNM Download
 `TNM Download v2
 (nationalmap.gov) <https://apps.nationalmap.gov/downloader/>`__. (Figure
-4‑2)
+7‑2)
 
 1. Go to `TNM Download v2 (nationalmap.gov) 
    <https://apps.nationalmap.gov/downloader/>`__, and open the Map Viewer.
@@ -110,7 +110,7 @@ such as the National Hydrography Dataset using the USGS TNM Download
    :align: center
    :alt: A screenshot of a map Description automatically generated
 
-   Figure 4‑2: Downloading NHD data.
+   Figure 7‑2: Downloading NHD data.
 
 OSTDS Locations
 ---------------
@@ -121,7 +121,7 @@ file needs to be created from scratch, a procedure similar to the one
 used for creating the clipping region is used. The only difference is
 that instead of creating a polygon feature class, a point feature class
 is created by making an appropriate selection in the Geometry type
-dropdown of Figure 4‑8.
+dropdown of Figure 7‑8.
 
 Projections
 -----------
@@ -138,12 +138,12 @@ coordinate system. Since the area of interest lies in UTM Zone 17N, the
 datasets are projected to this coordinate system. This transformation
 uses the Project Raster (for the DEM) and Project (for the water bodies)
 geoprocessing tools of the Data Management toolbox. When projecting the
-DEM (Figure 4‑3), select Bilinear or Cubic as the resampling technique.
+DEM (Figure 7‑3), select Bilinear or Cubic as the resampling technique.
 For the DEM of this example, change the output cell size from the
 default value (here, 9.620954m) to 10m, which approximately corresponds
 to the DEM resolution of 1/3 arc seconds; it is selected for ease of
 interpretation, and users can select another cell size if desired. As
-shown in Figure 4‑3, select the output coordinate system
+shown in Figure 7‑3, select the output coordinate system
 NAD_1983_UTM_Zone_17N (this zone encompasses most of Florida).
 Projecting the water bodies (or any other non-raster format) is
 straightforward, as the only option required is selecting the output
@@ -153,23 +153,23 @@ coordinate system, NAD_1983_UTM_Zone_17N, in this example.
    :align: center
    :alt: A screenshot of a computer Description automatically generated
 
-   Figure 4‑3: Using the Project Raster tool for clipping the DEM.
+   Figure 7‑3: Using the Project Raster tool for clipping the DEM.
 
-The clipped and projected datasets are shown in Figure 4‑4. The final
+The clipped and projected datasets are shown in Figure 7‑4. The final
 DEM raster should be a floating-point pixel type. The pixel type can be
-checked by examining the layer properties, as shown in Figure 4‑5. The
+checked by examining the layer properties, as shown in Figure 7‑5. The
 raster can be converted to a floating-point type using the Float
 function in the SA toolbox. In addition to checking the data type, the
 map or data frame’s coordinate system should be set to UTM. If not, this
 can be done by right-clicking the Map in the Contents Pane and in the
 Map Properties, selecting NAD 1983 UTM Zone 17N from the list, as shown
-in Figure 4‑6.
+in Figure 7‑6.
 
 .. figure:: ./media/preparinginputdataMedia/media/image4.png
    :align: center
    :alt: A map of a river Description automatically generated
 
-   Figure 4‑4: The clipped and projected input data. 
+   Figure 7‑4: The clipped and projected input data. 
 
 The OSTDS are shown as red dots, the study areas (Lakeshore) are shown
 in a red dashed line, and the DEM ranges from high in green to the water
@@ -179,13 +179,13 @@ level in blue.
    :align: center
    :alt: A screenshot of a computer Description automatically generated
 
-   Figure 4‑5: Check for floating point pixel type in layer properties.
+   Figure 7‑5: Check for floating point pixel type in layer properties.
 
 .. figure:: ./media/preparinginputdataMedia/media/image6.png
    :align: center
    :alt: A screenshot of a computer Description automatically generated
 
-   Figure 4‑6: Setting the coordinate system in the map properties.
+   Figure 7‑6: Setting the coordinate system in the map properties.
 
 Clipping
 --------
@@ -193,7 +193,7 @@ Clipping
 When working with unprocessed data, the first step is to clip the
 datasets (e.g., DEM and water body) to encompass the area of interest.
 The area of interest in this example is indicated by the dotted outline
-in Figure 4‑7. It is crucial to clip oversized datasets to the extent of
+in Figure 7‑7. It is crucial to clip oversized datasets to the extent of
 the study area. A buffer of 0.5 to 1.5 times the dimensions of the area
 of interest on all sides should suffice for most applications. This
 extra padding ensures that any artifacts caused by calculations near the
@@ -203,7 +203,7 @@ edges of the domain do not affect the results.
    :align: center
    :alt: A map of water with red dots Description automatically generated
 
-   Figure 4‑7: Area of interest within the DEM. 
+   Figure 7‑7: Area of interest within the DEM. 
 
 The dashed red lines indicate the Lakeshore neighborhood, and the DEM is
 the base map that ranges from green and yellow to blue (for the water
@@ -212,7 +212,7 @@ body).
 The clip area can be defined using an existing feature class, or a new
 clipping region can be created from scratch. To define a new region,
 create a blank polygon feature class using the Create Feature Class tool
-in the ArcGIS Pro Geoprocessing Pane, shown in Figure 4‑8. After
+in the ArcGIS Pro Geoprocessing Pane, shown in Figure 7‑8. After
 inputting the feature class location and name parameters, all other
 options can be left as default.
 
@@ -220,61 +220,61 @@ options can be left as default.
    :align: center
    :alt: A screenshot of a computer Description automatically generated
 
-   Figure 4‑8: Creating a blank polygon feature class.
+   Figure 7‑8: Creating a blank polygon feature class.
 
 After creating the blank feature class, begin with the Edit section on
 the ribbon in ArcGIS Pro and create a new polygon feature for the
-desired clipping region using the polygon tool, as shown in Figure 4‑9.
+desired clipping region using the polygon tool, as shown in Figure 7‑9.
 Ensure that the editing task is set to Create New Feature and that the
-target layer is the previously created feature class (Figure 4‑8). After
+target layer is the previously created feature class (Figure 7‑8). After
 creating the polygon, save the changes via the Edit section of the
-ribbon (Figure 4‑10).
+ribbon (Figure 7‑10).
 
 .. figure:: ./media/preparinginputdataMedia/media/image9.png
    :align: center
    :alt: A screenshot of a computer Description automatically generated
 
-   Figure 4‑9: Define a new clipping region.
+   Figure 7‑9: Define a new clipping region.
 
 .. figure:: ./media/preparinginputdataMedia/media/image10.png
    :align: center
    :alt: A screenshot of a computer Description automatically generated
 
-   Figure 4‑10: Saving the edits.
+   Figure 7‑10: Saving the edits.
 
 After completing the above steps, you should have a clipping region
-similar to the rectangular region shown in Figure 4‑11.
+similar to the rectangular region shown in Figure 7‑11.
 
 .. figure:: ./media/preparinginputdataMedia/media/image11.png
    :align: center
    :alt: A blue and yellow background with black lines Description automatically generated
 
-   Figure 4‑11: The newly defined clipping region.
+   Figure 7‑11: The newly defined clipping region.
    
 The black rectangle with hatch lines denotes the clipping region.
 
 To clip the raster, use the Extract by Mask geoprocessing tool from the
-SA toolbox shown in Figure 4‑12. Select the DEM as the input raster.
+SA toolbox shown in Figure 7‑12. Select the DEM as the input raster.
 Select the newly created clipping region as the mask. Add the extension
 “.img” to the file name when naming the output raster. Adding the
 extension uses the ERDAS IMAGINE image format, which is easier to manage
 and does not have filename length restrictions. Clipping the water
 bodies (and any other non-raster file, i.e., OSTDS locations) is done
 with the Pairwise Clip geoprocessing tool from the Analysis toolbox
-(Figure 4‑13). As the input features, select the water bodies layer. As
+(Figure 7‑13). As the input features, select the water bodies layer. As
 the clip features, select the clipping region.
 
 .. figure:: ./media/preparinginputdataMedia/media/image12.png
    :align: center
    :alt: A screenshot of a computer Description automatically generated
 
-   Figure 4‑12: Extract by Mask dialog.
+   Figure 7‑12: Extract by Mask dialog.
 
 .. figure:: ./media/preparinginputdataMedia/media/image13.png
    :align: center
    :alt: A screenshot of a computer Description automatically generated
 
-   Figure 4‑13: Clipping with features.
+   Figure 7‑13: Clipping with features.
 
 Merging Line and Water Bodies Features
 --------------------------------------
@@ -310,7 +310,7 @@ When selecting the amount of smoothing (i.e., determining the value of
 the smoothing factor in the groundwater module) to perform on a DEM, it
 should be noted that smoothing by repeated averaging tends to shift the
 locations of peaks and valleys in the dataset. This is illustrated in
-Figure 4‑14. The figure’s dotted line represents a hypothetical
+Figure 7‑14. The figure’s dotted line represents a hypothetical
 two-dimensional elevation cross-section of a terrain. The circles mark
 the locations of the highest and lowest elevation points. The dashed
 line represents the smoothed elevation profile using various amounts of
@@ -342,7 +342,7 @@ intersecting the water body in question).
    :align: center
    :alt: A screenshot of a computer screen Description automatically generated
    
-   Figure 4‑14: Effect of smoothing on the location of peaks and valleys.   
+   Figure 7‑14: Effect of smoothing on the location of peaks and valleys.   
 
 The DEM is a blue line, and the smoothed DEM is in black.
 
@@ -402,11 +402,11 @@ controlled by the hydraulic head of the neighborhood scale, whose shape
 is approximated by the Groundwater Flow Module and can be seen in the
 optional smoothed DEM output that ArcNLET generates.
 
-Figure 4‑15 illustrates groundwater flow in the current groundwater
+Figure 7‑15 illustrates groundwater flow in the current groundwater
 conceptual model in which the ditches do not control local groundwater
-flow. The blue lines in Figure 4‑15 represent flow paths from septic
+flow. The blue lines in Figure 7‑15 represent flow paths from septic
 tanks (red square) estimated by ArcNLET using a smoothing factor of 60.
-Three profiles of DEM along the black line marked in Figure 4‑15 are
+Three profiles of DEM along the black line marked in Figure 7‑15 are
 plotted; the black line intersects two ditches. Examining the three
 profiles shows that:
 
@@ -458,7 +458,7 @@ are valuable for record keeping and determining the best solution.
    :align: center
    :alt: A screenshot of a computer screen Description automatically generated
 
-   Figure 4‑15: Simulated flow paths from OSTDS with smoothing.
+   Figure 7‑15: Simulated flow paths from OSTDS with smoothing.
 
 The OSTDS (red squares) are the origins of the paths (blue lines), and
 the paths are generated by running ArcNLET with a smoothing factor of
@@ -473,7 +473,7 @@ smoothed DEM so that the ditches control the shape of the approximated
 water table and, subsequently, groundwater flow paths. The instructions
 are as follows:
 
-1. When resampling the [LiDAR DEM] (Figure 4‑15 (left)), determine the
+1. When resampling the [LiDAR DEM] (Figure 7‑15 (left)), determine the
    appropriate resolution so that local ditches are retained in the
    [resampled DEM].
 
@@ -481,7 +481,7 @@ are as follows:
       stage. The results are presented below for the resolution of 5 × 5 m\ :sup:`2`.
 
 2. Extract the elevations of water bodies, including the ditches,
-   from the [resampled DEM] (Figure 4‑15(middle)). Extract by Mask
+   from the [resampled DEM] (Figure 7‑15(middle)). Extract by Mask
    in the SA Toolbox in ArcGIS can extract the elevation values
    using water body data (raster or polygon).
 
@@ -531,7 +531,7 @@ are as follows:
       accepted. For example, the water body elevation can automatically be added 
       to the [smoothed DEM] before each smoothing iteration. 
 
-The results of the above operations are seen in Figure 4‑16, which plots
+The results of the above operations are seen in Figure 7‑16, which plots
 the simulated groundwater flow path and several profiles. The results
 are for the 5 × 5 m\ :sup:`2` resolution in the resampled DEM. Each
 profile is discussed below:
@@ -539,7 +539,7 @@ profile is discussed below:
 -  The profile at the left of row 1, titled 
    Original LiDAR DEM (5 x 5 ft\ :sup:`2`), is based on the original LiDAR 
    DEM with 5 × 5 ft\ :sup:`2` resolution provided by the FDEP. It is the 
-   same as the profile shown in Figure 4‑16 (left).
+   same as the profile shown in Figure 7‑16 (left).
 
 -  The profile in the middle of row 1, titled Resampled LiDAR DEM 
    (5 x 5 m\ :sup:`2`), is based on the resampled DEM produced in Step 1
@@ -556,7 +556,7 @@ profile is discussed below:
 -  The profile at the left of row 2, title Smoothed DEM (60) + Water Bodies
    (WB), is the DEM after adding the extracted elevations of water bodies to
    the smoothed DEM. The extracted elevation file is represented with a WB
-   in the plots in Figure 4‑16 and was obtained in Step 2. The use of the
+   in the plots in Figure 7‑16 and was obtained in Step 2. The use of the
    Mosaic function of ArcGIS is the result of Step 4. The profile shows the
    two ditches. Since the ditches have not been used to calculate the 
    hydraulic gradient, the gradient is the same as that of smoothed DEM 
@@ -592,12 +592,12 @@ profile is discussed below:
    :align: center
    :alt: A screenshot of a computer screen Description automatically generated
 
-   Figure 4‑16: Simulated flow paths from OSTDS with ditches.
+   Figure 7‑16: Simulated flow paths from OSTDS with ditches.
 
 The paths are (blue lines) from OSTDS (red squares). The paths are
 generated by running ArcNLET with a smoothing factor of 60.
 
-The seven profiles along the black line marked in Figure 4‑16 are the
+The seven profiles along the black line marked in Figure 7‑16 are the
 original LiDAR DEM of 5 × 5 ft\ :sup:`2` resolution (left of row 1), the
 resampled LiDAR DEM of 5 × 5 m\ :sup:`2` resolution (middle of row 1),
 the smoothed DEM (right of row 1) based on the resampled LiDAR DEM, the
@@ -619,24 +619,24 @@ Processing LiDAR data
 LiDAR DEM is used in both the Eggleston Heights and Julington Creek
 neighborhoods. The necessity of using LiDAR DEM instead of NED DEM data
 is demonstrated in the Eggleston Heights neighborhood. Many ditches and
-canals are in this area (Figure 4‑17, top), but many are narrower than
+canals are in this area (Figure 7‑17, top), but many are narrower than
 10m (the 1/3 arc second resolution of the NED DEM used in the user’s
 manual). As a result, such ditches and canals (i.e., those highlighted
-in Figure 4‑17, top) cannot be reflected in the NED DEM data (Figure
-4‑17, bottom).
+in Figure 7‑17, top) cannot be reflected in the NED DEM data (Figure
+7‑17, bottom).
 
 .. figure:: ./media/preparinginputdataMedia/media/image17.png
    :align: center
    :alt: A satellite image of a neighborhood Description automatically generated
 
-   Figure 4‑17: Ditch coverage and 1/3 arc-second DEM (bottom). 
+   Figure 7‑17: Ditch coverage and 1/3 arc-second DEM (bottom). 
 
 The ditch coverage (top) is highlighted in blue and cannot be fully
 reflected in the 10-m DEM data (bottom).
 
 The LiDAR data with a horizontal resolution of 1 × 1 m\ :sup:`2`, as
-shown in Figure 4‑18 left, can represent the ditches, taking in the red
-ellipse in Figure 4‑17 and Figure 4‑18. As explained in the technical
+shown in Figure 7‑18 left, can represent the ditches, taking in the red
+ellipse in Figure 7‑17 and Figure 7‑18. As explained in the technical
 manual (Rios et al., 2011), DEM data of finer resolution always has a
 highly intense elevation fluctuation and is inconsistent with the water
 table. On the other hand, it takes longer computation time to smooth DEM
@@ -644,7 +644,7 @@ data of higher resolution (see the details of smoothing in the technical
 manual of Rios et al., 2011). Therefore, the LiDAR DEM needs to be
 processed to reduce the resolution. This study’s targeted resolution is
 10 × 10 m\ :sup:`2`, consistent with the example data associated with
-the user’s manual. The processed LiDAR DEM is shown in Figure 4‑18
+the user’s manual. The processed LiDAR DEM is shown in Figure 7‑18
 (right), where the ditch in the red ellipse is preserved. The ditches
 and canals can be better preserved if the target resolution of the
 processing DEM is smaller than the water features. However, as explained
@@ -656,7 +656,7 @@ reasonable computation time to meet their project needs.
    :align: center
    :alt: A satellite image of a neighborhood Description automatically generated
   
-   4‑18: LiDAR data before and after projecting. Figure
+   7‑18: LiDAR data before and after projecting. Figure
 
 The DEM before projecting (left) and using projecting to change
 resolution from 1 × 1 m\ :sup:`2` to 10 × 10 m\ :sup:`2` (right). The
@@ -664,7 +664,7 @@ ditch highlighted in yellow is better preserved after the projection.
 
 Changing the resolution from 1 × 1 m\ :sup:`2` to 10 × 10 m\ :sup:`2` is
 done using the Projections and Transformations → Data Management Tools →
-project raster tool. As shown in Figure 4‑19 `Figure
+project raster tool. As shown in Figure 7‑19 `Figure
 2-3, <#_bookmark5>`__ when using this tool, the cell size is changed to
 10, and the nearest neighbor assignment resampling technique is used.
 The same tool is used for projection in Section 4.3.
@@ -682,7 +682,7 @@ resolutions to select the resolution appropriate to their project needs.
    :align: center
    :alt: A screenshot of a computer Description automatically generated
 
-   Figure 4‑19: Projecting the LiDAR data. 
+   Figure 7‑19: Projecting the LiDAR data. 
 
 The geoprocessing tool shows the options to change the raster cell size
 to a coarser resolution of 10 × 10 m\ :sup:`2` (output cell size).
@@ -697,38 +697,32 @@ However, in some areas, NHD data errors regarding water body locations
 may cause an inaccurate flow path generated by the Particle Tracking
 Module of ArcNLET. In this case, we suggest updating the NHD data using
 the LiDAR DEM because LiDAR DEM can reflect water body locations. An
-example is shown in Figure 4‑20. In the left figure, the LiDAR DEM shows
+example is shown in Figure 7‑20. In the left figure, the LiDAR DEM shows
 a lower elevation area within the red circle, which appears to be a
-ditch or canal in the aerial imagery map at the right of Figure 4‑20.
+ditch or canal in the aerial imagery map at the right of Figure 7‑20.
 However, this water body does not exist in the NHD map. Instead, only a
 segment of the misplaced flow line (the blue line in the figure) exists
 in this area. Because of the mismatch between the LiDAR DEM and the NHD
 data, as shown in the left figure, the simulated flow paths of ArcNLET
-cannot reach the water body shown as a flow line in Figure 4‑20. The
+cannot reach the water body shown as a flow line in Figure 7‑20. The
 trapped flow paths are physically unreasonable and may cause nitrate
 load estimation errors. Therefore, the NHD data needs to be updated so
 that the location and shape of the water body can be accurately
 represented. In this manual, the update is conducted manually using the
 LiDAR DEM. The DEM is updated by first generating an evaluation contour
 map based on the LiDAR DEM using the Spatial Analyst Tools→ Surface →
-Contour tool, as shown in Figure 4‑21. Based on the generated contour,
+Contour tool, as shown in Figure 7‑21. Based on the generated contour,
 one can update the water body map using the Editor tool of ArcGIS. The
-water bodies map before and after the updating are shown in Figure 4‑22.
+water bodies map before and after the updating are shown in Figure 7‑22.
 After updating, the simulated flow paths of ArcNLET-Py are smoother and
-more physically reasonable (Figure 4‑23).
+more physically reasonable (Figure 7‑23).
 
-.. rst-class:: center
+.. figure:: ./media/preparinginputdataMedia/media/image21.png
+   :align: center
+   :alt: A screenshot of a computer Description automatically generated
 
-|A green screen with a red circle Description automatically generated|\ 
-|An aerial view of a neighborhood Description automatically generated|
-
-.. raw:: html
-
-   <div  style="text-align:center;">
-   Figure 4‑20: LiDAR DEM and NHD missing features.
-   </div>
-   <br> <!-- Add a line break here --></br> 
-
+   Figure 7‑20: LiDAR DEM and NHD missing features.
+   
 The simulated particle path and Esri aerial imagery are shown in the
 Eggleston Heights neighborhood, Jacksonville, FL. The path is the flow
 path calculated by the Particle Tracking Module, and the LiDAR DEM is 1
@@ -737,54 +731,20 @@ path calculated by the Particle Tracking Module, and the LiDAR DEM is 1
 .. figure:: ./media/preparinginputdataMedia/media/image23.png
    :align: center
    :alt: A screenshot of a computer Description automatically generated
-   :width: 5.30282in
-   :height: 3.563in
    
-   Figure 4‑21: Generating elevation contour based on LiDAR DEM.
+   Figure 7‑21: Generating elevation contour based on LiDAR DEM.
 
-.. rst-class:: center 
+.. figure:: ./media/preparinginputdataMedia/media/image24.png
+   :align: center
+   :alt: A screenshot of a computer Description automatically generated
 
-|An aerial view of a neighborhood Description automatically generated 2|\ |image2|
-
-.. raw:: html
-
-   <div  style="text-align:center;">
-   Figure 4‑22: Updating the water body features.
-   </div>
-   <br> <!-- Add a line break here --></br>
+   Figure 7‑22: Updating the water body features.
 
 The changes to the water body, shown in blue, can be seen via the before
 aerial (left) and after aerial (right) updating.
 
-.. rst-class:: center 
-
-|image3|
-
-
-.. raw:: html
-
-   <div  style="text-align:center;">
-   Figure 4‑23: The simulated flow paths after updating the water bodies.
-   </div>
-   <br> <!-- Add a line break here --></br>
-
-.. |A green screen with a red circle Description automatically generated| image:: ./media/preparinginputdataMedia/media/image21.png
-   :align: middle
-   :width: 3.10516in
-   :height: 1.8976in
-.. |An aerial view of a neighborhood Description automatically generated| image:: ./media/preparinginputdataMedia/media/image22.png
-   :align: middle
-   :width: 2.57634in
-   :height: 1.89219in
-.. |An aerial view of a neighborhood Description automatically generated 2| image:: ./media/preparinginputdataMedia/media/image24.png
-   :align: middle
-   :width: 3.40272in
-   :height: 3in
-.. |image2| image:: ./media/preparinginputdataMedia/media/image25.jpeg
-   :align: middle
-   :width: 3.4in
-   :height: 3in
-.. |image3| image:: ./media/preparinginputdataMedia/media/image26.jpeg
-   :align: middle
-   :width: 6.89394in
-   :height: 5.15893in
+.. figure:: ./media/preparinginputdataMedia/media/image26.png
+   :align: center
+   :alt: A screenshot of a computer Description automatically generated
+ 
+   Figure 7‑23: The simulated flow paths after updating the water bodies.
