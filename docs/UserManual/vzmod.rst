@@ -405,7 +405,7 @@ Options and Parameters
    of the USDA soil types. When **Multiple OSTDS** and
    **Multiple Soil types** are selected, the soil type file prepared using
    the pre-processing module is used here.\
--  - :raw-html:`<strong>Concentration of NH<sub>4</sub> (mg/L):</strong>` This value represents the OSTDS
+-  :raw-html:`<strong>Concentration of NH<sub>4</sub> (mg/L):</strong>` This value represents the OSTDS
    effluent concentration of ammonium. This information is gathered from
    trusted reports or ground-truthing effluent concentration via a monitoring
    well.\ 
