@@ -128,9 +128,9 @@ dropdown of Figure 7‑8.
 Projections
 -----------
 
-.. raw:: html
+.. warning::
 
-   <span style="color: red; font-weight: bold;">All model inputs and the map data frame should have the same coordinate system to ensure consistency.</span>
+   All model inputs and the map data frame should have the same coordinate system to ensure consistency.
 
 Because the example DEM has elevation 
 units of meters but x- and y-coordinates of degrees, the DEM should be

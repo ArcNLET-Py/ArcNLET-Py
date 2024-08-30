@@ -82,8 +82,6 @@ to the source plane nitrate concentration is shown in the equation (16-2).
 | |image5| (16-2) |
 +----------------+
 
---------------
-
 It suggests a positive linear relationship between the simulated nitrate
 concentrations and the source plane nitrate concentration. This
 relationship is illustrated in Figure 16-1 for two y values, the nominal
@@ -112,8 +110,6 @@ The local sensitivity to the first-order decay coefficient is shown in equation
 +----------------+
 | |image7| (16-3) |
 +----------------+
-
---------------
 
 It suggests a negative relationship with the simulated concentration, as
 demonstrated in Figure 16-2. In other words, increasing the first-order
@@ -146,8 +142,6 @@ shown in equation (6‑4).
 | |image9| (6‑4) |
 +----------------+
 
---------------
-
 The expression suggests a positive relationship with simulated
 concentration. Figure 16-3 shows that the velocity increase is associated
 with an increased simulated concentration within the plume. The increase
@@ -173,8 +167,6 @@ dispersivity is shown in (16-5).
 +-----------------+
 | |image11| (16-5) |
 +-----------------+
-
---------------
 
 Indicates that increasing the longitudinal dispersivity causes an
 increase in the simulated concentration within the plume. Figure 6‑4
@@ -215,8 +207,6 @@ addition, there is a threshold value shown in equation (16-7).
 | |image16| (16-7) |
 +-----------------+
 
---------------
-
 When the horizontal transverse dispersivity is smaller than the
 threshold value, the relationship is positive but becomes negative when
 the threshold value is exceeded. This is demonstrated in Figure 16-5.
@@ -248,75 +238,69 @@ observations of nitrate concentration during the model calibration.
 Table 16-1: The critical parameters at selected locations within the
 nitrate plume.
 
-+--------+------+------+------+------+------+------+------+------+
-| **x    | 0.   | 5    | 10   | 15   | 20   | 30   | 40   | 50   |
-| (m)**  | 0001 |      |      |      |      |      |      |      |
-|        |      |      |      |      |      |      |      |      |
-| **y    |      |      |      |      |      |      |      |      |
-| (m)**  |      |      |      |      |      |      |      |      |
-+========+======+======+======+======+======+======+======+======+
-| 0      | *C   | *k,  | *k   | *k,  | *k,  | *k,  | *k,  | *k,  |
-|        | 0,   | v*   | ,v*  | v*   | v*   | v*   | v*   | v*   |
-|        | v*   |      |      |      |      |      |      |      |
-+--------+------+------+------+------+------+------+------+------+
-| 1      | *C   | *k,  | *k   | *k,  | *k,  | *k,  | *k,  | *k,  |
-|        | 0,   | v*   | ,v*  | v*   | v*   | v*   | v*   | v*   |
-|        | v*   |      |      |      |      |      |      |      |
-+--------+------+------+------+------+------+------+------+------+
-| 2      | *C   | *k,  | *k   | *k,  | *k,  | *k,  | *k,  | *k,  |
-|        | 0,   | v*   | ,v*  | v*   | v*   | v*   | v*   | v*   |
-|        | v*   |      |      |      |      |      |      |      |
-+--------+------+------+------+------+------+------+------+------+
-| 3      | *C   | *k,  | *k   | *k,  | *k,  | *k,  | *k,  | *k,  |
-|        | 0,   | v*   | ,v*  | v*   | v*   | v*   | v*   | v*   |
-|        | v*   |      |      |      |      |      |      |      |
-+--------+------+------+------+------+------+------+------+------+
-| 4      | ／   | *k,  | *k   | *k,  | *k,  | *k,  | *k,  | *k,  |
-|        |      | v*   | ,v*  | v*   | v*   | v*   | v*   | v*   |
-+--------+------+------+------+------+------+------+------+------+
-| 6      | ／   | *k,  | *k   | *k,  | *k,  | *k,  | *k,  | *k,  |
-|        |      | v*   | ,v*  | v*   | v*   | v*   | v*   | v*   |
-+--------+------+------+------+------+------+------+------+------+
-| 8      | ／   | *k,  | *k   | *k,  | *k,  | *k,  | *k,  | *k,  |
-|        |      | α*   | ,v*  | v*   | v*   | v*   | v*   | v*   |
-|        |      | *y*  |      |      |      |      |      |      |
-+--------+------+------+------+------+------+------+------+------+
-| 10     | ／   | *α*  | *k,  | *k,  | *k,  | *k,  | *k,  | *k,  |
-|        |      | *y , | α*   | α*   | v*   | v*   | v*   | v*   |
-|        |      | k*   | *y*  | *y*  |      |      |      |      |
-+--------+------+------+------+------+------+------+------+------+
-| 12     | ／   | *α*  | *k,  | *k,  | *k,  | *k,  | *k,  | *k,  |
-|        |      | *y , | α*   | α*   | α*   | v*   | v*   | v*   |
-|        |      | k*   | *y*  | *y*  | *y*  |      |      |      |
-+--------+------+------+------+------+------+------+------+------+
+   +--------+------+------+------+------+------+------+------+------+
+   | **x    | 0.   | 5    | 10   | 15   | 20   | 30   | 40   | 50   |
+   | (m)**  | 0001 |      |      |      |      |      |      |      |
+   |        |      |      |      |      |      |      |      |      |
+   | **y    |      |      |      |      |      |      |      |      |
+   | (m)**  |      |      |      |      |      |      |      |      |
+   +========+======+======+======+======+======+======+======+======+
+   | 0      | *C   | *k,  | *k   | *k,  | *k,  | *k,  | *k,  | *k,  |
+   |        | 0,   | v*   | ,v*  | v*   | v*   | v*   | v*   | v*   |
+   |        | v*   |      |      |      |      |      |      |      |
+   +--------+------+------+------+------+------+------+------+------+
+   | 1      | *C   | *k,  | *k   | *k,  | *k,  | *k,  | *k,  | *k,  |
+   |        | 0,   | v*   | ,v*  | v*   | v*   | v*   | v*   | v*   |
+   |        | v*   |      |      |      |      |      |      |      |
+   +--------+------+------+------+------+------+------+------+------+
+   | 2      | *C   | *k,  | *k   | *k,  | *k,  | *k,  | *k,  | *k,  |
+   |        | 0,   | v*   | ,v*  | v*   | v*   | v*   | v*   | v*   |
+   |        | v*   |      |      |      |      |      |      |      |
+   +--------+------+------+------+------+------+------+------+------+
+   | 3      | *C   | *k,  | *k   | *k,  | *k,  | *k,  | *k,  | *k,  |
+   |        | 0,   | v*   | ,v*  | v*   | v*   | v*   | v*   | v*   |
+   |        | v*   |      |      |      |      |      |      |      |
+   +--------+------+------+------+------+------+------+------+------+
+   | 4      | ／   | *k,  | *k   | *k,  | *k,  | *k,  | *k,  | *k,  |
+   |        |      | v*   | ,v*  | v*   | v*   | v*   | v*   | v*   |
+   +--------+------+------+------+------+------+------+------+------+
+   | 6      | ／   | *k,  | *k   | *k,  | *k,  | *k,  | *k,  | *k,  |
+   |        |      | v*   | ,v*  | v*   | v*   | v*   | v*   | v*   |
+   +--------+------+------+------+------+------+------+------+------+
+   | 8      | ／   | *k,  | *k   | *k,  | *k,  | *k,  | *k,  | *k,  |
+   |        |      | α*   | ,v*  | v*   | v*   | v*   | v*   | v*   |
+   |        |      | *y*  |      |      |      |      |      |      |
+   +--------+------+------+------+------+------+------+------+------+
+   | 10     | ／   | *α*  | *k,  | *k,  | *k,  | *k,  | *k,  | *k,  |
+   |        |      | *y , | α*   | α*   | v*   | v*   | v*   | v*   |
+   |        |      | k*   | *y*  | *y*  |      |      |      |      |
+   +--------+------+------+------+------+------+------+------+------+
+   | 12     | ／   | *α*  | *k,  | *k,  | *k,  | *k,  | *k,  | *k,  |
+   |        |      | *y , | α*   | α*   | α*   | v*   | v*   | v*   |
+   |        |      | k*   | *y*  | *y*  | *y*  |      |      |      |
+   +--------+------+------+------+------+------+------+------+------+
 
 Phosphorus Sensitivity Analyses
 -------------------------------
 
-The main objective of this section is to analyze the effect of the phosphorus module parameters on the sensitivity of the results. 
+The main objective of this section is to analyze the effect of the phosphorus module parameters on the sensitivity of the results.
 
 **Linear Sorption Isotherm Analysis**
 
-The initial concentration: C₀ = 10 mg P/L, is used as the default value in VZMOD. Results are presented as ratios of 
-concentration at specific depths to the initial concentration, making the specific value of the initial concentration irrelevant.
+The initial concentration: C₀ = 10 mg P/L, is used as the default value in VZMOD. Results are presented as ratios of concentration at specific depths to the initial concentration, making the specific value of the initial concentration irrelevant.
 
 1. **Soil type:** Sand, chosen based on Florida's conditions.
 2. **Depth to water table:** Depth = 150 cm, which is the default value.
 3. **Linear distribution coefficient:** k = 15.1 L/kg, based on McCray et al. (2005).
 4. **Precipitation rate:** Rprecip = 0.002 1/day, referenced from Zhou et al. (2023) and Müller and Bünemann (2014).
 
-In this study, the ratios of concentrations at the full depth and half-depth to the initial concentration were used as the 
-y-values. Various precipitation rates and linear distribution coefficients were applied to examine their relationship 
-with these ratios. Results are presented in Figure 16-6, showing negative correlations between the concentration ratios and 
-parameters. Higher precipitation rates and sorption coefficients result in less phosphorus leaching. The parameters can be 
-adjusted based on the ranges shown in Figure 16-6. Site-specific calibration is highly recommended for phosphorus modeling.
+In this study, the ratios of concentrations at the full depth and half-depth to the initial concentration were used as the y-values. Various precipitation rates and linear distribution coefficients were applied to examine their relationship with these ratios. Results are presented in Figure 16-6, showing negative correlations between the concentration ratios and parameters. Higher precipitation rates and sorption coefficients result in less phosphorus leaching. The parameters can be adjusted based on the ranges shown in Figure 16-6. Site-specific calibration is highly recommended for phosphorus modeling.
 
 .. figure:: ./media/sensitivityandcalibrationMedia/media/fig9.png
    :align: center
    :alt: Relationships between C/C0 and parameters for linear sorption isotherm.
 
-   Figure 16-6: Relationships between C/C0 and (a) precipitation rate, and (b) linear distribution coefficient for the 
-   linear sorption isotherm.
+   Figure 16-6: Relationships between C/C0 and (a) precipitation rate, and (b) linear distribution coefficient for the linear sorption isotherm.
 
 **Langmuir Sorption Isotherm Analysis**
 
@@ -388,7 +372,7 @@ The sensitivity analyses indicate that phosphorus sorption is significantly infl
 Model Calibration
 -----------------
 
-Generally speaking, model calibration matches the simulated nitrate and phosphorus concentrations to observed values by adjusting model parameters. Due to the lack of comprehensive characterization data, model calibration in this study is necessary. 
+Generally speaking, model calibration matches the simulated nitrate and phosphorus concentrations to observed values by adjusting model parameters. Due to the lack of comprehensive characterization data, model calibration in this study is necessary.
 
 For nitrate, calibration begins with adjusting parameters like hydraulic conductivity, porosity, dispersivities, and decay coefficients to match observed concentrations. Phosphorus modeling also involves fine-tuning precipitation rates, sorption coefficients, and other related parameters.
 

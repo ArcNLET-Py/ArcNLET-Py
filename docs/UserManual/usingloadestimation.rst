@@ -36,41 +36,41 @@ Data Inputs
       Please remember that data inputs and outputs marked with a red
       asterisk [*] are required for the geoprocessing operation.
 
-      i.   **Types of Contaminants**
+   i.   **Types of Contaminants**
 
-           1. Contaminants to be considered: [Nitrogen and Phosphorus]
+        1. Contaminants to be considered: [Nitrogen and Phosphorus]
 
-      ii.  **Consideration of NH4**
+   ii.  **Consideration of NH4**
 
-           1. Default option: [Enabled]
+        1. Default option: [Enabled]
 
-      iii. **Risk Factor**
+   iii. **Risk Factor**
 
-           1. Default value: [1]
+        1. Default value: [1]
 
-      iv.  **Input Plumes NO3 info (Point)**
+   iv.  **Input Plumes NO3 info (Point)**
 
-           1. Transport Module output info vector point: [Input Plumes NO3 info (Point)]
+        1. Transport Module output info vector point: [Input Plumes NO3 info (Point)]
 
-      v.   **Input Plumes NH4 info (Point)**
+   v.   **Input Plumes NH4 info (Point)**
 
-           1. Specify the input for NH4 plume information if applicable.
+        1. Specify the input for NH4 plume information if applicable.
 
-      vi.  **Input Plumes P info (Point)**
+   vi.  **Input Plumes P info (Point)**
 
-           1. Specify the input for phosphorus plume information if applicable.
+        1. Specify the input for phosphorus plume information if applicable.
 
-      vii. **Output Results for NO3**
+   vii. **Output Results for NO3**
 
-           1. Define the output location for nitrate results.
+        1. Define the output location for nitrate results.
 
-      viii. **Output Results for NH4**
+   viii. **Output Results for NH4**
 
-           1. Define the output location for ammonium results.
+        1. Define the output location for ammonium results.
 
-      ix.  **Output Results for P**
+   ix.  **Output Results for P**
 
-           1. Define the output location for phosphorus results.
+        1. Define the output location for phosphorus results.
 
 .. figure:: ./media/usingloadestimationMedia/media/image2.png
    :align: center
@@ -261,13 +261,13 @@ View and Verify Results
    a. Your results are accessible via the [Catalog Pane] or [Catalog
       View] in the [Output] folder or in your custom [LakeshoreExampleOutputs_YYYY_MM_DD] folder.
 
-   b. Please note that if you did not change the [Output] folder then ArcNLET will automatically choose the same directory that contains the input files as your output directory. 
+   b. Please note that if you did not change the [Output] folder, then ArcNLET will automatically choose the same directory that contains the input files as your output directory.
 
-.. figure:: ./media/usingloadestimationMedia/media/image13.png
-   :align: center
-   :alt: A screenshot of a computer Description automatically generated
+   .. figure:: ./media/usingloadestimationMedia/media/image13.png
+      :align: center
+      :alt: A screenshot of a computer Description automatically generated
    
-   Figure 14-13: The ArcNLET-Py Transport Module outputs in the Catalog Pane.
+      Figure 14-13: The ArcNLET-Py Transport Module outputs in the Catalog Pane.
 
    c. If you are unsure of the load estimation output location for the CSV text files, please check the [Parameters] and [Output Results for NO\ :sub:`3`], [Output Results for NH4], and [Output Results for PO4] sections of the geoprocessing tool history entries. The full file paths and names of the output CSV text files are present and clickable.
 
@@ -278,15 +278,14 @@ View and Verify Results
    Figure 14-14: The history entry for the Load Estimation Module showing the output.
 
 2. Take a moment to review the output to ensure your data has been processed correctly. Your data must be processed correctly because data outputs from the Load Estimation Module are used for decision-making, planning, and ecological stewardship.
-
-   a. Your CSV text file outputs (Table 14-1, Table 14-2, and Table 14-3) have mass per time input/output load and removal rate estimates for all plumes. The ammonium and nitrate plumes that intersect a water body have the feature ID (FID) of the   intersecting water body feature. The water body feature ID (FID) is [30] for the Lakeshore example.
-
+   
+   a. Your CSV text file outputs (Table 14-1, Table 14-2, and Table 14-3) have mass per time input/output load and removal rate estimates for all plumes. The ammonium and nitrate plumes that intersect a water body have the feature ID (FID) of the intersecting water body feature. The water body feature ID (FID) is [30] for the Lakeshore example.
+   
       i. If the CSV text file is empty, then this indicates that there might have been an error processing the data inputs. Please ensure all your data inputs are correct, in an accessible file folder, and are uncorrupted.
 
-3. If you continue having issues processing your data, please [View Details] to see if empty datasets were created as outputs. 
-   Empty datasets indicate an issue with the input data, or ArcGIS Pro does not have read/write access to input or output file locations.
+3. If you continue having issues processing your data, please [View Details] to see if empty datasets were created as outputs. Empty datasets indicate an issue with the input data, or ArcGIS Pro does not have read/write access to input or output file locations.
 
-    a. If you cannot find a solution to the issue, then please submit a [New issue] in the ArcNLET-Py GitHub repository (`Issues · ArcNLET-Py/ArcNLET-Py · GitHub <https://github.com/ArcNLET-Py/ArcNLET-Py/issues>`__) as described in the GitHub instructions at `Creating an issue - GitHub Docs <https://docs.github.com/en/issues/tracking-your-work-with-issues/creating-an-issue>`__.
+   a. If you cannot find a solution to the issue, then please submit a [New issue] in the ArcNLET-Py GitHub repository (`Issues · ArcNLET-Py/ArcNLET-Py · GitHub <https://github.com/ArcNLET-Py/ArcNLET-Py/issues>`__) as described in the GitHub instructions at `Creating an issue - GitHub Docs <https://docs.github.com/en/issues/tracking-your-work-with-issues/creating-an-issue>`__.
 
 .. raw:: html
 

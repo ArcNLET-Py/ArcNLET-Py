@@ -17,9 +17,7 @@ the mass inflow from both advection and dispersion. M\ :sub:`dn` is
 calculated on a plume-by-plume basis using the definition of first-order
 decay. The output of the Load Estimation Module is a comma-separated
 value (CSV) text file consisting of a list of nitrate load estimates for
-water bodies that intersect a plume. Furthermore, estimates are given
-for nitrogen plumes that do not intersect a water body, which receives
-the unique water body feature identification of -1.
+water bodies that intersect a plume.
 
 The Load Estimation Module uses the Transport Module output to simulate
 the mass input load of ammonium, nitrate, and/or phosphare entering the 
