@@ -3,7 +3,7 @@
 Using the Transport Module
 ==========================
 
-The Transport Module uses the Particle Tracking Module particle paths to
+The Transport Module uses the Particle Tracking Module particle paths to 
 simulate ammonium and nitrate plumes originating from the potential
 septic tank locations traveling toward the water bodies. This module
 also calculates the inflow mass from the septic tanks into the
@@ -14,54 +14,52 @@ Data Inputs
 
 Once you are satisfied with the Particle Tracking Module's data outputs,
 it is time to move on to the Transport Module. Access the [ArcNLET.pyt]
-ArcGIS Python Toolbox and the ArcNLET-Py ArcGIS Pro toolsets within, as
-described in Section 3.6.
+ArcGIS Python Toolbox and the ArcNLET-Py ArcGIS Pro toolset.
 
 .. figure:: ./media/usingtransportMedia/media/image1.png
    :align: center
    :alt: A screenshot of a computer Description automatically generated
-   :width: 4.35487in
-   :height: 3.73759in
 
-   Figure 5‑57: The ArcNLET-Py Python Toolset and Transport Module in the Catalog Pane.
+   Figure 13-1: The ArcNLET-Py Python Toolset and Transport Module in the Catalog Pane.
 
 1. Double-click the [4 Transport] module, and the Transport Python
    toolset opens in the [Geoprocessing Pane].
 
    a. Take a moment to review the data inputs, outputs, options, and
       parameters. Please remember that data inputs and outputs marked
-      with a red asterisk [\*] are required for the geoprocessing
+      with a red asterisk [*] are required for the geoprocessing
       operation.
 
    b. Click the drop-down arrow next to [Options] and [Parameters] to
       expose the choices.
 
-2. Consideration of NH4
+2. **Types of Contaminants**
 
-   a. Default option: [Unchecked Box].
+   a. Contaminants to be considered: [Nitrogen and Phosphorus]
 
-3. Data inputs:
+3. **Consideration of NH4**
 
-   a. Input the source locations (point).
+   a. Default option: [Enabled]
 
-      i. Lakeshore Example input vector point:
-         [PotentialSepticTankLocations.shp]
+4. **Data Inputs:**
 
-   b. Input the water bodies (polygon).
+   a. **Input Source Locations (point)**
 
-      i. Lakeshore Example input water body polygons: [water bodies.shp]
+      i. Lakeshore Example input vector point: [PotentialSepticTankLocations]
 
-   c. Input the particle paths (polyline).
+   b. **Input Water Bodies (polygon)**
 
-4. Transport Module output polyline: [demo_path.shp]
+      i. Lakeshore Example input water body polygons: [waterbodies]
+
+   c. **Input Particle Paths (polyline)**
+
+      i. Lakeshore Example input polyline: [paths50]
 
 .. figure:: ./media/usingtransportMedia/media/image2.png
    :align: center
    :alt: A screenshot of a computer Description automatically generated
-   :width: 3.6in
-   :height: 6.60944in
 
-   Figure 5‑58: The Transport Module in the Geoprocessing Pane.
+   Figure 13-2: The Transport Module in the Geoprocessing Pane.
 
 5. There are several options for selecting data for a geoprocessing tool
    in ArcGIS Pro. If you are unfamiliar with ArcGIS Pro geoprocessing
@@ -80,10 +78,8 @@ described in Section 3.6.
 .. figure:: ./media/usingtransportMedia/media/image3.png
    :align: center
    :alt: A screenshot of a computer Description automatically generated
-   :width: 6.5in
-   :height: 3.86042in
 
-   Figure 5‑59: Selecting Transport Module data inputs in the Map View.
+   Figure 13-3: Selecting Transport Module data inputs in the Map View.
 
 b. If you have the data from the Lakeshore example open in a [Catalog
    Pane] or [Catalog View] and the [Geoprocessing Pane] open, then you
@@ -92,25 +88,19 @@ b. If you have the data from the Lakeshore example open in a [Catalog
 .. figure:: ./media/usingtransportMedia/media/image4.png
    :align: center
    :alt: A screenshot of a computer Description automatically generated
-   :width: 6.5in
-   :height: 2.13958in
 
-   Figure 5‑60: Selecting the Transport Module inputs by dragging and dropping from the Catalog View.
+   Figure 13-4: Selecting the Transport Module inputs by dragging and dropping from the Catalog View.
 
 c. You can also click the [Folder Icon] next to each field to select the
    data inputs using the Windows File Explorer. To use this method, you
    must use the Windows File Explorer to navigate to the
-   […\\lakeshore_example\\lakeshore_example] and
-   […\\LakeshoreExampleOutputs_2023_09_28] folder to select each data
-   input and click [OK].
+   [...\\lakeshore_example\\2_lakeshore_example_phosphorus\\4_Transport_module\\Inputs] and click [OK].
 
 .. figure:: ./media/usingtransportMedia/media/image5.png
    :align: center
    :alt: A screenshot of a computer Description automatically generated
-   :width: 6.5in
-   :height: 5.06528in
 
-   Figure 5‑61: Selecting Transport Module inputs from the Windows File Explorer.
+   Figure 13-5: Selecting Transport Module inputs from the Windows File Explorer.
 
 Data Outputs and Parameters
 ---------------------------
@@ -123,28 +113,25 @@ folder stores the output raster images.
 
 1. If you need to create a new file folder in ArcGIS Pro, use the
    [Catalog Pane], right-click on the folder
-   […\\lakeshore_example\\lakeshore_example], hover over the option
+   [...\\2_lakeshore_example_phosphorus\\4_Transport_module\\Outputs], hover over the option
    [New] in the submenu, and click [Folder].
 
 .. figure:: ./media/usingtransportMedia/media/image6.png
    :align: center
    :alt: A screenshot of a computer Description automatically generated
-   :width: 6.39222in
-   :height: 4.69207in
 
-   Figure 5‑62: The Lakeshore example output folders in the Windows File Explorer.
+   Figure 13-6: The Lakeshore example output folders in the Windows File Explorer.
 
 2. Select the necessary data output by clicking the [Folder Icon] next
-   to the [Output Plumes of NO3 (raster)] field in the [Geoprocessing
-   Pane].
+   to the [Output Plumes of NO3 (raster)] field in the [Geoprocessing Pane].
 
    a. The Windows File Explorer opens, and in the left pane under
       [Project], click the drop-down arrows to expand the [Folders] and
       ArcGIS Pro home folder.
 
-   b. Select the [lakeshore_example\\lakeshore_example] folders.
+   b. Select the [...\\2_lakeshore_example_phosphorus\\4_Transport_module\\Outputs] folder.
 
-   c. Click the output folder, created in step 1 above, to store the output raster in the Transport Module. The file path and name for the output [Output Plumes of NO3 (raster)] for this example is: […\LakeshoreExampleOutputs_2023_09_28\\demo_plumes]
+   c. Click the output folder to store the output raster in the Transport Module. The file path and name for the output [Output Plumes of NO3 (raster)] for this example is: [...\\2_lakeshore_example_phosphorus\\4_Transport_module\\Outputs\\no3plumes]
 
    d. Type the name of the raster output into the [Name] field with no
       file extension and click [OK].
@@ -155,86 +142,132 @@ folder stores the output raster images.
 
    f. Please note that when typing the data output into the provided
       field in the [Geoprocessing Pane], the outputs are automatically
-      stored in the folder with the [Input Particle Paths (polyline)].
+      stored in the specified outputs folder [...\\2_lakeshore_example_phosphorus\\4_Transport_module\\Outputs].
 
 3. Data output:
 
-   a. The Output plumes of nitrate (NO3) raster.
+   a. **Output Plumes of NO3 (raster)**
 
-      i. Lakeshore Example output raster: [demo_plumes]
+      i. Lakeshore Example output raster: [no3plumes]
+
+   b. **Output Plumes of NH4 (raster)**
+
+      i. Lakeshore Example output raster: [nh4plumes]
+
+   c. **Output Plumes of P (raster)**
+
+      i. Lakeshore Example output raster: [po4plumes]
 
 4. The Options are related to the Domenico Robbins solution type for
    two-dimensional (2-D) denitrification (decay).
 
-   a. Solution type.
+   a. **Solution Type**
 
-      i. Default option: [DomenicoRobbinsSSDecay2D]
+      i. Selected type: [DomenicoRobbinsSSDecay2D]
 
-   b. Plume warping control point spacing [Cells].
+   b. **Plume Warping Control**
 
-      i. Default value: [48]
+      i. Point spacing [Cells]: [48]
 
-   c. Plume warping method.
+      ii. Plume warping method: [Spline]
 
-      i. Default methods: [Polyorder2]
+   c. **Threshold Concentration [mg/l]**
 
-   d. Threshold Concentration [M/L3].
+      i. Set threshold value: [0.000001]
 
-      i. Default value: [0.000001]
+   d. **Postprocessing Medium**
 
-   e. Post-processing.
+      i. Use default settings
 
-      i. Default value: [Medium]
+   e. **Domenico Boundary**
 
-   f. Domenico Bdy.
-
-      i. You must select: [Specified Z]
+      i. Specified Z: [400]
 
 5. The Parameters are related to the septic tank size, the nitrogen mass
    going into the septic tank for a specific timeframe, and the width of
    the septic tank.
 
-   a. Source Dimension Y [L]. The DEM is the basis for the length unit.
-      For example, if the DEM uses the units of meters, everything
-      should be in the units of meters.
+   a. **Source Dimension Y [m]**
 
-      i. You must change the value to [12]
+      i. Default value: [48]
 
-   b. Source Dimension Z [L].
+   b. **Source Dimension Z [m]**
+
+      i. Default value: [2]
+
+   c. **Plume Cell Size [m]**
 
       i. Default value: [1.5]
 
-   c. Plume cell size [L].
-
-      i. You must change the value to [0.8]
-
-   d. NO3 Concentration [M/L3].
+   d. **NO3 Concentration [mg/l]**
 
       i. Default value: [40]
 
-   e. NO3 Dispersity αL [L].
+   e. **NO3-N Dispersivity aL [m]**
 
       i. Default value: [2.113]
 
-   f. NO3 Dispersity αTH [L].
+   f. **NO3-N Dispersivity aTH [m]**
 
       i. Default value: [0.234]
 
-   g. Denitrification Decay Rate [1/T].
+   g. **Denitrification Decay Rate [1/d]**
 
-      i. Default value: [0.008]
+      i. Default value: [0.04]
 
-   h. Volume Conversion Factor.
+   h. **Volume Conversion Factor**
 
       i. Default value: [1000]
+
+6. **Bulk Density [g/cm³]**
+
+   a. Default value: [1.42]
+
+7. **Nitrogen Parameters:**
+
+   a. **NH4-N Dispersivity aL [m]**
+
+      i. Default value: [2.113]
+
+   b. **NH4-N Dispersivity aTH [m]**
+
+      i. Default value: [0.234]
+
+   c. **Nitrification Decay Rate [1/d]**
+
+      i. Default value: [0.0001]
+
+   d. **kd for NH4-N [cm³/g]**
+
+      i. Default value
+
+8. **Phosphorus Parameters:**
+
+   a. **PO4-P Dispersivity aL [m]**
+
+      i. Default value: [2.113]
+
+   b. **PO4-P Dispersivity aTH [m]**
+
+      i. Default value: [0.234]
+
+   c. **Rprecip [mg/kg 1/day]**
+
+      i. Default value: [0.002]
+
+   d. **Sorption Isotherm**
+
+      i. Type: [Linear]
+
+   e. **Linear Distribution Coefficient [L/kg]**
+
+      i. Default value: [15.1]
 
 .. figure:: ./media/usingtransportMedia/media/image7.png
    :align: center
    :alt: A screenshot of a computer Description automatically generated
-   :width: 6.5in
-   :height: 5.06528in
 
-   Figure 5‑63: Selecting the data output location from the Windows File Explorer for the Transport Module.
+   Figure 13-7: Selecting the data output location from the Windows File Explorer for the Transport Module.
 
 6. Double-check to ensure all red astricts [\*] are removed from the
    [Geoprocessing Pane], indicating that all necessary data inputs and
@@ -243,10 +276,8 @@ folder stores the output raster images.
 .. figure:: ./media/usingtransportMedia/media/image8.png
    :align: center
    :alt: A screenshot of a computer Description automatically generated
-   :width: 3.6in
-   :height: 6.79901in
 
-   Figure 5‑64: The Transport Module Data inputs and output in the Geoprocessing Pane.
+   Figure 13-8: The Transport Module Data inputs and output in the Geoprocessing Pane.
 
 Execute the Module
 ------------------
@@ -257,24 +288,20 @@ Execute the Module
 .. figure:: ./media/usingtransportMedia/media/image9.png
    :align: center
    :alt: A white wall with a black border Description automatically generated with medium confidence
-   :width: 4.32413in
-   :height: 0.57655in
 
-   Figure 5‑65: The Run button in the Geoprocessing Pane.
+   Figure 13-9: The Run button in the Geoprocessing Pane.
 
 2. The ArcNLET-Py Transport Module begins to process data, and the
    progress bar appears.
 
    a. Please note that the runtime can be lengthy depending on the data
-      sets’ file sizes, spatial scale, and raster cell size.
+      sets' file sizes, spatial scale, and raster cell size.
 
 .. figure:: ./media/usingtransportMedia/media/image10.png
    :align: center
    :alt: A screen shot of a computer Description automatically generated
-   :width: 4.09571in
-   :height: 1.26102in
 
-   Figure 5‑66: The Progress Bar in the ArcGIS Pro Geoprocessing Pane for the Transport Module.
+   Figure 13-10: The Progress Bar in the ArcGIS Pro Geoprocessing Pane for the Transport Module.
 
 3. If you feel the process has stalled or frozen, please click [View
    Details] below the blue progress bar. In the dialog box, click
@@ -288,10 +315,8 @@ Execute the Module
 .. figure:: ./media/usingtransportMedia/media/image11.png
    :align: center
    :alt: A screenshot of a computer Description automatically generated
-   :width: 5.62394in
-   :height: 3.73427in
 
-   Figure 5‑67: The Messages box showing calculating plumes for OSTDS.
+   Figure 13-11: The Messages box showing calculating plumes for OSTDS.
 
 4. ArcGIS Pro indicates the tool is finished with a green notification
    box at the bottom of the [Geoprocessing Pane]. You may click [View
@@ -302,10 +327,8 @@ Execute the Module
 .. figure:: ./media/usingtransportMedia/media/image12.png
    :align: center
    :alt: A screenshot of a computer Description automatically generated
-   :width: 3.9in
-   :height: 0.72761in
 
-   Figure 5‑68: The green notification box in the ArcGIS Pro Geoprocessing Pane for the Transport. Module.
+   Figure 13-12: The green notification box in the ArcGIS Pro Geoprocessing Pane for the Transport. Module.
 
 View and Verify Results
 -----------------------
@@ -324,10 +347,8 @@ View and Verify Results
 .. figure:: ./media/usingtransportMedia/media/image13.png
    :align: center
    :alt: A screenshot of a computer program Description automatically generated
-   :width: 3.43914in
-   :height: 3.00284in
 
-   Figure 5‑69: The ArcNLET-Py Transport Module outputs in the Catalog Pane.
+   Figure 13-13: The ArcNLET-Py Transport Module outputs in the Catalog Pane.
 
 2. Take a moment to review the outputs to ensure your data has been
    processed correctly. Your data must be processed correctly because
@@ -367,18 +388,14 @@ View and Verify Results
 .. figure:: ./media/usingtransportMedia/media/image14.png
    :align: center
    :alt: A computer screen shot of a map Description automatically generated
-   :width: 6.5in
-   :height: 5.31944in
 
-   5‑70: The ArcNLET-Py Transport Module outputs in the Contents Pane and Map.Figure
+   13-14: The ArcNLET-Py Transport Module outputs in the Contents Pane and Map.Figure
 
 .. figure:: ./media/usingtransportMedia/media/image15.png
    :align: center
    :alt: A satellite image of a neighborhood Description automatically generated with medium confidence
-   :width: 6.5in
-   :height: 4.26528in
 
-   Figure 5‑71: The ArcNLET-Py Transport Module outputs info points and plumes stylized.
+   Figure 13-15: The ArcNLET-Py Transport Module outputs info points and plumes stylized.
 
 The plumes are shown with the highest magnitude in red, and analyte
 levels near zero are purple. The water body is shown in blue.

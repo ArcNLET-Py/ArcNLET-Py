@@ -282,7 +282,7 @@ do you have a [Map View] open in your ArcGIS Pro Project, and you ran
 the ArcNLET-Py VZMOD Module from the [Geoprocessing Pane], then your
 results are accessible via the [Catalog Pane] or [Catalog View] in the
 [...\\2_lakeshore_example_phosphorus\\3_VZMOD_module\\Outputs] folder 
-or in your custom output folder (i.e.,[LakeshoreExampleOutputs_YYYY_MM_DD]). 
+or in your custom output folder (i.e., [LakeshoreExampleOutputs_YYYY_MM_DD]). 
 Please note that you may want to use a separate output folder each time 
 you run VZMOD to aid in data organization.
 
@@ -297,9 +297,9 @@ you run VZMOD to aid in data organization.
    processed correctly because data outputs from the VZMOD Module are
    inputs in the subsequent module.
 
-   a. If there seems to be an issue with the output particle paths
-      shapefile, please ensure all your data inputs are correct, in an
-      accessible file folder, and uncorrupted.
+    a. If there seems to be an issue with the output particle paths
+       shapefile, please ensure all your data inputs are correct, in an
+       accessible file folder, and uncorrupted.
 
 2. If you continue having issues processing your data, please [View Details] as previosuly 
    to see if empty datasets were created as outputs. Empty datasets indicate an issue with 
@@ -313,12 +313,12 @@ you run VZMOD to aid in data organization.
 3. The [Results.txt] file can be modified so that it is compatible with Excel. To see the verticle 
    profile for one OSTDS in Excel you must located the desired septic tank number in the [Results.txt] file. 
    
-   a. Next, you must copy and paste the headers and data for a given location into a new text file. 
+    a. Next, you must copy and paste the headers and data for a given location into a new text file. 
    
-   b. Afterwards, you may import the text file into Excel using the [Text Import Wizard] with [Fixed width]
-      and [My data has headers] options selected.
+    b. Afterwards, you may import the text file into Excel using the [Text Import Wizard] with [Fixed width]
+       and [My data has headers] options selected.
 
-   c. Create plots showing the vertical profile.   
+    c. Create plots showing the vertical profile.   
 
 .. figure:: ./media/usingvzmodMedia/media/image14.png
    :align: center
