@@ -12,14 +12,13 @@ concentration is evaluated in ArcNLET using the two-dimensional,
 steady-state version of the solution of Domenico (1987) for the
 advection-dispersion equation. It is shown in equation (16-1).
 
-+--------------------------------------------------------------+------+
-| |image1|                                                     |      | 
-+==============================================================+======+
-| |image2|                                                     | (    |
-|                                                              | 16-1) |
-+--------------------------------------------------------------+------+
-| |image4|                                                     |      |
-+--------------------------------------------------------------+------+
++--------------------------------------------------------------+--------+
+| |image1|                                                     |        | 
++--------------------------------------------------------------+--------+
+| |image2|                                                     | (16-1) |
++--------------------------------------------------------------+--------+
+| |image4|                                                     |        |
++--------------------------------------------------------------+--------+
 
 where *C* [ML\ :sup:`-3`] is simulated nitrate concentration at location
 (*x*,y), α\ :sub:`x` [L] is longitudinal dispersivity, *α*\ :sub:`y` [L]
@@ -78,9 +77,9 @@ are as follows:
 By the analytical solution, analytical expressions of the local sensitivity can be easily derived. The local sensitivity 
 to the source plane nitrate concentration is shown in the equation (16-2).
 
-+----------------+
++-----------------+
 | |image5| (16-2) |
-+----------------+
++-----------------+
 
 It suggests a positive linear relationship between the simulated nitrate
 concentrations and the source plane nitrate concentration. This
