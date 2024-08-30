@@ -49,93 +49,99 @@ depth to the water table.
 
 4. Parameters (for the Lakeshore example):
 
-   a. Select Single or multiple OSTDS from the dropdown menu.
+   a. **Types of Contaminants**
+
+      i. Lakeshore Example contaminants: [Nitrogen and Phosphorus]
+
+   b. **Select Single or Multiple OSTDS from the Dropdown Menu**
 
       i. Lakeshore Example OSTDS: [Multiple OSTDS]
 
-         1. Selecting [Multiple OSTDS] allows for the use of
-            heterogeneous hydraulic conductivity (K) and porosity (θ),
-            calculating the depth to the water table, and using multiple
-            soil types.
+         1. Selecting [Multiple OSTDS] allows for the use of heterogeneous hydraulic conductivity (K) and porosity (θ), calculating the depth to the water table, and using multiple soil types.
 
-   b. Heterogeneous Ks and θs
+   c. **Heterogeneous Ks and θs**
 
-      i. Please check the box for this option: [Checked Box]
+      i. Option: [Enabled]
 
-   c. Calculate depth to water table
+   d. **Calculate Depth to Water Table**
 
-      i. Please check the box for this option: [Checked Box]
+      i. Option: [Enabled]
 
-   d. Multiple soil type
+   e. **Multiple Soil Types**
 
-      i. Default option: [Unchecked Box].
+      i. Option: [Enabled]
 
-   e. Concentration of NH4 (mg/L)
+   f. **Septic Tank Sources (Point)**
 
-      i. Default option: [60]
+      i. Input vector point: [PotentialSepticTankLocations]
 
-   f. Concentration of NO3 (mg/L)
+   g. **Hydraulic Conductivity (Raster)**
 
-      i. Default option: [1]
+      i. Input raster: [hydr_cond]
 
-   g. Distance (cm)
+   h. **Soil Porosity (Raster)**
 
-      i. Update value: [0]
+      i. Input raster: [porosity]
 
-         1. The distance value is based on the difference between the
-            bottom of the OSTDS and the elevation of the water table.
-            This information should be calculated from the observation
-            well depths to the water table. Please see Section 2.4
-            for more information regarding VZMOD Module calibration.
+   i. **Soil Types (Raster)**
 
-   h. The Hydraulic Params, Nitrification Params, Denitrification Params,
-      Adsorption Params, and Temperature and Transport Params should all be
-      left to the default values for the Lakeshore example. These
-      parameters are set by the ArcNLET-Py tool but can be altered by the
-      user if data is available for calibration. 
+      i. Input raster: [soiltype]
 
-4. Data inputs (for the lakeshore example):
+   j. **Concentration of NH4-N [mg/L]**
 
-   a. Input the Septic tank sources (point). 
+      i. Default value: [60]
 
-      i. Lakeshore Example input vector point: [PotentialSepticTankLocations.shp]
+   k. **Concentration of NO3-N [mg/L]**
 
-   b. Input the Hydraulic conductivity (raster).
+      i. Default value: [1]
 
-      i. Lakeshore Example input raster: [hydr_cond.img]
+   l. **Concentration of PO4-P [mg/L]**
 
-   c. Input the Soil porosity (raster).
+      i. Default value: [10]
 
-      i. Lakeshore Example input raster: [porosity.img] 
+   m. **Depth to Water Table [cm]**
 
-   d. Input the digital elevation model (DEM) file (raster).
+      i. Default value: [150]
 
-      i. Lakeshore Example input DEM raster: [lakeshore.img]
+   n. **Output Profile Results (Text File)**
 
-   e. The (optional) Smoothed DEM (raster) output from the groundwater flow.
+      i. Output file path: [C:\Users\Wei\Downloads\lakeshore_example]
 
-      i. Lakeshore Example output raster: [demo_smth_dem]
+   o. **Hydraulic Params**
 
-   f. Select the Soil type from the drop-down menu.
+      i. Use default values
 
-      i. Please select [Sandy Loam] for this example.
+   p. **Nitrification Params**
 
-         1. The soil types in this area are sandy loam and loamy sand
-            according to the USDA Web Soil Survey Maps; FL031; Duval County,
-            Florida; Soil Database; 2003; comp.txt text file and soilmu_a_fl031.shp
-            shapefile.
+      i. Use default values
 
-.. rst-class:: center
+   q. **Denitrification Params**
 
-|A screenshot of a computer Description automatically generated| \ 
-|image1|
+      i. **Kdnt [1/d]**: [0.08]
 
-.. raw:: html
+      ii. **Topt-dnt [°C]**: [26]
 
-   <div  style="text-align:center;">
+      iii. **ßdnt [-]**: [0.347]
+
+      iv. **Sdnt [-]**: [0]
+
+   r. **Dispersion, Bulk Density, and Temperature**
+
+      i. Use default values
+
+   s. **Phosphorus Params**
+
+      i. **Rprecip [mg/kg 1/day]**: [0.0008]
+
+      ii. **Sorption Isotherm**: [Linear]
+
+      iii. **Linear Distribution Coefficient [L/kg]**: [15.1]
+
+.. figure:: ./media/usingvzmodMedia/media/image2.png
+   :align: center
+   :alt: A screenshot of a computer Description automatically generated
+
    Figure 12-2: The VZMOD Module in the Geoprocessing Pane.
-   </div>
-   <br> <!-- Add a line break here --></br>
 
 5. There are several options for selecting data for a geoprocessing tool
    in ArcGIS Pro. If you are unfamiliar with ArcGIS Pro geoprocessing
@@ -161,23 +167,17 @@ b. If you have the data from the Lakeshore example open in a [Catalog
    Pane] or [Catalog View] and the [Geoprocessing Pane] open, then you
    can drag and drop the necessary inputs.
 
-.. figure:: ./media/usingvzmodMedia/media/image5.png
-   :align: center
-   :alt: A screenshot of a computer Description automatically generated
-
-   Figure 12-4: Selecting VZMOD Module inputs by dragging and dropping from the Catalog View.
-
 c. You can also click the [Folder Icon] next to each field to select the
    data inputs using the Windows File Explorer. To use this method, you
    must use the Windows File Explorer to navigate to the
-   […\\lakeshore_example\\lakeshore_example] folder to select each data
+   […\\2_lakeshore_example_phosphorus\\3_VZMOD_module\\Inputs] folder to select each data
    input and click [OK].
 
 .. figure:: ./media/usingvzmodMedia/media/image6.png
    :align: center
    :alt: A screenshot of a computer Description automatically generated
 
-   Figure 12-5: Selecting VZMOD Module inputs from the Windows File Explorer.
+   Figure 12-4: Selecting VZMOD Module inputs from the Windows File Explorer.
 
 Data Outputs and Parameters
 ---------------------------
@@ -190,14 +190,14 @@ folder stores the output shapefiles.
 
 1. If you need to create a new file folder in ArcGIS Pro, use the
    [Catalog Pane], right-click on the folder
-   […\\lakeshore_example\\lakeshore_example], hover over the option
+   […\2_lakeshore_example_phosphorus\3_VZMOD_module\Outputs], hover over the option
    [New] in the submenu, and click [Folder].
 
 .. figure:: ./media/usingvzmodMedia/media/image7.png
    :align: center
    :alt: A screenshot of a computer Description automatically generated
 
-   Figure 12-6: The Lakeshore example output folders in the Windows File Explorer.
+   Figure 12-5: The Lakeshore example output folders in the Windows File Explorer.
 
 2.  Select the necessary data output folder by clicking the [Folder
     Icon] next to the [Output folder] field in the [Geoprocessing Pane].
@@ -209,7 +209,7 @@ folder stores the output shapefiles.
        [Project], click the drop-down arrows to expand the [Folders] and
        ArcGIS Pro home folders.
 
-    b. Select the [lakeshore_example\\lakeshore_example] folders.
+    b. Select the [\2_lakeshore_example_phosphorus\3_VZMOD_module\Outputs] folders.
 
 3.  Click the above output folder to store the output text file and
     shapefile from the VZMOD Module. The file path and name for the
@@ -245,7 +245,7 @@ folder stores the output shapefiles.
 .. raw:: html
 
    <div  style="text-align:center;">
-   Figure 12-7: The VZMOD Module Data inputs and output in the Geoprocessing Pane
+   Figure 12-6: The VZMOD Module Data inputs and output in the Geoprocessing Pane
    </div>
    <br> <!-- Add a line break here --></br>
 
@@ -259,7 +259,7 @@ Execute the Module
    :align: center
    :alt: A screenshot of a computer Description automatically generated
 
-   Figure 12-8: The Run button in the Geoprocessing Pane.
+   Figure 12-7: The Run button in the Geoprocessing Pane.
 
 2. ArcNLET-Py VZMOD Module begins to process data, and the progress bar appears. 
    The runtime can vary depending on the data sets’ file sizes, spatial scale, and raster cell size. 
@@ -268,7 +268,7 @@ Execute the Module
    :align: center
    :alt: A screenshot of a computer Description automatically generated
 
-   Figure 12-9: The Progress Bar in the ArcGIS Pro Geoprocessing Pane for the VZMOD Module.
+   Figure 12-8: The Progress Bar in the ArcGIS Pro Geoprocessing Pane for the VZMOD Module.
 
 3. ArcGIS Pro indicates the tool is finished with a green notification box at the bottom of the 
    [Geoprocessing Pane]. You may click [View Details] for more information about the process, 
@@ -278,7 +278,7 @@ Execute the Module
    :align: center
    :alt: A screenshot of a computer Description automatically generated
 
-   Figure 12-10: The green notification box in the ArcGIS Pro Geoprocessing Pane for the VZMOD Module.
+   Figure 12-9: The green notification box in the ArcGIS Pro Geoprocessing Pane for the VZMOD Module.
 
 View and Verify Results
 -----------------------
@@ -297,7 +297,7 @@ in data organization.
    :align: center
    :alt: A screenshot of a computer Description automatically generated
 
-   Figure 12-11: The ArcNLET-Py VZMOD output in the Catalog Pane.
+   Figure 12-10: The ArcNLET-Py VZMOD output in the Catalog Pane.
 
 1. Take a moment to review the CSV text file and shapefile outputs to
    ensure your data has been processed correctly. Your data must be
@@ -319,24 +319,18 @@ in data organization.
    :align: center
    :alt: A table of numbers and a black and white background Description automatically generated
 
-   Figure 12-12: The ArcNLET-Py VZMOD text outputs in Microsoft Excel.
+   Figure 12-11: The ArcNLET-Py VZMOD text outputs in Microsoft Excel.
 
 .. figure:: ./media/usingvzmodMedia/media/image15.png
    :align: center
    :alt: A plot of numbers and a black and white background Description automatically generated
 
-   Figure 12-13: The ArcNLET-Py VZMOD text outputs are plotted in Excel.
+   Figure 12-12: The ArcNLET-Py VZMOD text outputs are plotted in Excel.
 
 The plots show concentrations of NH\ :sub:`4` and NO\ :sub:`3` below the
 OSTDS (left) and the saturation function for nitrification and
 denitrification (right).
 
-.. |A screenshot of a computer Description automatically generated| image:: ./media/usingvzmodMedia/media/image2.png
-   :width: 3.2in
-   :height: 5.25in
-.. |image1| image:: ./media/usingvzmodMedia/media/image3.png
-   :width: 3.2in
-   :height: 5.25in
 .. |image2| image:: ./media/usingvzmodMedia/media/image8.png
    :width: 2.93988in
    :height: 5.51318in

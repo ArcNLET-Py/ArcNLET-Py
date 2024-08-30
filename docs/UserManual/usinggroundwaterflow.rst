@@ -86,7 +86,7 @@ https://pro.arcgis.com/en/pro-app/latest/help/analysis/geoprocessing/basics/run-
 5. You can also click the [Folder Icon] next to each field to select the
    data inputs using the Windows File Explorer. To use this method, you
    must use the Windows File Explorer to navigate to the
-   […\\lakeshore_example\\lakeshore_example] folder to select each data
+   […\\2_lakeshore_example_phosphorus\\1_Groundwater_flow_module\\Inputs] folder to select each data
    input and click [OK], as shown in Figure 10-4
 
 .. figure:: ./media/usinggroundwaterflowMedia/media/image4.png
@@ -103,10 +103,11 @@ good practice when selecting locations for data outputs. For this
 exercise, use the [Windows File Explorer] or ArcGIS Pro [Catalog Pane]
 to create a new folder titled [LakeshoreExampleOutputs_YYYY_MM_DD] to
 store the raster images and vector shapefiles. For this example, the
-folder name is [LakeshoreExampleOutputs_2023_09_28].
+folder name is [Outputs].
 
 1. To create a new file folder in ArcGIS Pro, use the [Catalog Pane],
-   right-click on the folder […\\lakeshore_example\\lakeshore_example],
+   right-click on the folder 
+   […\\2_lakeshore_example_phosphorus\\1_Groundwater_flow_module\\Outputs],
    hover over the option [New] in the submenu, and click [Folder]
    (Figure 10-5).
 
@@ -123,7 +124,7 @@ folder name is [LakeshoreExampleOutputs_2023_09_28].
    [Project], click the drop-down arrows to expand the [Folders] and
    [ArcGIS Pro] home folder.
 
-4. Select the [lakeshore_example\\lakeshore-example] folders.
+4. Select the […\\2_lakeshore_example_phosphorus\\1_Groundwater_flow_module\\Outputs] folders.
 
 5. Click the output folder, created in step 2 above, to store the output
    raster images from the Groundwater Flow Module.
@@ -238,7 +239,7 @@ Executing the Module
 
 2. The ArcNLET-Py Groundwater Flow Module begins to process data, and
    the progress bar appears. The runtime can vary depending on the data
-   sets’ file sizes, spatial scale, and raster cell size.
+   sets' file sizes, spatial scale, and raster cell size.
 
 .. figure:: ./media/usinggroundwaterflowMedia/media/image9.png
    :align: center

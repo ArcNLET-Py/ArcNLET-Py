@@ -91,7 +91,11 @@ b. If you have the data from the Lakeshore example open in a [Catalog
 
    Figure 11-4: Selecting Particle Tracking Module inputs by dragging and dropping from the Catalog View.
 
-c. You can also click the [Folder Icon] next to each field to select the data inputs using the Windows File Explorer. To use this method, you must use the Windows File Explorer to navigate to the […\\2_lakeshore_example_phosphorus\\2_Particle_tracking_module\\Inputs] folder to select each data input and click [OK].
+c. You can also click the [Folder Icon] next to each field to select the data 
+   inputs using the Windows File Explorer. To use this method, you must use 
+   the Windows File Explorer to navigate to the 
+   […\\2_lakeshore_example_phosphorus\\2_Particle_tracking_module\\Inputs] 
+   folder to select each data input and click [OK].
 
 .. figure:: ./media/usingparticletrackingMedia/media/image5.png
    :align: center
@@ -108,7 +112,10 @@ exercise, we used the Windows File Explorer or ArcGIS Pro [Catalog Pane]
 to create a new folder titled [LakeshoreExampleOutputs_YYYY_MM_DD]. The
 folder stores the output shapefiles.
 
-1. If you need to create a new file folder in ArcGIS Pro, use the [Catalog Pane], right-click on the folder […\\lakeshore_example\\], hover over the option [New] in the submenu, and click [Folder].
+1. If you need to create a new file folder in ArcGIS Pro, use the [Catalog Pane], 
+   right-click on the folder 
+   [……\\2_lakeshore_example_phosphorus\\2_Particle_tracking_module\\Outputs], 
+   hover over the option [New] in the submenu, and click [Folder].
 
 .. figure:: ./media/usingparticletrackingMedia/media/image6.png
    :align: center

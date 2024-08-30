@@ -115,7 +115,7 @@ Executing the Module
 
 2. The ArcNLET-Py Preprocessing Module (Figure 9-5) begins to process
    data, and the progress bar appears. The runtime can vary depending on
-   the data sets’ file sizes, spatial scale, raster cell size, and
+   the data sets' file sizes, spatial scale, raster cell size, and
    network speed.
 
 .. figure:: ./media/usingpreprocessingMedia/media/image5.png
