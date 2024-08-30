@@ -13,13 +13,13 @@ Sensitivity and Calibration
 As explained in the technical manual (Rios et al., 2011), the nitrate
 concentration is evaluated in ArcNLET using the two-dimensional,
 steady-state version of the solution of Domenico (1987) for the
-advection-dispersion equation. It is shown in equation (6‑1).
+advection-dispersion equation. It is shown in equation (16-1).
 
 +--------------------------------------------------------------+------+
 | |image1|                                                     |      | 
 +==============================================================+======+
 | |image2|                                                     | (    |
-|                                                              | 6‑1) |
+|                                                              | 16-1) |
 +--------------------------------------------------------------+------+
 | |image4|                                                     |      |
 +--------------------------------------------------------------+------+
@@ -55,39 +55,41 @@ an individual parameter calculated for specific nominal parameter
 values. In this study, the nominal parameter values and their sources
 are as follows:
 
-1. Seepage velocity: *v* = 0.2 m/d. This velocity is the representative
+1. Seepage velocity: *v* = 0.2 m/d. This velocity is the representative
    value of the domains of interest.
 
 2. Source plane concentration: *C\ 0* = 40 mg/L. This value is from a
-   review article by McCray et al. (2005).
+   review article by McCray et al. (2005).
 
 3. First-order decay coefficient: *k* = 0.008/day. This value is from a
-   review article by McCray et al. (2005). Longitudinal dispersivity:
+   review article by McCray et al. (2005). Longitudinal dispersivity:
    α\ *x* = 2.113 m. This value is from the work of Davis (2000) at a
    vicinity site in Jacksonville, FL.
 
-4. Horizontal transverse dispersivity: α\ *x* = 0.234 m. This value is
+4. Longitudinal dispersivity: α\ *x* = 2.113 m. This value is from the work of Davis (2000) at a vicinity site in 
+   Jacksonville, FL.
+
+5. Horizontal transverse dispersivity: α\ *x* = 0.234 m. This value is
    from the work of Davis (2000) at a vicinity site in Jacksonville, FL.
 
-5. Source plane length: *Y* = 6m. This value is the typical length of
+6. Source plane length: *Y* = 6m. This value is the typical length of
    the drain field of a septic system.
 
-6. X coordinate: *X* = 30m. This coordinate value is arbitrarily
+7. X coordinate: *X* = 30m. This coordinate value is arbitrarily
    selected for the demonstration.
 
-By the analytical solution (6‑2), analytical expressions of the local
-sensitivity can be easily derived. The local sensitivity to the source
-plane nitrate concentration is shown in (6‑2).
+By the analytical solution, analytical expressions of the local sensitivity can be easily derived. The local sensitivity 
+to the source plane nitrate concentration is shown in the equation (16-2).
 
 +----------------+
-| |image5| (6‑2) |
+| |image5| (16-2) |
 +----------------+
 
 --------------
 
 It suggests a positive linear relationship between the simulated nitrate
 concentrations and the source plane nitrate concentration. This
-relationship is illustrated in Figure 6‑1 for two y values, the nominal
+relationship is illustrated in Figure 16-1 for two y values, the nominal
 parameters' values listed above. The equation and figure show that the
 increase in source plane nitrate concentration increases the simulated
 concentration within the plume. The increase is prominent at locations
@@ -100,24 +102,24 @@ closer to the plume center line (y=0m).
 .. raw:: html
 
    <div  style="text-align:center;">
-   Figure 6‑1: Relationship between the source plane and simulated concentrations.
+   Figure 16-1: Relationship between the source plane and simulated concentrations.
    </div>
    <br> <!-- Add a line break here --></br>
 
 For illustration, the plot shows the measured and simulated nitrate
 concentrations at two locations of y.
 
-The local sensitivity to the first-order decay coefficient is shown in
-(6‑3).
+The local sensitivity to the first-order decay coefficient is shown in equation
+(16-3).
 
 +----------------+
-| |image7| (6‑3) |
+| |image7| (16-3) |
 +----------------+
 
 --------------
 
 It suggests a negative relationship with the simulated concentration, as
-demonstrated in Figure 6‑2. In other words, increasing the first-order
+demonstrated in Figure 16-2. In other words, increasing the first-order
 decay coefficient decreases the simulated concentration within the
 plume. The decrease is faster at locations closer to the plume center
 line (*y*\ =0m).
@@ -131,7 +133,7 @@ line (*y*\ =0m).
 .. raw:: html
 
    <div  style="text-align:center;">
-   Figure 6‑2: Relationship between first-order decay and concentration.
+   Figure 16-2: Relationship between first-order decay and concentration.
    </div>
    <br> <!-- Add a line break here --></br>
 
@@ -139,7 +141,7 @@ The plot illustrates the relationship between the first-order decay
 coefficient and simulated nitrate concentration at two locations of y.
 
 The analytical expressions of sensitivity to the seepage velocity are
-shown in (6‑4).
+shown in equation (6‑4).
 
 +----------------+
 | |image9| (6‑4) |
@@ -148,7 +150,7 @@ shown in (6‑4).
 --------------
 
 The expression suggests a positive relationship with simulated
-concentration. Figure 6‑3 shows that the velocity increase is associated
+concentration. Figure 16-3 shows that the velocity increase is associated
 with an increased simulated concentration within the plume. The increase
 is greater at locations closer to the plume center line (*y*\ =0m).
 
@@ -159,7 +161,7 @@ is greater at locations closer to the plume center line (*y*\ =0m).
 .. raw:: html
 
    <div  style="text-align:center;">
-   Figure 6‑3: The relationship between velocity and concentration.
+   Figure 16-3: The relationship between velocity and concentration.
    </div>
    <br> <!-- Add a line break here --></br>
 
@@ -167,10 +169,10 @@ For illustration, the plot shows the average flow velocity and simulated
 nitrate concentration at two locations of y.
 
 The analytical expression of sensitivity to the longitudinal
-dispersivity is shown in (6‑5).
+dispersivity is shown in (16-5).
 
 +-----------------+
-| |image11| (6‑5) |
+| |image11| (16-5) |
 +-----------------+
 
 --------------
@@ -195,13 +197,12 @@ For illustration, the plot shows the relationship between longitudinal
 dispersivity and simulated nitrate concentration at two locations of y.
 
 The sensitivity to the horizontal transverse dispersivity is more
-complicated than longitudinal. The analytical expression is shown in
-(6‑6).
+complicated than longitudinal. The analytical expression is shown in equation (16-6).
 
 +-------------------------------------------------------+------------+
 | |image13|                                             |            |
 +=======================================================+============+
-| |image14|                                             | (6‑6)      |
+| |image14|                                             | (16-6)      |
 +-------------------------------------------------------+------------+
 | |image15|                                             |            |
 +-------------------------------------------------------+------------+
@@ -209,17 +210,17 @@ complicated than longitudinal. The analytical expression is shown in
 The equation above shows that the relationship between the simulated
 nitrate concentration and the parameter depends on the length of the
 source plane (*Y*) and the location (*x* and *y*) in the plume. In
-addition, there is a threshold value shown in (6‑7).
+addition, there is a threshold value shown in equation (16-7).
 
 +-----------------+
-| |image16| (6‑7) |
+| |image16| (16-7) |
 +-----------------+
 
 --------------
 
 When the horizontal transverse dispersivity is smaller than the
 threshold value, the relationship is positive but becomes negative when
-the threshold value is exceeded. This is demonstrated in Figure 6‑5.
+the threshold value is exceeded. This is demonstrated in Figure 16-5.
 
 .. figure:: ./media/sensitivityandcalibrationMedia/media/image17.png
    :align: center
@@ -227,7 +228,7 @@ the threshold value is exceeded. This is demonstrated in Figure 6‑5.
    :width: 7in
    :height: 5.65694in
 
-   Figure 6‑5: Relationship between horizontal dispersivity and concentration.
+   Figure 16-5: Relationship between horizontal dispersivity and concentration.
 
 For illustration, the plot shows the relationship between horizontal
 transverse dispersivity and simulated nitrate concentration at two
@@ -245,7 +246,7 @@ simulated concentration. The relationships serve as guidelines for
 adjusting model parameters by trial and error to match field
 observations of nitrate concentration during the model calibration.
 
-Table 6‑1: The critical parameters at selected locations within the
+Table 16-1: The critical parameters at selected locations within the
 nitrate plume.
 
 +--------+------+------+------+------+------+------+------+------+
@@ -290,6 +291,111 @@ nitrate plume.
 |        |      | k*   | *y*  | *y*  | *y*  |      |      |      |
 +--------+------+------+------+------+------+------+------+------+
 
+Phosphorus Sensitivity Analyses
+-------------------------------
+
+The main objective of this section is to analyze the effect of the phosphorus module parameters on the sensitivity of the results. 
+
+**Linear Sorption Isotherm Analysis**
+
+The initial concentration: C₀ = 10 mg P/L, is used as the default value in VZMOD. Results are presented as ratios of 
+concentration at specific depths to the initial concentration, making the specific value of the initial concentration irrelevant.
+
+1. **Soil type:** Sand, chosen based on Florida's conditions.
+2. **Depth to water table:** Depth = 150 cm, which is the default value.
+3. **Linear distribution coefficient:** k = 15.1 L/kg, based on McCray et al. (2005).
+4. **Precipitation rate:** Rprecip = 0.002 1/day, referenced from Zhou et al. (2023) and Müller and Bünemann (2014).
+
+In this study, the ratios of concentrations at the full depth and half-depth to the initial concentration were used as the 
+y-values. Various precipitation rates and linear distribution coefficients were applied to examine their relationship 
+with these ratios. Results are presented in Figure 16-6, showing negative correlations between the concentration ratios and 
+parameters. Higher precipitation rates and sorption coefficients result in less phosphorus leaching. The parameters can be 
+adjusted based on the ranges shown in Figure 16-6. Site-specific calibration is highly recommended for phosphorus modeling.
+
+.. figure:: ./media/fig9.png
+   :align: center
+   :alt: Relationships between C/C0 and parameters for linear sorption isotherm.
+
+   Figure 16-6: Relationships between C/C0 and (a) precipitation rate, and (b) linear distribution coefficient for the 
+   linear sorption isotherm.
+
+**Langmuir Sorption Isotherm Analysis**
+
+The Langmuir sorption isotherm was also analyzed with initial conditions similar to those used previously:
+
+1. **Precipitation rate:** Rprecip = 0.002 1/day, consistent with Zhou et al. (2023) and Müller and Bünemann (2014).
+2. **Langmuir coefficient:** K = 0.2 L/mg, values from Zhou et al. (2023) and McGechan and Lewis (2002).
+3. **Maximum sorption capacity:** Qmax = 237 mg P/kg, referenced from McCray et al. (2005).
+
+Various precipitation rates, Langmuir coefficients, and maximum sorption capacity were applied to examine their relationship with concentration ratios. Results are shown in Figures 16-7 and 16-8. Site-specific calibration is recommended for phosphorus modeling.
+
+.. figure:: ./media/fig10.png
+   :align: center
+   :alt: Relationships between C/C0 and parameters for Langmuir sorption isotherm.
+
+   Figure 16-7: Relationships between C/C0 and (a) precipitation rate, (b) Langmuir coefficient, and (c) maximum sorption capacity for the Langmuir sorption isotherm.
+
+.. figure:: ./media/fig11.png
+   :align: center
+   :alt: Various sorption isotherms for different soil types.
+
+   Figure 16-8: Various sorption isotherms for different soil types with the data given by McGechan (2002).
+
+**Sensitivity in Groundwater**
+
+Nominal parameter values for groundwater include:
+
+1. **Seepage velocity:** v = 0.2 m/d.
+2. **Longitudinal dispersivity:** αx = 2.113 m (Davis, 2000).
+3. **Horizontal transverse dispersivity:** αy = 0.234 m (Davis, 2000).
+4. **Source plane length:** Y = 6 m.
+5. **Bulk density:** ρ = 1.42 g/cm³.
+6. **Porosity:** θ = 0.4 cm³/cm³.
+7. **Linear distribution coefficient:** k = 15.1 L/kg (McCray et al., 2005).
+8. **Precipitation rate:** Rprecip = 0.002 1/day.
+
+The analytical expressions of sensitivity to precipitation rate and linear distribution coefficient are shown in equations (17) and (18). Increasing these parameters leads to a decrease in the simulated concentration within the plume.
+
+.. figure:: ./media/fig12.png
+   :align: center
+   :alt: Relationships between C/C0 and parameters in groundwater.
+
+   Figure 16-9: Relationships between C/C0 and (a) precipitation rate, and (b) linear distribution coefficient for linear sorption in groundwater.
+
+**Sensitivity in VZMOD**
+
+VZMOD, being a steady-state model, adopts smaller values than those used in Zhou et al. (2023). The analytical expressions of sensitivity to the precipitation rate and linear distribution coefficient are represented by Equations (16-8) and (16-9):
+
++-------------------------------------------------------+------------+
+| |image18|                                             |   (16-8)   |
++=======================================================+============+
+| |image19|                                             |   (16-9)   |
++-------------------------------------------------------+------------+
+
+Where F1 and F2 are calculated as follows:
+
++-------------------------------------------------------+------------+
+| |image20|                                             |   (16-10)  |
++=======================================================+============+
+| |image21|                                             |   (16-11)  |
++-------------------------------------------------------+------------+
+
+These expressions suggest negative relationships with the simulated concentration. Specifically, increasing the precipitation rate and linear distribution coefficient results in a decrease in the simulated concentration within the plume, with a more rapid decline observed at locations closer to the plume centerline (*y* = 0 m).
+
+**Summary**
+
+The sensitivity analyses indicate that phosphorus sorption is significantly influenced by factors such as Fe concentration, total organic carbon concentration, pH, and others. These findings suggest that site-specific calibration is essential for accurate phosphorus modeling.
+
+Model Calibration
+-----------------
+
+Generally speaking, model calibration matches the simulated nitrate and phosphorus concentrations to observed values by adjusting model parameters. Due to the lack of comprehensive characterization data, model calibration in this study is necessary. 
+
+For nitrate, calibration begins with adjusting parameters like hydraulic conductivity, porosity, dispersivities, and decay coefficients to match observed concentrations. Phosphorus modeling also involves fine-tuning precipitation rates, sorption coefficients, and other related parameters.
+
+.. note::
+   Site-specific calibration is recommended to enhance the accuracy of both nitrate and phosphorus modeling due to the varying influence of site conditions on sorption processes.
+
 Model Calibration
 -----------------
 
@@ -331,7 +437,7 @@ follows:
    but hydraulic gradient, the goal of adjusting the smoothing factor is
    to obtain a linear relationship between the smoothed DEM (which is an
    intermediate output layer of the Groundwater Flow Module, described
-   in detail in the user’s manual) and the calibration targets values at
+   in detail in the user's manual) and the calibration targets values at
    the observation wells. The slope of the linear relationship must be
    close to 1.0 so that the shape of the smoothed DEM mimics the shape
    of the water table. Hydraulic conductivity is not calibrated in this
@@ -366,21 +472,17 @@ transport from the hydrogeologic point of view.
 .. |image4| image:: ./media/sensitivityandcalibrationMedia/media/image4.png
 .. |image5| image:: ./media/sensitivityandcalibrationMedia/media/image5.png
 .. |image6| image:: ./media/sensitivityandcalibrationMedia/media/image6.png
-   :width: 6.46111in
-   :height: 5.20069in
 .. |image7| image:: ./media/sensitivityandcalibrationMedia/media/image7.png
 .. |image8| image:: ./media/sensitivityandcalibrationMedia/media/image8.png
-   :width: 6.46111in
-   :height: 5.23542in
 .. |image9| image:: ./media/sensitivityandcalibrationMedia/media/image9.png
 .. |image10| image:: ./media/sensitivityandcalibrationMedia/media/image10.png
-   :width: 6.46111in
-   :height: 5.22569in
 .. |image11| image:: ./media/sensitivityandcalibrationMedia/media/image11.png
 .. |image12| image:: ./media/sensitivityandcalibrationMedia/media/image12.png
-   :width: 6.49028in
-   :height: 5.24028in
 .. |image13| image:: ./media/sensitivityandcalibrationMedia/media/image13.png
 .. |image14| image:: ./media/sensitivityandcalibrationMedia/media/image14.png
 .. |image15| image:: ./media/sensitivityandcalibrationMedia/media/image15.png
 .. |image16| image:: ./media/sensitivityandcalibrationMedia/media/image16.png
+.. |image18| image:: ./media/sensitivityandcalibrationMedia/media/image18.png
+.. |image19| image:: ./media/sensitivityandcalibrationMedia/media/image19.png
+.. |image20| image:: ./media/sensitivityandcalibrationMedia/media/image20.png
+.. |image21| image:: ./media/sensitivityandcalibrationMedia/media/image21.png
