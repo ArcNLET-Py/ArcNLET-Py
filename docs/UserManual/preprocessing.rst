@@ -21,8 +21,6 @@ accuracy issues (i.e., missing ditches and canals).
 .. figure:: ./media/preprocessingMedia/media/image1.png
    :align: center
    :alt: A screenshot of a computer Description automatically generated
-   :width: 3.62973in
-   :height: 5.52734in
 
    Figure 0-1: The Preprocessing Module in the Geoprocessing Pane.
 

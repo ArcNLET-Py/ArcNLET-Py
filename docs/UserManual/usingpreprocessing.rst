@@ -1,9 +1,11 @@
 .. _usingpreprocessing:
+.. role:: raw-html(raw)
+   :format: html
 
 Using the Preprocessing Module
 ==============================
 
-The Preprocessing Module (Figure 5‑12) automatically extracts hydraulic
+The Preprocessing Module (Figure 9-1) automatically extracts hydraulic
 conductivity, porosity, and soil types from the SSURGO database.
 
 Data Inputs
@@ -21,25 +23,21 @@ Data Inputs
    a. Input the study area shapefile (polygon).
 
       i. Lakeshore Example input shapefile: [study_area.shp], as shown
-         in Figure 5‑13.
+         in Figure 9-2.
 
          1. Please note that the shapefile must have only one feature.
 
 .. figure:: ./media/usingpreprocessingMedia/media/image1.png
    :align: center
-   :alt: 图形用户界面, 应用程序 描述已自动生成
-   :width: 3.83363in
-   :height: 6.43944in
+   :alt: Description automatically generated
 
-   Figure 5‑12: The Preprocessing Module in the Geoprocessing Pane.
+   Figure 9-1: The Preprocessing Module in the Geoprocessing Pane.
 
 .. figure:: ./media/usingpreprocessingMedia/media/image2.png
    :align: center
-   :alt: A hand with a drawing of a hand Description automatically generated
-   :width: 5.6in
-   :height: 5.62899in
+   :alt: Description automatically generated
 
-   Figure 5‑13: The spatial distribution of the study area, septic tanks, and water bodies.
+   Figure 9-2: The spatial distribution of the study area, septic tanks, and water bodies.
 
 The OSTDS are green dots, the study area is beige, and the water body is
 blue.
@@ -47,75 +45,75 @@ blue.
 Data Outputs and Parameters
 ---------------------------
 
-1. You are selecting the module parameters, as shown in Figure 5‑14.
+1. You are selecting the module parameters, as shown in Figure 9-3.
 
-   a. Projected Coordinate System
+   a. **Study Area (polygon)**
 
-      i.  You should change to [NAD_1983_UTM_Zone_17N] in this example.
-      
+      i.  Select the shapefile: [study_area.shp]
+
+   b. **Projected Coordinate System [m]**
+
+      i. Use: [NAD_1983_UTM_Zone_17N]
+
       ii. Please note that the projected coordinate system automatically displays the coordinate system of the study area. However, a projected coordinate system must be used, or an error is triggered.
 
-   b. Top Depth
+   c. **Top Depth [cm]**
 
       i. Default value: [0]
 
-   c. Bottom Depth
+   d. **Bottom Depth [cm]**
 
       i. Default value: [200]
 
-   d. Extraction Method
+   e. **Extraction Method**
 
       i. Default option: [Harmonic mean for Ks]
 
-   e. Raster Cell Size [m]
+   f. **Raster Cell Size [m]**
 
-      i. Default value: [10] 
+      i. Default value: [10]
 
 2. Selecting the module outputs
 
-   a. The output hydraulic conductivity [Raster]
+   a. **Output Hydraulic Conductivity [m/d] (Raster)**
 
-      i. Lakeshore Example output raster: [demo_hydr]
+      i. Output raster name: [hydr_cond]
 
       ii. Please note that the length of the name of the raster file must not exceed 13 characters. It is a requirement by ArcGIS Pro.
 
-   b. The output porosity is a [Raster].
+   b. **Output Porosity (Raster)**
 
-      i. Lakeshore Example output raster: [demo_poro]
+      i. Output raster name: [porosity]
 
-   c. The optional output soil texture (Raster).
+   c. **(Optional) Output Soil Type (Raster)** (required for **VZMOD**)
 
-      i. Lakeshore Example output raster: [demo_soil]
+      i. Output raster name: [soiltype]
 
-   d. The optional output spatial SSURGO data in (Shapefile) format.
+   d. **(Optional) Output Spatial SSURGO Data (Shapefile)**
 
-      i. Lakeshore Example output shapefile: [demo_spatial]
+      i. Output shapefile name: [spatial]
 
 3. Double-check to ensure all red astricts [\*] are removed from the [Geoprocessing Pane], indicating that all necessary data inputs and outputs have the correct file type and are accessible.
 
 .. figure:: ./media/usingpreprocessingMedia/media/image3.png
    :align: center
    :alt: A screenshot of a computer Description automatically generated
-   :width: 4.05107in
-   :height: 5.91181in
 
-   Figure 5‑14: The Preprocessing Module data inputs and outputs in the Geoprocessing Pane.
+   Figure 9-3: The Preprocessing Module data inputs and outputs in the Geoprocessing Pane.
 
 Executing the Module
 --------------------
 
 1. Once satisfied with the data input and output selections, click [Run]
-   in the [Geoprocessing Pane] (Figure 5‑15).
+   in the [Geoprocessing Pane] (Figure 9-4).
 
 .. figure:: ./media/usingpreprocessingMedia/media/image4.png
    :align: center
    :alt: A screenshot of a computer Description automatically generated
-   :width: 3.63835in
-   :height: 0.74615in
 
-   Figure 5‑15: The Run button in the Geoprocessing Pane.
+   Figure 9-4: The Run button in the Geoprocessing Pane.
 
-2. The ArcNLET-Py Preprocessing Module (Figure 5‑16) begins to process
+2. The ArcNLET-Py Preprocessing Module (Figure 9-5) begins to process
    data, and the progress bar appears. The runtime can vary depending on
    the data sets’ file sizes, spatial scale, raster cell size, and
    network speed.
@@ -123,13 +121,11 @@ Executing the Module
 .. figure:: ./media/usingpreprocessingMedia/media/image5.png
    :align: center
    :alt: A screen shot of a computer Description automatically generated
-   :width: 3.73839in
-   :height: 1.22647in
 
-   5‑16: The progress bar in the ArcGIS Pro Geoprocessing Pane for the Preprocessing Module.Figure
+   9-5: The progress bar in the ArcGIS Pro Geoprocessing Pane for the Preprocessing Module.Figure
 
 3. ArcGIS Pro indicates the tool is finished with a green notification
-   box, as shown in Figure 5‑17, at the bottom of the [Geoprocessing
+   box, as shown in Figure 9-6, at the bottom of the [Geoprocessing
    Pane]. You may click [View Details] for more information about the
    process, including data inputs and outputs, start and end times and
    dates, and a success or failure message.
@@ -137,10 +133,8 @@ Executing the Module
 .. figure:: ./media/usingpreprocessingMedia/media/image6.png
    :align: center
    :alt: A close-up of a message Description automatically generated
-   :width: 3.73941in
-   :height: 1.01034in
 
-   Figure 5‑17: The green notification box in the ArcGIS Pro Geoprocessing Pane for the Preprocessing Module.
+   Figure 9-6: The green notification box in the ArcGIS Pro Geoprocessing Pane for the Preprocessing Module.
 
 View and Verify Results
 -----------------------
@@ -150,16 +144,14 @@ outputs are automatically added to the [Contents Pane] and the [Map]
 view. Alternatively, if you do not have your input data in a [Map], nor
 do you have a [Map View] open in your ArcGIS Pro Project, and you run
 the ArcNLET-Py Preprocessing Module from the [Geoprocessing Pane], as
-shown in Figure 5‑18. Your results are accessible via the [Catalog Pane]
+shown in Figure 9-7. Your results are accessible via the [Catalog Pane]
 or [Catalog View] in the output folder created in Section 3.3.
 
 .. figure:: ./media/usingpreprocessingMedia/media/image7.png
    :align: center
    :alt: A screenshot of a computer Description automatically generated
-   :width: 4.43128in
-   :height: 1.91532in
 
-   Figure 5‑18: The ArcNLET-Py Preprocessing Module outputs in the Catalog Pane.
+   Figure 9-7: The ArcNLET-Py Preprocessing Module outputs in the Catalog Pane.
 
 1. Take a moment to review each output to ensure your data has been
    processed correctly. Your data must be processed correctly because
