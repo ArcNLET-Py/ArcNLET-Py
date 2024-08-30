@@ -342,7 +342,7 @@ View and Verify Results
       ran the ArcNLET-Py Transport Module from the [Geoprocessing Pane],
       then your results are accessible via the [Catalog Pane] or
       [Catalog View] in the output folder
-      [LakeshoreExampleOutputs_YYYY_MM_DD]
+      [...\\2_lakeshore_example_phosphorus\\4_Transport_module\\Outputs].
 
 .. figure:: ./media/usingtransportMedia/media/image13.png
    :align: center
@@ -377,11 +377,9 @@ View and Verify Results
           ensure all your data inputs are correct, in an accessible file
           folder, and are uncorrupted.
 
-3. If you continue having issues processing your data, please [View
-    Details] as mentioned in Section 5.9.3 to see if empty datasets were
-    created as outputs. Empty datasets indicate an issue with the input
-    data, or ArcGIS Pro does not have read/write access to input or
-    output file locations.
+3. If you continue having issues processing your data, please 
+   [View Details] to see if empty datasets were created as outputs. Empty datasets indicate an issue with the input
+   data, or ArcGIS Pro does not have read/write access to input or output file locations.
 
     a. If you cannot find a solution to the issue, then please submit a [New issue] in the ArcNLET-Py GitHub repository (`Issues · ArcNLET-Py/ArcNLET-Py · GitHub <https://github.com/ArcNLET-Py/ArcNLET-Py/issues>`__) as described in the GitHub instructions at `Creating an issue - GitHub Docs <https://docs.github.com/en/issues/tracking-your-work-with-issues/creating-an-issue>`__.
 
@@ -389,13 +387,6 @@ View and Verify Results
    :align: center
    :alt: A computer screen shot of a map Description automatically generated
 
-   13-14: The ArcNLET-Py Transport Module outputs in the Contents Pane and Map.Figure
+   13-14: The ArcNLET-Py Transport Module outputs in the Contents Pane and Map Figure
 
-.. figure:: ./media/usingtransportMedia/media/image15.png
-   :align: center
-   :alt: A satellite image of a neighborhood Description automatically generated with medium confidence
-
-   Figure 13-15: The ArcNLET-Py Transport Module outputs info points and plumes stylized.
-
-The plumes are shown with the highest magnitude in red, and analyte
-levels near zero are purple. The water body is shown in blue.
+The plumes are shown with the highest magnitude in red, and analyte levels near zero are purple. The water body is shown in blue.
