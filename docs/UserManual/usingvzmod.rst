@@ -170,7 +170,7 @@ b. If you have the data from the Lakeshore example open in a [Catalog
 c. You can also click the [Folder Icon] next to each field to select the
    data inputs using the Windows File Explorer. To use this method, you
    must use the Windows File Explorer to navigate to the
-   […\\2_lakeshore_example_phosphorus\\3_VZMOD_module\\Inputs] folder to select each data
+   [...\\2_lakeshore_example_phosphorus\\3_VZMOD_module\\Inputs] folder to select each data
    input and click [OK].
 
 .. figure:: ./media/usingvzmodMedia/media/image6.png
@@ -190,7 +190,7 @@ folder stores the output shapefiles.
 
 1. If you need to create a new file folder in ArcGIS Pro, use the
    [Catalog Pane], right-click on the folder
-   […\2_lakeshore_example_phosphorus\3_VZMOD_module\Outputs], hover over the option
+   [...\\2_lakeshore_example_phosphorus\\3_VZMOD_module\\Outputs], hover over the option
    [New] in the submenu, and click [Folder].
 
 .. figure:: ./media/usingvzmodMedia/media/image7.png
@@ -209,12 +209,14 @@ folder stores the output shapefiles.
        [Project], click the drop-down arrows to expand the [Folders] and
        ArcGIS Pro home folders.
 
-    b. Select the [\2_lakeshore_example_phosphorus\3_VZMOD_module\Outputs] folders.
+    b. Select the [...\\2_lakeshore_example_phosphorus\\3_VZMOD_module\\Outputs] folders.
 
 3.  Click the above output folder to store the output text file and
     shapefile from the VZMOD Module. The file path and name for the
-    [Output folder] is
-    […\\lakeshore_example\\LakeshoreExampleOutputs_2023_09_28]
+    [Output] folder is
+    [...\\2_lakeshore_example_phosphorus\\3_VZMOD_module\\Outputs], 
+    or your custome output folder should be in the following directory 
+    [...\\2_lakeshore_example_phosphorus\\3_VZMOD_module\\Outputs\\LakeshoreExampleOutputs_YYYY_MM_DD].
 
     a. The module automatically names the text file and shapefile
        outputs.
@@ -228,26 +230,16 @@ folder stores the output shapefiles.
     a. The Output folder
 
        i. Lakeshore Example output folder:
-          [LakeShoreExampleOutput_2023_09_28]
+          [...\\2_lakeshore_example_phosphorus\\3_VZMOD_module\\Outputs]
 
           1. The outputs of VZMOD are a CSV text file titled
-             [results.txt] that contains the vertical fate and decay of
-             nitrate and ammonia below the OSTDS and [septictanks.shp]
+             [Results.txt] that contains the vertical fate and decay of
+             nitrate and ammonia below the OSTDS and [PotentialSepticTankLocations.shp]
              shapefile when processing data for [Multiple OSTDS].
 
 5. Double-check to ensure all red astricts [\*] are removed from the [Geoprocessing Pane], 
-   indicating that all necessary data inputs and outputs have the correct file type and are accessible.
-
-.. rst-class:: center 
-
-|image2| \ |A screenshot of a computer Description automatically generated 2|
-
-.. raw:: html
-
-   <div  style="text-align:center;">
-   Figure 12-6: The VZMOD Module Data inputs and output in the Geoprocessing Pane
-   </div>
-   <br> <!-- Add a line break here --></br>
+   indicating that all necessary data inputs and outputs have the correct file type and are 
+   accessible as shown in Figure 12-2.
 
 Execute the Module
 ------------------
@@ -259,16 +251,16 @@ Execute the Module
    :align: center
    :alt: A screenshot of a computer Description automatically generated
 
-   Figure 12-7: The Run button in the Geoprocessing Pane.
+   Figure 12-6: The Run button in the Geoprocessing Pane.
 
 2. ArcNLET-Py VZMOD Module begins to process data, and the progress bar appears. 
-   The runtime can vary depending on the data sets’ file sizes, spatial scale, and raster cell size. 
+   The runtime can vary depending on the data sets' file sizes, spatial scale, and raster cell size. 
 
 .. figure:: ./media/usingvzmodMedia/media/image11.png
    :align: center
    :alt: A screenshot of a computer Description automatically generated
 
-   Figure 12-8: The Progress Bar in the ArcGIS Pro Geoprocessing Pane for the VZMOD Module.
+   Figure 12-7: The Progress Bar in the ArcGIS Pro Geoprocessing Pane for the VZMOD Module.
 
 3. ArcGIS Pro indicates the tool is finished with a green notification box at the bottom of the 
    [Geoprocessing Pane]. You may click [View Details] for more information about the process, 
@@ -278,7 +270,7 @@ Execute the Module
    :align: center
    :alt: A screenshot of a computer Description automatically generated
 
-   Figure 12-9: The green notification box in the ArcGIS Pro Geoprocessing Pane for the VZMOD Module.
+   Figure 12-8: The green notification box in the ArcGIS Pro Geoprocessing Pane for the VZMOD Module.
 
 View and Verify Results
 -----------------------
@@ -289,17 +281,18 @@ View]. Alternatively, if you do not have your input data in a [Map], nor
 do you have a [Map View] open in your ArcGIS Pro Project, and you ran
 the ArcNLET-Py VZMOD Module from the [Geoprocessing Pane], then your
 results are accessible via the [Catalog Pane] or [Catalog View] in the
-output folder [LakeshoreExampleOutputs_YYYY_MM_DD]. Please note that you
-may want to use a separate output folder each time you run VZMOD to aid
-in data organization.
+[...\\2_lakeshore_example_phosphorus\\3_VZMOD_module\\Outputs] folder 
+or in your custom output folder (i.e.,[LakeshoreExampleOutputs_YYYY_MM_DD]). 
+Please note that you may want to use a separate output folder each time 
+you run VZMOD to aid in data organization.
 
 .. figure:: ./media/usingvzmodMedia/media/image13.png
    :align: center
    :alt: A screenshot of a computer Description automatically generated
 
-   Figure 12-10: The ArcNLET-Py VZMOD output in the Catalog Pane.
+   Figure 12-9: The ArcNLET-Py VZMOD output in the Catalog Pane.
 
-1. Take a moment to review the CSV text file and shapefile outputs to
+1. Take a moment to review the text file and shapefile outputs to
    ensure your data has been processed correctly. Your data must be
    processed correctly because data outputs from the VZMOD Module are
    inputs in the subsequent module.
@@ -308,32 +301,36 @@ in data organization.
       shapefile, please ensure all your data inputs are correct, in an
       accessible file folder, and uncorrupted.
 
-2. If you continue having issues processing your data, please [View Details] as mentioned 
-   in Section 5.8.3 to see if empty datasets were created as outputs. Empty datasets indicate 
-   an issue with the input data, or ArcGIS Pro does not have read/write access to input or 
-   output file locations.
+2. If you continue having issues processing your data, please [View Details] as previosuly 
+   to see if empty datasets were created as outputs. Empty datasets indicate an issue with 
+   the input data, or ArcGIS Pro does not have read/write access to input or output file locations.
 
-    a. If you cannot find a solution to the issue, then please submit a [New issue] in the ArcNLET-Py GitHub repository (`Issues · ArcNLET-Py/ArcNLET-Py · GitHub <https://github.com/ArcNLET-Py/ArcNLET-Py/issues>`__) as described in the GitHub instructions at `Creating an issue - GitHub Docs <https://docs.github.com/en/issues/tracking-your-work-with-issues/creating-an-issue>`__.
+    a. If you cannot find a solution to the issue, then please submit a [New issue] in the ArcNLET-Py GitHub repository 
+      (`Issues · ArcNLET-Py/ArcNLET-Py · GitHub <https://github.com/ArcNLET-Py/ArcNLET-Py/issues>`__) 
+      as described in the GitHub instructions at 
+      `Creating an issue - GitHub Docs <https://docs.github.com/en/issues/tracking-your-work-with-issues/creating-an-issue>`__.
+
+3. The [Results.txt] file can be modified so that it is compatible with Excel. To see the verticle 
+   profile for one OSTDS in Excel you must located the desired septic tank number in the [Results.txt] file. 
+   
+   a. Next, you must copy and paste the headers and data for a given location into a new text file. 
+   
+   b. Afterwards, you may import the text file into Excel using the [Text Import Wizard] with [Fixed width]
+      and [My data has headers] options selected.
+
+   c. Create plots showing the vertical profile.   
 
 .. figure:: ./media/usingvzmodMedia/media/image14.png
    :align: center
    :alt: A table of numbers and a black and white background Description automatically generated
 
-   Figure 12-11: The ArcNLET-Py VZMOD text outputs in Microsoft Excel.
+   Figure 12-10: The ArcNLET-Py VZMOD text outputs in Microsoft Excel.
 
 .. figure:: ./media/usingvzmodMedia/media/image15.png
    :align: center
    :alt: A plot of numbers and a black and white background Description automatically generated
 
-   Figure 12-12: The ArcNLET-Py VZMOD text outputs are plotted in Excel.
+   Figure 12-11: The ArcNLET-Py VZMOD text outputs are plotted in Excel.
 
-The plots show concentrations of NH\ :sub:`4` and NO\ :sub:`3` below the
-OSTDS (left) and the saturation function for nitrification and
-denitrification (right).
-
-.. |image2| image:: ./media/usingvzmodMedia/media/image8.png
-   :width: 2.93988in
-   :height: 5.51318in
-.. |A screenshot of a computer Description automatically generated 2| image:: ./media/usingvzmodMedia/media/image9.png
-   :width: 3.5383in
-   :height: 5.49716in
+The plots show concentrations of NH\ :sub:`4`, NO\ :sub:`3`, and PO\ :sub:`4`\ :sup:`3-` below the
+OSTDS (left) and the saturation function for nitrification and denitrification (right).
