@@ -19,22 +19,20 @@ USDA soil data.
 Data Inputs
 -----------
 
-Once you are satisfied with the Particle Tracking Module’s data outputs,
+Once you are satisfied with the Particle Tracking Module's data outputs,
 it is time to move on to the VZMOD Module. For this example, you run the
 VZMOD Module for multiple OSTDS locations with heterogeneous hydraulic
 conductivity and porosity and a soil type of sand and calculate the
 depth to the water table.
 
 1. Access the [ArcNLET.pyt] ArcGIS Python Toolbox and the ArcNLET-Py
-   ArcGIS Pro toolsets within, as described in Section 5.4.2.
+   ArcGIS Pro toolsets within.
 
 .. figure:: ./media/usingvzmodMedia/media/image1.png
    :align: center
    :alt: A screenshot of a computer Description automatically generated
-   :width: 3.30773in
-   :height: 5.44067in
 
-   Figure 5‑44: The ArcNLET-Py Python Toolset and VZMOD Module in the Catalog Pane
+   Figure 12-1: The ArcNLET-Py Python Toolset and VZMOD Module in the Catalog Pane
 
 2. Double-click the [3-VZMOD (Optional)] module, and the VZMOD Python
    toolset opens in the [Geoprocessing Pane].
@@ -135,7 +133,7 @@ depth to the water table.
 .. raw:: html
 
    <div  style="text-align:center;">
-   Figure 5‑45: The VZMOD Module in the Geoprocessing Pane.
+   Figure 12-2: The VZMOD Module in the Geoprocessing Pane.
    </div>
    <br> <!-- Add a line break here --></br>
 
@@ -156,10 +154,8 @@ depth to the water table.
 .. figure:: ./media/usingvzmodMedia/media/image4.png
    :align: center
    :alt: A screenshot of a computer Description automatically generated
-   :width: 6.5in
-   :height: 4.60208in
 
-   Figure 5‑46: Selecting VZMOD Module data inputs in the Map View.
+   Figure 12-3: Selecting VZMOD Module data inputs in the Map View.
 
 b. If you have the data from the Lakeshore example open in a [Catalog
    Pane] or [Catalog View] and the [Geoprocessing Pane] open, then you
@@ -168,10 +164,8 @@ b. If you have the data from the Lakeshore example open in a [Catalog
 .. figure:: ./media/usingvzmodMedia/media/image5.png
    :align: center
    :alt: A screenshot of a computer Description automatically generated
-   :width: 6.5in
-   :height: 4.61181in
 
-   Figure 5‑47: Selecting VZMOD Module inputs by dragging and dropping from the Catalog View.
+   Figure 12-4: Selecting VZMOD Module inputs by dragging and dropping from the Catalog View.
 
 c. You can also click the [Folder Icon] next to each field to select the
    data inputs using the Windows File Explorer. To use this method, you
@@ -182,10 +176,8 @@ c. You can also click the [Folder Icon] next to each field to select the
 .. figure:: ./media/usingvzmodMedia/media/image6.png
    :align: center
    :alt: A screenshot of a computer Description automatically generated
-   :width: 6.5in
-   :height: 4.33681in
 
-   Figure 5‑48: Selecting VZMOD Module inputs from the Windows File Explorer.
+   Figure 12-5: Selecting VZMOD Module inputs from the Windows File Explorer.
 
 Data Outputs and Parameters
 ---------------------------
@@ -204,10 +196,8 @@ folder stores the output shapefiles.
 .. figure:: ./media/usingvzmodMedia/media/image7.png
    :align: center
    :alt: A screenshot of a computer Description automatically generated
-   :width: 6.39222in
-   :height: 4.69207in
 
-   Figure 5‑49: The Lakeshore example output folders in the Windows File Explorer.
+   Figure 12-6: The Lakeshore example output folders in the Windows File Explorer.
 
 2.  Select the necessary data output folder by clicking the [Folder
     Icon] next to the [Output folder] field in the [Geoprocessing Pane].
@@ -255,7 +245,7 @@ folder stores the output shapefiles.
 .. raw:: html
 
    <div  style="text-align:center;">
-   Figure 5‑50: The VZMOD Module Data inputs and output in the Geoprocessing Pane
+   Figure 12-7: The VZMOD Module Data inputs and output in the Geoprocessing Pane
    </div>
    <br> <!-- Add a line break here --></br>
 
@@ -268,10 +258,8 @@ Execute the Module
 .. figure:: ./media/usingvzmodMedia/media/image10.png
    :align: center
    :alt: A screenshot of a computer Description automatically generated
-   :width: 4in
-   :height: 0.88in
 
-   Figure 5‑51: The Run button in the Geoprocessing Pane.
+   Figure 12-8: The Run button in the Geoprocessing Pane.
 
 2. ArcNLET-Py VZMOD Module begins to process data, and the progress bar appears. 
    The runtime can vary depending on the data sets’ file sizes, spatial scale, and raster cell size. 
@@ -279,10 +267,8 @@ Execute the Module
 .. figure:: ./media/usingvzmodMedia/media/image11.png
    :align: center
    :alt: A screenshot of a computer Description automatically generated
-   :width: 4in
-   :height: 1.29341in
 
-   Figure 5‑52: The Progress Bar in the ArcGIS Pro Geoprocessing Pane for the VZMOD Module.
+   Figure 12-9: The Progress Bar in the ArcGIS Pro Geoprocessing Pane for the VZMOD Module.
 
 3. ArcGIS Pro indicates the tool is finished with a green notification box at the bottom of the 
    [Geoprocessing Pane]. You may click [View Details] for more information about the process, 
@@ -291,10 +277,8 @@ Execute the Module
 .. figure:: ./media/usingvzmodMedia/media/image12.png
    :align: center
    :alt: A screenshot of a computer Description automatically generated
-   :width: 4in
-   :height: 1.04786in
 
-   Figure 5‑53: The green notification box in the ArcGIS Pro Geoprocessing Pane for the VZMOD Module.
+   Figure 12-10: The green notification box in the ArcGIS Pro Geoprocessing Pane for the VZMOD Module.
 
 View and Verify Results
 -----------------------
@@ -312,10 +296,8 @@ in data organization.
 .. figure:: ./media/usingvzmodMedia/media/image13.png
    :align: center
    :alt: A screenshot of a computer Description automatically generated
-   :width: 5.45336in
-   :height: 3.42758in
 
-   Figure 5‑54: The ArcNLET-Py VZMOD output in the Catalog Pane.
+   Figure 12-11: The ArcNLET-Py VZMOD output in the Catalog Pane.
 
 1. Take a moment to review the CSV text file and shapefile outputs to
    ensure your data has been processed correctly. Your data must be
@@ -336,18 +318,14 @@ in data organization.
 .. figure:: ./media/usingvzmodMedia/media/image14.png
    :align: center
    :alt: A table of numbers and a black and white background Description automatically generated
-   :width: 3.78961in
-   :height: 5.15538in
 
-   Figure 5‑55: The ArcNLET-Py VZMOD text outputs in Microsoft Excel.
+   Figure 12-12: The ArcNLET-Py VZMOD text outputs in Microsoft Excel.
 
 .. figure:: ./media/usingvzmodMedia/media/image15.png
    :align: center
    :alt: A plot of numbers and a black and white background Description automatically generated
-   :width: 6.14961in
-   :height: 3.04538in
 
-   Figure 5‑56: The ArcNLET-Py VZMOD text outputs are plotted in Excel.
+   Figure 12-13: The ArcNLET-Py VZMOD text outputs are plotted in Excel.
 
 The plots show concentrations of NH\ :sub:`4` and NO\ :sub:`3` below the
 OSTDS (left) and the saturation function for nitrification and

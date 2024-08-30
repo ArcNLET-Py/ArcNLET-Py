@@ -167,3 +167,11 @@ or [Catalog View] in the output folder created in Section 3.3.
 
    b. Please note that the symbology has been changed from the ArcGIS
       Pro automatic default symbology for aesthetic purposes.
+
+.. figure:: ./media/usingpreprocessingMedia/media/image8.png
+   :align: center
+   :alt: A screenshot of a computer Description automatically generated
+
+   Figure 9-8: The ArcNLET-Py Preprocessing Module outputs in the Map View.
+
+The porosity is shown with sand in red and loamy sand in green. 
