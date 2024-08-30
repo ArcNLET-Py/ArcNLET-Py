@@ -85,6 +85,12 @@ Load Estimation Module to determine load from OSTDS to surficial water bodies.
    
    Figure 4-1: The Transport Module.
 
+.. warning:: 
+
+   When running the ArcNLET-Py transport module, be cautious about processing too many features at once, especially when dealing with a large number of septic tanks (OSTDS). It has been observed that attempting to run calculations on more than 1,000 OSTDS at a time can cause the system to become unstable or fail due to the high demand on system resources. This issue is related to ArcGIS Pro's heavy use of storage and memory, particularly for storing intermediate raster files. 
+
+   For best results, it is recommended to split large datasets into smaller subsets and run the transport module on these smaller groups separately. This approach helps manage resource usage and reduces the likelihood of system crashes or storage issues. Keep in mind that temporary files may not always be automatically deleted by ArcGIS Pro, which could further impact available disk space.
+
 Input Layers
 ------------
 

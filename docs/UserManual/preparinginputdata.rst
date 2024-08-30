@@ -1,4 +1,6 @@
 .. _preparinginputdata:
+.. role:: raw-html(raw)
+   :format: html
 
 Preparing Input Data
 ====================
@@ -126,8 +128,11 @@ dropdown of Figure 7‑8.
 Projections
 -----------
 
-All model inputs and the map data frame should have the same coordinate
-system to ensure consistency. Because the example DEM has elevation
+.. raw:: html
+
+   <span style="color: red; font-weight: bold;">All model inputs and the map data frame should have the same coordinate system to ensure consistency.</span>
+
+Because the example DEM has elevation 
 units of meters but x- and y-coordinates of degrees, the DEM should be
 projected into a coordinate system with linear meters units. Projecting
 the DEM into the correct coordinate system prevents errors in assigning
@@ -190,14 +195,9 @@ level in blue.
 Clipping
 --------
 
-When working with unprocessed data, the first step is to clip the
-datasets (e.g., DEM and water body) to encompass the area of interest.
-The area of interest in this example is indicated by the dotted outline
-in Figure 7‑7. It is crucial to clip oversized datasets to the extent of
-the study area. A buffer of 0.5 to 1.5 times the dimensions of the area
-of interest on all sides should suffice for most applications. This
-extra padding ensures that any artifacts caused by calculations near the
-edges of the domain do not affect the results.
+When working with unprocessed data, the first step is to clip all datasets (e.g., DEM, water body, and any other spatial files) to match the extent of the study area. This ensures that the entire study area and all associated files are consistently clipped to the same boundaries. The area of interest in this example is indicated by the dotted outline in Figure 7‑7. It is crucial to clip oversized datasets to the exact extent of the study area to maintain consistency. 
+
+A buffer of 0.5 to 1.5 times the dimensions of the study area on all sides should be used. This additional padding ensures that any artifacts caused by calculations near the edges of the domain do not affect the results. By clipping all files to the same study area, consistency across the datasets is maintained, which is essential for accurate modeling and analysis.
 
 .. figure:: ./media/preparinginputdataMedia/media/image7.png
    :align: center
@@ -744,3 +744,26 @@ aerial (left) and after aerial (right) updating.
    :alt: A screenshot of a computer Description automatically generated
  
    Figure 7‑23: The simulated flow paths after updating the water bodies.
+
+**Units**
+---------
+
+- To ensure consistency and ease of use, the ArcNLET model is fixed to use **meters per day** as the standard unit of measurement.
+
+- This decision was made to avoid potential errors that could arise from users employing different units without recalibrating default parameters.
+
+- ArcNLET provides default values for various parameters to simplify the modeling process:
+  
+  - In the transport module, the nitrate dispersivity values are set to:
+    - αL = 2.113 meters per day
+    - αTH = 0.234 meters per day
+  - The denitrification decay rate is set to 0.008 1/day.
+
+- These default values are specifically calibrated for the meter per day unit system.
+
+- If users wish to use alternative units, such as feet or seconds, they must manually recalculate these default values to match the desired units.
+
+- To minimize complexity and reduce the risk of unit conversion errors, it is strongly recommended that all model inputs and outputs adhere to the standard unit of meters per day.
+
+- By standardizing the unit system, ArcNLET ensures consistency across simulations and reduces the potential for discrepancies in model results due to unit mismatches.
+   
