@@ -220,6 +220,9 @@ observations of nitrate concentration during the model calibration.
    :align: center
    :alt: A graph of a function Description automatically generated with medium confidence
 
+.. raw:: html
+   <br></br>
+
 Phosphorus Sensitivity Analyses
 -------------------------------
 
