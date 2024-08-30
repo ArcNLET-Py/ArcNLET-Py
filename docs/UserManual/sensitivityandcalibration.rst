@@ -1,4 +1,6 @@
 .. _sensitivityandcalibration:
+.. role:: raw-html(raw)
+   :format: html
 
 Sensitivity and Calibration
 ===========================
@@ -106,9 +108,9 @@ concentrations at two locations of y.
 The local sensitivity to the first-order decay coefficient is shown in equation
 (16-3).
 
-+----------------+
++-----------------+
 | |image7| (16-3) |
-+----------------+
++-----------------+
 
 It suggests a negative relationship with the simulated concentration, as
 demonstrated in Figure 16-2. In other words, increasing the first-order
