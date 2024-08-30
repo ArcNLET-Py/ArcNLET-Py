@@ -214,8 +214,6 @@ the threshold value is exceeded. This is demonstrated in Figure 16-5.
 .. figure:: ./media/sensitivityandcalibrationMedia/media/image17.png
    :align: center
    :alt: A graph of a function Description automatically generated with medium confidence
-   :width: 7in
-   :height: 5.65694in
 
    Figure 16-5: Relationship between horizontal dispersivity and concentration.
 
@@ -235,54 +233,15 @@ simulated concentration. The relationships serve as guidelines for
 adjusting model parameters by trial and error to match field
 observations of nitrate concentration during the model calibration.
 
-Table 16-1: The critical parameters at selected locations within the
-nitrate plume.
-
-   +--------+------+------+------+------+------+------+------+------+
-| **x    | 0.   | 5    | 10   | 15   | 20   | 30   | 40   | 50   |
-| (m)**  | 0001 |      |      |      |      |      |      |      |
-|        |      |      |      |      |      |      |      |      |
-| **y    |      |      |      |      |      |      |      |      |
-| (m)**  |      |      |      |      |      |      |      |      |
-+========+======+======+======+======+======+======+======+======+
-| 0      | *C   | *k,  | *k   | *k,  | *k,  | *k,  | *k,  | *k,  |
-|        | 0,   | v*   | ,v*  | v*   | v*   | v*   | v*   | v*   |
-|        | v*   |      |      |      |      |      |      |      |
-+--------+------+------+------+------+------+------+------+------+
-| 1      | *C   | *k,  | *k   | *k,  | *k,  | *k,  | *k,  | *k,  |
-|        | 0,   | v*   | ,v*  | v*   | v*   | v*   | v*   | v*   |
-|        | v*   |      |      |      |      |      |      |      |
-+--------+------+------+------+------+------+------+------+------+
-| 2      | *C   | *k,  | *k   | *k,  | *k,  | *k,  | *k,  | *k,  |
-|        | 0,   | v*   | ,v*  | v*   | v*   | v*   | v*   | v*   |
-|        | v*   |      |      |      |      |      |      |      |
-+--------+------+------+------+------+------+------+------+------+
-| 3      | *C   | *k,  | *k   | *k,  | *k,  | *k,  | *k,  | *k,  |
-|        | 0,   | v*   | ,v*  | v*   | v*   | v*   | v*   | v*   |
-|        | v*   |      |      |      |      |      |      |      |
-+--------+------+------+------+------+------+------+------+------+
-| 4      | ／   | *k,  | *k   | *k,  | *k,  | *k,  | *k,  | *k,  |
-|        |      | v*   | ,v*  | v*   | v*   | v*   | v*   | v*   |
-+--------+------+------+------+------+------+------+------+------+
-| 6      | ／   | *k,  | *k   | *k,  | *k,  | *k,  | *k,  | *k,  |
-|        |      | v*   | ,v*  | v*   | v*   | v*   | v*   | v*   |
-+--------+------+------+------+------+------+------+------+------+
-| 8      | ／   | *k,  | *k   | *k,  | *k,  | *k,  | *k,  | *k,  |
-|        |      | α*   | ,v*  | v*   | v*   | v*   | v*   | v*   |
-|        |      | *y*  |      |      |      |      |      |      |
-+--------+------+------+------+------+------+------+------+------+
-| 10     | ／   | *α*  | *k,  | *k,  | *k,  | *k,  | *k,  | *k,  |
-|        |      | *y , | α*   | α*   | v*   | v*   | v*   | v*   |
-|        |      | k*   | *y*  | *y*  |      |      |      |      |
-+--------+------+------+------+------+------+------+------+------+
-| 12     | ／   | *α*  | *k,  | *k,  | *k,  | *k,  | *k,  | *k,  |
-|        |      | *y , | α*   | α*   | α*   | v*   | v*   | v*   |
-|        |      | k*   | *y*  | *y*  | *y*  |      |      |      |
-+--------+------+------+------+------+------+------+------+------+
-
 .. raw:: html
 
-   </div> <!-- Close the centering div to reset text alignment -->
+   <div  style="text-align:center;">
+      Table 16-1: The critical parameters at selected locations within the nitrate plume.
+   </div>
+
+.. figure:: ./media/sensitivityandcalibrationMedia/media/image22.png
+   :align: center
+   :alt: A graph of a function Description automatically generated with medium confidence
 
 Phosphorus Sensitivity Analyses
 -------------------------------
