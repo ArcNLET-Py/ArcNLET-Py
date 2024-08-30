@@ -7,9 +7,6 @@ Sensitivity and Calibration
    :local:
    :depth: 2
 
-6.1 Local Sensitivity
-6.2 Model Calibration
-
 As explained in the technical manual (Rios et al., 2011), the nitrate
 concentration is evaluated in ArcNLET using the two-dimensional,
 steady-state version of the solution of Domenico (1987) for the
@@ -124,18 +121,20 @@ decay coefficient decreases the simulated concentration within the
 plume. The decrease is faster at locations closer to the plume center
 line (*y*\ =0m).
 
-.. raw:: html
-
-   <div  style="text-align:center;">
+.. rst-class:: center
 
 |image8|
 
 .. raw:: html
 
-   <div  style="text-align:center;">
+   <div style="text-align:center;">
    Figure 16-2: Relationship between first-order decay and concentration.
    </div>
    <br> <!-- Add a line break here --></br>
+
+.. raw:: html
+
+   </div> <!-- Close the centering div to reset text alignment -->
 
 The plot illustrates the relationship between the first-order decay
 coefficient and simulated nitrate concentration at two locations of y.
@@ -312,7 +311,7 @@ with these ratios. Results are presented in Figure 16-6, showing negative correl
 parameters. Higher precipitation rates and sorption coefficients result in less phosphorus leaching. The parameters can be 
 adjusted based on the ranges shown in Figure 16-6. Site-specific calibration is highly recommended for phosphorus modeling.
 
-.. figure:: ./media/fig9.png
+.. figure:: ./media/sensitivityandcalibrationMedia/media/fig9.png
    :align: center
    :alt: Relationships between C/C0 and parameters for linear sorption isotherm.
 
@@ -329,13 +328,13 @@ The Langmuir sorption isotherm was also analyzed with initial conditions similar
 
 Various precipitation rates, Langmuir coefficients, and maximum sorption capacity were applied to examine their relationship with concentration ratios. Results are shown in Figures 16-7 and 16-8. Site-specific calibration is recommended for phosphorus modeling.
 
-.. figure:: ./media/fig10.png
+.. figure:: ./media/sensitivityandcalibrationMedia/media/fig10.png
    :align: center
    :alt: Relationships between C/C0 and parameters for Langmuir sorption isotherm.
 
    Figure 16-7: Relationships between C/C0 and (a) precipitation rate, (b) Langmuir coefficient, and (c) maximum sorption capacity for the Langmuir sorption isotherm.
 
-.. figure:: ./media/fig11.png
+.. figure:: ./media/sensitivityandcalibrationMedia/media/fig11.png
    :align: center
    :alt: Various sorption isotherms for different soil types.
 
@@ -356,7 +355,7 @@ Nominal parameter values for groundwater include:
 
 The analytical expressions of sensitivity to precipitation rate and linear distribution coefficient are shown in equations (17) and (18). Increasing these parameters leads to a decrease in the simulated concentration within the plume.
 
-.. figure:: ./media/fig12.png
+.. figure:: ./media/sensitivityandcalibrationMedia/media/fig12.png
    :align: center
    :alt: Relationships between C/C0 and parameters in groundwater.
 
@@ -395,9 +394,6 @@ For nitrate, calibration begins with adjusting parameters like hydraulic conduct
 
 .. note::
    Site-specific calibration is recommended to enhance the accuracy of both nitrate and phosphorus modeling due to the varying influence of site conditions on sorption processes.
-
-Model Calibration
------------------
 
 Generally speaking, model calibration matches the simulated nitrate
 concentration to the observed ones by adjusting the model parameters.
