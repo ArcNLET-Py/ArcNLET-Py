@@ -1,4 +1,6 @@
 .. _usingparticletracking:
+.. role:: raw-html(raw)
+   :format: html
 
 Using the Particle Tracking Module
 ==================================
@@ -14,15 +16,13 @@ Data Inputs
 Once you are satisfied with the Groundwater Flow Module's data outputs,
 it is time to move on to the Particle Tracking Module. Access the
 [ArcNLET.pyt] ArcGIS Python Toolbox and the ArcNLET-Py ArcGIS Pro
-toolsets within, as described in Section 5.4.2
+toolsets within.
 
 .. figure:: ./media/usingparticletrackingMedia/media/image1.png
    :align: center
    :alt: A screenshot of a computer program Description automatically generated
-   :width: 4.39753in
-   :height: 3.77323in
 
-   Figure 5‑31: The ArcNLET-Py Python Toolset and Particle Tracking Module in the Catalog Pane.
+   Figure 11-1: The ArcNLET-Py Python Toolset and Particle Tracking Module in the Catalog Pane.
 
 1. Double-click the [2 Particle Tracking] module, and the particle
    tracking Python toolset opens in the [Geoprocessing Pane].
@@ -35,36 +35,31 @@ toolsets within, as described in Section 5.4.2
 
 3. Data inputs:
 
-   a. Input the source locations (point).
+   a. **Input Source Locations (point)**
 
-      i. Lakeshore Example input vector point:
-         [PotentialSepticTankLocations.shp]
+      i. Lakeshore Example input vector point: [PotentialSepticTankLocations.shp]
 
-   b. Input the water bodies (polygon).
+   b. **Input Water Bodies (polygon)**
 
-      i. Lakeshore Example input water body polygons: [water bodies.shp]
+      i. Lakeshore Example input water body polygons: [waterbodies.shp]
 
-   c. Input the velocity magnitude [L/T] (raster), the output from the
-      Groundwater Flow Module.
+   c. **Input Velocity Magnitude [m/d] (raster)**
 
-      i. Groundwater Flow Module output raster: [demo_vel_mag]
+      i. Groundwater Flow Module output raster: [velmag50]
 
-   d. Input the velocity direction [°wrt N] (raster), output from the
-      Groundwater Flow Module.
+   d. **Input Velocity Direction [°wrt N] (raster)**
 
-      i. Groundwater Flow Module output raster: [demo_vel_dir]
+      i. Groundwater Flow Module output raster: [veldir50]
 
-   e. Input the soil porosity (raster).
+   e. **Input Soil Porosity (raster)**
 
-      i. Lakeshore Example input raster: [porosity.img]
+      i. Lakeshore Example input raster: [porosity]
 
 .. figure:: ./media/usingparticletrackingMedia/media/image2.png
    :align: center
    :alt: A screenshot of a computer Description automatically generated
-   :width: 3.79045in
-   :height: 4.12719in
 
-   Figure 5‑32: The Particle Tracking Module in the Geoprocessing Pane.
+   Figure 11-2: The Particle Tracking Module in the Geoprocessing Pane.
 
 4. There are several options for selecting data for a geoprocessing tool
    in ArcGIS Pro. If you are unfamiliar with ArcGIS Pro geoprocessing
@@ -82,11 +77,9 @@ toolsets within, as described in Section 5.4.2
 
 .. figure:: ./media/usingparticletrackingMedia/media/image3.png
    :align: center
-   :alt: A colorful map of a person's face Description automatically generated
-   :width: 6.5in
-   :height: 2.87083in
+   :alt: Description automatically generated
 
-   Figure 5‑33: Selecting Particle Tracking Module Data Inputs in the Map View.
+   Figure 11-3: Selecting Particle Tracking Module Data Inputs in the Map View.
 
 b. If you have the data from the Lakeshore example open in a [Catalog
    Pane] or [Catalog View] and the [Geoprocessing Pane] open, then you
@@ -95,24 +88,16 @@ b. If you have the data from the Lakeshore example open in a [Catalog
 .. figure:: ./media/usingparticletrackingMedia/media/image4.png
    :align: center
    :alt: A screenshot of a computer Description automatically generated
-   :width: 6.5in
-   :height: 3.50694in
 
-   Figure 5‑34: Selecting Particle Tracking Module inputs by dragging and dropping from the Catalog View.
+   Figure 11-4: Selecting Particle Tracking Module inputs by dragging and dropping from the Catalog View.
 
-c. You can also click the [Folder Icon] next to each field to select the
-   data inputs using the Windows File Explorer. To use this method, you
-   must use the Windows File Explorer to navigate to the
-   […\\lakeshore_example\\lakeshore_example] folder to select each data
-   input and click [OK].
+c. You can also click the [Folder Icon] next to each field to select the data inputs using the Windows File Explorer. To use this method, you must use the Windows File Explorer to navigate to the […\\2_lakeshore_example_phosphorus\\2_Particle_tracking_module\\Inputs] folder to select each data input and click [OK].
 
 .. figure:: ./media/usingparticletrackingMedia/media/image5.png
    :align: center
    :alt: A screenshot of a computer Description automatically generated
-   :width: 6.5in
-   :height: 4.33681in
 
-   Figure 5‑35: Selecting Particle Tracking Module inputs from the Windows File Explorer.
+   Figure 11-5: Selecting Particle Tracking Module inputs from the Windows File Explorer.
 
 Data Outputs and Parameters
 ---------------------------
@@ -123,18 +108,13 @@ exercise, we used the Windows File Explorer or ArcGIS Pro [Catalog Pane]
 to create a new folder titled [LakeshoreExampleOutputs_YYYY_MM_DD]. The
 folder stores the output shapefiles.
 
-1. If you need to create a new file folder in ArcGIS Pro, use the
-   [Catalog Pane], right-click on the folder
-   […\\lakeshore_example\\lakeshore_example], hover over the option
-   [New] in the submenu, and click [Folder].
+1. If you need to create a new file folder in ArcGIS Pro, use the [Catalog Pane], right-click on the folder […\\lakeshore_example\\], hover over the option [New] in the submenu, and click [Folder].
 
 .. figure:: ./media/usingparticletrackingMedia/media/image6.png
    :align: center
    :alt: A screenshot of a computer Description automatically generated
-   :width: 6.39222in
-   :height: 4.69207in
 
-   Figure 5‑36: The Lakeshore example output folders in the Windows File Explorer.
+   Figure 11-6: The Lakeshore example output folders in the Windows File Explorer.
 
 2. Select the necessary data output by clicking the [Folder Icon] next
    to the [Output Particle Paths (Polyline)] field in the [Geoprocessing
@@ -149,11 +129,11 @@ folder stores the output shapefiles.
       stored in the folder with the [Input Velocity Magnitude [L/T]
       (raster)].
 
-3. Select the [lakeshore_example\\lakeshore_example] folders.
+3. Select the […\\2_lakeshore_example_phosphorus\\2_Particle_tracking_module\\Outputs] folders.
 
    a. Click the above output folder to store the output vector shapefile from the 
-   Particle Tracking Module. The file path and name for the [Output Particle Paths (Polyline)] 
-   is […\\lakeshore_example_shpOutputs_2023_09_28\\demo_path]
+      Particle Tracking Module. The file path and name for the [Output Particle Paths (Polyline)] 
+      is […\\2_lakeshore_example_phosphorus\\2_Particle_tracking_module\\Outputs\\paths50.shp]
 
 4. Type the name of the shapefile output into the [Name] field with no
    file extension and click [OK].
@@ -166,7 +146,7 @@ folder stores the output shapefiles.
 
    a. The output particle paths (polyline).
 
-      i. Lakeshore Example output shapefile: [demo_path]
+      i. Lakeshore Example output shapefile: [paths50]
 
 6. The Parameters are related to model validation and verification. For
    the Lakeshore Example, the WB Raster Resolution and Step Size
@@ -182,11 +162,11 @@ folder stores the output shapefiles.
             Furthermore, enabling Flow Path Truncation requires more
             processing time.
 
-   b. WB Raster Resolution [L]
+   b. WB Raster Resolution [m]
 
       i. Default value: [5]
 
-   c. Step Size [L]
+   c. Step Size [m]
 
       i. Default value: [10]
 
@@ -197,10 +177,8 @@ folder stores the output shapefiles.
 .. figure:: ./media/usingparticletrackingMedia/media/image7.png
    :align: center
    :alt: A screenshot of a computer Description automatically generated
-   :width: 6.39222in
-   :height: 4.69207in
 
-   Figure 5‑37: Selecting the data output location from the Windows File Explorer for the Particle Tracking Module.
+   Figure 11-7: Selecting the data output location from the Windows File Explorer for the Particle Tracking Module.
 
 7. Double-check to ensure all red astricts [\*] are removed from the
    [Geoprocessing Pane], indicating that all necessary data inputs and
@@ -209,10 +187,10 @@ folder stores the output shapefiles.
 .. figure:: ./media/usingparticletrackingMedia/media/image8.png
    :align: center
    :alt: A screenshot of a computer Description automatically generated
-   :width: 4in
-   :height: 4.34545in
 
-   Figure 5‑38: The Particle Tracking Module data inputs and output in the Geoprocessing Pane.
+   Figure 11-8: The Particle Tracking Module data inputs and output in the Geoprocessing Pane.
+
+The particle paths are shown in red and the OSTDS points are blue. 
 
 Execute the Module
 ------------------
@@ -223,10 +201,8 @@ Execute the Module
 .. figure:: ./media/usingparticletrackingMedia/media/image9.png
    :align: center
    :alt: A screenshot of a computer Description automatically generated
-   :width: 4in
-   :height: 0.88in
 
-   Figure 5‑39: The Run button in the Geoprocessing Pane.
+   Figure 11-9: The Run button in the Geoprocessing Pane.
 
 2. The ArcNLET-Py Particle Tracking Module begins to process data, and
    the progress bar appears. The runtime can vary depending on the data
@@ -235,10 +211,8 @@ Execute the Module
 .. figure:: ./media/usingparticletrackingMedia/media/image10.png
    :align: center
    :alt: A screenshot of a computer Description automatically generated
-   :width: 4in
-   :height: 1.06123in
 
-   Figure 5‑40: The Progress Bar in the ArcGIS Pro Geoprocessing Pane for the Particle Tracking Module.
+   Figure 11-10: The Progress Bar in the ArcGIS Pro Geoprocessing Pane for the Particle Tracking Module.
 
 3. ArcGIS Pro indicates the tool is finished with a green notification
    box at the bottom of the [Geoprocessing Pane]. You may click [View
@@ -249,10 +223,8 @@ Execute the Module
 .. figure:: ./media/usingparticletrackingMedia/media/image11.png
    :align: center
    :alt: A screenshot of a computer Description automatically generated
-   :width: 4in
-   :height: 0.69841in
 
-   Figure 5‑41: The green notification box in the ArcGIS Pro Geoprocessing Pane for the Particle Tracking Module.
+   Figure 11-11: The green notification box in the ArcGIS Pro Geoprocessing Pane for the Particle Tracking Module.
 
 View and Verify Results
 -----------------------
@@ -268,10 +240,8 @@ View] in the output folder [LakeshoreExampleOutputs_YYYY_MM_DD].
 .. figure:: ./media/usingparticletrackingMedia/media/image12.png
    :align: center
    :alt: A screenshot of a computer Description automatically generated
-   :width: 4.05218in
-   :height: 5.4125in
 
-   Figure 5‑42: The ArcNLET-Py Particle Tracking Module output in the Catalog Pane
+   Figure 11-12: The ArcNLET-Py Particle Tracking Module output in the Catalog Pane
 
 1. Take a moment to review the shapefile output to ensure your data has
    been processed correctly. Your data processes must be done correctly
@@ -290,8 +260,8 @@ View] in the output folder [LakeshoreExampleOutputs_YYYY_MM_DD].
          features for the potential septic tank locations.
 
 2. If there seems to be an issue with the output particle paths
-    shapefile, please ensure all your data inputs are correct, in an
-    accessible file folder, and uncorrupted.
+   shapefile, please ensure all your data inputs are correct, in an
+   accessible file folder, and uncorrupted.
 
     a. If you continue having issues processing your data, please [View
        Details] as mentioned in Section 5.7.3 to see if empty datasets
@@ -299,16 +269,14 @@ View] in the output folder [LakeshoreExampleOutputs_YYYY_MM_DD].
        the input data, or ArcGIS Pro does not have read/write access
        to input or output file locations. 
 
-       i. If you cannot find a solution to the issue, then please
-       submit a [New issue] in the ArcNLET-Py GitHub repository
-       (`Issues · ArcNLET-Py/ArcNLET-Py · GitHub <https://github.com/ArcNLET-Py/ArcNLET-Py/issues>`__) 
-       as described in the GitHub instructions at
-       `Creating an issue - GitHub Docs <https://docs.github.com/en/issues/tracking-your-work-with-issues/creating-an-issue>`__.
+      i. If you cannot find a solution to the issue, then please
+         submit a [New issue] in the ArcNLET-Py GitHub repository
+         (`Issues · ArcNLET-Py/ArcNLET-Py · GitHub <https://github.com/ArcNLET-Py/ArcNLET-Py/issues>`__) 
+         as described in the GitHub instructions at
+         `Creating an issue - GitHub Docs <https://docs.github.com/en/issues/tracking-your-work-with-issues/creating-an-issue>`__.
 
 .. figure:: ./media/usingparticletrackingMedia/media/image13.png
    :align: center
    :alt: A screenshot of a computer Description automatically generated
-   :width: 6.5in
-   :height: 3.73403in
 
-   Figure 5‑43: The ArcNLET-Py Particle Tracking Module outputs in the Contents Pane and Map
+   Figure 11-13: The ArcNLET-Py Particle Tracking Module outputs in the Contents Pane and Map
