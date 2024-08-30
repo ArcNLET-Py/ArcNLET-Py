@@ -91,16 +91,11 @@ increase in source plane nitrate concentration increases the simulated
 concentration within the plume. The increase is prominent at locations
 closer to the plume center line (y=0m).
 
-.. rst-class:: center 
+.. figure:: ./media/sensitivityandcalibrationMedia/media/image6.png
+   :align: center
+   :alt: Description automatically generated with medium confidence
 
-|image6|
-
-.. raw:: html
-
-   <div  style="text-align:center;">
    Figure 16-1: Relationship between the source plane and simulated concentrations.
-   </div>
-   <br> <!-- Add a line break here --></br>
 
 For illustration, the plot shows the measured and simulated nitrate
 concentrations at two locations of y.
@@ -118,20 +113,11 @@ decay coefficient decreases the simulated concentration within the
 plume. The decrease is faster at locations closer to the plume center
 line (*y*\ =0m).
 
-.. rst-class:: center
+.. figure:: ./media/sensitivityandcalibrationMedia/media/image8.png
+   :align: center
+   :alt: Description automatically generated with medium confidence
 
-|image8|
-
-.. raw:: html
-
-   <div style="text-align:center;">
    Figure 16-2: Relationship between first-order decay and concentration.
-   </div>
-   <br> <!-- Add a line break here --></br>
-
-.. raw:: html
-
-   </div> <!-- Close the centering div to reset text alignment -->
 
 The plot illustrates the relationship between the first-order decay
 coefficient and simulated nitrate concentration at two locations of y.
@@ -148,17 +134,12 @@ concentration. Figure 16-3 shows that the velocity increase is associated
 with an increased simulated concentration within the plume. The increase
 is greater at locations closer to the plume center line (*y*\ =0m).
 
-.. rst-class:: center 
+.. figure:: ./media/sensitivityandcalibrationMedia/media/image10.png
+   :align: center
+   :alt: Description automatically generated with medium confidence
 
-|image10|
-
-.. raw:: html
-
-   <div  style="text-align:center;">
    Figure 16-3: The relationship between velocity and concentration.
-   </div>
-   <br> <!-- Add a line break here --></br>
-
+   
 For illustration, the plot shows the average flow velocity and simulated
 nitrate concentration at two locations of y.
 
@@ -174,16 +155,11 @@ increase in the simulated concentration within the plume. Figure 6‑4
 shows that the increase is more rapid at locations closer to the plume
 center line (y=0m).
 
-.. rst-class:: center 
+.. figure:: ./media/sensitivityandcalibrationMedia/media/image12.png
+   :align: center
+   :alt: Description automatically generated with medium confidence
 
-|image12|
-
-.. raw:: html
-
-   <div  style="text-align:center;">
    Figure 6‑4: Relationship between dispersivity and concentration.
-   </div>
-   <br> <!-- Add a line break here --></br>
 
 For illustration, the plot shows the relationship between longitudinal
 dispersivity and simulated nitrate concentration at two locations of y.
@@ -247,24 +223,35 @@ observations of nitrate concentration during the model calibration.
 Phosphorus Sensitivity Analyses
 -------------------------------
 
-The main objective of this section is to analyze the effect of the phosphorus module parameters on the sensitivity of the results.
+The main objective of this section is to analyze the effect of the phosphorus module parameters 
+on the sensitivity of the results.
 
 **Linear Sorption Isotherm Analysis**
 
-The initial concentration: C₀ = 10 mg P/L, is used as the default value in VZMOD. Results are presented as ratios of concentration at specific depths to the initial concentration, making the specific value of the initial concentration irrelevant.
+The initial concentration: C₀ = 10 mg P/L, is used as the default value in VZMOD. Results are 
+presented as ratios of concentration at specific depths to the initial concentration, making the 
+specific value of the initial concentration irrelevant.
 
 1. **Soil type:** Sand, chosen based on Florida's conditions.
 2. **Depth to water table:** Depth = 150 cm, which is the default value.
 3. **Linear distribution coefficient:** k = 15.1 L/kg, based on McCray et al. (2005).
-4. **Precipitation rate:** Rprecip = 0.002 1/day, referenced from Zhou et al. (2023) and Müller and Bünemann (2014).
+4. **Precipitation rate:** Rprecip = 0.002 1/day, referenced from Zhou et al. (2023) and Müller and 
+Bünemann (2014).
 
-In this study, the ratios of concentrations at the full depth and half-depth to the initial concentration were used as the y-values. Various precipitation rates and linear distribution coefficients were applied to examine their relationship with these ratios. Results are presented in Figure 16-6, showing negative correlations between the concentration ratios and parameters. Higher precipitation rates and sorption coefficients result in less phosphorus leaching. The parameters can be adjusted based on the ranges shown in Figure 16-6. Site-specific calibration is highly recommended for phosphorus modeling.
+In this study, the ratios of concentrations at the full depth and half-depth to the initial 
+concentration were used as the y-values. Various precipitation rates and linear distribution 
+coefficients were applied to examine their relationship with these ratios. Results are presented 
+in Figure 16-6, showing negative correlations between the concentration ratios and parameters. 
+Higher precipitation rates and sorption coefficients result in less phosphorus leaching. The 
+parameters can be adjusted based on the ranges shown in Figure 16-6. Site-specific calibration 
+is highly recommended for phosphorus modeling.
 
 .. figure:: ./media/sensitivityandcalibrationMedia/media/fig9.png
    :align: center
    :alt: Relationships between C/C0 and parameters for linear sorption isotherm.
 
-   Figure 16-6: Relationships between C/C0 and (a) precipitation rate, and (b) linear distribution coefficient for the linear sorption isotherm.
+   Figure 16-6: Relationships between C/C0 and (a) precipitation rate, and (b) linear distribution 
+   coefficient for the linear sorption isotherm.
 
 **Langmuir Sorption Isotherm Analysis**
 
@@ -274,13 +261,16 @@ The Langmuir sorption isotherm was also analyzed with initial conditions similar
 2. **Langmuir coefficient:** K = 0.2 L/mg, values from Zhou et al. (2023) and McGechan and Lewis (2002).
 3. **Maximum sorption capacity:** Qmax = 237 mg P/kg, referenced from McCray et al. (2005).
 
-Various precipitation rates, Langmuir coefficients, and maximum sorption capacity were applied to examine their relationship with concentration ratios. Results are shown in Figures 16-7 and 16-8. Site-specific calibration is recommended for phosphorus modeling.
+Various precipitation rates, Langmuir coefficients, and maximum sorption capacity were applied to examine their 
+relationship with concentration ratios. Results are shown in Figures 16-7 and 16-8. Site-specific calibration is 
+recommended for phosphorus modeling.
 
 .. figure:: ./media/sensitivityandcalibrationMedia/media/fig10.png
    :align: center
    :alt: Relationships between C/C0 and parameters for Langmuir sorption isotherm.
 
-   Figure 16-7: Relationships between C/C0 and (a) precipitation rate, (b) Langmuir coefficient, and (c) maximum sorption capacity for the Langmuir sorption isotherm.
+   Figure 16-7: Relationships between C/C0 and (a) precipitation rate, (b) Langmuir coefficient, and (c) maximum 
+   sorption capacity for the Langmuir sorption isotherm.
 
 .. figure:: ./media/sensitivityandcalibrationMedia/media/fig11.png
    :align: center
@@ -301,17 +291,22 @@ Nominal parameter values for groundwater include:
 7. **Linear distribution coefficient:** k = 15.1 L/kg (McCray et al., 2005).
 8. **Precipitation rate:** Rprecip = 0.002 1/day.
 
-The analytical expressions of sensitivity to precipitation rate and linear distribution coefficient are shown in equations (17) and (18). Increasing these parameters leads to a decrease in the simulated concentration within the plume.
+The analytical expressions of sensitivity to precipitation rate and linear distribution coefficient are shown 
+in equations (17) and (18). Increasing these parameters leads to a decrease in the simulated concentration 
+within the plume.
 
 .. figure:: ./media/sensitivityandcalibrationMedia/media/fig12.png
    :align: center
    :alt: Relationships between C/C0 and parameters in groundwater.
 
-   Figure 16-9: Relationships between C/C0 and (a) precipitation rate, and (b) linear distribution coefficient for linear sorption in groundwater.
+   Figure 16-9: Relationships between C/C0 and (a) precipitation rate, and (b) linear distribution coefficient 
+   for linear sorption in groundwater.
 
 **Sensitivity in VZMOD**
 
-VZMOD, being a steady-state model, adopts smaller values than those used in Zhou et al. (2023). The analytical expressions of sensitivity to the precipitation rate and linear distribution coefficient are represented by Equations (16-8) and (16-9):
+VZMOD, being a steady-state model, adopts smaller values than those used in Zhou et al. (2023). The analytical 
+expressions of sensitivity to the precipitation rate and linear distribution coefficient are represented by 
+Equations (16-8) and (16-9):
 
 +-------------------------------------------------------+------------+
 | |image18|                                             |   (16-8)   |
@@ -327,21 +322,30 @@ Where F1 and F2 are calculated as follows:
 | |image21|                                             |   (16-11)  |
 +-------------------------------------------------------+------------+
 
-These expressions suggest negative relationships with the simulated concentration. Specifically, increasing the precipitation rate and linear distribution coefficient results in a decrease in the simulated concentration within the plume, with a more rapid decline observed at locations closer to the plume centerline (*y* = 0 m).
+These expressions suggest negative relationships with the simulated concentration. Specifically, increasing the 
+precipitation rate and linear distribution coefficient results in a decrease in the simulated concentration 
+within the plume, with a more rapid decline observed at locations closer to the plume centerline (*y* = 0 m).
 
 **Summary**
 
-The sensitivity analyses indicate that phosphorus sorption is significantly influenced by factors such as Fe concentration, total organic carbon concentration, pH, and others. These findings suggest that site-specific calibration is essential for accurate phosphorus modeling.
+The sensitivity analyses indicate that phosphorus sorption is significantly influenced by factors such as Fe 
+concentration, total organic carbon concentration, pH, and others. These findings suggest that site-specific 
+calibration is essential for accurate phosphorus modeling.
 
 Model Calibration
 -----------------
 
-Generally speaking, model calibration matches the simulated nitrate and phosphorus concentrations to observed values by adjusting model parameters. Due to the lack of comprehensive characterization data, model calibration in this study is necessary.
+Generally speaking, model calibration matches the simulated nitrate and phosphorus concentrations to 
+observed values by adjusting model parameters. Due to the lack of comprehensive characterization data, 
+model calibration in this study is necessary.
 
-For nitrate, calibration begins with adjusting parameters like hydraulic conductivity, porosity, dispersivities, and decay coefficients to match observed concentrations. Phosphorus modeling also involves fine-tuning precipitation rates, sorption coefficients, and other related parameters.
+For nitrate, calibration begins with adjusting parameters like hydraulic conductivity, porosity, 
+dispersivities, and decay coefficients to match observed concentrations. Phosphorus modeling also 
+involves fine-tuning precipitation rates, sorption coefficients, and other related parameters.
 
 .. note::
-   Site-specific calibration is recommended to enhance the accuracy of both nitrate and phosphorus modeling due to the varying influence of site conditions on sorption processes.
+   Site-specific calibration is recommended to enhance the accuracy of both nitrate and phosphorus 
+   modeling due to the varying influence of site conditions on sorption processes.
 
 Generally speaking, model calibration matches the simulated nitrate
 concentration to the observed ones by adjusting the model parameters.
@@ -415,13 +419,9 @@ transport from the hydrogeologic point of view.
 .. |image3| image:: ./media/sensitivityandcalibrationMedia/media/image3.png
 .. |image4| image:: ./media/sensitivityandcalibrationMedia/media/image4.png
 .. |image5| image:: ./media/sensitivityandcalibrationMedia/media/image5.png
-.. |image6| image:: ./media/sensitivityandcalibrationMedia/media/image6.png
 .. |image7| image:: ./media/sensitivityandcalibrationMedia/media/image7.png
-.. |image8| image:: ./media/sensitivityandcalibrationMedia/media/image8.png
 .. |image9| image:: ./media/sensitivityandcalibrationMedia/media/image9.png
-.. |image10| image:: ./media/sensitivityandcalibrationMedia/media/image10.png
 .. |image11| image:: ./media/sensitivityandcalibrationMedia/media/image11.png
-.. |image12| image:: ./media/sensitivityandcalibrationMedia/media/image12.png
 .. |image13| image:: ./media/sensitivityandcalibrationMedia/media/image13.png
 .. |image14| image:: ./media/sensitivityandcalibrationMedia/media/image14.png
 .. |image15| image:: ./media/sensitivityandcalibrationMedia/media/image15.png
