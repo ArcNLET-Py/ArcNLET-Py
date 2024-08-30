@@ -165,9 +165,9 @@ nitrate concentration at two locations of y.
 The analytical expression of sensitivity to the longitudinal
 dispersivity is shown in (16-5).
 
-+-----------------+
++------------------+
 | |image11| (16-5) |
-+-----------------+
++------------------+
 
 Indicates that increasing the longitudinal dispersivity causes an
 increase in the simulated concentration within the plume. Figure 6‑4
@@ -191,22 +191,22 @@ dispersivity and simulated nitrate concentration at two locations of y.
 The sensitivity to the horizontal transverse dispersivity is more
 complicated than longitudinal. The analytical expression is shown in equation (16-6).
 
-+-------------------------------------------------------+------------+
-| |image13|                                             |            |
-+=======================================================+============+
++-------------------------------------------------------+-------------+
+| |image13|                                             |             |
++=======================================================+=============+
 | |image14|                                             | (16-6)      |
-+-------------------------------------------------------+------------+
-| |image15|                                             |            |
-+-------------------------------------------------------+------------+
++-------------------------------------------------------+-------------+
+| |image15|                                             |             |
++-------------------------------------------------------+-------------+
 
 The equation above shows that the relationship between the simulated
 nitrate concentration and the parameter depends on the length of the
 source plane (*Y*) and the location (*x* and *y*) in the plume. In
 addition, there is a threshold value shown in equation (16-7).
 
-+-----------------+
++------------------+
 | |image16| (16-7) |
-+-----------------+
++------------------+
 
 When the horizontal transverse dispersivity is smaller than the
 threshold value, the relationship is positive but becomes negative when
