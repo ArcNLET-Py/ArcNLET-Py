@@ -19,6 +19,7 @@ extensions = [
     'sphinx.ext.intersphinx',
     'sphinx.ext.todo',
     'sphinx.ext.viewcode',
+    'sphinx.ext.mathjax',
     # Additional extensions you might need
 ]
 

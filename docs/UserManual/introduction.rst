@@ -22,6 +22,12 @@ ArcNLET-Py: A Python Version of ArcGIS-Based Nitrogen Load Estimation Toolbox De
 **Prepared for Florida Department of Environmental Protection
 Tallahassee, FL**
 
+The ArcNLET Assistant is currently in preliminary development and is designed 
+to assist users by answering questions and providing guidance on using ArcNLET. 
+You can access this GPT-powered assistant through the URL provided below.
+https://chatgpt.com/g/g-K7j2iDlDK-arcnlet-assistant
+
+
 Introduction
 ============
 

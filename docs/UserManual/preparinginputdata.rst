@@ -360,13 +360,9 @@ burning can be accomplished with the ArcGIS Raster Calculator tool. For
 example, the following command can be used to create a valley that is 30
 units deep in the location of all the water bodies on the map.
 
-.. raw:: html
+.. math::
 
-   <div  style="text-align:center;">
-   con(isnull([water bodies]) = = 0,[DEM] - 30,[DEM])
-   </div>
-   <br> <!-- Add a line break here --></br>
-   
+   \text{con(isnull([water\ bodies])} = 0, \text{[DEM]} - 30, \text{[DEM]})
 
 Where [water bodies] is the raster representation of the water bodies
 layer, and [DEM] is the DEM to burn. Note that DEM burning does not
@@ -743,7 +739,7 @@ path calculated by the Particle Tracking Module, and the LiDAR DEM is 1
 The changes to the water body, shown in blue, can be seen via the before
 aerial (left) and after aerial (right) updating.
 
-.. figure:: ./media/preparinginputdataMedia/media/image26.png
+.. figure:: ./media/preparinginputdataMedia/media/image26.jpeg
    :align: center
    :alt: A screenshot of a computer Description automatically generated
  

@@ -2,6 +2,10 @@
 
 ArcNLET-Py, the Python version of the ArcGIS-Based Nitrogen Load Estimation Toolbox, is developed for ArcGIS Pro. It facilitates the study of nitrogen fate and transport in surficial groundwater aquifers. ArcNLET now includes advanced functionalities for modeling phosphorus transport and estimating phosphorus loads.
 
+The ArcNLET Assistant is currently in preliminary development and is designed to assist users by answering questions and providing guidance on using ArcNLET. 
+You can access this GPT-powered assistant through the URL provided below.
+https://chatgpt.com/g/g-K7j2iDlDK-arcnlet-assistant
+
 ## Introduction
 
 Developed at the Department of Earth, Ocean, and Atmospheric Science at Florida State University, ArcNLET-Py builds upon its predecessor, ArcNLET, which was created using Visual Basic for ArcMap. With the shift to ArcGIS Pro, the toolbox is now written in Python, offering several new features and an intuitive user interface.
