@@ -251,7 +251,7 @@ is highly recommended for phosphorus modeling.
 
 .. figure:: ./media/sensitivityandcalibrationMedia/media/fig9.png
    :align: center
-   :alt: Relationships between C/C0 and parameters for linear sorption isotherm.
+   :alt: Description automatically generated with medium confidence
 
    Figure 16-6: Relationships between C/C0 and (a) precipitation rate, and (b) linear distribution 
    coefficient for the linear sorption isotherm.
