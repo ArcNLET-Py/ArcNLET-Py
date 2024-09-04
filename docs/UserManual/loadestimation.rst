@@ -80,7 +80,7 @@ Input
    modified. Only point feature layers whose names have the “\_info” suffix
    are shown in the dropdown menu.
 
--  **Input Plimes P info (Point):** The auxiliary info file for phosphorus associated 
+-  **Input Plumes P info (Point):** The auxiliary info file for phosphorus associated 
    with the plumes raster calculated by the transport module. The information 
    contained in the attribute table of this file should not be manually modified.
 
