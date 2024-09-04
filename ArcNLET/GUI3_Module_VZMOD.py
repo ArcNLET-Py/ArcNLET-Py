@@ -111,7 +111,7 @@ class InterfaceVZMOD(object):
                                       datatype="GPDouble",
                                       parameterType="Required",  # Required|Optional|Derived
                                       direction="Input",  # Input|Output
-                                      category="Hydraulic Params"
+                                      category="Hydraulic Parameters"
                                       )
         hydroparam0.parameterDependencies = [Option.value]
         hydroparam0.value = hydraulic_default[Option.value][0]
@@ -121,7 +121,7 @@ class InterfaceVZMOD(object):
                                       datatype="GPDouble",
                                       parameterType="Required",  # Required|Optional|Derived
                                       direction="Input",  # Input|Output
-                                      category="Hydraulic Params"
+                                      category="Hydraulic Parameters"
                                       )
         hydroparam1.parameterDependencies = [Option.value]
         hydroparam1.value = hydraulic_default[Option.value][1]
@@ -131,7 +131,7 @@ class InterfaceVZMOD(object):
                                       datatype="GPDouble",
                                       parameterType="Required",  # Required|Optional|Derived
                                       direction="Input",  # Input|Output
-                                      category="Hydraulic Params"
+                                      category="Hydraulic Parameters"
                                       )
         hydroparam2.parameterDependencies = [Option.value]
         hydroparam2.value = hydraulic_default[Option.value][2]
@@ -141,7 +141,7 @@ class InterfaceVZMOD(object):
                                       datatype="GPDouble",
                                       parameterType="Required",  # Required|Optional|Derived
                                       direction="Input",  # Input|Output
-                                      category="Hydraulic Params"
+                                      category="Hydraulic Parameters"
                                       )
         hydroparam3.value = 0.098
 
@@ -150,7 +150,7 @@ class InterfaceVZMOD(object):
                                       datatype="GPDouble",
                                       parameterType="Required",  # Required|Optional|Derived
                                       direction="Input",  # Input|Output
-                                      category="Hydraulic Params"
+                                      category="Hydraulic Parameters"
                                       )
         hydroparam4.value = 0.459
 
@@ -159,7 +159,7 @@ class InterfaceVZMOD(object):
                                       datatype="GPDouble",
                                       parameterType="Required",  # Required|Optional|Derived
                                       direction="Input",  # Input|Output
-                                      category="Hydraulic Params"
+                                      category="Hydraulic Parameters"
                                       )
         hydroparam5.value = 1.26
 
@@ -168,7 +168,7 @@ class InterfaceVZMOD(object):
                                       datatype="GPDouble",
                                       parameterType="Required",  # Required|Optional|Derived
                                       direction="Input",  # Input|Output
-                                      category="Nitrification Params"
+                                      category="Nitrification Parameters"
                                       )
         nitriparam0.value = 2.9
 
@@ -177,7 +177,7 @@ class InterfaceVZMOD(object):
                                       datatype="GPDouble",
                                       parameterType="Required",  # Required|Optional|Derived
                                       direction="Input",  # Input|Output
-                                      category="Nitrification Params"
+                                      category="Nitrification Parameters"
                                       )
         nitriparam1.value = 25.0
 
@@ -186,7 +186,7 @@ class InterfaceVZMOD(object):
                                       datatype="GPDouble",
                                       parameterType="Required",  # Required|Optional|Derived
                                       direction="Input",  # Input|Output
-                                      category="Nitrification Params"
+                                      category="Nitrification Parameters"
                                       )
         nitriparam2.value = 0.347
 
@@ -195,7 +195,7 @@ class InterfaceVZMOD(object):
                                       datatype="GPDouble",
                                       parameterType="Required",  # Required|Optional|Derived
                                       direction="Input",  # Input|Output
-                                      category="Nitrification Params"
+                                      category="Nitrification Parameters"
                                       )
         nitriparam3.value = 2.267
 
@@ -204,7 +204,7 @@ class InterfaceVZMOD(object):
                                       datatype="GPDouble",
                                       parameterType="Required",  # Required|Optional|Derived
                                       direction="Input",  # Input|Output
-                                      category="Nitrification Params"
+                                      category="Nitrification Parameters"
                                       )
         nitriparam4.value = 1.104
 
@@ -213,7 +213,7 @@ class InterfaceVZMOD(object):
                                       datatype="GPDouble",
                                       parameterType="Required",  # Required|Optional|Derived
                                       direction="Input",  # Input|Output
-                                      category="Nitrification Params"
+                                      category="Nitrification Parameters"
                                       )
         nitriparam5.value = 0.0
 
@@ -222,7 +222,7 @@ class InterfaceVZMOD(object):
                                       datatype="GPDouble",
                                       parameterType="Required",  # Required|Optional|Derived
                                       direction="Input",  # Input|Output
-                                      category="Nitrification Params"
+                                      category="Nitrification Parameters"
                                       )
         nitriparam6.value = 0.0
 
@@ -231,7 +231,7 @@ class InterfaceVZMOD(object):
                                       datatype="GPDouble",
                                       parameterType="Required",  # Required|Optional|Derived
                                       direction="Input",  # Input|Output
-                                      category="Nitrification Params"
+                                      category="Nitrification Parameters"
                                       )
         nitriparam7.value = 0.154
 
@@ -240,7 +240,7 @@ class InterfaceVZMOD(object):
                                       datatype="GPDouble",
                                       parameterType="Required",  # Required|Optional|Derived
                                       direction="Input",  # Input|Output
-                                      category="Nitrification Params"
+                                      category="Nitrification Parameters"
                                       )
         nitriparam8.value = 0.665
 
@@ -249,7 +249,7 @@ class InterfaceVZMOD(object):
                                       datatype="GPDouble",
                                       parameterType="Required",  # Required|Optional|Derived
                                       direction="Input",  # Input|Output
-                                      category="Nitrification Params"
+                                      category="Nitrification Parameters"
                                       )
         nitriparam9.value = 0.809
 
@@ -258,7 +258,7 @@ class InterfaceVZMOD(object):
                                       datatype="GPDouble",
                                       parameterType="Required",  # Required|Optional|Derived
                                       direction="Input",  # Input|Output
-                                      category="Denitrification Params"
+                                      category="Denitrification Parameters"
                                       )
         denitparam0.value = 0.025
 
@@ -267,7 +267,7 @@ class InterfaceVZMOD(object):
                                       datatype="GPDouble",
                                       parameterType="Required",  # Required|Optional|Derived
                                       direction="Input",  # Input|Output
-                                      category="Denitrification Params"
+                                      category="Denitrification Parameters"
                                       )
         denitparam1.value = 26.0
 
@@ -276,7 +276,7 @@ class InterfaceVZMOD(object):
                                       datatype="GPDouble",
                                       parameterType="Required",  # Required|Optional|Derived
                                       direction="Input",  # Input|Output
-                                      category="Denitrification Params"
+                                      category="Denitrification Parameters"
                                       )
         denitparam2.value = 0.347
 
@@ -285,7 +285,7 @@ class InterfaceVZMOD(object):
                                       datatype="GPDouble",
                                       parameterType="Required",  # Required|Optional|Derived
                                       direction="Input",  # Input|Output
-                                      category="Denitrification Params"
+                                      category="Denitrification Parameters"
                                       )
         denitparam3.value = 3.774
 
@@ -294,7 +294,7 @@ class InterfaceVZMOD(object):
                                       datatype="GPDouble",
                                       parameterType="Required",  # Required|Optional|Derived
                                       direction="Input",  # Input|Output
-                                      category="Denitrification Params"
+                                      category="Denitrification Parameters"
                                       )
         denitparam4.value = 0.0
 
@@ -303,7 +303,7 @@ class InterfaceVZMOD(object):
                                       datatype="GPDouble",
                                       parameterType="Required",  # Required|Optional|Derived
                                       direction="Input",  # Input|Output
-                                      category="NH\u2084-N Adsorption Params"
+                                      category="NH\u2084-N Adsorption Parameters"
                                       )
         nadsorparam.value = 1.46
 
@@ -317,7 +317,7 @@ class InterfaceVZMOD(object):
         nDispparam.value = 4.32
 
         bulkdensity = arcpy.Parameter(name="\u03C1",
-                                      displayName="\u03C1 [g/cm\u00B3]",
+                                      displayName="Bulk Density \u03C1 [g/cm\u00B3]",
                                       datatype="GPDouble",
                                       parameterType="Required",  # Required|Optional|Derived
                                       direction="Input",  # Input|Output
@@ -339,7 +339,7 @@ class InterfaceVZMOD(object):
                                      datatype="GPDouble",
                                      parameterType="Required",  # Required|Optional|Derived
                                      direction="Input",
-                                     category="Phosphorus Params")
+                                     category="Phosphorus Parameters")
         phosparam0.value = 0.002
 
         phosparam1 = arcpy.Parameter(name="Sorption isotherm",
@@ -347,7 +347,7 @@ class InterfaceVZMOD(object):
                                      datatype="String",
                                      parameterType="Required",  # Required|Optional|Derived
                                      direction="Input",
-                                     category="Phosphorus Params")
+                                     category="Phosphorus Parameters")
         phoschoices = ["Linear", "Langmuir"]
         phosparam1.filter.list = phoschoices
         phosparam1.value = "Linear"
@@ -357,7 +357,7 @@ class InterfaceVZMOD(object):
                                      datatype="GPDouble",
                                      parameterType="Required",  # Required|Optional|Derived
                                      direction="Input",
-                                     category="Phosphorus Params")
+                                     category="Phosphorus Parameters")
         phosparam2.value = 0.2
 
         phosparam3 = arcpy.Parameter(name="Maximum sorption capacity [mg P / kg]",
@@ -365,7 +365,7 @@ class InterfaceVZMOD(object):
                                      datatype="GPDouble",
                                      parameterType="Required",  # Required|Optional|Derived
                                      direction="Input",
-                                     category="Phosphorus Params")
+                                     category="Phosphorus Parameters")
         phosparam3.value = 237
 
         phosparam4 = arcpy.Parameter(name="Linear distribution coefficient [L/kg]",
@@ -373,7 +373,7 @@ class InterfaceVZMOD(object):
                                      datatype="GPDouble",
                                      parameterType="Required",  # Required|Optional|Derived
                                      direction="Input",
-                                     category="Phosphorus Params")
+                                     category="Phosphorus Parameters")
         phosparam4.value = 15.1
 
         Initparam0 = arcpy.Parameter(name="Concentration of NH\u2084-N",

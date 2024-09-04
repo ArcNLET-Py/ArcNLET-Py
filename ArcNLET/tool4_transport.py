@@ -526,7 +526,7 @@ class Transport:
                                                      "avgVel", "avgPrsity", "DispL", "DispTH", "DispTV",
                                                      "SourceY", "SourceZ", "MeshDX", "MeshDY", "MeshDZ",
                                                      "plumeTime", "pathTime", "plumeLen", "pathLen", "plumeArea",
-                                                     "mslnRtNmr", "massInRate", "massDNRate", "avgAngle", "warp",
+                                                     "mslnRtNmr", "massInRate", "massRMRate", "avgAngle", "warp",
                                                      "PostP", "Init_conc", "VolFac", "nextConc", "threshConc",
                                                      "WBId_plume", "WBId_path", "load", "wb_conc"]) as cursor:
                     for row in plume_info:
@@ -1719,7 +1719,7 @@ def create_shapefile(save_path, name, crs):
     arcpy.management.AddField(name, "plumeArea", "DOUBLE")
     arcpy.management.AddField(name, "mslnRtNmr", "DOUBLE")
     arcpy.management.AddField(name, "massInRate", "DOUBLE")
-    arcpy.management.AddField(name, "massDNRate", "DOUBLE")
+    arcpy.management.AddField(name, "massRMRate", "DOUBLE")
     arcpy.management.AddField(name, "avgAngle", "DOUBLE")
     arcpy.management.AddField(name, "warp", "LONG")
     arcpy.management.AddField(name, "PostP", "LONG")

@@ -58,21 +58,21 @@ class LoadEstimation:
 
         if "NH4-N" in self.contaminant_list:
             data = []
-            with arcpy.da.SearchCursor(self.plumesnh4, ["massInRate", "massDNRate", "load", "WBId_plume"]) as cursor:
+            with arcpy.da.SearchCursor(self.plumesnh4, ["massInRate", "massRMRate", "load", "WBId_plume"]) as cursor:
                 for row in cursor:
                     data.append(row)
-            segments = pd.DataFrame(data, columns=["massInRate", "massDNRate", "load", "WBId_plume"])
+            segments = pd.DataFrame(data, columns=["massInRate", "massRMRate", "load", "WBId_plume"])
             nh4segments = segments.copy()
             nh4_load = segments.groupby("WBId_plume").sum()
             nh4_load = nh4_load.reset_index()
-            nh4_load.loc[nh4_load['WBId_plume'] == -1, 'massDNRate'] = nh4_load.loc[nh4_load['WBId_plume'] == -1,
+            nh4_load.loc[nh4_load['WBId_plume'] == -1, 'massRMRate'] = nh4_load.loc[nh4_load['WBId_plume'] == -1,
                                                                                     'massInRate']
-            nh4_load = nh4_load.assign(Massoutput=nh4_load["massInRate"] - nh4_load["massDNRate"])
+            nh4_load = nh4_load.assign(Massoutput=nh4_load["massInRate"] - nh4_load["massRMRate"])
             nh4_load = nh4_load.assign(Massoutputrisk=nh4_load["Massoutput"] * self.risk_factor)
             nh4_load = nh4_load.rename(columns={"WBId_plume": "Waterbody FID", "Massoutput": "Mass Output Load [mg/d]",
                                                 "Massoutputrisk": "Mass Output Load * Risk Factor [mg/d]",
                                                 "massInRate": "Mass Input Load [mg/d]",
-                                                "massDNRate": "Mass Removal Rate [mg/d]"})
+                                                "massRMRate": "Mass Removal Rate [mg/d]"})
             nh4_load = nh4_load[["Waterbody FID", "Mass Output Load [mg/d]", "Mass Output Load * Risk Factor [mg/d]",
                                  "Mass Input Load [mg/d]", "Mass Removal Rate [mg/d]"]]
             nh4_load = nh4_load[nh4_load["Waterbody FID"] != -1]
@@ -87,22 +87,22 @@ class LoadEstimation:
 
         if "NO3-N" in self.contaminant_list:
             data = []
-            with arcpy.da.SearchCursor(self.plumesno3, ["massInRate", "massDNRate", "load", "WBId_plume"]) as cursor:
+            with arcpy.da.SearchCursor(self.plumesno3, ["massInRate", "massRMRate", "load", "WBId_plume"]) as cursor:
                 for row in cursor:
                     data.append(row)
-            segments = pd.DataFrame(data, columns=["massInRate", "massDNRate", "load", "WBId_plume"])
+            segments = pd.DataFrame(data, columns=["massInRate", "massRMRate", "load", "WBId_plume"])
             if "NH4-N" in self.contaminant_list:
-                segments["massInRate"] = segments["massInRate"] + nh4segments["massDNRate"]
+                segments["massInRate"] = segments["massInRate"] + nh4segments["massRMRate"]
             no3_load = segments.groupby("WBId_plume").sum()
             no3_load = no3_load.reset_index()
-            no3_load.loc[no3_load['WBId_plume'] == -1, 'massDNRate'] = no3_load.loc[no3_load['WBId_plume'] == -1,
+            no3_load.loc[no3_load['WBId_plume'] == -1, 'massRMRate'] = no3_load.loc[no3_load['WBId_plume'] == -1,
                                                                                     'massInRate']
-            no3_load = no3_load.assign(Massoutput=no3_load["massInRate"] - no3_load["massDNRate"])
+            no3_load = no3_load.assign(Massoutput=no3_load["massInRate"] - no3_load["massRMRate"])
             no3_load = no3_load.assign(Massoutputrisk=no3_load["Massoutput"] * self.risk_factor)
             no3_load = no3_load.rename(columns={"WBId_plume": "Waterbody FID", "Massoutput": "Mass Output Load [mg/d]",
                                                 "Massoutputrisk": "Mass Output Load * Risk Factor [mg/d]",
                                                 "massInRate": "Mass Input Load [mg/d]",
-                                                "massDNRate": "Mass Removal Rate [mg/d]"})
+                                                "massRMRate": "Mass Removal Rate [mg/d]"})
             no3_load = no3_load[["Waterbody FID", "Mass Output Load [mg/d]", "Mass Output Load * Risk Factor [mg/d]",
                                  "Mass Input Load [mg/d]", "Mass Removal Rate [mg/d]"]]
             no3_load = no3_load[no3_load["Waterbody FID"] != -1]
@@ -117,20 +117,20 @@ class LoadEstimation:
 
         if "PO4-P" in self.contaminant_list:
             data = []
-            with arcpy.da.SearchCursor(self.plumesp, ["massInRate", "massDNRate", "load", "WBId_plume"]) as cursor:
+            with arcpy.da.SearchCursor(self.plumesp, ["massInRate", "massRMRate", "load", "WBId_plume"]) as cursor:
                 for row in cursor:
                     data.append(row)
-            segments = pd.DataFrame(data, columns=["massInRate", "massDNRate", "load", "WBId_plume"])
+            segments = pd.DataFrame(data, columns=["massInRate", "massRMRate", "load", "WBId_plume"])
             p_load = segments.groupby("WBId_plume").sum()
             p_load = p_load.reset_index()
-            p_load.loc[p_load['WBId_plume'] == -1, 'massDNRate'] = p_load.loc[p_load['WBId_plume'] == -1,
+            p_load.loc[p_load['WBId_plume'] == -1, 'massRMRate'] = p_load.loc[p_load['WBId_plume'] == -1,
                                                                               'massInRate']
-            p_load = p_load.assign(Massoutput=p_load["massInRate"] - p_load["massDNRate"])
+            p_load = p_load.assign(Massoutput=p_load["massInRate"] - p_load["massRMRate"])
             p_load = p_load.assign(Massoutputrisk=p_load["Massoutput"] * self.risk_factor)
             p_load = p_load.rename(columns={"WBId_plume": "Waterbody FID", "Massoutput": "Mass Output Load [mg/d]",
                                             "Massoutputrisk": "Mass Output Load * Risk Factor [mg/d]",
                                             "massInRate": "Mass Input Load [mg/d]",
-                                            "massDNRate": "Mass Removal Rate [mg/d]"})
+                                            "massRMRate": "Mass Removal Rate [mg/d]"})
             p_load = p_load[["Waterbody FID", "Mass Output Load [mg/d]", "Mass Output Load * Risk Factor [mg/d]",
                              "Mass Input Load [mg/d]", "Mass Removal Rate [mg/d]"]]
             p_load = p_load[p_load["Waterbody FID"] != -1]

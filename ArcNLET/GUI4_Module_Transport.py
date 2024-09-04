@@ -39,8 +39,8 @@ class InterfaceTransport(object):
         inputop.filter.list = choices
         inputop.value = "Nitrogen"
 
-        whenh4 = arcpy.Parameter(name="Consideration of NH\u2084",
-                                 displayName="Consideration of NH\u2084",
+        whenh4 = arcpy.Parameter(name="Consideration of NH\u2084-N",
+                                 displayName="Consideration of NH\u2084-N",
                                  datatype="GPBoolean",
                                  parameterType="Optional",  # Required|Optional|Derived
                                  direction="Input",  # Input|Output
@@ -69,24 +69,24 @@ class InterfaceTransport(object):
                                   direction="Input")
         infile2.filter.list = ["Polyline"]
 
-        outfile0 = arcpy.Parameter(name="Output Plumes of NO\u2083",
-                                   displayName="Output Plumes of NO\u2083 (raster)",
+        outfile0 = arcpy.Parameter(name="Output Plumes of NO\u2083-N",
+                                   displayName="Output Plumes of NO\u2083-N (raster)",
                                    datatype=["GPRasterLayer"],
                                    parameterType="Required",  # Required|Optional|Derived
                                    direction="Output",  # Input|Output
                                    )
         outfile0.value = None
 
-        outfile1 = arcpy.Parameter(name="Output Plumes of NH\u2084",
-                                   displayName="Output Plumes of NH\u2084 (raster)",
+        outfile1 = arcpy.Parameter(name="Output Plumes of NH\u2084-N",
+                                   displayName="Output Plumes of NH\u2084-N (raster)",
                                    datatype=["GPRasterLayer"],
                                    parameterType="Optional",  # Required|Optional|Derived
                                    direction="Output",  # Input|Output
                                    )
         outfile1.value = None
 
-        outfile2 = arcpy.Parameter(name="Output Plumes info of NO\u2083",
-                                   displayName="Output Plumes info of NO\u2083 (point)",
+        outfile2 = arcpy.Parameter(name="Output Plumes info of NO\u2083-N",
+                                   displayName="Output Plumes info of NO\u2083-N (point)",
                                    datatype=["GPFeatureLayer"],
                                    parameterType="Optional",  # Required|Optional|Derived
                                    direction="Output",  # Input|Output
@@ -94,8 +94,8 @@ class InterfaceTransport(object):
         outfile2.enabled = False
         outfile2.value = None
 
-        outfile3 = arcpy.Parameter(name="Output Plumes info of NH\u2084",
-                                   displayName="Output Plumes info of NH\u2084 (point)",
+        outfile3 = arcpy.Parameter(name="Output Plumes info of NH\u2084-N",
+                                   displayName="Output Plumes info of NH\u2084-N (point)",
                                    datatype=["GPFeatureLayer"],
                                    parameterType="Optional",  # Required|Optional|Derived
                                    direction="Output",  # Input|Output
@@ -103,8 +103,8 @@ class InterfaceTransport(object):
         outfile3.enabled = False
         outfile3.value = None
 
-        outfile4 = arcpy.Parameter(name="Output Plumes of P",
-                                   displayName="Output Plumes of P (raster)",
+        outfile4 = arcpy.Parameter(name="Output Plumes of PO\u2084-P",
+                                   displayName="Output Plumes of PO\u2084-P (raster)",
                                    datatype=["GPRasterLayer"],
                                    parameterType="Optional",  # Required|Optional|Derived
                                    direction="Output",  # Input|Output
@@ -112,8 +112,8 @@ class InterfaceTransport(object):
         outfile4.enabled = False
         outfile4.value = None
 
-        outfile5 = arcpy.Parameter(name="Output Plumes info of P",
-                                   displayName="Output Plumes info of P (point)",
+        outfile5 = arcpy.Parameter(name="Output Plumes info of PO\u2084-P",
+                                   displayName="Output Plumes info of PO\u2084-P (point)",
                                    datatype=["GPFeatureLayer"],
                                    parameterType="Optional",  # Required|Optional|Derived
                                    direction="Output",  # Input|Output
