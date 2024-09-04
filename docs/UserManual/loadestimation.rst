@@ -5,15 +5,15 @@
 5-Load Estimation
 =================
 
-The load of ammonium and/or nitrate to the receiving water bodies is
+The load of ammonium, nitrate, and phosphate to the receiving water bodies is
 estimated using the mass balance method. Using nitrate load estimation
 as an example, the mass balance equation contains three terms: the
 nitrate load rate to the waterbodies (M\ :sub:`out`), the mass input
 load rate from the source (M\ :sub:`in`), and the mass removed by
-denitrification (M\ :sub:`dn`). M\ :sub:`out` is calculated by
-subtracting M\ :sub:`dn` from M\ :sub:`in`. If M­\ :sub:`in` is not
+denitrification (M\ :sub:`removal`). M\ :sub:`out` is calculated by
+subtracting M\ :sub:`removal` from M\ :sub:`in`. If M­\ :sub:`in` is not
 specified, the Transport Module calculates M\ :sub:`in` by considering
-the mass inflow from both advection and dispersion. M\ :sub:`dn` is
+the mass inflow from both advection and dispersion. M\ :sub:`removal` is
 calculated on a plume-by-plume basis using the definition of first-order
 decay. The output of the Load Estimation Module is a comma-separated
 value (CSV) text file consisting of a list of nitrate load estimates for
@@ -80,10 +80,9 @@ Input
    modified. Only point feature layers whose names have the “\_info” suffix
    are shown in the dropdown menu.
 
--  **Input Plumes P info (Point):** The auxiliary info file for phosphorus associated 
-   with the plumes raster calculated by the transport module. The information 
-   contained in the attribute table of this file should not be manually modified.
-
+-  :raw-html:`<strong>Input Plumes PO<sub>4</sub> info (Point):</strong>` The auxiliary info 
+   file for phosphorus associated with the plumes raster calculated by the transport module. 
+   The information contained in the attribute table of this file should not be manually modified.
 
 Options and Parameters
 ----------------------

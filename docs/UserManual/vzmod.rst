@@ -41,6 +41,10 @@ Using VZMOD for a **Single OSTDS,** these parameters solve the flow and
 nutrient transport equations sequentially, and the concentration
 profiles are saved for post-processing.
 
+.. note:: 
+
+   There are three options for the **Types of Contaminants** available in VZMOD: **Nitrogen**, **Phosphorus**, and **Nitrogen and Phosphorus**. Please refer to Figures 3-4, 3-5, and 3-6 for visual clarification on these options.
+
 .. figure:: ./media/vzmodMedia/media/image1.png
    :align: center
    :alt: A screenshot of a computer Description automatically generated
@@ -121,15 +125,18 @@ water content). The files are also Groundwater Flow Module input data
 and can be generated using the Preprocessing Module or data from SSURGO.
 
 VZMOD now supports modeling for different types of contaminants, including 
-**Phosphorus**, and **Nitrogen and Phosphorus**. When phosphorus is selected,
-additional parameters become available, including sorption isotherms options 
-such as **Linear** (with parameters for **Rprecip** and 
-**Linear distribution coefficient**) and **Langmuir** (with parameters for 
-**Rprecip**, **Langmuir coefficient**, and **maximum sorption capacity**), 
-which are from McCray et al. (2005). These additional options provide flexibility 
-in simulating phosphorus adsorption and transport processes in different soil 
-conditions, enabling more accurate predictions of phosphorus fate in the 
-vadose zone.
+**Nitrogen**, **Phosphorus**, and **Nitrogen and Phosphorus**. When 
+phosphorus is selected, additional parameters become available, such as 
+the **Rprecip** parameter, which refers to the precipitation rate of phosphate.
+For phosphorus sorption isotherms, two options are available:
+
+- **Linear**: This method includes only the **Linear distribution coefficient** parameter.
+- **Langmuir**: This method includes the **Langmuir coefficient** and **maximum sorption capacity** parameters.
+
+These options provide flexibility in simulating phosphorus adsorption and 
+transport processes in different soil conditions, enabling more accurate 
+predictions of phosphorus fate in the vadose zone. The reference for these 
+parameters is McCray et al. (2005).
 
 When selecting **Calculate depth to water table**, the user must input
 the **DEM file (raster)** and the **Smoothed DEM (raster)**. This
@@ -513,7 +520,12 @@ Options and Parameters
 
 **Phosphorus Parameters**
 
--  **Rprecip:** The precipitation rate.
+- **Rprecip**: The precipitation rate, represents the rate at which phosphate (PO\ :sub:`4`\ :sup:`3-`) 
+   precipitates out of solution and becomes immobilized in the soil. This process reduces the concentration 
+   of dissolved phosphate migrating through the vadose zone toward groundwater. A higher **Rprecip** value 
+   indicates more phosphate precipitation, lowering the risk of groundwater contamination. Proper 
+   calibration of this parameter, based on site-specific soil and environmental conditions, is essential 
+   for modeling phosphorus transport and attenuation.
 
 -  **Sorption isotherms:**
 

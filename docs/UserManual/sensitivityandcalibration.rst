@@ -45,8 +45,8 @@ parameters. For simplicity, the sensitivity to the smoothing factor,
 hydraulic conductivity, and porosity is not evaluated. Instead, the
 sensitivity to seepage velocity is calculated as a surrogate.
 
-Local Sensitivity
------------------
+Local Sensitivity Analysis for Nitrate Transport
+------------------------------------------------
 
 The local sensitivity is the derivative of the nitrate concentration to
 an individual parameter calculated for specific nominal parameter
@@ -223,8 +223,8 @@ observations of nitrate concentration during the model calibration.
 .. raw:: html
    <br></br>
 
-Phosphorus Sensitivity Analyses
--------------------------------
+Local Sensitivity Analysis for Phosphate Transport
+--------------------------------------------------
 
 The main objective of this section is to analyze the effect of the phosphorus module parameters 
 on the sensitivity of the results.
@@ -236,10 +236,13 @@ presented as ratios of concentration at specific depths to the initial concentra
 specific value of the initial concentration irrelevant.
 
 1. **Soil type:** Sand, chosen based on Florida's conditions.
+
 2. **Depth to water table:** Depth = 150 cm, which is the default value.
+
 3. **Linear distribution coefficient:** k = 15.1 L/kg, based on McCray et al. (2005).
+
 4. **Precipitation rate:** Rprecip = 0.002 1/day, referenced from Zhou et al. (2023) and Müller and 
-Bünemann (2014).
+   Bünemann (2014).
 
 In this study, the ratios of concentrations at the full depth and half-depth to the initial 
 concentration were used as the y-values. Various precipitation rates and linear distribution 

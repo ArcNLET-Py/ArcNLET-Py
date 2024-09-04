@@ -16,12 +16,12 @@ ArcNLET-Py serves a crucial role in simulating the movement and transformation o
 
 ### Key Features
 
-- **Data Preparation**: Assists in preparing soil hydraulic property data.
-- **Reactive Transport Simulation**: Simulates the vertical transport of ammonium and nitrate.
-- **Groundwater Flow Evaluation**: Calculates flow directions and magnitudes at OSTDS locations.
-- **Nitrogen Plume Estimation**: Determines nitrogen travel paths and estimates plume formation.
-- **Phosphorus Plume Estimation**: Models phosphorus transport using Langmuir and Linear isotherms.
-- **Load Calculation**: Computes nitrate-nitrogen loss and final nitrate load to water bodies.
+- **Data Preparation**: Assists in preparing soil hydraulic property data with the Preprocessing Module.
+- **Groundwater Flow Evaluation**: Calculates flow directions and magnitudes at OSTDS locations with the Groundwater Flow Module.
+- **Reactive Transport Simulation**: Simulates the vertical transport of ammonium, nitrate, and phosphate with the VZMOD.
+- **Nitrogen Plume Estimation**: Determines nitrogen travel paths and estimates plume formation with the Transport Module.
+- **Phosphorus Plume Estimation**: Models phosphorus transport using Langmuir and Linear isotherms with the Transport Module.
+- **Load Calculation**: Computes nitrogen and/or phosphorus removal and final load estimates to water bodies with the Load Estimation Module.
 
 ## Module Overview
 
@@ -102,9 +102,11 @@ For any queries or contributions, feel free to contact us:
 
 ## Acknowledgements
 
-Prepared for the Florida Department of Environmental Protection, Tallahassee, FL. The development and documentation of ArcNLET-Py are made possible by the collaborative efforts of our dedicated team.
+This research was supported by grant NS095 with the Florida Department of Environmental Protection. Any opinions, findings, and conclusions or recommendations expressed in this material are those of the author(s) and do not necessarily reflect the views of the Florida Department of Environmental Protection.
 
-The older version of ArcNLET can be found on [FSU Atmospheric Website](https://atmos.eoas.fsu.edu/~mye/ArcNLET/). Training videos are available on [YouTube](https://www.youtube.com/@mingye9168/videos).
+The development and documentation of ArcNLET-Py are made possible by the collaborative efforts of our dedicated team.
+
+The older version of ArcNLET can be found on the [FSU Website](https://atmos.eoas.fsu.edu/~mye/ArcNLET/). Training videos are available on [YouTube](https://www.youtube.com/@mingye9168/videos).
 
 ---
 

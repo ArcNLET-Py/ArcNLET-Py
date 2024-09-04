@@ -350,10 +350,9 @@ View and Verify Results
 
    Figure 13-13: The ArcNLET-Py Transport Module outputs in the Catalog Pane.
 
-2. Take a moment to review the outputs to ensure your data has been
-   processed correctly. Your data must be processed correctly because
-   data outputs from the Transport Module are used as inputs in the
-   Load Estimation Module.
+2. Take a moment to review the outputs, as shown in Figures 13-14, 13-15, and 13-16 
+   to ensure your data has been processed correctly. Your data must be processed correctly because
+   data outputs from the Transport Module are used as inputs in the Load Estimation Module.
 
     a. Your raster image outputs appear in your [Map View] as a black
        image with white plumes with the greatest magnitude at each
@@ -387,6 +386,25 @@ View and Verify Results
    :align: center
    :alt: A computer screen shot of a map Description automatically generated
 
-   13-14: The ArcNLET-Py Transport Module outputs in the Contents Pane and Map Figure
+   Figure 13-14: The ArcNLET-Py Transport Module outputs in the Contents Pane and Map Figure for NO\ :sub:`3`
 
-The plumes are shown with the highest magnitude in red, and analyte levels near zero are purple. The water body is shown in blue.
+The NO\ :sub:`3` plumes are shown with the highest magnitude in red, and analyte levels near zero are purple. 
+The water body is shown in blue.
+
+.. figure:: ./media/usingtransportMedia/media/image15.png
+   :align: center
+   :alt: A computer screen shot of a map Description automatically generated
+
+   Figure 13-15: The ArcNLET-Py Transport Module outputs in the Contents Pane and Map Figure for NH\ :sub:`4`
+
+The NH\ :sub:`4` plumes are shown with the highest magnitude in red, and analyte levels near zero are purple. 
+The water body is shown in blue.
+
+.. figure:: ./media/usingtransportMedia/media/image16.png
+   :align: center
+   :alt: A computer screen shot of a map Description automatically generated
+
+   Figure 13-16: The ArcNLET-Py Transport Module outputs in the Contents Pane and Map Figure for PO\ :sub:`4`
+
+The PO\ :sub:`4` plumes are shown with the highest magnitude in red, and analyte levels near zero are purple. 
+The water body is shown in blue.

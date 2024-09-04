@@ -56,15 +56,19 @@ water bodies. The primary functions performed by ArcNLET-Py are to:
    (e.g., hydraulic conductivity and porosity) within the domain
    boundary.
 
--  Simulate reactive transport of ammonium and nitrate in the vertical
-   direction at the distance between an OSTDS drainfield and groundwater
-   table.
-
 -  Evaluate the groundwater flow directions and magnitudes at discrete
    points (i.e., OSTDS locations) of a domain of interest.
 
 -  Determine the flow paths along which nitrogen travels from an OSTDS
    to its receiving water body.
+
+-  Simulate reactive transport of ammonium and nitrate in the vertical
+   direction at the distance between an OSTDS drainfield and groundwater
+   table.
+
+-  Simulate reactive transport of phosphorus in the vertical direction
+   from an OSTDS drainfield to the groundwater table and estimate the
+   subsequent phosphate load reaching surface water bodies.
 
 -  Estimate the nitrogen plumes originating from OSTDS and ending at
    receiving surface water bodies.
@@ -72,10 +76,6 @@ water bodies. The primary functions performed by ArcNLET-Py are to:
 -  Calculate nitrate-nitrogen loss due to denitrification during nitrate
    transport and calculate the final nitrate load to target water
    bodies.
-
--  Simulate reactive transport of phosphorus in the vertical direction
-   from an OSTDS drainfield to the groundwater table and estimate the
-   subsequent phosphate load reaching surface water bodies.
 
 The impetus behind developing the original ArcNLET and ArcNLET-Py is to
 have a simplified nitrogen and phosphorus transformation and transport

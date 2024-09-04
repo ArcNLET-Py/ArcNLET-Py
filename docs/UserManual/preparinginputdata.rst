@@ -745,6 +745,9 @@ aerial (left) and after aerial (right) updating.
  
    Figure 7‑23: The simulated flow paths after updating the water bodies.
 
+The updated water body features are in blue, and the green particle paths 
+are flowing into the surface waterbodies that were added to the study area.
+
 **Units**
 ---------
 

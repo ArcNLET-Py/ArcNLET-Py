@@ -150,15 +150,15 @@ Input Layers
 | Name**       |                                   | Parameter**       |
 +==============+===================================+===================+
 | C_NH4-N      | The initial concentration of the  | C0                |
-|              | source plane for                  | [M/l\ :sup:`3`]   |
+|              | source plane for                  | [L]               |
 |              | ammonium-nitrogen.                |                   |
 +--------------+-----------------------------------+-------------------+
 | C_NO3-N      | The initial concentration of the  | C0                |
-|              | source plane for                  | [M/l\ :sup:`3`]   |
+|              | source plane for                  | [L]               |
 |              | nitrate-nitrogen.                 |                   |
 +--------------+-----------------------------------+-------------------+
 | C_PO4-P      | The initial concentration of the  | C0                |
-|              | source plane for                  | [M/l\ :sup:`3`]   |
+|              | source plane for                  | [L]               |
 |              | phosphate-phosphorus.             |                   |
 +--------------+-----------------------------------+-------------------+
 
@@ -454,6 +454,17 @@ Options and Parameters
 
    - **Maximum sorption capacity [mg P/kg]:** The total amount of phosphate that can be 
      adsorbed onto the soil surface at saturation. The default value is 237 mg P/kg.
+
+   .. note:: 
+
+      **Choosing Between Linear and Langmuir Sorption Isotherms:**
+      
+      The choice between linear and Langmuir sorption isotherms depends on the specific 
+      conditions of the study area. **Linear sorption** is recommended when the phosphorus 
+      concentration is less than or equal to 10 mg/L, as it provides a simpler and proportional 
+      model suitable for lower concentrations (McCray et al. 2005). For higher concentrations or 
+      when adsorption sites are nearing saturation, **Langmuir sorption** is preferred because it 
+      accounts for the maximum adsorption capacity and varying affinity of phosphate for soil particles.
 
 Outputs
 -------
