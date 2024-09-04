@@ -39,8 +39,8 @@ class InterfaceLoadEstimation(object):
         inputop.filter.list = choices
         inputop.value = "Nitrogen"
 
-        param0 = arcpy.Parameter(name="Consideration of NH\u2084",
-                                 displayName="Consideration of NH\u2084",
+        param0 = arcpy.Parameter(name="Consideration of NH\u2084-N",
+                                 displayName="Consideration of NH\u2084-N",
                                  datatype="GPBoolean",
                                  parameterType="Required",  # Required|Optional|Derived
                                  direction="Input",  # Input|Output
@@ -55,15 +55,15 @@ class InterfaceLoadEstimation(object):
                                  )
         param1.value = 1.0
 
-        infile1 = arcpy.Parameter(name="Input Plumes NO\u2083 info",
-                                  displayName="Input Plumes NO\u2083 info (Point)",
+        infile1 = arcpy.Parameter(name="Input Plumes NO\u2083-N info",
+                                  displayName="Input Plumes NO\u2083-N info (Point)",
                                   datatype="GPFeatureLayer",
                                   parameterType="Required",
                                   direction="Input")
         infile1.filter.list = ["Point"]
 
-        infile2 = arcpy.Parameter(name="Input Plumes NH\u2084 info",
-                                  displayName="Input Plumes NH\u2084 info (Point)",
+        infile2 = arcpy.Parameter(name="Input Plumes NH\u2084-N info",
+                                  displayName="Input Plumes NH\u2084-N info (Point)",
                                   datatype="GPFeatureLayer",
                                   parameterType="Optional",
                                   direction="Input")
@@ -71,30 +71,30 @@ class InterfaceLoadEstimation(object):
         infile2.enabled = False
         # infile2.parameterDependencies = [param0.name]
 
-        infile3 = arcpy.Parameter(name="Input Plumes P info",
-                                  displayName="Input Plumes P info (Point)",
+        infile3 = arcpy.Parameter(name="Input Plumes PO\u2084-P info",
+                                  displayName="Input Plumes PO\u2084-P info (Point)",
                                   datatype="GPFeatureLayer",
                                   parameterType="Optional",
                                   direction="Input")
         infile3.filter.list = ["Point"]
         infile3.enabled = False
 
-        outfile1 = arcpy.Parameter(name="Output Results for NO\u2083",
-                                   displayName="Output Results for NO\u2083",
+        outfile1 = arcpy.Parameter(name="Output Results for NO\u2083-N",
+                                   displayName="Output Results for NO\u2083-N",
                                    datatype="DEFile",
                                    parameterType="required",
                                    direction="Output")
 
-        outfile2 = arcpy.Parameter(name="Output Results for NH\u2084",
-                                   displayName="Output Results for NH\u2084",
+        outfile2 = arcpy.Parameter(name="Output Results for NH\u2084-N",
+                                   displayName="Output Results for NH\u2084-N",
                                    datatype="DEFile",
                                    parameterType="Optional",
                                    direction="Output")
         outfile2.enabled = False
         # outfile2.parameterDependencies = [param0.name]
 
-        outfile3 = arcpy.Parameter(name="Output Results for P",
-                                   displayName="Output Results for P",
+        outfile3 = arcpy.Parameter(name="Output Results for PO\u2084-P",
+                                   displayName="Output Results for PO\u2084-P",
                                    datatype="DEFile",
                                    parameterType="Optional",
                                    direction="Output")
