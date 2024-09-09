@@ -183,8 +183,8 @@ class InterfaceLoadEstimation(object):
                 fields = desc.fields
                 if not any(field.name == "massInRate" for field in fields):
                     parameters[3].setErrorMessage("massInRate field is missing.")
-                if not any(field.name == "massDNRate" for field in fields):
-                    parameters[3].setErrorMessage("massDNRate field is missing.")
+                if not any(field.name == "massRMRate" for field in fields):
+                    parameters[3].setErrorMessage("massRMRate field is missing.")
                 if not any(field.name == "WBId_plume" for field in fields):
                     parameters[3].setErrorMessage("WBId_plume field is missing.")
             if parameters[1].value:
@@ -193,8 +193,8 @@ class InterfaceLoadEstimation(object):
                     fields = desc.fields
                     if not any(field.name == "massInRate" for field in fields):
                         parameters[4].setErrorMessage("massInRate field is missing.")
-                    if not any(field.name == "massDNRate" for field in fields):
-                        parameters[4].setErrorMessage("massDNRate field is missing.")
+                    if not any(field.name == "massRMRate" for field in fields):
+                        parameters[4].setErrorMessage("massRMRate field is missing.")
                     if not any(field.name == "WBId_plume" for field in fields):
                         parameters[4].setErrorMessage("WBId_plume field is missing.")
 
@@ -204,8 +204,8 @@ class InterfaceLoadEstimation(object):
                 fields = desc.fields
                 if not any(field.name == "massInRate" for field in fields):
                     parameters[5].setErrorMessage("massInRate field is missing.")
-                if not any(field.name == "massDNRate" for field in fields):
-                    parameters[5].setErrorMessage("massDNRate field is missing.")
+                if not any(field.name == "massRMRate" for field in fields):
+                    parameters[5].setErrorMessage("massRMRate field is missing.")
                 if not any(field.name == "WBId_plume" for field in fields):
                     parameters[5].setErrorMessage("WBId_plume field is missing.")
 

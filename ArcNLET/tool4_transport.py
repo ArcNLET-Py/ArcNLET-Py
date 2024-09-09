@@ -181,7 +181,8 @@ class Transport:
             if arcpy.Exists(self.waterbody_raster):
                 arcpy.management.Delete(self.waterbody_raster)
             arcpy.conversion.FeatureToRaster(self.waterbodies, "FID", self.waterbody_raster,
-                                             max(self.plume_cell_size, 1))
+                                             self.plume_cell_size)
+            arcpy.env.snapRaster = self.waterbody_raster
         except Exception as e:
             arcpy.AddMessage("[Error]: Failed to create water body raster: "+str(e))
             sys.exit(-1)
@@ -955,6 +956,7 @@ class Transport:
                 warped_plumes.append(None)
                 target_body_pts_list.append(None)
                 lengths.append(0)
+                continue
             else:
                 lengths.append(plume_array.shape[1])
                 try:
@@ -1141,6 +1143,7 @@ class Transport:
         """
         Post process the plume
         """
+        method  = 1
         fnames = []
         maxDist = segment['TotDist'].iloc[-1]
         for index, name in enumerate(name_list):
@@ -1163,7 +1166,7 @@ class Transport:
                             fnames.append(None)
                             continue
 
-                        arcpy.env.snapRaster = output_raster_list[index]
+                        arcpy.env.snapRaster = self.waterbody_raster
                         factor = 1
                         if max_value < 1E-1 and self.minimum_correction:
                             factor = int(10 / max_value)
@@ -1172,13 +1175,13 @@ class Transport:
                         if factor != 1 and self.minimum_correction:
                             fname = arcpy.sa.Times(fname, 1 / factor)
                             factor = 1
-                        arcpy.env.snapRaster = None
+                        # arcpy.env.snapRaster = None
                     except Exception as e:
                         continue
                 else:
                     fname = name
 
-                if lengths[index] * self.plume_cell_size < maxDist or target_body_pts_list[index] is None:
+                if lengths[index] * self.plume_cell_size < maxDist:
                     fnames.append(fname)
                     continue
 
@@ -1188,82 +1191,69 @@ class Transport:
                     else:
                         fnames.append(name)
                 elif self.post_process == 'full':
-                    try:
-                        point_list = []
-                        for row in target_body_pts_list[index]:
-                            point = arcpy.Point(row[0], row[1])
-                            point_list.append(point)
-                        polyline = arcpy.Polyline(arcpy.Array(point_list), self.crs)
+                    if method > 0:
+                        try:
+                            result = arcpy.sa.ExtractByMask(name, self.waterbodies, "OUTSIDE", name)
+                            arcpy.env.snapRaster = None
+                            result = arcpy.sa.SetNull(result, result, "VALUE < {}".format(self.threshold))
+                            result = arcpy.sa.SetNull(result, result, "VALUE > {}".format(10000))
+                            result.save(name)
 
-                        arcpy.management.CopyFeatures(polyline, r'memory\polyline')
-                        arcpy.management.Delete(polyline)
+                            polygon = arcpy.sa.Con(result, 1, "", "VALUE > 0")
+                            shp_name = r"memory\polygon"
+                            arcpy.conversion.RasterToPolygon(polygon, shp_name, "NO_SIMPLIFY", "VALUE")
+                            shp_buffer = r"memory\buffer"
+                            arcpy.analysis.Buffer(shp_name, shp_buffer, "1 Meters")
 
-                        arcpy.management.FeatureToPolygon([polyline], r'memory\linecheck', "", "NO_ATTRIBUTES")
-                        if arcpy.management.GetCount(r'memory\linecheck')[0] == "1":
-                            arcpy.management.Delete(r'memory\linecheck')
-                            arcpy.management.Delete(polyline)
-                            fnames.append(fname)
-                            continue
-
-                        if arcpy.Exists(r'memory\slwb'):
-                            arcpy.management.Delete(r'memory\slwb')
-                        arcpy.analysis.Select(self.waterbodies, r'memory\slwb',
-                                              "fid = {}".format(segment["WBId"].iloc[-1]))
-
-                        inFeatures = [r'memory\polyline', r'memory\slwb']
-                        outFeatures = r'memory\polygon'
-                        arcpy.management.FeatureToPolygon(inFeatures, outFeatures, "", "NO_ATTRIBUTES")
-                        Erase_polygon = r'memory\Erase_polygon'
-                        arcpy.analysis.Erase(outFeatures, r'memory\slwb', Erase_polygon)
-
-                        if index == 0:
-                            save_name = r'memory\pfn4_{}'.format(pathid)
-                        elif index == 1:
-                            save_name = r'memory\pfn3_{}'.format(pathid)
-                        else:
-                            save_name = r'memory\pfph_{}'.format(pathid)
-                        if arcpy.Exists(save_name):
-                            arcpy.management.Delete(save_name)
-
-                        if arcpy.management.GetCount(Erase_polygon)[0] == "1":
-                            result = arcpy.sa.ExtractByMask(fname, Erase_polygon)
-                            result.save(save_name)
-                            fnames.append(save_name)
-                            arcpy.management.Delete(polyline)
-                            arcpy.management.Delete(outFeatures)
-                            arcpy.management.Delete(Erase_polygon)
-                            continue
-
-                        elif arcpy.management.GetCount(Erase_polygon)[0] == "0":
-                            while True:
-                                with arcpy.da.UpdateCursor(r'memory\polyline', ['SHAPE@']) as cursor:
-                                    for row in cursor:
-                                        polyline = row[0]
-
-                                        first_point = polyline.firstPoint
-                                        last_point = polyline.lastPoint
-                                        new_first_x = 2 * first_point.X - polyline.getPart(0)[1].X
-                                        new_first_y = 2 * first_point.Y - polyline.getPart(0)[1].Y
-                                        new_last_x = 2 * last_point.X - polyline.getPart(0)[-2].X
-                                        new_last_y = 2 * last_point.Y - polyline.getPart(0)[-2].Y
-
-                                        new_part = arcpy.Array()
-                                        new_part.add(arcpy.Point(new_first_x, new_first_y))
-                                        for point in polyline.getPart(0):
-                                            new_part.add(point)
-                                        new_part.add(arcpy.Point(new_last_x, new_last_y))
-
-                                        new_polyline = arcpy.Polyline(new_part)
-                                        row[0] = new_polyline
-                                        cursor.updateRow(row)
-
-                                arcpy.analysis.Intersect([r'memory\polyline', r'memory\slwb'], r'memory\Intersect')
-                                ppp = arcpy.da.SearchCursor(r'memory\Intersect', ["SHAPE@"]).next()[0]
-                                if ppp.isMultipart:
+                            with arcpy.da.SearchCursor(self.source_location, ['SHAPE@'],
+                                                       where_clause=f"FID = {pathid}") as point_cursor:
+                                point_geom = None
+                                for point_row in point_cursor:
+                                    point_geom = point_row[0]
                                     break
 
-                            if arcpy.Exists(r'memory\linecheck'):
-                                arcpy.management.Delete(r'memory\linecheck')
+                                if point_geom:
+                                    with arcpy.da.UpdateCursor(shp_buffer, ['SHAPE@']) as poly_cursor:
+                                        for poly_row in poly_cursor:
+                                            polygon_geom = poly_row[0]
+                                            if not polygon_geom.contains(point_geom):
+                                                poly_cursor.deleteRow()
+
+                            result = arcpy.management.GetCount(shp_buffer)
+                            count = int(result.getOutput(0))
+                            if count < 1:
+                                continue
+                            outpt = arcpy.sa.ExtractByMask(name, shp_buffer, "INSIDE", name)
+
+                            if index == 0:
+                                save_name = r'memory\pfn4_{}'.format(pathid)
+                            elif index == 1:
+                                save_name = r'memory\pfn3_{}'.format(pathid)
+                            else:
+                                save_name = r'memory\pfph_{}'.format(pathid)
+                            if arcpy.Exists(save_name):
+                                arcpy.management.Delete(save_name)
+                            outpt.save(save_name)
+                            fnames.append(save_name)
+
+                        except Exception as e:
+                            # arcpy.AddMessage("[Error] Post process medium: " + str(e))
+                            fnames.append(fname)
+                            continue
+                    else:
+                        try:
+                            point_list = []
+                            if target_body_pts_list[index] is None:
+                                fnames.append(fname)
+                                continue
+                            for row in target_body_pts_list[index]:
+                                point = arcpy.Point(row[0], row[1])
+                                point_list.append(point)
+                            polyline = arcpy.Polyline(arcpy.Array(point_list), self.crs)
+
+                            arcpy.management.CopyFeatures(polyline, r'memory\polyline')
+                            arcpy.management.Delete(polyline)
+
                             arcpy.management.FeatureToPolygon([polyline], r'memory\linecheck', "", "NO_ATTRIBUTES")
                             if arcpy.management.GetCount(r'memory\linecheck')[0] == "1":
                                 arcpy.management.Delete(r'memory\linecheck')
@@ -1271,22 +1261,88 @@ class Transport:
                                 fnames.append(fname)
                                 continue
 
+                            if arcpy.Exists(r'memory\slwb'):
+                                arcpy.management.Delete(r'memory\slwb')
+                            arcpy.analysis.Select(self.waterbodies, r'memory\slwb',
+                                                  "fid = {}".format(segment["WBId"].iloc[-1]))
+
                             inFeatures = [r'memory\polyline', r'memory\slwb']
                             outFeatures = r'memory\polygon'
                             arcpy.management.FeatureToPolygon(inFeatures, outFeatures, "", "NO_ATTRIBUTES")
                             Erase_polygon = r'memory\Erase_polygon'
                             arcpy.analysis.Erase(outFeatures, r'memory\slwb', Erase_polygon)
 
-                            result = arcpy.sa.ExtractByMask(fname, Erase_polygon)
-                            result.save(save_name)
-                            fnames.append(save_name)
-                        else:
+                            if index == 0:
+                                save_name = r'memory\pfn4_{}'.format(pathid)
+                            elif index == 1:
+                                save_name = r'memory\pfn3_{}'.format(pathid)
+                            else:
+                                save_name = r'memory\pfph_{}'.format(pathid)
+                            if arcpy.Exists(save_name):
+                                arcpy.management.Delete(save_name)
+
+                            if arcpy.management.GetCount(Erase_polygon)[0] == "1":
+                                result = arcpy.sa.ExtractByMask(fname, Erase_polygon)
+                                result.save(save_name)
+                                fnames.append(save_name)
+                                arcpy.management.Delete(polyline)
+                                arcpy.management.Delete(outFeatures)
+                                arcpy.management.Delete(Erase_polygon)
+                                continue
+
+                            elif arcpy.management.GetCount(Erase_polygon)[0] == "0":
+                                while True:
+                                    with arcpy.da.UpdateCursor(r'memory\polyline', ['SHAPE@']) as cursor:
+                                        for row in cursor:
+                                            polyline = row[0]
+
+                                            first_point = polyline.firstPoint
+                                            last_point = polyline.lastPoint
+                                            new_first_x = 2 * first_point.X - polyline.getPart(0)[1].X
+                                            new_first_y = 2 * first_point.Y - polyline.getPart(0)[1].Y
+                                            new_last_x = 2 * last_point.X - polyline.getPart(0)[-2].X
+                                            new_last_y = 2 * last_point.Y - polyline.getPart(0)[-2].Y
+
+                                            new_part = arcpy.Array()
+                                            new_part.add(arcpy.Point(new_first_x, new_first_y))
+                                            for point in polyline.getPart(0):
+                                                new_part.add(point)
+                                            new_part.add(arcpy.Point(new_last_x, new_last_y))
+
+                                            new_polyline = arcpy.Polyline(new_part)
+                                            row[0] = new_polyline
+                                            cursor.updateRow(row)
+
+                                    arcpy.analysis.Intersect([r'memory\polyline', r'memory\slwb'], r'memory\Intersect')
+                                    ppp = arcpy.da.SearchCursor(r'memory\Intersect', ["SHAPE@"]).next()[0]
+                                    if ppp.isMultipart:
+                                        break
+
+                                if arcpy.Exists(r'memory\linecheck'):
+                                    arcpy.management.Delete(r'memory\linecheck')
+                                arcpy.management.FeatureToPolygon([polyline], r'memory\linecheck', "", "NO_ATTRIBUTES")
+                                if arcpy.management.GetCount(r'memory\linecheck')[0] == "1":
+                                    arcpy.management.Delete(r'memory\linecheck')
+                                    arcpy.management.Delete(polyline)
+                                    fnames.append(fname)
+                                    continue
+
+                                inFeatures = [r'memory\polyline', r'memory\slwb']
+                                outFeatures = r'memory\polygon'
+                                arcpy.management.FeatureToPolygon(inFeatures, outFeatures, "", "NO_ATTRIBUTES")
+                                Erase_polygon = r'memory\Erase_polygon'
+                                arcpy.analysis.Erase(outFeatures, r'memory\slwb', Erase_polygon)
+
+                                result = arcpy.sa.ExtractByMask(fname, Erase_polygon)
+                                result.save(save_name)
+                                fnames.append(save_name)
+                            else:
+                                fnames.append(fname)
+                                continue
+                        except Exception as e:
+                            arcpy.AddMessage("[Error] Post process plume {}: ".format(pathid) + str(e))
+                            arcpy.AddMessage("Skip the plume: {} for post process.".format(pathid))
                             fnames.append(fname)
-                            continue
-                    except Exception as e:
-                        arcpy.AddMessage("[Error] Post process plume {}: ".format(pathid) + str(e))
-                        arcpy.AddMessage("Skip the plume: {} for post process.".format(pathid))
-                        fnames.append(fname)
         return fnames
 
     def post_process_medium(self, plume_names):

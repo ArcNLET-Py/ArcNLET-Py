@@ -168,12 +168,15 @@ class ParticleTracking:
         pi_over_180 = math.pi / 180
         poro_last_step = 0
         velo_last_step = 0
-
+        allx = []
+        ally = []
         segments = []
 
         while steps < self.max_steps:
             # print("Step {}...".format(steps))
             index, velo, angle, poro = self.get_values(cur_x, cur_y)
+            allx.append(cur_x)
+            ally.append(cur_y)
             if index == velo == angle == poro == -1:
                 return segments
             if poro > 1 or poro <= 0:
@@ -182,6 +185,10 @@ class ParticleTracking:
             if velo > 1E10 or velo <= 0:
                 velo = velo_last_step
             velo_last_step = velo
+
+            next_x = cur_x + self.step_size * math.sin(angle * pi_over_180)
+            next_y = cur_y + self.step_size * math.cos(angle * pi_over_180)
+
             if index != -9999:
                 if steps == 0:
                     print("The {} source point is in a water body! x = {}, y = {}".format(oid, cur_x, cur_y))
@@ -196,9 +203,26 @@ class ParticleTracking:
                             segments[-2][-2] = segments[-1][-2]
                             segments = segments[:-1]
                 return segments
-
-            next_x = cur_x + self.step_size * math.sin(angle * pi_over_180)
-            next_y = cur_y + self.step_size * math.cos(angle * pi_over_180)
+            for xx, yy in zip(allx, ally):
+                if abs(next_x - xx) < self.step_size/100 and abs(next_y - yy) < self.step_size/100:
+                    "If the next point is the same as the previous point, return the segments."
+                    point = arcpy.Point(cur_x, cur_y)
+                    point_geometry = arcpy.PointGeometry(point)
+                    min_distance = float('inf')
+                    min_fid = -1
+                    with arcpy.da.SearchCursor(self.water_bodies, ["FID", "SHAPE@"]) as cursor:
+                        for row in cursor:
+                            fid = row[0]
+                            polygon_geometry = row[1]
+                            distance = point_geometry.distanceTo(polygon_geometry)
+                            if distance < min_distance:
+                                min_distance = distance
+                                min_fid = fid
+                    if min_distance < self.step_size/100:
+                        segments[-1][-2] = int(min_fid)
+                        for seg in segments:
+                            seg[-1] = int(min_fid)
+                    return segments
 
             seg_polyline = self.polyline(cur_x, cur_y, next_x, next_y)
 
