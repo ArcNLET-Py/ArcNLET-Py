@@ -29,6 +29,7 @@ Welcome to ArcNLET-Py User's Manual documentation!
    UserManual/usingloadestimation
    UserManual/visualization
    UserManual/sensitivityandcalibration
+   UserManual/temporalvariation
    UserManual/references
 
 Indices and tables
