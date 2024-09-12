@@ -1,4 +1,4 @@
-# ArcNLET-Py: ArcGIS Pro Python Toolbox
+# ArcNLET-Py: ArcGIS Pro Python Toolbox 
 
 ArcNLET-Py, the Python version of the ArcGIS-Based Nitrogen Load Estimation Toolbox, is developed for ArcGIS Pro. It facilitates the study of nitrogen fate and transport in surficial groundwater aquifers. ArcNLET now includes advanced functionalities for modeling phosphorus transport and estimating phosphorus loads.
 
@@ -22,6 +22,15 @@ ArcNLET-Py serves a crucial role in simulating the movement and transformation o
 - **Nitrogen Plume Estimation**: Determines nitrogen travel paths and estimates plume formation with the Transport Module.
 - **Phosphorus Plume Estimation**: Models phosphorus transport using Langmuir and Linear isotherms with the Transport Module.
 - **Load Calculation**: Computes nitrogen and/or phosphorus removal and final load estimates to water bodies with the Load Estimation Module.
+- **Temporal Variation Evaluation**: Empirically evaluates the temporal variation of nitrogen and phosphorus concentrations and loads by accounting for fluctuations in groundwater levels at monitoring wells.
+
+### Temporal Variation Method
+
+ArcNLET-Py introduces a method to empirically evaluate the **temporal variation** of nitrogen and phosphorus concentrations and loads. While the model typically assumes steady-state groundwater flow, this new method addresses the dynamic nature of real-world hydrological conditions. 
+
+By selecting study areas where long-term groundwater level and nitrogen/phosphorus concentration data are available (e.g., Turkey Creek sub-basin), the method enables users to analyze how **high**, **average**, and **low groundwater levels** affect the load estimates. This approach is particularly useful in assessing how fluctuating conditions impact nitrogen and phosphorus transport over time.
+
+For example, continuous measurements from monitoring wells provide valuable data that allow users to evaluate the differences in estimated loads under varying groundwater levels. This method highlights the importance of temporal variation in environmental modeling and provides deeper insights into the uncertainty associated with steady-state assumptions.
 
 ## Module Overview
 
@@ -111,6 +120,3 @@ The older version of ArcNLET can be found on the [FSU Website](https://atmos.eoa
 ---
 
 *Please note: This README provides a project overview. For comprehensive guidance, refer to the user manual.*
-
-
-
