@@ -390,8 +390,7 @@ listed in Table 17-3 do not represent other sites. It may be useful to conduct
 more studies to explore whether more realistic values of correction factors
 can be obtained.
 
-Reference
----------
+**Reference**
 
 Ayres Associates, 1993. An investigation of the surface water contamination
   potential from on-site sewage disposal systems (OSDS) in the Turkey Creek
