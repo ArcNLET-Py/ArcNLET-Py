@@ -247,6 +247,8 @@ is determined by the amount of denitrification.
    and (c) PO\ :sub:`4`-P at the water table under the three scenarios of high,
    average, and low groundwater levels.
 
+| :raw-html:`<br></br>`
+
   .. figure:: ./media/temporalvariationMedia/media/image6.png
    :align: center
    :alt: Profiles of the high, average, and low groundwater 
