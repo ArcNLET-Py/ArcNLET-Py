@@ -257,7 +257,7 @@ is determined by the amount of denitrification.
    and (c) PO\ :sub:`4`-P under the three scenarios of high, average, and low
    groundwater levels.
 
-  The relation between the PO\ :sub:`4`-P concentration and groundwater level is
+The relation between the PO\ :sub:`4`-P concentration and groundwater level is
 simpler than that of nitrogen, because the PO\ :sub:`4`-P concentration continues
 decreasing when PO\ :sub:`4`-P moves in soils due to PO\ :sub:`4`-P adsorption and
 precipitation. This relation is observed in Figures 17-5(c) and 17-6(c).
