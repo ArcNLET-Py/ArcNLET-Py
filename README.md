@@ -26,7 +26,7 @@ ArcNLET-Py serves a crucial role in simulating the movement and transformation o
 
 ### Temporal Variation Method
 
-ArcNLET-Py introduces a method to empirically evaluate the **temporal variation** of nitrogen and phosphorus concentrations and loads. While the model typically assumes steady-state groundwater flow, this new method addresses the dynamic nature of real-world hydrological conditions. 
+ArcNLET-Py introduces a method to empirically evaluate the [Temporal Variation](https://arcnlet-py.readthedocs.io/en/latest/UserManual/temporalvariation.html). of nitrogen and phosphorus concentrations and loads. While the model typically assumes steady-state groundwater flow, this new method addresses the dynamic nature of real-world hydrological conditions. 
 
 By selecting study areas where long-term groundwater level and nitrogen/phosphorus concentration data are available (e.g., Turkey Creek sub-basin), the method enables users to analyze how **high**, **average**, and **low groundwater levels** affect the load estimates. This approach is particularly useful in assessing how fluctuating conditions impact nitrogen and phosphorus transport over time.
 
