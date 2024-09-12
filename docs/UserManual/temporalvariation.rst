@@ -230,14 +230,7 @@ the denitrification process reduces NO\ :sub:`3`-N concentrations when groundwat
 levels become lower. The final NO\ :sub:`3`-N concentrations depend on the amount of
 nitrification and denitrification. Figure 17-5(a) for NO\ :sub:`3`-N concentrations
 indicates that denitrification plays an important role to determine NO\ :sub:`3`-N
-concentrations. This is observed in Figure 17-6 that shows the relation
-between NH\ :sub:`4`-N and NO\ :sub:`3`-N concentrations and groundwater level for one OSTDS
-that appears to be representative. Figure 17-6(b) shows that, when the
-groundwater level decreases, the NH\ :sub:`4`-N concentration monotonically
-decreases because of nitrification. Figure 17-6(a) shows that the NO\ :sub:`3`-N
-concentration increases first because of nitrification and then decreases
-because of denitrification. For Figure 17-6(a), the final NO\ :sub:`3`-N concentration
-is determined by the amount of denitrification.
+concentrations.
 
 .. figure:: ./media/temporalvariationMedia/media/image5.png
    :align: center
@@ -247,7 +240,14 @@ is determined by the amount of denitrification.
    and (c) PO\ :sub:`4`-P at the water table under the three scenarios of high,
    average, and low groundwater levels.
 
-| :raw-html:`<br></br>`
+This is observed in Figure 17-6 that shows the relation
+between NH\ :sub:`4`-N and NO\ :sub:`3`-N concentrations and groundwater level for one OSTDS
+that appears to be representative. Figure 17-6(b) shows that, when the
+groundwater level decreases, the NH\ :sub:`4`-N concentration monotonically
+decreases because of nitrification. Figure 17-6(a) shows that the NO\ :sub:`3`-N
+concentration increases first because of nitrification and then decreases
+because of denitrification. For Figure 17-6(a), the final NO\ :sub:`3`-N concentration
+is determined by the amount of denitrification.
 
   .. figure:: ./media/temporalvariationMedia/media/image6.png
    :align: center
