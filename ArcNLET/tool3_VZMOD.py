@@ -11,6 +11,7 @@ For detailed algorithms, please see https://atmos.eoas.fsu.edu/~mye/VZMOD/user_m
 import datetime
 import arcpy
 import os
+import sys
 import math
 import numpy as np
 import pandas as pd
@@ -175,8 +176,21 @@ class VZMOD:
     def runVZMOD(self):
         arcpy.env.workspace = os.path.abspath(self.workdir)
 
-        file = open(self.output_file, "w")
-        file.write("ArcNLET VZMOD Module \n")
+        try:
+            output_folder = os.path.dirname(self.output_file)
+            if not os.access(output_folder, os.W_OK):
+                arcpy.AddMessage(f"No write permission for the output directory.")
+                raise PermissionError(f"No write permission for the output directory.")
+
+            file = open(self.output_file, "w")
+            file.write("ArcNLET VZMOD Module \n")
+
+        except PermissionError as pe:
+            arcpy.AddMessage(f"No write permission for the output directory.")
+            print(f"Permission error: {pe}")
+            sys.exit(1)
+        except Exception as e:
+            print(f"An error occurred: {e}")
 
         if self.multi_ostds:
             DTW_hete, hydr_hete, poro_hete, soil_hete = self.arcgis_map(self.septic_tank, self.hydraulic_conductivity,

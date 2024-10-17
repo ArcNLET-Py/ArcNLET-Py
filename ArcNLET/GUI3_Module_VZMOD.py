@@ -423,7 +423,7 @@ class InterfaceVZMOD(object):
                                       parameterType="Required",  # Required|Optional|Derived
                                       direction="Output"  # Input|Output
                                       )
-        outputfile0.value = os.path.join(os.getcwd(), "Results.txt")
+        outputfile0.value = os.path.join(os.path.expanduser("~"), "Results.txt")
         outputfile0.enabled = True
 
         inputfile0 = arcpy.Parameter(name="Types of contaminants",
@@ -703,9 +703,9 @@ class InterfaceVZMOD(object):
                 parameters[3].enabled = True
                 parameters[4].enabled = True
                 parameters[5].enabled = True
-                # if parameters[5].altered and parameters[5].value:
-                #     if not parameters[47].hasBeenValidated:
-                #         parameters[47].value = os.path.join(os.path.dirname(parameters[5].valueAsText), "Results.txt")
+                if parameters[5].altered and parameters[5].value:
+                    if not parameters[5].hasBeenValidated:
+                        parameters[47].value = os.path.join(os.path.dirname(parameters[5].valueAsText), "Results.txt")
                 if parameters[2].altered and parameters[2].value:
                     parameters[6].enabled = True
                     parameters[7].enabled = True
@@ -829,6 +829,10 @@ class InterfaceVZMOD(object):
             parameters[43].setErrorMessage("NO3-N concentration must be greater than 0.")
         if parameters[44].value is not None and parameters[44].value < 0:
             parameters[44].setErrorMessage("Phosphate concentration must be greater than 0.")
+        if parameters[47].value is not None:
+            folder_path = os.path.dirname(parameters[47].valueAsText)
+            if not os.access(folder_path, os.W_OK):
+                parameters[47].setErrorMessage("No write permission for the directory.")
 
     def execute(self, parameters, messages) -> None:
         """This is the code that executes when you click the "Run" button."""
