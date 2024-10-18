@@ -75,7 +75,7 @@ class InterfaceTransport(object):
                                    parameterType="Required",  # Required|Optional|Derived
                                    direction="Output",  # Input|Output
                                    )
-        outfile0.value = None
+        outfile0.value = "no3plumes"
 
         outfile1 = arcpy.Parameter(name="Output Plumes of NH\u2084-N",
                                    displayName="Output Plumes of NH\u2084-N (raster)",
@@ -83,7 +83,7 @@ class InterfaceTransport(object):
                                    parameterType="Optional",  # Required|Optional|Derived
                                    direction="Output",  # Input|Output
                                    )
-        outfile1.value = None
+        outfile1.value = "nh4plumes"
 
         outfile2 = arcpy.Parameter(name="Output Plumes info of NO\u2083-N",
                                    displayName="Output Plumes info of NO\u2083-N (point)",
@@ -92,7 +92,7 @@ class InterfaceTransport(object):
                                    direction="Output",  # Input|Output
                                    )
         outfile2.enabled = False
-        outfile2.value = None
+        outfile2.value = "no3plumes_info.shp"
 
         outfile3 = arcpy.Parameter(name="Output Plumes info of NH\u2084-N",
                                    displayName="Output Plumes info of NH\u2084-N (point)",
@@ -101,7 +101,7 @@ class InterfaceTransport(object):
                                    direction="Output",  # Input|Output
                                    )
         outfile3.enabled = False
-        outfile3.value = None
+        outfile3.value = "nh4plumes_info.shp"
 
         outfile4 = arcpy.Parameter(name="Output Plumes of PO\u2084-P",
                                    displayName="Output Plumes of PO\u2084-P (raster)",
@@ -110,7 +110,7 @@ class InterfaceTransport(object):
                                    direction="Output",  # Input|Output
                                    )
         outfile4.enabled = False
-        outfile4.value = None
+        outfile4.value = "po4plumes"
 
         outfile5 = arcpy.Parameter(name="Output Plumes info of PO\u2084-P",
                                    displayName="Output Plumes info of PO\u2084-P (point)",
@@ -119,7 +119,7 @@ class InterfaceTransport(object):
                                    direction="Output",  # Input|Output
                                    )
         outfile5.enabled = False
-        outfile5.value = None
+        outfile5.value = "po4plumes_info.shp"
 
         option0 = arcpy.Parameter(name="Solution type",
                                   displayName="Solution type",
