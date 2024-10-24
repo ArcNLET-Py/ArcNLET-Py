@@ -436,7 +436,7 @@ class InterfaceGroundwaterFlow(object):
             GF = DarcyFlow(dem, wb, ks, poro,
                            smthf1, smthc, fsink, merge, smthf2, usecl, smthc2, zfact, smthflimit,
                            velo, veld, smth, grad)
-            arcpy.AddMessage("Compute Darcy Flow: FINISH")
+            # arcpy.AddMessage("Compute Darcy Flow: FINISH")
             GF.calculateDarcyFlow()
             current_time = time.strftime("%H:%M:%S", time.localtime())
             arcpy.AddMessage(f"{current_time} Compute Darcy Flow: FINISH")

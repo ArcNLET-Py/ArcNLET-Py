@@ -380,7 +380,8 @@ class Transport:
             seg = seg.reset_index(drop=True)
 
             if (seg['SegPrsity'] < 0.01).any() or (seg['SegVel'] < 1E-8).any():
-                arcpy.AddMessage("[Warning]: Skip {}th OSTDS. The Ks or porosity may be missed.\n".format(pathid))
+                arcpy.AddMessage("[Warning]: Skip {}th OSTDS. The Ks or porosity may be missed.\n"
+                                 "Please check particle tracking results".format(pathid))
                 continue
 
             mean_poro = seg['SegPrsity'].mean()
