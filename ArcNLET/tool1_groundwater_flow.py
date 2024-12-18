@@ -187,11 +187,13 @@ class DarcyFlow:
         current_time = time.strftime("%H:%M:%S", time.localtime())
         arcpy.AddMessage("{}         Output files saved".format(current_time))
 
-        arcpy.management.Delete(smoothed_merge_dem)
-        arcpy.management.Delete(smoothed_filled_dem)
-        arcpy.ClearWorkspaceCache_management()
-        if os.path.exists(self.temp_output_dir):
-            shutil.rmtree(self.temp_output_dir)
+        try:
+            arcpy.management.Delete(smoothed_merge_dem)
+            arcpy.management.Delete(smoothed_filled_dem)
+            arcpy.ClearWorkspaceCache_management()
+        except:
+            if os.path.exists(self.temp_output_dir):
+                shutil.rmtree(self.temp_output_dir)
         return
 
     def smoothDEM(self, raster, factor, cellsize, flag_fsink=False, flag=0):

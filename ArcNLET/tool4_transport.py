@@ -134,13 +134,13 @@ class Transport:
             self.nh4_init = None
         if "PO4-P" in self.contaminant_list:
             self.phos_output = os.path.basename(c_poutput) if self.is_file_path(c_poutput) else c_poutput
-            if self.working_dir is None:
-                self.working_dir = os.path.abspath(os.path.dirname(c_poutput))
-            self.phos_output_info = c_poutput_info
             if self.is_file_path(c_poutput):
                 self.phos_dir = os.path.abspath(os.path.dirname(c_poutput))
             else:
                 self.phos_dir = os.path.abspath(os.path.dirname(self.source_location))
+            if self.working_dir is None:
+                self.working_dir = self.phos_dir
+            self.phos_output_info = c_poutput_info
 
             if not any(field.name.lower() == "p_conc" for field in field_list):
                 self.pho_init = phosparam0
@@ -380,7 +380,8 @@ class Transport:
             seg = seg.reset_index(drop=True)
 
             if (seg['SegPrsity'] < 0.01).any() or (seg['SegVel'] < 1E-8).any():
-                arcpy.AddMessage("[Warning]: Skip {}th OSTDS. The Ks or porosity may be missed.\n".format(pathid))
+                arcpy.AddMessage("[Warning]: Skip {}th OSTDS. The Ks or porosity may be missed.\n"
+                                 "Please check particle tracking results".format(pathid))
                 continue
 
             mean_poro = seg['SegPrsity'].mean()
@@ -1754,39 +1755,39 @@ def create_shapefile(save_path, name, crs):
         geometry_type="POINT",
         spatial_reference=crs)
 
-    arcpy.management.AddField(name, "PathID", "LONG")
-    arcpy.management.AddField(name, "is2D", "LONG")
-    arcpy.management.AddField(name, "domBdy", "LONG")
-    arcpy.management.AddField(name, "decayCoeff", "DOUBLE")
-    arcpy.management.AddField(name, "avgVel", "DOUBLE")
-    arcpy.management.AddField(name, "avgPrsity", "DOUBLE")
-    arcpy.management.AddField(name, "DispL", "DOUBLE")
-    arcpy.management.AddField(name, "DispTH", "DOUBLE")
-    arcpy.management.AddField(name, "DispTV", "DOUBLE")
-    arcpy.management.AddField(name, "SourceY", "DOUBLE")
-    arcpy.management.AddField(name, "SourceZ", "DOUBLE")
-    arcpy.management.AddField(name, "MeshDX", "DOUBLE")
-    arcpy.management.AddField(name, "MeshDY", "DOUBLE")
-    arcpy.management.AddField(name, "MeshDZ", "DOUBLE")
-    arcpy.management.AddField(name, "plumeTime", "DOUBLE")
-    arcpy.management.AddField(name, "pathTime", "DOUBLE")
-    arcpy.management.AddField(name, "plumeLen", "DOUBLE")
-    arcpy.management.AddField(name, "pathLen", "DOUBLE")
-    arcpy.management.AddField(name, "plumeArea", "DOUBLE")
-    arcpy.management.AddField(name, "mslnRtNmr", "DOUBLE")
-    arcpy.management.AddField(name, "massInRate", "DOUBLE")
-    arcpy.management.AddField(name, "massRMRate", "DOUBLE")
-    arcpy.management.AddField(name, "avgAngle", "DOUBLE")
-    arcpy.management.AddField(name, "warp", "LONG")
-    arcpy.management.AddField(name, "PostP", "LONG")
-    arcpy.management.AddField(name, "Init_conc", "DOUBLE")
-    arcpy.management.AddField(name, "volFac", "DOUBLE")
-    arcpy.management.AddField(name, "nextConc", "DOUBLE")
-    arcpy.management.AddField(name, "threshConc", "DOUBLE")
-    arcpy.management.AddField(name, "WBId_plume", "LONG")
-    arcpy.management.AddField(name, "WBId_path", "LONG")
-    arcpy.management.AddField(name, "load", "DOUBLE")
-    arcpy.management.AddField(name, "wb_conc", "DOUBLE")
+    arcpy.management.AddField(os.path.join(save_path, name), "PathID", "LONG")
+    arcpy.management.AddField(os.path.join(save_path, name), "is2D", "LONG")
+    arcpy.management.AddField(os.path.join(save_path, name), "domBdy", "LONG")
+    arcpy.management.AddField(os.path.join(save_path, name), "decayCoeff", "DOUBLE")
+    arcpy.management.AddField(os.path.join(save_path, name), "avgVel", "DOUBLE")
+    arcpy.management.AddField(os.path.join(save_path, name), "avgPrsity", "DOUBLE")
+    arcpy.management.AddField(os.path.join(save_path, name), "DispL", "DOUBLE")
+    arcpy.management.AddField(os.path.join(save_path, name), "DispTH", "DOUBLE")
+    arcpy.management.AddField(os.path.join(save_path, name), "DispTV", "DOUBLE")
+    arcpy.management.AddField(os.path.join(save_path, name), "SourceY", "DOUBLE")
+    arcpy.management.AddField(os.path.join(save_path, name), "SourceZ", "DOUBLE")
+    arcpy.management.AddField(os.path.join(save_path, name), "MeshDX", "DOUBLE")
+    arcpy.management.AddField(os.path.join(save_path, name), "MeshDY", "DOUBLE")
+    arcpy.management.AddField(os.path.join(save_path, name), "MeshDZ", "DOUBLE")
+    arcpy.management.AddField(os.path.join(save_path, name), "plumeTime", "DOUBLE")
+    arcpy.management.AddField(os.path.join(save_path, name), "pathTime", "DOUBLE")
+    arcpy.management.AddField(os.path.join(save_path, name), "plumeLen", "DOUBLE")
+    arcpy.management.AddField(os.path.join(save_path, name), "pathLen", "DOUBLE")
+    arcpy.management.AddField(os.path.join(save_path, name), "plumeArea", "DOUBLE")
+    arcpy.management.AddField(os.path.join(save_path, name), "mslnRtNmr", "DOUBLE")
+    arcpy.management.AddField(os.path.join(save_path, name), "massInRate", "DOUBLE")
+    arcpy.management.AddField(os.path.join(save_path, name), "massRMRate", "DOUBLE")
+    arcpy.management.AddField(os.path.join(save_path, name), "avgAngle", "DOUBLE")
+    arcpy.management.AddField(os.path.join(save_path, name), "warp", "LONG")
+    arcpy.management.AddField(os.path.join(save_path, name), "PostP", "LONG")
+    arcpy.management.AddField(os.path.join(save_path, name), "Init_conc", "DOUBLE")
+    arcpy.management.AddField(os.path.join(save_path, name), "volFac", "DOUBLE")
+    arcpy.management.AddField(os.path.join(save_path, name), "nextConc", "DOUBLE")
+    arcpy.management.AddField(os.path.join(save_path, name), "threshConc", "DOUBLE")
+    arcpy.management.AddField(os.path.join(save_path, name), "WBId_plume", "LONG")
+    arcpy.management.AddField(os.path.join(save_path, name), "WBId_path", "LONG")
+    arcpy.management.AddField(os.path.join(save_path, name), "load", "DOUBLE")
+    arcpy.management.AddField(os.path.join(save_path, name), "wb_conc", "DOUBLE")
 
 
 def find_perpendicular_point(x1, y1, x2, y2, distance, x0, y0):

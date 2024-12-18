@@ -42,9 +42,10 @@ class InterfaceLoadEstimation(object):
         param0 = arcpy.Parameter(name="Consideration of NH\u2084-N",
                                  displayName="Consideration of NH\u2084-N",
                                  datatype="GPBoolean",
-                                 parameterType="Required",  # Required|Optional|Derived
+                                 parameterType="Optional",  # Required|Optional|Derived
                                  direction="Input",  # Input|Output
                                  )
+        param0.enabled = True
         param0.value = 0
 
         param1 = arcpy.Parameter(name="Risk Factor",
@@ -58,7 +59,7 @@ class InterfaceLoadEstimation(object):
         infile1 = arcpy.Parameter(name="Input Plumes NO\u2083-N info",
                                   displayName="Input Plumes NO\u2083-N info (Point)",
                                   datatype="GPFeatureLayer",
-                                  parameterType="Required",
+                                  parameterType="Optional",
                                   direction="Input")
         infile1.filter.list = ["Point"]
 
@@ -82,8 +83,9 @@ class InterfaceLoadEstimation(object):
         outfile1 = arcpy.Parameter(name="Output Results for NO\u2083-N",
                                    displayName="Output Results for NO\u2083-N",
                                    datatype="DEFile",
-                                   parameterType="required",
+                                   parameterType="Optional",
                                    direction="Output")
+        # outfile1.value = "NO3N_loading.csv"
 
         outfile2 = arcpy.Parameter(name="Output Results for NH\u2084-N",
                                    displayName="Output Results for NH\u2084-N",
@@ -92,6 +94,7 @@ class InterfaceLoadEstimation(object):
                                    direction="Output")
         outfile2.enabled = False
         # outfile2.parameterDependencies = [param0.name]
+        # outfile2.value = "NH4N_loading.csv"
 
         outfile3 = arcpy.Parameter(name="Output Results for PO\u2084-P",
                                    displayName="Output Results for PO\u2084-P",
@@ -99,6 +102,7 @@ class InterfaceLoadEstimation(object):
                                    parameterType="Optional",
                                    direction="Output")
         outfile3.enabled = False
+        # outfile3.value = "PO4P_loading.csv"
 
         return [inputop, param0, param1, infile1, infile2, infile3, outfile1, outfile2, outfile3]
 
@@ -305,3 +309,4 @@ if __name__ == "__main__":
     class Messenger(object):
         def addMessage(self, message):
             print(message)
+

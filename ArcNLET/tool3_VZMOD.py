@@ -11,6 +11,7 @@ For detailed algorithms, please see https://atmos.eoas.fsu.edu/~mye/VZMOD/user_m
 import datetime
 import arcpy
 import os
+import sys
 import math
 import numpy as np
 import pandas as pd
@@ -90,7 +91,8 @@ class VZMOD:
                  knit, toptnit, beltanit, e2, e3, fs, fwp, Swp, Sl, Sh, kdnt, toptdnt, beltadnt, e1, Sdnt,
                  kd, rho, Temp, disp, NH4, NO3, DTW, dist,
                  phoschoice, rprep, kl, pmax, phoskd, phos,
-                 options, output_file, hetero_ks_theta=0, calc_DTW=0, multi_soil_type=0,
+                 options, output_shapefile, output_txtfile,
+                 hetero_ks_theta=0, calc_DTW=0, multi_soil_type=0,
                  septic_tank=None, hydraulic_conductivity=None, soil_porosity=None, DEM=None,
                  smoothed_DEM=None, soil_type=None):
         """Initialize the load estimation module.
@@ -170,13 +172,29 @@ class VZMOD:
                 self.soil_type = arcpy.Describe(soil_type).catalogPath if not self.is_file_path(
                     soil_type) else soil_type
 
-        self.output_file = output_file if os.path.isabs(output_file) else os.path.join(self.workdir, output_file)
+        self.output_shapefile = output_shapefile if os.path.isabs(output_shapefile) else os.path.join(self.workdir,
+                                                                                                output_shapefile)
+        self.output_txtfile = output_txtfile if os.path.isabs(output_txtfile) else os.path.join(self.workdir,
+                                                                                                output_txtfile)
 
     def runVZMOD(self):
         arcpy.env.workspace = os.path.abspath(self.workdir)
 
-        file = open(self.output_file, "w")
-        file.write("ArcNLET VZMOD Module \n")
+        try:
+            output_folder = os.path.dirname(self.output_txtfile)
+            if not os.access(output_folder, os.W_OK):
+                arcpy.AddMessage(f"No write permission for the output directory.")
+                raise PermissionError(f"No write permission for the output directory.")
+
+            file = open(self.output_txtfile, "w")
+            file.write("ArcNLET VZMOD Module \n")
+
+        except PermissionError as pe:
+            arcpy.AddMessage(f"No write permission for the output directory.")
+            print(f"Permission error: {pe}")
+            sys.exit(1)
+        except Exception as e:
+            print(f"An error occurred: {e}")
 
         if self.multi_ostds:
             DTW_hete, hydr_hete, poro_hete, soil_hete = self.arcgis_map(self.septic_tank, self.hydraulic_conductivity,
@@ -703,28 +721,28 @@ class VZMOD:
 
     def arcgis_map(self, septictankfile, hydraulicfile, porosityfile, dist, DEMfile, smoothedDEMfile, soilfile):
         arcpy.env.workspace = self.workdir
-        tmp = os.path.join(self.workdir, "tmp_shapefile.shp")
-        self.tmp_septictank = tmp
-        arcpy.management.CopyFeatures(septictankfile, tmp)
+        # tmp = os.path.join(self.workdir, "tmp_shapefile.shp")
+        self.tmp_septictank = self.output_shapefile
+        arcpy.management.CopyFeatures(septictankfile, self.tmp_septictank)
         field = []
 
         if self.hetero_ks_theta:
-            arcpy.sa.ExtractMultiValuesToPoints(tmp,
+            arcpy.sa.ExtractMultiValuesToPoints(self.tmp_septictank,
                                                 [[hydraulicfile, "hydro_con"], [porosityfile, "porosity"]], "NONE")
             field.append("hydro_con")
             field.append("porosity")
         if self.calc_DTW:
-            arcpy.sa.ExtractMultiValuesToPoints(tmp, [[DEMfile, "DEM"], [smoothedDEMfile, "smthDEM"]],
+            arcpy.sa.ExtractMultiValuesToPoints(self.tmp_septictank, [[DEMfile, "DEM"], [smoothedDEMfile, "smthDEM"]],
                                                 "NONE")
             field.append("DEM")
             field.append("smthDEM")
         if self.multi_soil_type:
-            arcpy.sa.ExtractMultiValuesToPoints(tmp, [[soilfile, "soiltype"]], "NONE")
+            arcpy.sa.ExtractMultiValuesToPoints(self.tmp_septictank, [[soilfile, "soiltype"]], "NONE")
             field.append("soiltype")
 
         data = []
         if bool(field):
-            with arcpy.da.SearchCursor(tmp, field) as cursor:
+            with arcpy.da.SearchCursor(self.tmp_septictank, field) as cursor:
                 for row in cursor:
                     data.append(row)
 
@@ -844,18 +862,18 @@ class VZMOD:
                             else:
                                 row[4] = max(self.DTW, 0.1)
                         cursor.updateRow(row)
-        arcpy.management.Delete(self.septic_tank)
-        arcpy.management.Rename(self.tmp_septictank, os.path.basename(self.septic_tank))
+        # arcpy.management.Delete(self.septic_tank)
+        # arcpy.management.Rename(self.tmp_septictank, os.path.basename(self.septic_tank))
         if not self.keep_parameters:
             if self.hetero_ks_theta:
-                arcpy.management.DeleteField(self.septic_tank, "hydro_con")
-                arcpy.management.DeleteField(self.septic_tank, "porosity")
+                arcpy.management.DeleteField(self.tmp_septictank, "hydro_con")
+                arcpy.management.DeleteField(self.tmp_septictank, "porosity")
             if self.calc_DTW:
-                arcpy.management.DeleteField(self.septic_tank, "smthDEM")
-                arcpy.management.DeleteField(self.septic_tank, "DEM")
+                arcpy.management.DeleteField(self.tmp_septictank, "smthDEM")
+                arcpy.management.DeleteField(self.tmp_septictank, "DEM")
             if self.multi_soil_type:
-                arcpy.management.DeleteField(self.septic_tank, "soiltype")
-            arcpy.management.DeleteField(self.septic_tank, "Depth")
+                arcpy.management.DeleteField(self.tmp_septictank, "soiltype")
+            arcpy.management.DeleteField(self.tmp_septictank, "Depth")
 
     @staticmethod
     def is_file_path(input_string):

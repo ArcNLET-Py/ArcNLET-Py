@@ -819,12 +819,23 @@ class Preprocessing(object):
                     ISNULL(thickness_wt_sandtotal_r, 0) AS thickness_wt_sandtotal_r, sum_thickness_sandtotal_r,
                     comppct_r, SUM_COMP_PCT, ksat_l, ksat_r, ksat_h, wsatiated_l, wsatiated_r, wsatiated_h, dbovendry_l,
                     dbovendry_r, dbovendry_h, partdensity, claytotal_r, silttotal_r, sandtotal_r, 
-                    thickness_wt_ksat_l / SUM (ISNULL(thickness_wt_ksat_l / ksat_l, 1)) OVER (PARTITION BY #main.cokey)
-                     AS DEPTH_WEIGHTED_AVERAGE1, 
-                    thickness_wt_ksat_r / SUM (ISNULL(thickness_wt_ksat_r / ksat_r, 1)) OVER (PARTITION BY #main.cokey)
-                     AS DEPTH_WEIGHTED_AVERAGE2,
-                    thickness_wt_ksat_h / SUM (ISNULL(thickness_wt_ksat_h / ksat_h, 1)) OVER (PARTITION BY #main.cokey)
-                     AS DEPTH_WEIGHTED_AVERAGE3,
+                    CASE 
+                        WHEN SUM(ISNULL(thickness_wt_ksat_l / NULLIF(ksat_l, 0), 1)) OVER (PARTITION BY #main.cokey) = 0 
+                        THEN 0
+                        ELSE thickness_wt_ksat_l / NULLIF(SUM(ISNULL(thickness_wt_ksat_l / NULLIF(ksat_l, 0), 1)) OVER (PARTITION BY #main.cokey), 0)
+                    END AS DEPTH_WEIGHTED_AVERAGE1,
+                    
+                    CASE 
+                        WHEN SUM(ISNULL(thickness_wt_ksat_r / NULLIF(ksat_r, 0), 1)) OVER (PARTITION BY #main.cokey) = 0 
+                        THEN 0
+                        ELSE thickness_wt_ksat_r / NULLIF(SUM(ISNULL(thickness_wt_ksat_r / NULLIF(ksat_r, 0), 1)) OVER (PARTITION BY #main.cokey), 0)
+                    END AS DEPTH_WEIGHTED_AVERAGE2,
+                    
+                    CASE 
+                        WHEN SUM(ISNULL(thickness_wt_ksat_h / NULLIF(ksat_h, 0), 1)) OVER (PARTITION BY #main.cokey) = 0 
+                        THEN 0
+                        ELSE thickness_wt_ksat_h / NULLIF(SUM(ISNULL(thickness_wt_ksat_h / NULLIF(ksat_h, 0), 1)) OVER (PARTITION BY #main.cokey), 0)
+                    END AS DEPTH_WEIGHTED_AVERAGE3,
                     ((thickness_wt_wsatiated_l / (CASE WHEN sum_thickness_wsatiated_l = 0 THEN 1 ELSE 
                         sum_thickness_wsatiated_l END)) * wsatiated_l) AS DEPTH_WEIGHTED_AVERAGE4,
                     ((thickness_wt_wsatiated_r / (CASE WHEN sum_thickness_wsatiated_r = 0 THEN 1 ELSE 

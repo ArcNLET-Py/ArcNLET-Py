@@ -72,10 +72,11 @@ class InterfaceTransport(object):
         outfile0 = arcpy.Parameter(name="Output Plumes of NO\u2083-N",
                                    displayName="Output Plumes of NO\u2083-N (raster)",
                                    datatype=["GPRasterLayer"],
-                                   parameterType="Required",  # Required|Optional|Derived
+                                   parameterType="Optional",  # Required|Optional|Derived
                                    direction="Output",  # Input|Output
                                    )
-        outfile0.value = None
+        # outfile0.value = "no3plumes"
+        # outfile0.value = None
 
         outfile1 = arcpy.Parameter(name="Output Plumes of NH\u2084-N",
                                    displayName="Output Plumes of NH\u2084-N (raster)",
@@ -83,7 +84,8 @@ class InterfaceTransport(object):
                                    parameterType="Optional",  # Required|Optional|Derived
                                    direction="Output",  # Input|Output
                                    )
-        outfile1.value = None
+        # outfile1.value = "nh4plumes"
+        # outfile1.value = None
 
         outfile2 = arcpy.Parameter(name="Output Plumes info of NO\u2083-N",
                                    displayName="Output Plumes info of NO\u2083-N (point)",
@@ -92,7 +94,7 @@ class InterfaceTransport(object):
                                    direction="Output",  # Input|Output
                                    )
         outfile2.enabled = False
-        outfile2.value = None
+        # outfile2.value = "no3plumes_info.shp"
 
         outfile3 = arcpy.Parameter(name="Output Plumes info of NH\u2084-N",
                                    displayName="Output Plumes info of NH\u2084-N (point)",
@@ -101,7 +103,7 @@ class InterfaceTransport(object):
                                    direction="Output",  # Input|Output
                                    )
         outfile3.enabled = False
-        outfile3.value = None
+        # outfile3.value = "nh4plumes_info.shp"
 
         outfile4 = arcpy.Parameter(name="Output Plumes of PO\u2084-P",
                                    displayName="Output Plumes of PO\u2084-P (raster)",
@@ -110,7 +112,7 @@ class InterfaceTransport(object):
                                    direction="Output",  # Input|Output
                                    )
         outfile4.enabled = False
-        outfile4.value = None
+        # outfile4.value = "po4plumes"
 
         outfile5 = arcpy.Parameter(name="Output Plumes info of PO\u2084-P",
                                    displayName="Output Plumes info of PO\u2084-P (point)",
@@ -119,7 +121,7 @@ class InterfaceTransport(object):
                                    direction="Output",  # Input|Output
                                    )
         outfile5.enabled = False
-        outfile5.value = None
+        # outfile5.value = "po4plumes_info.shp"
 
         option0 = arcpy.Parameter(name="Solution type",
                                   displayName="Solution type",
@@ -190,7 +192,7 @@ class InterfaceTransport(object):
         option6 = arcpy.Parameter(name="Maximum plumes of continuous calculation for one time",
                                   displayName="Maximum plumes of continuous calculation for one time",
                                   datatype="Long",
-                                  parameterType="Optional",  # Required|Optional|Derived
+                                  parameterType="Required",  # Required|Optional|Derived
                                   direction="Input",  # Input|Output
                                   category="Solution Options",  # Category
                                   )
@@ -209,7 +211,7 @@ class InterfaceTransport(object):
         param1 = arcpy.Parameter(name="Mass input of phosphorus [mg/d]",
                                  displayName="Mass input of phosphorus [mg/d]",
                                  datatype="Double",
-                                 parameterType="Required",  # Required|Optional|Derived
+                                 parameterType="Optional",  # Required|Optional|Derived
                                  direction="Input",  # Input|Output
                                  category="Source Plane Parameters",  # Category
                                  )
@@ -238,7 +240,7 @@ class InterfaceTransport(object):
         param4 = arcpy.Parameter(name="Maximum Z",
                                   displayName="Maximum Z [m]",
                                   datatype="GPBoolean",
-                                  parameterType="Required",  # Required|Optional|Derived
+                                  parameterType="Optional",  # Required|Optional|Derived
                                   direction="Input",  # Input|Output
                                   category="Source Plane Parameters",  # Category
                                   )
@@ -283,7 +285,7 @@ class InterfaceTransport(object):
         no3param0 = arcpy.Parameter(name="Concentration of NO\u2083-N",
                                     displayName="Concentration of NO\u2083-N [mg/l]",
                                     datatype="Double",
-                                    parameterType="Required",  # Required|Optional|Derived
+                                    parameterType="Optional",  # Required|Optional|Derived
                                     direction="Input",  # Input|Output
                                     category="Nitrogen Parameters",  # Category
                                     )
@@ -292,7 +294,7 @@ class InterfaceTransport(object):
         no3param1 = arcpy.Parameter(name="NO\u2083-N Dispersivity \u03B1L",
                                     displayName="NO\u2083-N Dispersivity \u03B1L [m]",
                                     datatype="Double",
-                                    parameterType="Required",  # Required|Optional|Derived
+                                    parameterType="Optional",  # Required|Optional|Derived
                                     direction="Input",  # Input|Output
                                     category="Nitrogen Parameters",  # Category
                                     )
@@ -301,7 +303,7 @@ class InterfaceTransport(object):
         no3param2 = arcpy.Parameter(name="NO\u2083-N Dispersivity \u03B1TH",
                                     displayName="NO\u2083-N Dispersivity \u03B1TH [m]",
                                     datatype="Double",
-                                    parameterType="Required",  # Required|Optional|Derived
+                                    parameterType="Optional",  # Required|Optional|Derived
                                     direction="Input",  # Input|Output
                                     category="Nitrogen Parameters",  # Category
                                     )
@@ -310,7 +312,7 @@ class InterfaceTransport(object):
         no3param3 = arcpy.Parameter(name="Denitrification Decay Rate",
                                     displayName="Denitrification Decay Rate [1/d]",
                                     datatype="Double",
-                                    parameterType="Required",  # Required|Optional|Derived
+                                    parameterType="Optional",  # Required|Optional|Derived
                                     direction="Input",  # Input|Output
                                     category="Nitrogen Parameters",  # Category
                                     )
@@ -391,7 +393,7 @@ class InterfaceTransport(object):
         phosparam3 = arcpy.Parameter(name="Precipitation rate [mg/kg 1/day]",
                                      displayName="Rprecip [mg/kg 1/day]",
                                      datatype="GPDouble",
-                                     parameterType="Required",  # Required|Optional|Derived
+                                     parameterType="Optional",  # Required|Optional|Derived
                                      direction="Input",
                                      category="Phosphorus Parameters")
         phosparam3.value = 0.002
@@ -399,7 +401,7 @@ class InterfaceTransport(object):
         phosparam4 = arcpy.Parameter(name="Sorption isotherm",
                                      displayName="Sorption isotherm",
                                      datatype="String",
-                                     parameterType="Required",  # Required|Optional|Derived
+                                     parameterType="Optional",  # Required|Optional|Derived
                                      direction="Input",
                                      category="Phosphorus Parameters")
         phoschoices = ["Linear", "Langmuir"]
@@ -409,7 +411,7 @@ class InterfaceTransport(object):
         phosparam5 = arcpy.Parameter(name="Linear distribution coefficient [L/kg]",
                                      displayName="Linear distribution coefficient [L/kg]",
                                      datatype="GPDouble",
-                                     parameterType="Required",  # Required|Optional|Derived
+                                     parameterType="Optional",  # Required|Optional|Derived
                                      direction="Input",
                                      category="Phosphorus Parameters")
         phosparam5.value = 15.1
@@ -417,7 +419,7 @@ class InterfaceTransport(object):
         phosparam6 = arcpy.Parameter(name="The coefficient in langmuir equation [L/mg]",
                                      displayName="Langmuir coefficient [L/mg]",
                                      datatype="GPDouble",
-                                     parameterType="Required",  # Required|Optional|Derived
+                                     parameterType="Optional",  # Required|Optional|Derived
                                      direction="Input",
                                      category="Phosphorus Parameters")
         phosparam6.value = 0.2
@@ -425,7 +427,7 @@ class InterfaceTransport(object):
         phosparam7 = arcpy.Parameter(name="Maximum sorption capacity [mg P / kg]",
                                      displayName="Maximum sorption capacity [mg P / kg]",
                                      datatype="GPDouble",
-                                     parameterType="Required",  # Required|Optional|Derived
+                                     parameterType="Optional",  # Required|Optional|Derived
                                      direction="Input",
                                      category="Phosphorus Parameters")
         phosparam7.value = 237
@@ -636,7 +638,7 @@ class InterfaceTransport(object):
             if parameters[0].value == "Nitrogen and Phosphorus" or parameters[0].value == "Phosphorus":
                 phos_exists = any(field.name.lower() == "p_conc" for field in field_list)
                 if phos_exists:
-                    with arcpy.da.SearchCursor(source_location, ["P_conc"]) as cursor:
+                    with arcpy.da.SearchCursor(source_location, ["p_conc"]) as cursor:
                         for row in cursor:
                             p = float(row[0])
                             if p < 0:
