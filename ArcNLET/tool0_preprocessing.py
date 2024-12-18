@@ -89,6 +89,18 @@ class Preprocessing(object):
         arcpy.env.workspace = os.path.abspath(self.workdir)
         wgs84 = arcpy.SpatialReference(4326)
 
+        total_points = 0
+        with arcpy.da.UpdateCursor(self.area, ["SHAPE@"]) as cursor:
+            for row in cursor:
+                for part in row[0]:
+                    total_points += len(part)
+        if total_points > 15000:
+            arcpy.AddMessage(
+                    f"Input area exceeds the maximum point limit (15000).\n"
+                    f"Current point count: {total_points}.\n"
+                    "Excessive points may cause SSURGO Database to return incorrect results.")
+            raise Exception("Input area exceeds the maximum point limit (15000).")
+
         # convert to WGS84
         current_time = time.strftime("%H:%M:%S", time.localtime())
         arcpy.AddMessage(f"{current_time}     Preprocessing: Convert to WGS84")

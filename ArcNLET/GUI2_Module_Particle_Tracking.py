@@ -141,6 +141,8 @@ class InterfaceParticleTracking(object):
             crs1 = desc.spatialReference
             if crs1.linearUnitName != 'Meter':
                 parameters[0].setErrorMessage("The source locations must be in meters.")
+            pointfile = arcpy.management.GetCount(desc.catalogPath)
+            point_count = int(pointfile.getOutput(0))
 
         if parameters[1].altered:
             wb = parameters[1].value
@@ -178,6 +180,13 @@ class InterfaceParticleTracking(object):
                 parameters[4].setErrorMessage("Input porosity must have only one band.")
             if crs5.linearUnitName != 'Meter':
                 parameters[4].setErrorMessage("The porosity must be in meters.")
+
+        if parameters[0] and parameters[5].value:
+            if point_count > 1000:
+                parameters[5].setWarningMessage(
+                                                "The 'Flow Path Truncation' function is not recommended because a large "
+                                                "number of points can significantly reduce calculation efficiency."
+                                                )
 
         if parameters[0].altered and parameters[1].altered and parameters[2].altered and parameters[3].altered and \
                 parameters[4].altered:

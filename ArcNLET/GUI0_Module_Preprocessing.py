@@ -136,6 +136,25 @@ class InterfacePreprocessing(object):
             feature_count = arcpy.management.GetCount(area).getOutput(0)
             if int(feature_count) > 1:
                 parameters[0].setErrorMessage("Input area should be a single polygon.")
+                return
+
+            total_points = 0
+            with arcpy.da.UpdateCursor(area, ["SHAPE@"]) as cursor:
+                for row in cursor:
+                    if row[0].isMultipart:
+                        parameters[0].setErrorMessage("Input area should not be multipart polygon.")
+                        return
+
+                    for part in row[0]:
+                        total_points += len(part)
+
+            if total_points > 15000:
+                parameters[0].setErrorMessage(
+                    f"Input area exceeds the maximum point limit (15000).\n"
+                    f"Current point count: {total_points}.\n"
+                    "Excessive points may cause SSURGO Database to return incorrect results."
+                )
+                return
 
         if parameters[1].altered:
             wkt = parameters[1].value

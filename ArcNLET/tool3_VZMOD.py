@@ -752,8 +752,10 @@ class VZMOD:
             poro_hete = data["porosity"].to_numpy() if self.hetero_ks_theta else None
             soil_hete = data["soiltype"] if self.multi_soil_type else None
 
-            hydr_hete[hydr_hete < 0] = 10
-            poro_hete[poro_hete < 0] = 0.4
+            if hydr_hete:
+                hydr_hete[hydr_hete < 0] = 10
+            if poro_hete:
+                poro_hete[poro_hete < 0] = 0.4
 
             # arcpy.management.Delete(tmp)
             return DTW_hete, hydr_hete, poro_hete, soil_hete
