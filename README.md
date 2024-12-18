@@ -1,10 +1,25 @@
 # ArcNLET-Py: ArcGIS Pro Python Toolbox 
 
-ArcNLET-Py, the Python version of the ArcGIS-Based Nitrogen Load Estimation Toolbox, is developed for ArcGIS Pro. It facilitates the study of nitrogen fate and transport in surficial groundwater aquifers. ArcNLET now includes advanced functionalities for modeling phosphorus transport and estimating phosphorus loads.
+ArcNLET-Py, the Python version of the ArcGIS-Based Nutrient Load Estimation Toolbox, is developed for ArcGIS Pro. It facilitates the study of nitrogen fate and transport in surficial groundwater aquifers. ArcNLET now includes advanced functionalities for modeling phosphorus transport and estimating phosphorus loads.
 
-The ArcNLET Assistant is currently in preliminary development and is designed to assist users by answering questions and providing guidance on using ArcNLET. 
-You can access this GPT-powered assistant through the URL provided below.
-https://chatgpt.com/g/g-K7j2iDlDK-arcnlet-assistant
+## Upcoming Advanced Training (January 2025)
+
+In January 2025, we will host an advanced training session focusing on the application of ArcGIS Pro and ArcNLET-Py to real-world scenarios. This training will highlight:
+
+- Model calibration techniques using field data (e.g., from the Turkey Creek area) to fine-tune ArcNLET-Py outputs.
+- Implementation and interpretation of the new phosphorus functions, including PO₄-P precipitation and sorption modeling.
+- Best practices for using ArcNLET-Py in real-world applications.
+
+Further details about the training schedule, agenda, and registration will be provided as the event approaches.
+
+Visit the ArcNLET YouTube Channel for a preview of the training. 
+[ArcNLET Videos](https://www.youtube.com/@ArcNLET) 
+
+## ArcNLET Assistant
+
+The ArcNLET Assistant is currently in preliminary development and is designed to assist users by answering questions and providing guidance on using ArcNLET-Py. You can access this GPT-powered assistant through the URL provided below.
+
+[ChatGPT ArcNLET Assistant](https://chatgpt.com/g/g-meMAcqHW4-arcnlet-assistant)
 
 ## Introduction
 
