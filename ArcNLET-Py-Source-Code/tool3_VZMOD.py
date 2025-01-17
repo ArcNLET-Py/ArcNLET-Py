@@ -1,7 +1,7 @@
 """
 This script contains the VZMOD module of ArcNLET model in the ArcGIS Python Toolbox.
 
-For detailed algorithms, please see https://atmos.eoas.fsu.edu/~mye/VZMOD/user_manual.pdf
+For detailed algorithms, please see https://atmos.eoas.fsu.edu/~mye/ArcNLET and then find "techican_manual.pdf"
 
 @author: Wei Mao <wm23a@fsu.edu>， Michael Core <mcore@fsu.edu>, Ming Ye <mye@fsu.edu>
             The Department of Earth, Ocean, and Atmospheric Science, Florida State University
