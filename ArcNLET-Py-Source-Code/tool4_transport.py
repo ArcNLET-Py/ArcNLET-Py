@@ -691,19 +691,19 @@ class Transport:
             no3_plume_len = nx_old
             nh4_plume_len = nx_old
             pho_plume_len = nx_old
-            if self.post_process != 'none':
-                if filtered_results[0] is not None and filtered_results[0].shape[1] < nx_old:
-                    nh4_plume_len = filtered_results[0].shape[1]
-                elif filtered_results[0] is None:
-                    nh4_plume_len = 0
-                if filtered_results[1] is not None and filtered_results[1].shape[1] < nx_old:
-                    no3_plume_len = filtered_results[1].shape[1]
-                elif filtered_results[1] is None:
-                    no3_plume_len = 0
-                if filtered_results[2] is not None and filtered_results[2].shape[1] < nx_old:
-                    pho_plume_len = filtered_results[2].shape[1]
-                elif filtered_results[2] is None:
-                    pho_plume_len = 0
+            # if self.post_process != 'none':
+            if filtered_results[0] is not None and filtered_results[0].shape[1] < nx_old:
+                nh4_plume_len = filtered_results[0].shape[1]
+            elif filtered_results[0] is None:
+                nh4_plume_len = 0
+            if filtered_results[1] is not None and filtered_results[1].shape[1] < nx_old:
+                no3_plume_len = filtered_results[1].shape[1]
+            elif filtered_results[1] is None:
+                no3_plume_len = 0
+            if filtered_results[2] is not None and filtered_results[2].shape[1] < nx_old:
+                pho_plume_len = filtered_results[2].shape[1]
+            elif filtered_results[2] is None:
+                pho_plume_len = 0
             output_list = [point, nh4_plume_len, no3_plume_len, pho_plume_len]
             return filtered_results, output_list
 
