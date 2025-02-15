@@ -103,7 +103,7 @@ class ParticleTracking:
             geometry_type="POLYLINE",
             spatial_reference=self.crs)
 
-        arcpy.AddField_management(self.output_fc, "PathID", "LONG")
+        arcpy.AddField_management(self.output_fc, "OSTDS_ID", "LONG")
         arcpy.AddField_management(self.output_fc, "SegID", "LONG")
         arcpy.AddField_management(self.output_fc, "TotDist", "DOUBLE")
         arcpy.AddField_management(self.output_fc, "TotTime", "DOUBLE")
@@ -127,6 +127,17 @@ class ParticleTracking:
 
         self.create_shapefile()
 
+        # add a new column named OSTDS_ID
+        new_field = 'OSTDS_ID'
+        fields = [field.name for field in arcpy.ListFields(self.source_location)]
+        if new_field not in fields:
+            arcpy.AddField_management(self.source_location, new_field, "LONG")
+
+        with arcpy.da.UpdateCursor(self.source_location, ["FID", new_field]) as cursor:
+            for row in cursor:
+                row[1] = row[0]
+                cursor.updateRow(row)
+
         count = arcpy.management.GetCount(self.source_location)
         segments = []
 
@@ -136,7 +147,7 @@ class ParticleTracking:
             arcpy.AddError("No source location found!")
             return
         else:
-            with arcpy.da.SearchCursor(self.source_location, ["OID@", "SHAPE@XY"]) as cursor:
+            with arcpy.da.SearchCursor(self.source_location, [new_field, "SHAPE@XY"]) as cursor:
                 for row in cursor:
                     oid = row[0]
                     point = row[1]
@@ -144,7 +155,7 @@ class ParticleTracking:
                     segments.extend(segment)
 
         with arcpy.da.InsertCursor(self.output_fc,
-                                   ["SHAPE@", "PathID", "SegID", "TotDist", "TotTime", "SegPrsity", "SegVel",
+                                   ["SHAPE@", "OSTDS_ID", "SegID", "TotDist", "TotTime", "SegPrsity", "SegVel",
                                     "DirAngle", "WBId", "PathWBId"]) as cursor:
             for seg in segments:
                 cursor.insertRow(seg)

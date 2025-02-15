@@ -318,18 +318,18 @@ class Transport:
         info_names = self.create_new_plume_data_shapefile(start_num, end_num, flag)
 
         # read the segments feature class (flow paths)
-        colname = ["Shape", "PathID", "SegID", "TotDist", "TotTime", "SegPrsity", "SegVel", "DirAngle", "WBId",
+        colname = ["Shape", "OSTDS_ID", "SegID", "TotDist", "TotTime", "SegPrsity", "SegVel", "DirAngle", "WBId",
                    "PathWBId"]
         data = []
         with arcpy.da.SearchCursor(self.particle_path,
-                                   ["SHAPE@", "PathID", "SegID", "TotDist", "TotTime", "SegPrsity", "SegVel",
+                                   ["SHAPE@", "OSTDS_ID", "SegID", "TotDist", "TotTime", "SegPrsity", "SegVel",
                                     "DirAngle", "WBId", "PathWBId"]) as cursor:
             for row in cursor:
                 data.append(row)
         segments = pd.DataFrame(data, columns=colname)
-        sorted_segments = segments.sort_values(by=['PathID', 'SegID'])
+        sorted_segments = segments.sort_values(by=['OSTDS_ID', 'SegID'])
 
-        sl_segments = sorted_segments[(sorted_segments['PathID'] >= start_num) & (sorted_segments['PathID'] < end_num)]
+        sl_segments = sorted_segments[(sorted_segments['OSTDS_ID'] >= start_num) & (sorted_segments['OSTDS_ID'] < end_num)]
         del segments
         del sorted_segments
 
@@ -370,18 +370,18 @@ class Transport:
             sys.exit(-1)
         plume_info = []
 
-        for pathid in sl_segments['PathID'].unique():
+        for ostdsid in sl_segments['OSTDS_ID'].unique():
             current_time = time.strftime("%H:%M:%S", time.localtime())
-            arcpy.AddMessage("{}     Calculating plume for location: {}".format(current_time, pathid))
+            arcpy.AddMessage("{}     Calculating plume for location: {}".format(current_time, ostdsid))
             # memoryview, _ = self.get_memory_usage()
             # arcpy.AddMessage("Memory usage before calculation: {} GB".format(memoryview))
 
-            seg = sl_segments[sl_segments['PathID'] == pathid]
+            seg = sl_segments[sl_segments['OSTDS_ID'] == ostdsid]
             seg = seg.reset_index(drop=True)
 
             if (seg['SegPrsity'] < 0.01).any() or (seg['SegVel'] < 1E-8).any():
                 arcpy.AddMessage("[Warning]: Skip {}th OSTDS. The Ks or porosity may be missed.\n"
-                                 "Please check particle tracking results".format(pathid))
+                                 "Please check particle tracking results".format(ostdsid))
                 continue
 
             mean_poro = seg['SegPrsity'].mean()
@@ -394,31 +394,31 @@ class Transport:
 
             # calculate a single plume
             current_time = time.strftime("%H:%M:%S", time.localtime())
-            arcpy.AddMessage("{}          Calculating reference plume for location: {}".format(current_time, pathid))
-            filtered, tmp_list = self.calculate_single_plume(pathid, mean_poro, mean_velo, max_dist)
+            arcpy.AddMessage("{}          Calculating reference plume for location: {}".format(current_time, ostdsid))
+            filtered, tmp_list = self.calculate_single_plume(ostdsid, mean_poro, mean_velo, max_dist)
             filtered_nh4, filtered_no3, filtered_pho = filtered
             if filtered_no3 is None and filtered_nh4 is None and filtered_pho is None:
                 continue
 
             # calculate info file
             current_time = time.strftime("%H:%M:%S", time.localtime())
-            arcpy.AddMessage("{}          Calculating info file for location: {}".format(current_time, pathid))
+            arcpy.AddMessage("{}          Calculating info file for location: {}".format(current_time, ostdsid))
             xvalue, yvalue = tmp_list[0].firstPoint.X, tmp_list[0].firstPoint.Y
-            plume_seg = self.calculate_info(filtered, tmp_list, pathid, mean_poro, mean_velo,
+            plume_seg = self.calculate_info(filtered, tmp_list, ostdsid, mean_poro, mean_velo,
                                             mean_angle, max_dist, maxtime, wbid, path_wbid)
             plume_info.append(plume_seg)
 
             # warp the plume
             current_time = time.strftime("%H:%M:%S", time.localtime())
-            arcpy.AddMessage("{}          Warping plume for location: {}".format(current_time, pathid))
+            arcpy.AddMessage("{}          Warping plume for location: {}".format(current_time, ostdsid))
             if self.warp_option:
                 # This function (affine transformation) is unavailable, Because the current algorithm is too
                 # computationally intensive when the plume is large
-                warped_plume = self.warp_affine_transformation(filtered, pathid, xvalue, yvalue, seg)
+                warped_plume = self.warp_affine_transformation(filtered, ostdsid, xvalue, yvalue, seg)
             else:
-                warped_plumes, target_points_list, lengths = self.warp_arcgis(filtered, pathid, xvalue, yvalue, seg)
+                warped_plumes, target_points_list, lengths = self.warp_arcgis(filtered, ostdsid, xvalue, yvalue, seg)
 
-            post_plumes = self.post_process_plume(lengths, warped_plumes, pathid, seg, target_points_list, plume_name)
+            post_plumes = self.post_process_plume(lengths, warped_plumes, ostdsid, seg, target_points_list, plume_name)
 
             ## merge the plume
             for index, post_plume in enumerate(post_plumes):
@@ -447,7 +447,7 @@ class Transport:
                             time.sleep(1)
                             wait_time += 1
                             if wait_time > 60:
-                                arcpy.AddMessage("Skip the plume: {} for NO3-N calculation.".format(pathid))
+                                arcpy.AddMessage("Skip the plume: {} for NO3-N calculation.".format(ostdsid))
                                 raise Exception("The output raster is used by other software.")
             # print("post_no3 pixeltype is {}".format(arcpy.Describe(post_no3).pixelType))
             # print("Output pixeltype is {}".format(arcpy.Describe(self.no3_output).pixelType))
@@ -511,20 +511,20 @@ class Transport:
                                 sum_raster.save(plume_name[index])
 
                 except Exception as e:
-                    error_name = os.path.join(filepath, 'plm_no3_{}'.format(pathid))
+                    error_name = os.path.join(filepath, 'plm_no3_{}'.format(ostdsid))
                     arcpy.management.CopyRaster(post_plume, error_name)
                     if not arcpy.Exists(plume_name[index]):
                         if arcpy.Exists(temp_raster):
                             arcpy.management.Rename(temp_raster, plume_name[index])
-                    arcpy.AddMessage("[Error]: Failed to mosaic plume {}: ".format(pathid) + str(e))
-                    arcpy.AddMessage("Skip the plume: {} for NO3-N calculation.".format(pathid))
+                    arcpy.AddMessage("[Error]: Failed to mosaic plume {}: ".format(ostdsid) + str(e))
+                    arcpy.AddMessage("Skip the plume: {} for NO3-N calculation.".format(ostdsid))
 
         if self.post_process == "medium":
             self.post_process_medium(plume_name)
 
         for index, infoname in enumerate(info_names):
             if infoname is not None:
-                with arcpy.da.InsertCursor(infoname, ["SHAPE@", "PathID", "is2D", "domBdy", "decayCoeff",
+                with arcpy.da.InsertCursor(infoname, ["SHAPE@", "OSTDS_ID", "is2D", "domBdy", "decayCoeff",
                                                      "avgVel", "avgPrsity", "DispL", "DispTH", "DispTV",
                                                      "SourceY", "SourceZ", "MeshDX", "MeshDY", "MeshDZ",
                                                      "plumeTime", "pathTime", "plumeLen", "pathLen", "plumeArea",
@@ -1755,7 +1755,7 @@ def create_shapefile(save_path, name, crs):
         geometry_type="POINT",
         spatial_reference=crs)
 
-    arcpy.management.AddField(os.path.join(save_path, name), "PathID", "LONG")
+    arcpy.management.AddField(os.path.join(save_path, name), "OSTDS_ID", "LONG")
     arcpy.management.AddField(os.path.join(save_path, name), "is2D", "LONG")
     arcpy.management.AddField(os.path.join(save_path, name), "domBdy", "LONG")
     arcpy.management.AddField(os.path.join(save_path, name), "decayCoeff", "DOUBLE")
