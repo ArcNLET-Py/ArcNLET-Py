@@ -752,9 +752,9 @@ class VZMOD:
             poro_hete = data["porosity"].to_numpy() if self.hetero_ks_theta else None
             soil_hete = data["soiltype"] if self.multi_soil_type else None
 
-            if hydr_hete:
+            if hydr_hete is not None:
                 hydr_hete[hydr_hete < 0] = 10
-            if poro_hete:
+            if poro_hete is not None:
                 poro_hete[poro_hete < 0] = 0.4
 
             # arcpy.management.Delete(tmp)
@@ -777,7 +777,7 @@ class VZMOD:
             if depthname not in field_name:
                 arcpy.management.AddField(self.tmp_septictank, depthname, "DOUBLE")
 
-            with arcpy.da.UpdateCursor(self.tmp_septictank, ["FID", fieldnameNO3, fieldnameNH4, depthname]) as cursor:
+            with arcpy.da.UpdateCursor(self.tmp_septictank, ["OSTDS_ID", fieldnameNO3, fieldnameNH4, depthname]) as cursor:
                 for row in cursor:
                     if self.multi_soil_type or self.calc_DTW or self.hetero_ks_theta:
                         fid = row[0]
@@ -805,7 +805,7 @@ class VZMOD:
             if depthname not in field_name:
                 arcpy.management.AddField(self.tmp_septictank, depthname, "DOUBLE")
 
-            with arcpy.da.UpdateCursor(self.tmp_septictank, ["FID", fieldnameP, depthname]) as cursor:
+            with arcpy.da.UpdateCursor(self.tmp_septictank, ["OSTDS_ID", fieldnameP, depthname]) as cursor:
                 for row in cursor:
                     if self.multi_soil_type or self.calc_DTW or self.hetero_ks_theta:
                         fid = row[0]
@@ -840,7 +840,7 @@ class VZMOD:
                 arcpy.AddMessage("Please make sure the file is unlocked and try again.")
                 arcpy.AddError("Error!")
 
-            with arcpy.da.UpdateCursor(self.tmp_septictank, ["FID", fieldnameNO3,
+            with arcpy.da.UpdateCursor(self.tmp_septictank, ["OSTDS_ID", fieldnameNO3,
                                                           fieldnameNH4, fieldnameP, depthname]) as cursor:
                 for row in cursor:
                     if self.multi_soil_type or self.calc_DTW or self.hetero_ks_theta:
