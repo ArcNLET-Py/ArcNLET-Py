@@ -561,16 +561,18 @@ class Transport:
                 self.anh4 = nh4_conc
                 if self.solute_mass_type.lower() == 'specified input mass rate':
                     a2 = self.no3_init + self.nh4_init * self.knh4 / (self.knh4 - self.kno3)
-                    dispcons = -(self.kno3 / (self.kno3 - self.knh4)) * self.anh4 * (
-                            0.5 + 0.5 * math.sqrt(1 + 4 * self.knh4 * self.no3_dispx / mean_velo))
-                    dispcons1 = a2 * (0.5 + 0.5 * math.sqrt(1 + 4 * self.kno3 * self.no3_dispx / mean_velo))
-                    no3_Z = self.mass_in / (self.Y * mean_poro * mean_velo * self.vol_conversion_factor *
-                                            max(dispcons1, dispcons + dispcons1))
-                    dispcons = -(self.kno3 / (self.kno3 - self.knh4)) * self.anh4 * (
-                            0.5 + 0.5 * math.sqrt(1 + 4 * self.knh4 * self.nh4_dispx / mean_velo))
-                    dispcons1 = a2 * (0.5 + 0.5 * math.sqrt(1 + 4 * self.kno3 * self.nh4_dispx / mean_velo))
-                    self.nh4_Z = self.mass_in / (self.Y * mean_poro * mean_velo * self.vol_conversion_factor *
-                                                 max(dispcons1, dispcons + dispcons1))
+                    # dispcons = -(self.kno3 / (self.kno3 - self.knh4)) * self.anh4 * (
+                    #         0.5 + 0.5 * math.sqrt(1 + 4 * self.knh4 * self.no3_dispx / mean_velo))
+                    # dispcons1 = a2 * (0.5 + 0.5 * math.sqrt(1 + 4 * self.kno3 * self.no3_dispx / mean_velo))
+                    dispcons = 1 + np.sqrt(1 + 4 * self.kno3 * self.no3_dispx / mean_velo)
+                    mass_in_no3 = self.mass_in * self.no3_init / (self.no3_init + self.nh4_init)
+                    self.no3_Z = mass_in_no3 * 2 / (self.Y * mean_poro * mean_velo * self.vol_conversion_factor *
+                                                    self.no3_init * dispcons)
+                    dispcons = 1 + np.sqrt(1 + 4 * self.knh4 * self.nh4_dispx / mean_velo)
+                    # dispcons1 = a2 * (0.5 + 0.5 * math.sqrt(1 + 4 * self.kno3 * self.nh4_dispx / mean_velo))
+                    mass_in_nh4 = self.mass_in * self.nh4_init / (self.no3_init + self.nh4_init)
+                    self.nh4_Z = mass_in_nh4 * 2 / (self.Y * mean_poro * mean_velo * self.vol_conversion_factor *
+                                                    self.nh4_init * dispcons)
                     if self.nh4_Z < 0:
                         self.nh4_Z = min(0.0001, self.zmax) if self.zmax_option else 0.0001
                     if self.no3_Z < 0:
@@ -1846,27 +1848,20 @@ def delete_temp_files(folder):
 # Main program for debugging
 if __name__ == '__main__':
     # for i in range(1):
-    arcpy.env.workspace = "C:\\Users\\Wei\\Downloads\\lakeshore_example\\2_lakeshore_example_phosphorus\\4_Transport_module\\Inputs"
+    arcpy.env.workspace = "C:\\Users\\Wei\\Downloads\\lakeshore_example\\2_lakeshore_example_ArcNLET-Py_NO3+NH4\\4_Transport_module\\Inputs"
 
-    types_of_contaminants = "Nitrogen and Phosphorus"  # Nitrogen, Phosphorus, Nitrogen and Phosphorus
+    types_of_contaminants = "Nitrogen"  # Nitrogen, Phosphorus, Nitrogen and Phosphorus
     whethernh4 = True
     # source_location = os.path.join(arcpy.env.workspace, "01-OSTDS.shp")
     water_bodies = os.path.join(arcpy.env.workspace, "waterbodies.shp")
     # particlepath = os.path.join(arcpy.env.workspace, "01-pathssy.shp")
-
-    # no3output = os.path.join(arcpy.env.workspace, "dno3")
-    # nh4output = os.path.join(arcpy.env.workspace, "dnh4")
-    # no3output_info = "demo_no3"+"_info.shp"
-    # nh4output_info = "demo_nh4"+"_info.shp"
-    # phosoutput = os.path.join(arcpy.env.workspace, "demo_phos")
-    # phosoutput_info = "demo_phos"+"_info.shp"
 
     option0 = "DomenicoRobbinsSSDecay2D"
     option1 = 48
     option2 = "Spline"
     option3 = 0.000001
     option4 = "medium"  # post process, none, medium, full
-    option5 = "Specified z"  # input mass rate or z
+    option5 = "Specified Input Mass Rate"  # input mass rate or z
     maxnum = 400
 
     param0 = 20000
@@ -1882,11 +1877,11 @@ if __name__ == '__main__':
     no3param0 = 40
     no3param1 = 2.113
     no3param2 = 0.234
-    no3param3 = 0.04
+    no3param3 = 0.008
     nh4param0 = 5
     nh4param1 = 2.113
     nh4param2 = 0.234
-    nh4param3 = 0 # 0.0001
+    nh4param3 = 0.0001
     nh4param4 = 2
 
     phosparam0 = 2
@@ -1898,43 +1893,7 @@ if __name__ == '__main__':
     phosparam6 = 0.2
     phosparam7 = 237
 
-    # name = ['ls', 's', 'scl', 'sl']
-    # for ii in range(4):
-    #     for i in range(50):
-    #         for j in range(10):
-    #             print("{}H{}V{}".format(name[ii], j, i))
-    #             source_location = os.path.join(arcpy.env.workspace, "{}H{}V{}.shp".format(name[ii], j, i))
-    #             particlepath = os.path.join(arcpy.env.workspace, "1-paths_{}.shp".format(name[ii]))
-    #
-    #             no3output = os.path.join(arcpy.env.workspace, "dno3_{}H{}V{}".format(name[ii], j, i))
-    #             nh4output = os.path.join(arcpy.env.workspace, "dnh4_{}H{}V{}".format(name[ii], j, i))
-    #             no3output_info = "dno3_{}H{}V{}".format(name[ii], j, i) + "_info.shp"
-    #             nh4output_info = "dnh4_{}H{}V{}".format(name[ii], j, i) + "_info.shp"
-    #
-    #             phosoutput = os.path.join(arcpy.env.workspace, "dp_{}H{}V{}".format(name[ii], j, i))
-    #             phosoutput_info = "dp_{}H{}V{}".format(name[ii], j, i) + "_info.shp"
-    #
-    #             arcpy.AddMessage("starting geoprocessing")
-    #             start_time = datetime.datetime.now()
-    #             Tr = Transport(types_of_contaminants, whethernh4, source_location, water_bodies, particlepath,
-    #                            no3output, nh4output, no3output_info, nh4output_info,
-    #                            option0, option1, option2, option3, option4, option5, maxnum,
-    #                            param0, param1, param2, param3, param4, param5, param6, param7, param8,
-    #                            no3param0, no3param1, no3param2, no3param3,
-    #                            nh4param0, nh4param1, nh4param2, nh4param3, nh4param4,
-    #                            phosoutput, phosoutput_info, phosparam0, phosparam1, phosparam2, phosparam3, phosparam4, phosparam5)
-
-        # cProfile.run('Tr.calculate_plumes()', 'transport')
-        # profile_stats = pstats.Stats('transport')
-        # with open('transport.txt', 'w') as output_file:
-        #     profile_stats.sort_stats('cumulative').print_stats(output_file)
-        #
-        #         Tr.main()
-        #         end_time = datetime.datetime.now()
-        #         print("Total time: {}".format(end_time - start_time))
-        #         print("Tests successful!")
-
-    source_location = os.path.join(arcpy.env.workspace, "PotentialSepticTankLocations.shp")
+    source_location = os.path.join(arcpy.env.workspace, "OSTDS_outputs.shp")
     particlepath = os.path.join(arcpy.env.workspace, "paths50.shp")
 
     no3output = os.path.join(arcpy.env.workspace, "demono3")
