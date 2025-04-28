@@ -1,3 +1,7 @@
+.. _Theoretical Foundations:
+.. role:: raw-html(raw)
+   :format: html
+
 ArcNLET-Py Groundwater Solute-Transport Module: Theoretical Foundations
 =======================================================================
 
