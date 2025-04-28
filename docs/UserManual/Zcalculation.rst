@@ -73,23 +73,14 @@ coefficients in :math:`x`, :math:`y`, and :math:`z` respectively
 :math:`x` direction :math:`[L]` and k is the first order decay constant
 :math:`[T^{-1}]`. The boundary and initial conditions are,
 
-$$ C(x,y,z,0)=0 :raw-latex:`\quad `:raw-latex:`\forall`,
-0<x<:raw-latex:`\infty`, , -:raw-latex:`\infty`<y<:raw-latex:`\infty`, ,
--:raw-latex:`\infty`<z<:raw-latex:`\infty `\\ C(0,y,z,t)=C_0
-:raw-latex:`\quad `-:raw-latex:`\frac{Y}{2}`<y<:raw-latex:`\frac{Y}{2}`,
-, -:raw-latex:`\frac{Z}{2}`<z<:raw-latex:`\frac{Z}{2}`, ,
-:raw-latex:`\forall`, t>0 \\ :raw-latex:`\lim`\ *{x
-:raw-latex:`\to `+:raw-latex:`\infty`}
-:raw-latex:`\frac{\partial C(x,y,z,t)}{\partial x}`=0 \\
-:raw-latex:`\lim`*\ {y
-:raw-latex:`\to `:raw-latex:`\pm `:raw-latex:`\infty`}
-:raw-latex:`\frac{\partial C(x,y,z,t)}{\partial y}`=0 \\
-:raw-latex:`\lim`\_{z
-:raw-latex:`\to `:raw-latex:`\pm `:raw-latex:`\infty`}
-:raw-latex:`\frac{\partial C(x,y,z,t)}{\partial z}`=0
-:raw-latex:`\tag{2}`
+.. math::
 
-$$
+   C(x,y,z,0) = 0 \quad \forall \, 0 < x < \infty,\; -\infty < y < \infty,\; -\infty < z < \infty \\ 
+   C(0,y,z,t) = C_0 \quad -\frac{Y}{2} < y < \frac{Y}{2},\; -\frac{Z}{2} < z < \frac{Z}{2},\; \forall t > 0 \\
+   \lim_{x \to +\infty} \frac{\partial C(x,y,z,t)}{\partial x} = 0 \\
+   \lim_{y \to \pm\infty} \frac{\partial C(x,y,z,t)}{\partial y} = 0 \\
+   \lim_{z \to \pm\infty} \frac{\partial C(x,y,z,t)}{\partial z} = 0 \tag{2}
+
 
 These conditions essentially correspond to considering a single plume,
 having a source plane centered at (0, 0, 0), with dimensions :math:`Y`
@@ -100,12 +91,12 @@ constraints assume that the system evolves only in the positive half of
 the :math:`x` coordinate space and that the system is initially free of
 contaminant.
 
-.. figure:: image.png
+.. figure:: ./media/ZcalculationMedia/media/image.png
+   :align: center
    :alt: Fig. 1. The geometry of the Domenico solution source plane.
 
    Fig. 1. The geometry of the Domenico solution source plane.
 
-Fig. 1. The geometry of the Domenico solution source plane.
 
 The general form of the Domenico solution used in this model is the
 three-dimensional transient solution of Martin-Hayden and Robbins
@@ -299,13 +290,11 @@ Therefore,
 
    \frac{dF_2}{dx}=\frac{d}{dx}[erf(u)-erf(v)]=\frac{2}{\sqrt{\pi}}[e^{-u^2}\cdot \frac{du}{dx}-e^{-v^2}\cdot \frac{dv}{dx}] \tag{21}
 
-$$ u=:raw-latex:`\frac{C_u}{\sqrt{x}}`
-:raw-latex:`\Rightarrow `:raw-latex:`\frac{du}{dx}`=-:raw-latex:`\frac{C_u}{2x^{3/2}}`
-\\ v=:raw-latex:`\frac{C_v}{\sqrt{x}}`
-:raw-latex:`\Rightarrow `:raw-latex:`\frac{dv}{dx}`=-:raw-latex:`\frac{C_v}{2x^{3/2}}`
-:raw-latex:`\tag{22}`
+.. math::
 
-$$
+   u = \frac{C_u}{\sqrt{x}} \quad \Rightarrow \quad \frac{du}{dx} = -\frac{C_u}{2x^{3/2}} \\
+   v = \frac{C_v}{\sqrt{x}} \quad \Rightarrow \quad \frac{dv}{dx} = -\frac{C_v}{2x^{3/2}} \tag{22}
+
 
 :math:`C_u` and :math:`C_v` are constant parameters, as
 :math:`C_u=\frac{y+Y/2}{2\sqrt{\alpha_y}}`, and
@@ -709,7 +698,8 @@ value is -383.92.
 The following figure presents the results of the centerline (
 :math:`y=0` ) of NH₄⁺-N and NO₃⁻-N based on Equations 38–45.
 
-.. figure:: image%201.png
+.. figure:: ./media/ZcalculationMedia/media/image1.png
+   :align: center
    :alt: Fig. 2. Centerline ( :math:`y=0` ) concentrations of f
    :math:`NO_3\text{-}N` and :math:`NH_4\text{-}N`, calculated using
    Equations (38)–(45) with parameters defined in Equation (68). NH₄⁺
@@ -720,10 +710,6 @@ The following figure presents the results of the centerline (
    Equations (38)–(45) with parameters defined in Equation (68). NH₄⁺
    and NO₃⁻-N
 
-Fig. 2. Centerline ( :math:`y=0` ) concentrations of f
-:math:`NO_3\text{-}N` and :math:`NH_4\text{-}N`, calculated using
-Equations (38)–(45) with parameters defined in Equation (68). NH₄⁺ and
-NO₃⁻-N
 
 For NH₄⁺-N, its concentration gradually decreases due to advection,
 dispersion, and nitrification effects. For NO₃⁻-N, although advection,
@@ -762,15 +748,14 @@ negative value for :math:`M_{in, NO_3^-}`. This explains why, under
 specific parameter combinations as discussed earlier, our approach may
 yield a negative value.
 
-.. figure:: image%202.png
+.. figure:: ./media/ZcalculationMedia/media/image2.png
+   :align: center
    :alt: Fig. 3. Mass flux from source plane (gray plane) into
    groundwater system.
 
    Fig. 3. Mass flux from source plane (gray plane) into groundwater
    system.
 
-Fig. 3. Mass flux from source plane (gray plane) into groundwater
-system.
 
 The governing equation of nitrate can be written as,
 
@@ -852,12 +837,11 @@ parameters, such as :math:`\rho`, have no effect on :math:`Z`
 values—specifically the :math:`Z_{NO_3^-}` calculation. This follows
 directly from the equations.
 
-.. figure:: image%203.png
+.. figure:: ./media/ZcalculationMedia/media/image3.png
+   :align: center
    :alt: Fig. 4 Sensitivity analysis of :math:`Z`.
 
    Fig. 4 Sensitivity analysis of :math:`Z`.
-
-Fig. 4 Sensitivity analysis of :math:`Z`.
 
 Figure 4 raises another important issue regarding the parameter
 :math:`Z_{max}` in ArcNLET-Py. When calculating :math:`Z`, the result
