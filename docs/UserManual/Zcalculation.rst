@@ -700,10 +700,7 @@ The following figure presents the results of the centerline (
 
 .. figure:: ./media/ZcalculationMedia/media/image1.png
    :align: center
-   :alt: Fig. 2. Centerline ( :math:`y=0` ) concentrations of f
-   :math:`NO_3\text{-}N` and :math:`NH_4\text{-}N`, calculated using
-   Equations (38)–(45) with parameters defined in Equation (68). NH₄⁺
-   and NO₃⁻-N
+   :alt: Fig. 2. Centerline concentrations
 
    Fig. 2. Centerline ( :math:`y=0` ) concentrations of f
    :math:`NO_3\text{-}N` and :math:`NH_4\text{-}N`, calculated using
@@ -750,11 +747,9 @@ yield a negative value.
 
 .. figure:: ./media/ZcalculationMedia/media/image2.png
    :align: center
-   :alt: Fig. 3. Mass flux from source plane (gray plane) into
-   groundwater system.
+   :alt: Fig. 3. Mass flux from source plane.
 
-   Fig. 3. Mass flux from source plane (gray plane) into groundwater
-   system.
+   Fig. 3. Mass flux from source plane (gray plane) into groundwater system.
 
 
 The governing equation of nitrate can be written as,
