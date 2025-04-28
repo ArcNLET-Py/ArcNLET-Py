@@ -25,8 +25,15 @@ extensions = [
 
 templates_path = ['_templates']
 exclude_patterns = []
+math_numfig = False
+math_number_all = True
 
-
+mathjax3_config = {
+    'tex': {
+        'tags': 'all',
+        'useLabelIds': True,
+    }
+}
 
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output

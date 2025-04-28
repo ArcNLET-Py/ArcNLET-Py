@@ -62,9 +62,17 @@ The Domenico solution with decay (Domenico, 1987) considers a simplified
 form of advection-dispersion equation, and is shown as,
 
 .. math::
+   :nowrap:
+
+   \[
+   \frac{\partial C}{\partial t} = D_x \frac{\partial^2C}{\partial x^2}
+   + D_y \frac{\partial^2C}{\partial y^2}
+   + D_z \frac{\partial^2C}{\partial z^2}
+   - v \frac{\partial C}{\partial x}
+   - kC
+   \]
 
 
-   \frac{\partial C}{\partial t} = D_x \frac{\partial^2C}{\partial x^2}+D_y \frac{\partial^2C}{\partial y^2}+D_z \frac{\partial^2C}{\partial z^2}-v \frac{\partial C}{\partial x}-kC \tag{1}
 
 where :math:`C` is the contaminant concentration :math:`[M/L^3]`;
 :math:`D_x`, :math:`D_y` and :math:`D_z` are the homogeneous dispersion
@@ -74,13 +82,17 @@ coefficients in :math:`x`, :math:`y`, and :math:`z` respectively
 :math:`[T^{-1}]`. The boundary and initial conditions are,
 
 .. math::
+   :nowrap:
 
-   C(x,y,z,0) = 0 \quad \forall \, 0 < x < \infty,\; -\infty < y < \infty,\; -\infty < z < \infty \\ 
-   C(0,y,z,t) = C_0 \quad -\frac{Y}{2} < y < \frac{Y}{2},\; -\frac{Z}{2} < z < \frac{Z}{2},\; \forall t > 0 \\
+   \[
+   \begin{gathered}
+   C(x,y,z,0) = 0 \quad \forall\, 0 < x < \infty,\; -\infty < y < \infty,\; -\infty < z < \infty \\
+   C(0,y,z,t) = C_0 \quad -\frac{Y}{2} < y < \frac{Y}{2},\; -\frac{Z}{2} < z < \frac{Z}{2},\; \forall\, t > 0 \\
    \lim_{x \to +\infty} \frac{\partial C(x,y,z,t)}{\partial x} = 0 \\
    \lim_{y \to \pm\infty} \frac{\partial C(x,y,z,t)}{\partial y} = 0 \\
-   \lim_{z \to \pm\infty} \frac{\partial C(x,y,z,t)}{\partial z} = 0 \tag{2}
-
+   \lim_{z \to \pm\infty} \frac{\partial C(x,y,z,t)}{\partial z} = 0
+   \end{gathered}
+   \]
 
 These conditions essentially correspond to considering a single plume,
 having a source plane centered at (0, 0, 0), with dimensions :math:`Y`
@@ -104,26 +116,38 @@ three-dimensional transient solution of Martin-Hayden and Robbins
 Domenico (1987),
 
 .. math::
+   :nowrap:
 
-
-   C(x,y,z,t)=\frac{C_0}{8}F_1(x,t)F_2(y,x)F_3(z,x) \tag{3}
+   \[
+   C(x,y,z,t)=\frac{C_0}{8}F_1(x,t)F_2(y,x)F_3(z,x)
+   \]
 
 with
 
 .. math::
+   :nowrap:
 
+   \[
+   \begin{gathered}
+   F_1 = \exp\left[\frac{x}{2\alpha_x}\left(1-\sqrt{1+\frac{4k\alpha_x}{v}}\right)\right] \times \text{erfc}\left[\frac{x-vt\sqrt{1+\frac{4k\alpha_x}{v}}}{2\sqrt{\alpha_xvt}}\right] \\
+   + \exp\left[\frac{x}{2\alpha_x}\left(1+\sqrt{1+\frac{4k\alpha_x}{v}}\right)\right] \times \text{erfc}\left[\frac{x+vt\sqrt{1+\frac{4k\alpha_x}{v}}}{2\sqrt{\alpha_xvt}}\right]
+   \end{gathered}
+   \]
 
-   F_1=exp[\frac{x}{2\alpha_x}(1-\sqrt{1+\frac{4k\alpha_x}{v}})]\times erfc[\frac{x-vt\sqrt{1+\frac{4k\alpha_x}{v}}}{2\sqrt{\alpha_xvt}}]+exp[\frac{x}{2\alpha_x}(1+\sqrt{1+\frac{4k\alpha_x}{v}})]\times erfc[\frac{x+vt\sqrt{1+\frac{4k\alpha_x}{v}}}{2\sqrt{\alpha_xvt}}] \tag{4}
 
 .. math::
+   :nowrap:
 
-
-   F_2=erf(\frac{y+Y/2}{2\sqrt{\alpha_yx}})-erf(\frac{y-Y/2}{2\sqrt{\alpha_yx}}) \tag{5}
+   \[
+   F_2=erf\left(\frac{y+Y/2}{2\sqrt{\alpha_yx}}\right)-erf\left(\frac{y-Y/2}{2\sqrt{\alpha_yx}}\right)
+   \]
 
 .. math::
+   :nowrap:
 
-
-   F_3=erf(\frac{z+Z/2}{2\sqrt{\alpha_z x}})-erf(\frac{z-Z/2}{2\sqrt{\alpha_z x}}) \tag{6}
+   \[
+   F_3=erf\left(\frac{z+Z/2}{2\sqrt{\alpha_z x}}\right)-erf\left(\frac{z-Z/2}{2\sqrt{\alpha_z x}}\right)
+   \]
 
 where :math:`\alpha_x`, :math:`\alpha_y`, and :math:`\alpha_z` are the
 longitudinal, horizontal transverse and vertical transverse
@@ -137,19 +161,25 @@ The actual form of the Domenico solution used in ArcNLET-Py is the
 steady-state, two-dimensional version of Equation 3 as follows,
 
 .. math::
+   :nowrap:
 
-
-   C(x,y)=\frac{C_0}{2}F_1(x)F_2(y,x) \tag{7}
-
-.. math::
-
-
-   F_1=exp[\frac{x}{2\alpha_x}(1-\sqrt{1+\frac{4k\alpha_x}{v}})] \tag{8}
+   \[
+   C(x,y)=\frac{C_0}{2}F_1(x)F_2(y,x) 
+   \]
 
 .. math::
+   :nowrap:
 
+   \[
+   F_1=exp\left[\frac{x}{2\alpha_x}\left(1-\sqrt{1+\frac{4k\alpha_x}{v}}\right)\right]
+   \]
 
-   F_2=erf(\frac{y+Y/2}{2\sqrt{\alpha_y x}})-erf(\frac{y-Y/2}{2\sqrt{\alpha_y x}}) \tag{9}
+.. math::
+   :nowrap:
+
+   \[
+   F_2=erf\left(\frac{y+Y/2}{2\sqrt{\alpha_y x}}\right)-erf\left(\frac{y-Y/2}{2\sqrt{\alpha_y x}}\right)
+   \]
 
 Equation 7 (along with Equation 8 and 9) is obtained by ignoring
 vertical dispersion in Equation 3 by setting the transverse vertical
@@ -177,18 +207,22 @@ not only for mass input due to advection from the source plane but also
 through dispersion of the source plane.
 
 .. math::
+   :nowrap:
 
-
-   M_{in} = M_{adv}+M_{dsp} \tag{10}
+   \[
+   M_{in} = M_{adv}+M_{dsp}
+   \]
 
 The advection term is calculated using the volume of water that flows
 across the interface (source plane) in unit time, multiplied by the
 solute concentration,
 
 .. math::
+   :nowrap:
 
-
-   M_{adv}=C_0YZ\theta v \tag{11}
+   \[
+   M_{adv}=C_0YZ\theta v
+   \]
 
 where :math:`C_0[M/L^3]` is the concentration of the source plane;
 :math:`Y` and :math:`Z` are the dimensions of the source plane
@@ -198,9 +232,11 @@ calculated by assuming dispersion is governed by Fick’s Law (Freeze and
 Cherry, 1979). The dispersion through the source plane is written as,
 
 .. math::
+   :nowrap:
 
-
-   M_{dsp}=-D_{xx}YZ\theta \frac{\partial C}{\partial x} \tag{12}
+   \[
+   M_{dsp}=-D_{xx}YZ\theta \frac{\partial C}{\partial x}
+   \]
 
 where :math:`D_{xx} [L^2/T]` is the component of the dispersion tensor
 along the x-direction. The dispersion parameters is actually a second
@@ -215,18 +251,22 @@ Disregarding molecular diffusion, the dispersion coefficient is
 calculated as,
 
 .. math::
+   :nowrap:
 
-
-   D_{xx} = \alpha_x v \tag{13}
+   \[
+   D_{xx} = \alpha_x v
+   \]
 
 where :math:`\alpha_x [L]` is the medium’s dispersivity in the
 :math:`x`-direction and :math:`v[L/T]` is seepage velocity as before.
 Putting everything together and :math:`M_{in}` can be shown as,
 
 .. math::
+   :nowrap:
 
-
-   M_{in}=C_0YZ\theta v-\alpha_xYZ\theta v \frac{d C}{d x} \Big|_{x=0} \tag{14}
+   \[
+   M_{in}=C_0YZ\theta v-\alpha_xYZ\theta v \frac{d C}{d x} \Big|_{x=0} 
+   \]
 
 Equation 12 uses the partial derivative symbol :math:`\partial` while
 Equation 14 uses the total derivative symbol :math:`d` because x is the
@@ -238,82 +278,105 @@ Differentiating Equation 7 (using the chain rule) and evaluating it at
 the location of the source plane,
 
 .. math::
+   :nowrap:
 
-
-   \frac{d C}{d x} \Big|_{x=0}=\frac{C_0}{2}F_2|_{x=0}\frac{d F_1}{d x}\Big|_{x=0}+\frac{C_0}{2}F_1|_{x=0}\frac{d F_2}{d x}\Big|_{x=0} \tag{15}
+   \[
+   \frac{d C}{d x} \Big|_{x=0}=\frac{C_0}{2}F_2|_{x=0}\frac{d F_1}{d x}\Big|_{x=0}+\frac{C_0}{2}F_1|_{x=0}\frac{d F_2}{d x}\Big|_{x=0}
+   \]
 
 Calculating :math:`d F_1/d x` is straightforward,
 
 .. math::
+   :nowrap:
 
-
-   \frac{d F_1}{d x}\Big|_{x=0}=\frac{d}{d x}exp[\frac{x}{2\alpha_x}(1-\sqrt{1+\frac{4k\alpha_x}{v}})] \\ = F_1|_{x=0} \times
-   \frac{1-\sqrt{1+\frac{4k\alpha_x}{v}}}{2\alpha_x} \\
-   =\frac{1-\sqrt{1+\frac{4k\alpha_x}{v}}}{2\alpha_x} \tag{16}
-
-:math:`F_1 = 1` while :math:`x=0`.
+   \[
+   \begin{gathered}
+   \left.\frac{d F_1}{d x}\right|_{x=0} &= \frac{d}{d x} \exp\left[ \frac{x}{2\alpha_x} \left(1 - \sqrt{1 + \frac{4k\alpha_x}{v}}\right) \right] \\
+   &= F_1|_{x=0} \times \frac{1 - \sqrt{1 + \frac{4k\alpha_x}{v}}}{2\alpha_x} \notag \\
+   &= \frac{1 - \sqrt{1 + \frac{4k\alpha_x}{v}}}{2\alpha_x}
+   \end{gathered}
+   \]
 
 The calculation of :math:`d F_2/d x` requires multiple steps. The
 intermedia variables is used as,
 
 .. math::
+   :nowrap:
 
-
-   u=\frac{y+Y/2}{2\sqrt{\alpha_yx}}, \quad v=\frac{y-Y/2}{2\sqrt{\alpha_yx}} \tag{17}
+   \[
+   u=\frac{y+Y/2}{2\sqrt{\alpha_yx}}, \quad v=\frac{y-Y/2}{2\sqrt{\alpha_yx}}
+   \]
 
 Therefore,
 
 .. math::
+   :nowrap:
 
-
-   F_2 = erf(u)-erf(v) \tag{18}
+   \[
+   F_2 = erf(u)-erf(v)
+   \]
 
 The error function is,
 
 .. math::
+   :nowrap:
 
-
-   erf(z)=\frac{2}{\sqrt{\pi}}\int^{z}_{0}e^{-t^2}dt \tag{19}
+   \[
+   erf(z)=\frac{2}{\sqrt{\pi}}\int^{z}_{0}e^{-t^2}dt
+   \]
 
 Based on Leibniz’s integral rule, the derivative of the error function
 is,
 
 .. math::
+   :nowrap:
 
-
-   \frac{d}{dz}[erf(z)]=\frac{d}{dz}[\frac{2}{\sqrt{\pi}}\int^{z}_{0}e^{-t^2}dt]=\frac{2}{\sqrt{\pi}}\cdot \frac{d}{dz}[\int^{z}_{0}e^{-t^2}dt]=\frac{2}{\sqrt{\pi}}e^{-z^2}\tag{20}
+   \[
+   \frac{d}{dz}\left[erf(z)\right]=\frac{d}{dz}\left[\frac{2}{\sqrt{\pi}}\int^{z}_{0}e^{-t^2}dt\right]=\frac{2}{\sqrt{\pi}}\cdot \frac{d}{dz}\left[\int^{z}_{0}e^{-t^2}dt\right]=\frac{2}{\sqrt{\pi}}e^{-z^2}
+   \]
 
 Therefore,
 
 .. math::
+   :nowrap:
 
-
-   \frac{dF_2}{dx}=\frac{d}{dx}[erf(u)-erf(v)]=\frac{2}{\sqrt{\pi}}[e^{-u^2}\cdot \frac{du}{dx}-e^{-v^2}\cdot \frac{dv}{dx}] \tag{21}
+   \[
+   \frac{dF_2}{dx}=\frac{d}{dx}\left[erf(u)-erf(v)\right]=\frac{2}{\sqrt{\pi}}\left[e^{-u^2}\cdot \frac{du}{dx}-e^{-v^2}\cdot \frac{dv}{dx}\right]
+   \]
 
 .. math::
+   :nowrap:
 
+   \[
+   \begin{gathered}
    u = \frac{C_u}{\sqrt{x}} \quad \Rightarrow \quad \frac{du}{dx} = -\frac{C_u}{2x^{3/2}} \\
-   v = \frac{C_v}{\sqrt{x}} \quad \Rightarrow \quad \frac{dv}{dx} = -\frac{C_v}{2x^{3/2}} \tag{22}
-
+   v = \frac{C_v}{\sqrt{x}} \quad \Rightarrow \quad \frac{dv}{dx} = -\frac{C_v}{2x^{3/2}}
+   \end{gathered}
+   \]
 
 :math:`C_u` and :math:`C_v` are constant parameters, as
 :math:`C_u=\frac{y+Y/2}{2\sqrt{\alpha_y}}`, and
 :math:`C_v=\frac{y-Y/2}{2\sqrt{\alpha_y}}`.
 
 .. math::
+   :nowrap:
 
-
-   \frac{dF_2}{dx}=\frac{2}{\sqrt{\pi}}[e^{-u^2}\cdot (-\frac{y+Y/2}{4\sqrt{\alpha_y}\cdot x^{3/2}})-e^{-v^2}\cdot (-\frac{y-Y/2}{4\sqrt{\alpha_y}\cdot x^{3/2}})] \\
-   =\frac{1}{2\sqrt{\pi \alpha_y}\cdot x^{3/2}}[-(y+Y/2)e^{-u^2}+(y-Y/2)e^{-v^2}] \\
-   =\frac{1}{2\sqrt{\pi \alpha_y}\cdot x^{3/2}}[-\frac{y+Y/2}{e^{\frac{(y+Y/2)^2}{4\alpha_y x}}}+\frac{y-Y/2}{e^{\frac{(y-Y/2)^2}{4\alpha_y x}}}]
-   \tag{23}
+   \[
+   \begin{gathered}
+   \frac{dF_2}{dx}=\frac{2}{\sqrt{\pi}}\left[e^{-u^2}\cdot \left(-\frac{y+Y/2}{4\sqrt{\alpha_y}\cdot x^{3/2}}\right)-e^{-v^2}\cdot \left(-\frac{y-Y/2}{4\sqrt{\alpha_y}\cdot x^{3/2}}\right)\right] \\
+   =\frac{1}{2\sqrt{\pi \alpha_y}\cdot x^{3/2}}\left[-\left(y+Y/2\right)e^{-u^2}+\left(y-Y/2\right)e^{-v^2}\right] \\
+   =\frac{1}{2\sqrt{\pi \alpha_y}\cdot x^{3/2}}\left[-\frac{y+Y/2}{e^{\frac{(y+Y/2)^2}{4\alpha_y x}}}+\frac{y-Y/2}{e^{\frac{(y-Y/2)^2}{4\alpha_y x}}}\right]
+   \end{gathered}
+   \]
 
 The result of this expression depends on the limit value of,
 
 .. math::
+   :nowrap:
 
-
-   \lim_{x \to 0}\frac{e^{-C/x}}{x^{3/2}} \to 0\tag{24}
+   \[
+   \lim_{x \to 0}\frac{e^{-C/x}}{x^{3/2}} \to 0
+   \]
 
 where :math:`C` is a positive constant value.
 
@@ -327,44 +390,59 @@ faster** than any power of x goes to infinity, therefore the Equation 24
 goes to 0. As a result,
 
 .. math::
+   :nowrap:
 
-
-   \frac{dF_2}{dx}\Big |_{x=0}=0 \tag{25}
-
+   \[
+   \frac{dF_2}{dx}\Big |_{x=0}=0
+   \]
+   
 Besides,
 
 .. math::
+   :nowrap:
 
-
-   F_2\big|_{x=0}=erf(\frac{y+Y/2}{2\sqrt{\alpha_y x}})-erf(\frac{y-Y/2}{2\sqrt{\alpha_y x}}) \\
+   \[
+   \begin{gathered}
+   F_2\big|_{x=0}=erf\left(\frac{y+Y/2}{2\sqrt{\alpha_y x}}\right)-erf\left(\frac{y-Y/2}{2\sqrt{\alpha_y x}}\right) \\
    =erf(+\infty)-erf(-\infty)
-   =1-(-1)=2 \tag{26}
+   =1-(-1)=2
+   \end{gathered}
+   \]
 
 Then,
 
 .. math::
+   :nowrap:
 
-
+   \[
+   \begin{gathered}
    \frac{\partial C}{\partial x} \Big|_{x=0}=\frac{C_0}{2}F_2|_{x=0}\frac{dF_1}{dx}\Big |_{x=0}+\frac{C_0}{2}F_1|_{x=0}\frac{dF_2}{dx}\Big |_{x=0} \\
    =\frac{C_0}{2}F_2|_{x=0}\frac{dF_1}{dx}\Big |_{x=0}+0 \\
    =\frac{C_0}{2}\times 2 \times \frac{1-\sqrt{1+\frac{4k\alpha_x}{v}}}{2\alpha_x} \\
    =C_0 \cdot \frac{1-\sqrt{1+\frac{4k\alpha_x}{v}}}{2\alpha_x} 
-   \tag{27}
+   \end{gathered}
+   \]
 
 Equation 14 can be finally calculated as,
 
 .. math::
+   :nowrap:
 
-
+   \[
+   \begin{gathered}
    M_{in}=C_0YZ\theta v-\alpha_xYZ\theta v \frac{d C}{d x} \Big|_{x=0} \\
    =C_0YZ\theta v-\alpha_xYZ\theta v C_0 \cdot \frac{1-\sqrt{1+\frac{4k\alpha_x}{v}}}{2\alpha_x} \\
-   =C_0YZ\theta v(1-\frac{1-\sqrt{1+\frac{4k\alpha_x}{v}}}{2}) \\
-   =C_0YZ\theta v\frac{1+\sqrt{1+\frac{4k\alpha_x}{v}}}{2} \tag{28}
+   =C_0YZ\theta v\left(1-\frac{1-\sqrt{1+\frac{4k\alpha_x}{v}}}{2}\right) \\
+   =C_0YZ\theta v\frac{1+\sqrt{1+\frac{4k\alpha_x}{v}}}{2} 
+   \end{gathered}
+   \]
 
 .. math::
+   :nowrap:
 
-
-   Z=\frac{M_{in}}{C_0Y\theta v}\cdot \frac{2}{1+\sqrt{1+\frac{4k\alpha_x}{v}}} \tag{29}
+   \[
+   Z=\frac{M_{in}}{C_0Y\theta v}\cdot \frac{2}{1+\sqrt{1+\frac{4k\alpha_x}{v}}}
+   \]
 
 In the solute transport module of ArcNLET-Py, if “Specified Input Mass
 Rate” is selected, Equation 29 is employed to calculate the
@@ -380,14 +458,18 @@ nitrate solute transport is the steady-state advection-dispersion
 equation, which can be presented as,
 
 .. math::
+   :nowrap:
 
-
-   0=D_x\frac{\partial^2{C_{NH^{+}_4}}}{dx^2}+D_y\frac{\partial^2{C_{NH^{+}_4}}}{dy^2}-v\frac{\partial{C_{NH^{+}_4}}}{\partial{x}}-k_{nit}(1+\frac{\rho k_d}{\theta})C_{NH^{+}_4} \tag{30}
+   \[
+   0=D_x\frac{\partial^2{C_{NH^{+}_4}}}{dx^2}+D_y\frac{\partial^2{C_{NH^{+}_4}}}{dy^2}-v\frac{\partial{C_{NH^{+}_4}}}{\partial{x}}-k_{nit}\left(1+\frac{\rho k_d}{\theta}\right)C_{NH^{+}_4}
+   \]
 
 .. math::
+   :nowrap:
 
-
-   0=D_x\frac{\partial^2{C_{NO^{-}_3}}}{dx^2}+D_y\frac{\partial^2{C_{NO^{-}_3}}}{dy^2}-v\frac{\partial{C_{NO^{-}_3}}}{\partial{x}} \\ +k_{nit}(1+\frac{\rho k_d}{\theta})C_{NH^{+}_4}-k_{deni}C_{NO^{-}_3} \tag{31}
+   \[
+   0=D_x\frac{\partial^2{C_{NO^{-}_3}}}{dx^2}+D_y\frac{\partial^2{C_{NO^{-}_3}}}{dy^2}-v\frac{\partial{C_{NO^{-}_3}}}{\partial{x}} \\ +k_{nit}\left(1+\frac{\rho k_d}{\theta}\right)C_{NH^{+}_4}-k_{deni}C_{NO^{-}_3}
+   \]
 
 where the :math:`D_x` and :math:`D_y` are the dispersivity coefficients
 in the longitudinal :math:`(x)` and horizontal transverse :math:`(y)`
@@ -401,24 +483,30 @@ and denitrification rates, respectively; and :math:`\theta` is porosity.
 The boundary conditions for the ammonium and nitrate are as follows,
 
 .. math::
+   :nowrap:
 
-
+   \[
+   \begin{gathered}
    C_{NH_4^+}(0,y)=\begin{cases}
      C_{0,NH_4^+} &\text{if } -\frac{Y}{2}<y<\frac{Y}{2} \\
       0 &\text{elsewhere}
    \end{cases} \\
    \lim_{x \to \pm \infty}{\frac{\partial C_{NH_4^+}(x, y)}{\partial x}}=0; \lim_{y \to \pm \infty}{\frac{\partial C_{NH_4^+}(x, y)}{\partial y}}=0
-   \tag{32}
+   \end{gathered}
+   \]
 
 .. math::
+   :nowrap:
 
-
+   \[
+   \begin{gathered}
    C_{NO_3^-}(0,y)=\begin{cases}
      C_{0,NO_3^-} &\text{if } -\frac{Y}{2}<y<\frac{Y}{2} \\
       0 &\text{elsewhere}
    \end{cases} \\
    \lim_{x \to \pm \infty}{\frac{\partial C_{NO_3^-}(x, y)}{\partial x}}=0; \lim_{y \to \pm \infty}{\frac{\partial C_{NO_3^-}(x, y)}{\partial y}}=0
-   \tag{33}
+   \end{gathered}
+   \]
 
 Equations 30 and 31 cannot be solved directly using the Domenico
 solution; instead, a transformation is required. The analytical
@@ -428,73 +516,99 @@ independent equations. This is done by defining the auxiliary variables
 as,
 
 .. math::
+   :nowrap:
 
-
-   a_{NH^+_4}=C_{NH^+_4} \tag{34}
+   \[
+   a_{NH^+_4}=C_{NH^+_4}
+   \]
 
 .. math::
+   :nowrap:
 
-
-   a_{NO^-_3}=C_{NO^-_3}+\frac{k_{nit}(1+\rho k_{d}/\theta)}{k_{nit}(1+\rho k_{d}/\theta)-k_{deni}}C_{NH^+_4} \tag{35}
+   \[
+   a_{NO^-_3}=C_{NO^-_3}+\frac{k_{nit}\left(1+\rho k_{d}/\theta\right)}{k_{nit}(1+\rho k_{d}/\theta)-k_{deni}}C_{NH^+_4}
+   \]
 
 With the auxiliary variable, Equations 30 and 31 can be transformed to,
 
 .. math::
+   :nowrap:
 
-
-   0=D_x\frac{\partial^2{a_i}}{\partial x^2}+D_y\frac{\partial^2{a_i}}{\partial y^2}-v\frac{\partial{a_i}}{\partial{x}}-k_i a_i \tag{36}
+   \[
+   0=D_x\frac{\partial^2{a_i}}{\partial x^2}+D_y\frac{\partial^2{a_i}}{\partial y^2}-v\frac{\partial{a_i}}{\partial{x}}-k_i a_i
+   \]
 
 .. math::
+   :nowrap:
 
-
+   \[
+   \begin{gathered}
    k_i=\begin{cases}
-      k_{nit}(1+\frac{\rho k_d}{\theta}) &\text{if } i=NH_4^+ \\
+      k_{nit}\left(1+\frac{\rho k_d}{\theta}\right) &\text{if } i=NH_4^+ \\
       k_{deni} &\text{if } i=NO_3^-
-   \end{cases} \tag{37}
+   \end{cases}
+   \end{gathered}
+   \]
 
 For ammonium, the Domenico solution can be,
 
 .. math::
+   :nowrap:
 
-
-   C_{NH_4^+}=a_{NH_4^+} \tag{38}
-
-.. math::
-
-
-   a_{NH_4^+}(x,y)=\frac{a_{NH_4^+, 0}}{2}F_{1,NH_4^+}(x)F_{2,NH_4^+}(y,x) \tag{39}
+   \[
+   C_{NH_4^+}=a_{NH_4^+}
+   \]
 
 .. math::
+   :nowrap:
 
-
-   F_{1,NH_4^+}=exp[\frac{x}{2\alpha_{NH_4^+,x}}(1-\sqrt{1+\frac{4k_{nit}(1+\frac{\rho k_d}{\theta})\alpha_{NH_4^+,x}}{v}})] \tag{40}
+   \[
+   a_{NH_4^+}(x,y)=\frac{a_{NH_4^+, 0}}{2}F_{1,NH_4^+}(x)F_{2,NH_4^+}(y,x)
+   \]
 
 .. math::
+   :nowrap:
 
+   \[
+   F_{1,NH_4^+}=exp\left[\frac{x}{2\alpha_{NH_4^+,x}}\left(1-\sqrt{1+\frac{4k_{nit}(1+\frac{\rho k_d}{\theta})\alpha_{NH_4^+,x}}{v}}\right)\right]
+   \]
 
-   F_{2,NH_4^+}=erf(\frac{y+Y/2}{2\sqrt{\alpha_{NH_4^+,y} x}})-erf(\frac{y-Y/2}{2\sqrt{\alpha_{NH_4^+,y} x}}) \tag{41}
+.. math::
+   :nowrap:
+
+   \[
+   F_{2,NH_4^+}=erf\left(\frac{y+Y/2}{2\sqrt{\alpha_{NH_4^+,y} x}}\right)-erf\left(\frac{y-Y/2}{2\sqrt{\alpha_{NH_4^+,y} x}}\right)
+   \]
 
 For nitrate, the Domenico solution can be,
 
 .. math::
+   :nowrap:
 
-
-   C_{NO_3^-}=a_{NO_3^-}-\frac{k_{nit}(1+\rho k_d/\theta)}{k_{nit}(1+\rho k_d/\theta)-k_{deni}}a_{NH_4^+} \tag{42}
-
-.. math::
-
-
-   a_{NO_3^-}(x,y)=\frac{a_{NO_3^-, 0}}{2}F_{1,NO_3^-}(x)F_{2,NO_3^-}(y,x) \tag{43}
+   \[
+   C_{NO_3^-}=a_{NO_3^-}-\frac{k_{nit}(1+\rho k_d/\theta)}{k_{nit}(1+\rho k_d/\theta)-k_{deni}}a_{NH_4^+}
+   \]
 
 .. math::
+   :nowrap:
 
-
-   F_{1,NO_3^-}=exp[\frac{x}{2\alpha_{NO_3^-,x}}(1-\sqrt{1+\frac{4k_{deni}\alpha_{NO_3^-,x}}{v}})] \tag{44}
+   \[
+   a_{NO_3^-}(x,y)=\frac{a_{NO_3^-, 0}}{2}F_{1,NO_3^-}(x)F_{2,NO_3^-}(y,x)
+   \]
 
 .. math::
+   :nowrap:
 
+   \[
+   F_{1,NO_3^-}=exp\left[\frac{x}{2\alpha_{NO_3^-,x}}\left(1-\sqrt{1+\frac{4k_{deni}\alpha_{NO_3^-,x}}{v}}\right)\right]
+   \]
 
-   F_{2,NO_3^-}=erf(\frac{y+Y/2}{2\sqrt{\alpha_{NO_3^-,y} x}})-erf(\frac{y-Y/2}{2\sqrt{\alpha_{NO_3^-,y} x}}) \tag{45}
+.. math::
+   :nowrap:
+
+   \[
+   F_{2,NO_3^-}=erf\left(\frac{y+Y/2}{2\sqrt{\alpha_{NO_3^-,y} x}}\right)-erf\left(\frac{y-Y/2}{2\sqrt{\alpha_{NO_3^-,y} x}}\right)
+   \]
 
 2.4 The Relationship between :math:`M_{in}` and :math:`Z` for ammonium
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -502,34 +616,49 @@ For nitrate, the Domenico solution can be,
 For ammonium,
 
 .. math::
+   :nowrap:
 
-
-   M_{in, NH_4^+} = M_{adv,NH_4^+}+M_{dsp,NH_4^+} \tag{46}
-
-.. math::
-
-
-   M_{adv,NH_4^+}=C_{0, NH_4^+}YZ_{NH_4^+}\theta v \tag{47}
+   \[
+   M_{in, NH_4^+} = M_{adv,NH_4^+}+M_{dsp,NH_4^+}
+   \]
 
 .. math::
+   :nowrap:
 
+   \[
+   M_{adv,NH_4^+}=C_{0, NH_4^+}YZ_{NH_4^+}\theta v
+   \]
 
+.. math::
+   :nowrap:
+
+   \[
+   \begin{gathered}
    M_{dsp,NH_4^+}=-D_{xx, NH_4^+}YZ_{NH_4^+}\theta \frac{d C_{NH_4^+}}{d x}\Big|_{x=0} \\
    =-\alpha_{x, NH_4^+}vYZ_{NH_4^+}\theta \frac{d C_{NH_4^+}}{d x} \Big|_{x=0}
-    \tag{48}
+   \end{gathered}
+   \]
 
 .. math::
+   :nowrap:
 
-
+   \[
+   \begin{gathered}
    \frac{d C_{NH_4^+}}{d x} \Big|_{x=0}=\frac{C_{0, NH_4^+}}{2}F_{2,NH_4^+}|_{x=0}\frac{d F_{1,NH_4^+}}{d x}\Big|_{x=0}+\\
-   \frac{C_{0,NH_4^+}}{2}F_{1,NH_4^+}|_{x=0}\frac{d F_{2,NH_4^+}}{d x}\Big|_{x=0} \tag{49}
+   \frac{C_{0,NH_4^+}}{2}F_{1,NH_4^+}|_{x=0}\frac{d F_{2,NH_4^+}}{d x}\Big|_{x=0}
+   \end{gathered}
+   \]
 
 .. math::
+   :nowrap:
 
-
-   \frac{d F_{1,NH_4^+}}{d x}\Big|_{x=0}=\frac{d}{d x}exp[\frac{x}{2\alpha_{x,NH_4^+}}(1-\sqrt{1+\frac{4k_{nit}(1+\frac{\rho k_d}{\theta})\alpha_{x,NH_4^+}}{v}})] \\ = F_{1,NH_4^+}|_{x=0} \times
+   \[
+   \begin{gathered}
+   \frac{d F_{1,NH_4^+}}{d x}\Big|_{x=0}=\frac{d}{d x}exp\left[\frac{x}{2\alpha_{x,NH_4^+}}\left(1-\sqrt{1+\frac{4k_{nit}(1+\frac{\rho k_d}{\theta})\alpha_{x,NH_4^+}}{v}}\right)\right] \\ = F_{1,NH_4^+}|_{x=0} \times
    \frac{1-\sqrt{1+\frac{4k_{nit}(1+\frac{\rho k_d}{\theta})\alpha_{x,NH_4^+}}{v}}}{2\alpha_{x,NH_4^+}} \\
-   =\frac{1-\sqrt{1+\frac{4k_{nit}(1+\frac{\rho k_d}{\theta})\alpha_{x,NH_4^+}}{v}}}{2\alpha_{x,NH_4^+}} \tag{50}
+   =\frac{1-\sqrt{1+\frac{4k_{nit}\left(1+\frac{\rho k_d}{\theta}\right)\alpha_{x,NH_4^+}}{v}}}{2\alpha_{x,NH_4^+}}
+   \end{gathered}
+   \]
 
 :math:`F_{1,NH_4^+} = 1` while :math:`x=0`.
 
@@ -537,27 +666,36 @@ For ammonium,
 similar as the processes in Section 2.2, and the result is 0. Therefore,
 
 .. math::
+   :nowrap:
 
-
-   \frac{d C_{NH_4^+}}{d x} \Big|_{x=0}=\frac{C_{0, NH_4^+}}{2}F_{2,NH_4^+}|_{x=0}\frac{d F_{1,NH_4^+}}{d x}\Big|_{x=0}+
+   \[
+   \begin{gathered}
+   \frac{d C_{NH_4^+}}{d x} \Big|_{x=0}=\frac{C_{0, NH_4^+}}{2}F_{2,NH_4^+}|_{x=0}\frac{d F_{1,NH_4^+}}{d x}\Big|_{x=0}+\\
    \frac{C_{0,NH_4^+}}{2}F_{1,NH_4^+}|_{x=0}\frac{d F_{2,NH_4^+}}{d x}\Big|_{x=0}  \\
    =\frac{C_{0,NH_4^+}}{2}F_{2,NH_4^+}|_{x=0}\frac{dF_{1,NH_4^+}}{dx}\Big |_{x=0}+0 \\
    =\frac{C_{0,NH_4^+}}{2}\times 2 \times \frac{1-\sqrt{1+\frac{4k_{nit}(1+\frac{\rho k_d}{\theta})\alpha_{x,NH_4^+}}{v}}}{2\alpha_{x,NH_4^+}} \\
    =C_{0,NH_4^+} \cdot \frac{1-\sqrt{1+\frac{4k_{nit}(1+\frac{\rho k_d}{\theta})\alpha_{x,NH_4^+}}{v}}}{2\alpha_{x,NH_4^+}} 
-   \tag{51}
+   \end{gathered}
+   \]
 
 .. math::
+   :nowrap:
 
-
+   \[
+   \begin{gathered}
    M_{in,NH_4^+}=C_{0,NH_4^+}YZ_{NH_4^+}\theta v-\alpha_{x,NH_4^+}YZ_{NH_4^+}\theta v \frac{d C_{NH_4^+}}{d x} \Big|_{x=0} \\
    =C_{0,NH_4^+}YZ_{NH_4^+}\theta v-\alpha_{x,NH_4^+}YZ_{NH_4^+}\theta v C_{0,NH_4^+} \cdot \frac{1-\sqrt{1+\frac{4k_{nit}(1+\frac{\rho k_d}{\theta})\alpha_{x,NH_4^+}}{v}}}{2\alpha_{x,NH_4^+}}  \\
-   =C_{0,NH_4^+}YZ_{NH_4^+}\theta v(1-\frac{1-\sqrt{1+\frac{4k_{nit}(1+\frac{\rho k_d}{\theta})\alpha_{x,NH_4^+}}{v}}}{2}) \\
-   =C_{0,NH_4^+}YZ_{NH_4^+}\theta v\frac{1+\sqrt{1+\frac{4k_{nit}(1+\frac{\rho k_d}{\theta})\alpha_{x,NH_4^+}}{v}}}{2} \tag{52}
+   =C_{0,NH_4^+}YZ_{NH_4^+}\theta v\left(1-\frac{1-\sqrt{1+\frac{4k_{nit}(1+\frac{\rho k_d}{\theta})\alpha_{x,NH_4^+}}{v}}}{2}\right) \\
+   =C_{0,NH_4^+}YZ_{NH_4^+}\theta v\frac{1+\sqrt{1+\frac{4k_{nit}(1+\frac{\rho k_d}{\theta})\alpha_{x,NH_4^+}}{v}}}{2}
+   \end{gathered}
+   \]
 
 .. math::
+   :nowrap:
 
-
-   Z_{NH_4^+} = \frac{M_{in,NH_4^+}}{C_{0,NH_4^+}Y\theta v}\cdot \frac{2}{1+\sqrt{1+\frac{4k_{nit}(1+\frac{\rho k_d}{\theta})\alpha_{x,NH_4^+}}{v}}} \tag{53}
+   \[
+   Z_{NH_4^+} = \frac{M_{in,NH_4^+}}{C_{0,NH_4^+}Y\theta v}\cdot \frac{2}{1+\sqrt{1+\frac{4k_{nit}(1+\frac{\rho k_d}{\theta})\alpha_{x,NH_4^+}}{v}}}
+   \]
 
 This equation is similar with Equation 29.
 
@@ -572,113 +710,185 @@ an example with specific input parameters.
 For nitrate,
 
 .. math::
+   :nowrap:
 
-
-   M_{in, NO_3^-} = M_{adv,NO_3^-}+M_{dsp,NO_3^-} \tag{54}
-
-.. math::
-
-
-   M_{adv,NO_3^-}=C_{0, NO_3^-}YZ_{NO_3^-}\theta v \tag{55}
+   \[
+   M_{in, NO_3^-} = M_{adv,NO_3^-}+M_{dsp,NO_3^-}
+   \]
 
 .. math::
+   :nowrap:
 
+   \[
+   M_{adv,NO_3^-}=C_{0, NO_3^-}YZ_{NO_3^-}\theta v
+   \]
 
+.. math::
+   :nowrap:
+
+   \[
+   \begin{gathered}
    M_{dsp,NO_3^-}=-D_{xx, NO_3^-}YZ_{NO_3^-}\theta \frac{\partial C_{NO_3^-}}{\partial x}\Big|_{x=0} \\
    =-\alpha_{x, NO_3^-}vYZ_{NO_3^-}\theta \frac{\partial C_{NO_3^-}}{\partial x} \Big|_{x=0}
-    \tag{56}
+   \end{gathered}
+   \]
 
 We can define :math:`\lambda` as a variable to simplify the equations:
 
 .. math::
+   :nowrap:
 
-
-   \lambda = \frac{k_{nit}(1+\rho k_d/\theta)}{k_{nit}(1+\rho k_d/\theta)-k_{deni}} \tag{57}
+   \[
+   \lambda = \frac{k_{nit}(1+\rho k_d/\theta)}{k_{nit}(1+\rho k_d/\theta)-k_{deni}}
+   \]
 
 Therefore,
 
 .. math::
+   :nowrap:
 
-
-   C_{NO_3^-}=a_{NO_3^-}-\lambda a_{NH_4^+} \tag{58}
+   \[
+   C_{NO_3^-}=a_{NO_3^-}-\lambda a_{NH_4^+}
+   \]
 
 .. math::
+   :nowrap:
 
-
+   \[
+   \begin{gathered}
    \frac{d C_{NO_3^-}}{d x} \Big|_{x=0}=\frac{da_{NO_3^-}}{dx}-\lambda \frac{da_{NH_4^+}}{dx}
    \\ = \frac{a_{0, NO_3^-}}{2}F_{2,NO_3^-}|_{x=0}\frac{d F_{1,NO_3^-}}{d x}\Big|_{x=0}+
    \frac{a_{0,NO_3^-}}{2}F_{1,NO_3^-}|_{x=0}\frac{d F_{2,NO_3^-}}{d x}\Big|_{x=0} \\
-   -\lambda(\frac{C_{0, NH_4^+}}{2}F_{2,NH_4^+}|_{x=0}\frac{d F_{1,NH_4^+}}{d x}\Big|_{x=0}+
-   \frac{C_{0,NH_4^+}}{2}F_{1,NH_4^+}|_{x=0}\frac{d F_{2,NH_4^+}}{d x}\Big|_{x=0})
-    \tag{59}
+   -\lambda\left(\frac{C_{0, NH_4^+}}{2}F_{2,NH_4^+}|_{x=0}\frac{d F_{1,NH_4^+}}{d x}\Big|_{x=0}+
+   \frac{C_{0,NH_4^+}}{2}F_{1,NH_4^+}|_{x=0}\frac{d F_{2,NH_4^+}}{d x}\Big|_{x=0}\right)
+   \end{gathered}
+   \]
 
 .. math::
+   :nowrap:
 
-
-   \frac{d F_{1,NO_3^-}}{d x}\Big|_{x=0}=\frac{d}{d x}exp[\frac{x}{2\alpha_{x,NO_3^-}}(1-\sqrt{1+\frac{4k_{deni}\alpha_{x,NO_3^-}}{v}})] \\ = F_{1,NO_3^-}|_{x=0} \times
+   \[
+   \begin{gathered}
+   \frac{d F_{1,NO_3^-}}{d x}\Big|_{x=0}=\frac{d}{d x}exp\left[\frac{x}{2\alpha_{x,NO_3^-}}\left(1-\sqrt{1+\frac{4k_{deni}\alpha_{x,NO_3^-}}{v}}\right)\right] \\ = F_{1,NO_3^-}|_{x=0} \times
    \frac{1-\sqrt{1+\frac{4k_{deni}\alpha_{x,NO_3^-}}{v}}}{2\alpha_{x,NO_3^-}} \\
-   =\frac{1-\sqrt{1+\frac{4k_{deni}\alpha_{x,NO_3^-}}{v}}}{2\alpha_{x,NO_3^-}} \tag{60}
+   =\frac{1-\sqrt{1+\frac{4k_{deni}\alpha_{x,NO_3^-}}{v}}}{2\alpha_{x,NO_3^-}}
+   \end{gathered}
+   \]
 
 As a results,
 
 .. math::
+   :nowrap:
 
-
+   \[
+   \begin{gathered}
    \frac{d C_{NO_3^-}}{d x} \Big|_{x=0}=\frac{da_{NO_3^-}}{dx}-\lambda \frac{da_{NH_4^+}}{dx}
-   \\ =a_{0, NO_3^-}\cdot \frac{1-\sqrt{1+\frac{4k_{deni}\alpha_{x,NO_3^-}}{v}}}{2\alpha_{x,NO_3^-}}-\lambda \cdot C_{0,NH_4^+} \cdot \frac{1-\sqrt{1+\frac{4k_{nit}(1+\frac{\rho k_d}{\theta})\alpha_{x,NH_4^+}}{v}}}{2\alpha_{x,NH_4^+}} \tag{61}
+   \\ =a_{0, NO_3^-}\cdot \frac{1-\sqrt{1+\frac{4k_{deni}\alpha_{x,NO_3^-}}{v}}}{2\alpha_{x,NO_3^-}}-\lambda \cdot C_{0,NH_4^+} \cdot \frac{1-\sqrt{1+\frac{4k_{nit}(1+\frac{\rho k_d}{\theta})\alpha_{x,NH_4^+}}{v}}}{2\alpha_{x,NH_4^+}}
+   \end{gathered}
+   \]
 
 .. math::
+   :nowrap:
 
-
+   \[
+   \begin{gathered}
    M_{in,NO_3^-}=C_{0,NO_3^-}YZ_{NO_3^-}\theta v-\alpha_{x,NO_3^-}YZ_{NO_3^-}\theta v \frac{d C_{NO_3^-}}{d x} \Big|_{x=0}\\
-   =C_{0,NO_3^-}YZ_{NO_3^-}\theta v -\alpha_{x,NO_3^-}YZ_{NO_3^-}\theta v (a_{0, NO_3^-}\cdot \frac{1-\sqrt{1+\frac{4k_{deni}\alpha_{x,NO_3^-}}{v}}}{2\alpha_{x,NO_3^-}}-\lambda \cdot C_{0,NH_4^+} \cdot \frac{1-\sqrt{1+\frac{4k_{nit}(1+\frac{\rho k_d}{\theta})\alpha_{x,NH_4^+}}{v}}}{2\alpha_{x,NH_4^+}})\tag{62}
+   =C_{0,NO_3^-}YZ_{NO_3^-}\theta v -\alpha_{x,NO_3^-}YZ_{NO_3^-}\theta v \cdot \\
+   \left(a_{0, NO_3^-}\cdot \frac{1-\sqrt{1+\frac{4k_{deni}\alpha_{x,NO_3^-}}{v}}}{2\alpha_{x,NO_3^-}}- 
+   \lambda \cdot C_{0,NH_4^+} \cdot \frac{1-\sqrt{1+\frac{4k_{nit}(1+\frac{\rho k_d}{\theta})\alpha_{x,NH_4^+}}{v}}}{2\alpha_{x,NH_4^+}}\right)
+   \end{gathered}
+   \]
 
 :math:`C_{0,NO_3^-}=a_{0,NO_3^-}-\lambda C_{0,NH_4^+}`, therefore,
 
 .. math::
+   :nowrap:
 
+   \[
+   \begin{aligned}
+   M_{in,NO_3^-}= & (a_{0,NO_3^-}-\lambda C_{0,NH_4^+})YZ_{NO_3^-}\theta v -\alpha_{x,NO_3^-}YZ_{NO_3^-}\theta v \cdot \\
+   & \left[\frac{a_{0, NO_3^-}}{2\alpha_{x,NO_3^-}}\cdot \left(1-\sqrt{1+\frac{4k_{deni}\alpha_{x,NO_3^-}}{v}}\right)- \right. \\
+   & \left. \lambda \cdot \frac{C_{0,NH_4^+}}{2\alpha_{x,NH_4^+}} \cdot \left(1-\sqrt{1+\frac{4k_{nit}(1+\frac{\rho k_d}{\theta})\alpha_{x,NH_4^+}}{v}}\right)\right]
+   \end{aligned}
+   \]
 
-   M_{in,NO_3^-}=(a_{0,NO_3^-}-\lambda C_{0,NH_4^+})YZ_{NO_3^-}\theta v -\alpha_{x,NO_3^-}YZ_{NO_3^-}\theta v [\frac{a_{0, NO_3^-}}{2\alpha_{x,NO_3^-}}\cdot ({1-\sqrt{1+\frac{4k_{deni}\alpha_{x,NO_3^-}}{v}}})-\lambda \cdot \frac{C_{0,NH_4^+}}{2\alpha_{x,NH_4^+}} \cdot ({1-\sqrt{1+\frac{4k_{nit}(1+\frac{\rho k_d}{\theta})\alpha_{x,NH_4^+}}{v}}})]  \tag{63}
 
 The terms containing :math:`a_{0, NO_3^+}` on the right side of this
 equation combine together, resulting in,
 
 .. math::
+   :nowrap:
 
-
-   a_{0,NO_3^-}YZ_{NO_3^-}\theta v-\alpha_{x,NO_3^-}YZ_{NO_3^-}\theta v \frac{a_{0, NO_3^-}}{2\alpha_{x,NO_3^-}}\cdot ({1-\sqrt{1+\frac{4k_{deni}\alpha_{x,NO_3^-}}{v}}}) \\
-   =a_{0,NO_3^-}YZ_{NO_3^-}\theta v[1-\frac{1}{2}({1-\sqrt{1+\frac{4k_{deni}\alpha_{x,NO_3^-}}{v}}})] \\
-   =\frac{a_{0,NO_3^-}YZ_{NO_3^-}\theta v}{2}({1+\sqrt{1+\frac{4k_{deni}\alpha_{x,NO_3^-}}{v}}})\tag{64}
+   \[
+   \begin{gathered}
+   a_{0,NO_3^-}YZ_{NO_3^-}\theta v-\alpha_{x,NO_3^-}YZ_{NO_3^-}\theta v \frac{a_{0, NO_3^-}}{2\alpha_{x,NO_3^-}}\cdot \left({1-\sqrt{1+\frac{4k_{deni}\alpha_{x,NO_3^-}}{v}}}\right) \\
+   =a_{0,NO_3^-}YZ_{NO_3^-}\theta v\left[1-\frac{1}{2}\left({1-\sqrt{1+\frac{4k_{deni}\alpha_{x,NO_3^-}}{v}}}\right)\right] \\
+   =\frac{a_{0,NO_3^-}YZ_{NO_3^-}\theta v}{2}\left({1+\sqrt{1+\frac{4k_{deni}\alpha_{x,NO_3^-}}{v}}}\right)
+   \end{gathered}
+   \]
 
 The terms containing :math:`C_{0, NH_4^-}` on the right side of this
 equation combine together, resulting in,
 
 .. math::
+   :nowrap:
 
-
-   -\lambda C_{0,NH_4^+}YZ_{NO_3^-}\theta v+\alpha_{x,NO_3^-}YZ_{NO_3^-}\theta v \cdot \lambda \frac{C_{0, NH_4^+}}{2\alpha_{x,NH_4^+}}\cdot ({1-\sqrt{1+\frac{4k_{nit}(1+\frac{\rho k_d}{\theta})\alpha_{x,NH_4^+}}{v}}}) \\=-\lambda C_{0,NH_4^+}YZ_{NO_3^-}\theta v[1-\frac{\alpha_{x,NO_3^-}}{2\alpha_{x,NH_4^+}}(1-\sqrt{1+\frac{4k_{nit}(1+\frac{\rho k_d}{\theta})\alpha_{x,NH_4^+}}{v}})]
-   \tag{65}
+   \[
+   \begin{gathered}
+   -\lambda C_{0,NH_4^+}YZ_{NO_3^-}\theta v+\alpha_{x,NO_3^-}YZ_{NO_3^-}\theta v \cdot \lambda \frac{C_{0, NH_4^+}}{2\alpha_{x,NH_4^+}}\cdot \\ 
+   \left({1-\sqrt{1+\frac{4k_{nit}(1+\frac{\rho k_d}{\theta})\alpha_{x,NH_4^+}}{v}}}\right) \\
+   =-\lambda C_{0,NH_4^+}YZ_{NO_3^-}\theta v \cdot \\
+   \left[1-\frac{\alpha_{x,NO_3^-}}{2\alpha_{x,NH_4^+}}\left(1-\sqrt{1+\frac{4k_{nit}(1+\frac{\rho k_d}{\theta})\alpha_{x,NH_4^+}}{v}}\right)\right]
+   \end{gathered}
+   \]
 
 :math:`M_{in,NO_3^+}` is the sum of Equations 64 and 65,
 
 .. math::
+   :nowrap:
 
+   \[
+   \begin{aligned}
+   M_{in,NO_3^-}= & \frac{a_{0,NO_3^-}YZ_{NO_3^-}\theta v}{2}\left(1+\sqrt{1+\frac{4k_{deni}\alpha_{x,NO_3^-}}{v}}\right)- \\
+   & \lambda C_{0,NH_4^+}YZ_{NO_3^-}\theta v \cdot \\
+   & \left[1-\frac{\alpha_{x,NO_3^-}}{2\alpha_{x,NH_4^+}}\left(1-\sqrt{1+\frac{4k_{nit}(1+\frac{\rho k_d}{\theta})\alpha_{x,NH_4^+}}{v}}\right)\right] \\
+   = & YZ_{NO_3^-}\theta v\ \left\{ \frac{a_{0,NO_3^-}}{2}\left(1+\sqrt{1+\frac{4k_{deni}\alpha_{x,NO_3^-}}{v}}\right) \right. \\
+   & \left. - \lambda C_{0,NH_4^+}\left[1-\frac{\alpha_{x,NO_3^-}}{2\alpha_{x,NH_4^+}}\left(1-\sqrt{1+\frac{4k_{nit}(1+\frac{\rho k_d}{\theta})\alpha_{x,NH_4^+}}{v}}\right)\right]\right\}
+   \end{aligned}
+   \]
 
-   M_{in,NO_3^-}=\frac{a_{0,NO_3^-}YZ_{NO_3^-}\theta v}{2}({1+\sqrt{1+\frac{4k_{deni}\alpha_{x,NO_3^-}}{v}}})-\lambda C_{0,NH_4^+}YZ_{NO_3^-}\theta v[1-\frac{\alpha_{x,NO_3^-}}{2\alpha_{x,NH_4^+}}(1-\sqrt{1+\frac{4k_{nit}(1+\frac{\rho k_d}{\theta})\alpha_{x,NH_4^+}}{v}}] \\
-   =YZ_{NO_3^-}\theta v\{ \frac{a_{0,NO_3^-}}{2}({1+\sqrt{1+\frac{4k_{deni}\alpha_{x,NO_3^-}}{v}}}) - \lambda C_{0,NH_4^+}[1-\frac{\alpha_{x,NO_3^-}}{2\alpha_{x,NH_4^+}}(1-\sqrt{1+\frac{4k_{nit}(1+\frac{\rho k_d}{\theta})\alpha_{x,NH_4^+}}{v}}] \} \tag{66}
 
 .. math::
+   :nowrap:
 
+   \[
+   \begin{gathered}
+   Z_{NO_3^-}=\frac{M_{in,NO_3^-}}{Y\theta v} \cdot \frac{1}{\frac{a_{0,NO_3^-}}{2}\cdot m - \lambda C_{0,NH_4^+}\left(1-\frac{\alpha_{x,NO_3^-}}{2\alpha_{x,NH_4^+}} \cdot n \right)}
+   \end{gathered}
+   \]
 
-   Z_{NO_3^-}=\frac{M_{in,NO_3^-}}{Y\theta v} \cdot \frac{1}{\frac{a_{0,NO_3^-}}{2}({1+\sqrt{1+\frac{4k_{deni}\alpha_{x,NO_3^-}}{v}}}) - \lambda C_{0,NH_4^+}[1-\frac{\alpha_{x,NO_3^-}}{2\alpha_{x,NH_4^+}}(1-\sqrt{1+\frac{4k_{nit}(1+\frac{\rho k_d}{\theta})\alpha_{x,NH_4^+})}{v}}]}\tag{67}
+where
+
+.. math::
+   :nowrap:
+
+   \[
+   \begin{gathered}
+   m = 1+\sqrt{1+\frac{4k_{deni}\alpha_{x,NO_3^-}}{v}} \\
+   n = 1-\sqrt{1+\frac{4k_{nit}\left(1+\frac{\rho k_d}{\theta}\right)\alpha_{x,NH_4^+}}{v}}
+   \end{gathered}
+   \]
+
 
 A significant issue is that :math:`Z_{NO_3^-}` can become negative under
 certain conditions using Equation 67. These problematic cases will be
 highlighted using an example with specific input parameters.
 
 .. math::
+   :nowrap:
 
-
+   \[
+   \begin{gathered}
    M_{in,NO_3^-}=20000 \, mg \\
    Y = 6 \, m \\
    \theta = 0.4 \\
@@ -690,7 +900,9 @@ highlighted using an example with specific input parameters.
    k_{nit} = 0.0001 \, 1/day \\
    k_{deni} = 0.008 \, 1/day \\
    \rho = 1.42 \, g/cm^3 \\
-   k_d = 2 \, cm^3/g \tag{68}
+   k_d = 2 \, cm^3/g
+   \end{gathered}
+   \]
 
 Using these parameters in Equation 67, the calculated :math:`Z_{NO_3^-}`
 value is -383.92.
@@ -738,7 +950,7 @@ becomes more complex. Nitrate concentrations can increase not only from
 the source plane but also through nitrification of ammonium. Under
 certain conditions, the nitrate concentration downstream of the source
 plane may exceed that within the source plane itself, as shown in Fig.
-2. As a result, the dispersion of nitrate may occur in the direction
+1. As a result, the dispersion of nitrate may occur in the direction
 opposite to groundwater flow. If this reverse dispersion is stronger
 than the advective transport from the source plane, it can result in a
 negative value for :math:`M_{in, NO_3^-}`. This explains why, under
@@ -755,17 +967,23 @@ yield a negative value.
 The governing equation of nitrate can be written as,
 
 .. math::
+   :nowrap:
 
-
-   0=D_x\frac{\partial^2{C_{NO^{-}_3}}}{dx^2}+D_y\frac{\partial^2{C_{NO^{-}_3}}}{dy^2}-v\frac{\partial{C_{NO^{-}_3}}}{\partial{x}}+k_1-k_2C_{NO^{-}_3} \tag{69}
+   \[
+   0=D_x\frac{\partial^2{C_{NO^{-}_3}}}{dx^2}+D_y\frac{\partial^2{C_{NO^{-}_3}}}{dy^2}-v\frac{\partial{C_{NO^{-}_3}}}{\partial{x}}+k_1-k_2C_{NO^{-}_3}
+   \]
 
 where,
 
 .. math::
+   :nowrap:
 
-
-   k_1=k_{nit}(1+\frac{\rho k_d}{\theta})C_{NH_4^+}(x,y) \\
-   k_2 = k_{deni} \tag{70}
+   \[
+   \begin{gathered}
+   k_1=k_{nit}\left(1+\frac{\rho k_d}{\theta}\right)C_{NH_4^+}(x,y) \\
+   k_2 = k_{deni}
+   \end{gathered}
+   \]
 
 Suppose :math:`C_{NO_3^-}=C_{1,\,NO_3^-}+C_{2,\,NO_3^-}`, where
 :math:`C_{1,\,NO_3^-}` represents the nitrate from the source plane, and
@@ -775,14 +993,18 @@ linear and thus satisfy the principle of superposition. Then Equation 69
 can be split into,
 
 .. math::
+   :nowrap:
 
-
-   0=D_x\frac{\partial^2{C_{1,\,NO^{-}_3}}}{dx^2}+D_y\frac{\partial^2{C_{1,\,NO^{-}_3}}}{dy^2}-v\frac{\partial{C_{1,\,NO^{-}_3}}}{\partial{x}}-k_2C_{1,\,NO^{-}_3} \tag{71}
+   \[
+   0=D_x\frac{\partial^2{C_{1,\,NO^{-}_3}}}{dx^2}+D_y\frac{\partial^2{C_{1,\,NO^{-}_3}}}{dy^2}-v\frac{\partial{C_{1,\,NO^{-}_3}}}{\partial{x}}-k_2C_{1,\,NO^{-}_3} 
+   \]
 
 .. math::
+   :nowrap:
 
-
-   0=D_x\frac{\partial^2{C_{2,\,NO^{-}_3}}}{dx^2}+D_y\frac{\partial^2{C_{2,\,NO^{-}_3}}}{dy^2}-v\frac{\partial{C_{2,\,NO^{-}_3}}}{\partial{x}}+k_1-k_2C_{2,\,NO^{-}_3} \tag{72}
+   \[
+   0=D_x\frac{\partial^2{C_{2,\,NO^{-}_3}}}{dx^2}+D_y\frac{\partial^2{C_{2,\,NO^{-}_3}}}{dy^2}-v\frac{\partial{C_{2,\,NO^{-}_3}}}{\partial{x}}+k_1-k_2C_{2,\,NO^{-}_3} 
+   \]
 
 Equation 71 describes the reactive transport of nitrate from the source
 plane, while Equation 72 describes the reactive transport of nitrate
@@ -792,28 +1014,36 @@ As a results, the :math:`M_{in,NO_3^-}` from source plane to groundwater
 system can be calculated as,
 
 .. math::
+   :nowrap:
 
-
+   \[
+   \begin{gathered}
    M_{in,NO_3^-}=M_{adv,NO_3^-}+M_{dsp,NO_3^-}\\
    = C_{0,NO_3^-}YZ_{NO_3^-}\theta v-\alpha_{x, NO_3^-}vYZ_{NO_3^-}\theta \frac{\partial C_{1,\,NO_3^-}}{\partial x} \Big|_{x=0}
-    \tag{73}
+   \end{gathered}
+   \]
 
 Using the Domenico analytical solution for Equation 71 and substituting
 it into Equation 73, we can obtain the final result:
 
 .. math::
+   :nowrap:
 
-
+   \[
+   \begin{gathered}
    M_{in,NO_3^-}=C_{0,NO_3^-}YZ_{NO_3^-}\theta v-\alpha_{x,NO_3^-}YZ_{NO_3^-}\theta v C_{0,NO_3^-}\cdot \frac{1-\sqrt{1+\frac{4k_{deni}\alpha_{x,NO_3^-}}{v}}}{2\alpha_{x,NO_3^-}} \\
    =C_{0,NO_3^-}YZ_{NO_3^-}\theta v \frac{1+\sqrt{1+\frac{4k_{deni}\alpha_{x,NO_3^-}}{v}}}{2}
-    \tag{74}
+   \end{gathered}
+   \]
 
 Therefore,
 
 .. math::
+   :nowrap:
 
-
-   Z_{NO_3^-}=\frac{M_{in,NO_3^-}}{C_{0,NO_3^-}Y\theta v}\cdot \frac{2}{1+\sqrt{1+\frac{4k_{deni}\alpha_{x,NO_3^-}}{v}}} \tag{75}
+   \[
+   Z_{NO_3^-}=\frac{M_{in,NO_3^-}}{C_{0,NO_3^-}Y\theta v}\cdot \frac{2}{1+\sqrt{1+\frac{4k_{deni}\alpha_{x,NO_3^-}}{v}}}
+   \]
 
 After deriving numerous formulas and conducting a thorough analysis, we
 ultimately return to the form of Equation 75—but I want to say that this
