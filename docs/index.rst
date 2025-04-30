@@ -31,6 +31,7 @@ Welcome to ArcNLET-Py User's Manual documentation!
    UserManual/sensitivityandcalibration
    UserManual/temporalvariation
    UserManual/Zcalculation
+   UserManual/runningwithIDE
    UserManual/references
 
 Indices and tables

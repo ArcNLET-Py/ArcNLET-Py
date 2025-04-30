@@ -26,7 +26,7 @@ ArcNLET-Py groundwater solute-transport module. In particular, it:
   system when NH₄⁺-N and NO₃⁻-N coexist (Section 2.4; Equation 53).
 - **Applies** a similar derivation to the NO₃⁻-N system—first
   illustrating a common misstep, then presenting the correct formulation
-  when NH₄⁺-N and NO₃⁻-N coexist (Section 2.5; Equation 75).
+  when NH₄⁺-N and NO₃⁻-N coexist (Section 2.5; Equation 76).
 
 This document is intended for hydrogeologists, groundwater modelers, and
 environmental scientists who seek a deeper understanding of the
@@ -989,7 +989,7 @@ Suppose :math:`C_{NO_3^-}=C_{1,\,NO_3^-}+C_{2,\,NO_3^-}`, where
 :math:`C_{1,\,NO_3^-}` represents the nitrate from the source plane, and
 :math:`C_{2,\,NO_3^-}` represents the nitrate produced by ammonium
 nitrification. The first- and second‑order derivative operators are
-linear and thus satisfy the principle of superposition. Then Equation 69
+linear and thus satisfy the principle of superposition. Then Equation 70
 can be split into,
 
 .. math::
@@ -1006,8 +1006,8 @@ can be split into,
    0=D_x\frac{\partial^2{C_{2,\,NO^{-}_3}}}{dx^2}+D_y\frac{\partial^2{C_{2,\,NO^{-}_3}}}{dy^2}-v\frac{\partial{C_{2,\,NO^{-}_3}}}{\partial{x}}+k_1-k_2C_{2,\,NO^{-}_3} 
    \]
 
-Equation 71 describes the reactive transport of nitrate from the source
-plane, while Equation 72 describes the reactive transport of nitrate
+Equation 72 describes the reactive transport of nitrate from the source
+plane, while Equation 73 describes the reactive transport of nitrate
 produced by nitrification reactions.
 
 As a results, the :math:`M_{in,NO_3^-}` from source plane to groundwater
@@ -1023,8 +1023,8 @@ system can be calculated as,
    \end{gathered}
    \]
 
-Using the Domenico analytical solution for Equation 71 and substituting
-it into Equation 73, we can obtain the final result:
+Using the Domenico analytical solution for Equation 72 and substituting
+it into Equation 74, we can obtain the final result:
 
 .. math::
    :nowrap:
@@ -1046,12 +1046,11 @@ Therefore,
    \]
 
 After deriving numerous formulas and conducting a thorough analysis, we
-ultimately return to the form of Equation 75—but I want to say that this
-is indeed the result of my careful investigation.
+ultimately return to the form of Equation 76.
 
 Figure 4 presents the sensitivity analysis results of :math:`Z`. Each
 subplot varies one parameter while keeping others constant at the values
-from Equation 68. The results demonstrate how different parameter values
+from Equation 69. The results demonstrate how different parameter values
 influence the outcome. For example, at very low velocities, :math:`Z`
 becomes highly sensitive to velocity changes. This sensitivity is
 expected since :math:`v` appears in the denominator of the formula. When
