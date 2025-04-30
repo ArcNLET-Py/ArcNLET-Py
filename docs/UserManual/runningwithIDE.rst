@@ -37,10 +37,9 @@ To check your license status:
 3. Under ArcGIS Pro Extensions, verify that Spatial Analyst is listed as
    “Licensed” (as shown in the figure below).
 
-.. figure:: image.png
+.. image:: ./media/runningwithIDE/media/image.png
+   :align: center
    :alt: alt text
-
-   alt text
 
 2. Locating the ArcGIS Pro Python Environment
 ---------------------------------------------
@@ -55,7 +54,9 @@ To check your license status:
 
 | Refer to the screenshot below to locate the exact path of the Python
   environment used by ArcGIS Pro:
-| |alt text|
+.. image:: ./media/runningwithIDE/media/image-1.png
+   :align: center
+   :alt: alt text
 
 In the **Environment Manager**, all new Python environments are created
 based on the default environment named **``arcgispro-py3``**. Note that
@@ -80,7 +81,7 @@ guide, we will demonstrate how to use the Python interpreter path of the
 
 The contents of this folder can be divided into several categories:
 
-- | **``ArcNLET.pyt``**
+- | **ArcNLET.pyt**
   | This is the main toolbox file that serves as the entry point when
     using ArcNLET-Py within ArcGIS Pro.
 
@@ -89,12 +90,12 @@ The contents of this folder can be divided into several categories:
     ArcNLET-Py inside ArcGIS Pro. When hovering over input fields, the
     tooltips are generated based on these XML configuration files.
 
-- | **``GUI**.py`` files** (6 in total)
+- | **GUI\*.py files** (6 in total)
   | These files define the GUI layout for the six modules of ArcNLET-Py
     within the ArcGIS Pro interface. They handle the interface
     presentation and capture user inputs.
 
-- | **``tool**.py`` files** (6 in total)
+- | **tool\*.py files** (6 in total)
   | Each of these files contains the computational logic for one of the
     six ArcNLET-Py modules. The GUI files collect user inputs and pass
     them to the corresponding tool files to perform the actual
@@ -123,7 +124,12 @@ To run or debug ArcNLET-Py outside ArcGIS Pro using an IDE like
 2. **Configure the Python interpreter**
 
    - | Go to **File → Settings**
-     | |image1|
+
+
+.. image:: ./media/runningwithIDE/media/image-2.png
+   :align: center
+   :alt: alt text
+
 
    - Under **Project: <Your Project Name> → Python Interpreter**, click
      the interpreter dropdown on the right and select **“Add…”**.
@@ -132,7 +138,10 @@ To run or debug ArcNLET-Py outside ArcGIS Pro using an IDE like
      one from the ``arcgispro-py3`` environment).
 
    - | Click **Apply**, then **OK** to confirm the environment setup.
-     | |image2|
+  
+.. image:: ./media/runningwithIDE/media/image-3.png
+   :align: center
+   :alt: alt text
 
 3. **Verify ArcPy availability**
 
@@ -143,13 +152,9 @@ To run or debug ArcNLET-Py outside ArcGIS Pro using an IDE like
       import arcpy
       arcpy.__version__
 
-   .. figure:: image-4.png
-      :alt: alt text
-
-      alt text
+.. image:: ./media/runningwithIDE/media/image-4.png
+   :align: center
+   :alt: alt text
 
 Running ArcNLET-Py from other IDEs is similar.
 
-.. |alt text| image:: image-1.png
-.. |image1| image:: image-2.png
-.. |image2| image:: image-3.png
