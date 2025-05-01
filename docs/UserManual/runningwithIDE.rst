@@ -3,7 +3,7 @@
    :format: html
 
 
-Using ArcNLET-Py ourside the ArcGIS Pro Interface
+Using ArcNLET-Py outside the ArcGIS Pro Interface
 =================================================
 
 In some cases, users may prefer to run ArcNLET-Py outside the ArcGIS Pro
@@ -59,17 +59,17 @@ To check your license status:
    :alt: alt text
 
 In the **Environment Manager**, all new Python environments are created
-based on the default environment named **``arcgispro-py3``**. Note that
-``arcgispro-py3`` itself is a **read-only base environment**—you cannot
+based on the default environment named **arcgispro-py3**. Note that
+**arcgispro-py3** itself is a **read-only base environment**—you cannot
 install or remove packages from it. This restriction is intentional to
 ensure the stability of ArcGIS Pro. Esri recommends cloning this base
 environment if you need to install additional packages.
 
 Fortunately, **ArcNLET-Py** does not require any extra packages beyond
-the default ``arcgispro-py3`` environment. Therefore, you can either use
-``arcgispro-py3`` directly or create a clone if preferred. In this
+the default **arcgispro-py3** environment. Therefore, you can either use
+**arcgispro-py3** directly or create a clone if preferred. In this
 guide, we will demonstrate how to use the Python interpreter path of the
-**``arcgispro-py3``** environment directly.
+**arcgispro-py3** environment directly.
 
 3. ArcNLET-Py Source Code Structure
 -----------------------------------
@@ -115,7 +115,7 @@ To run or debug ArcNLET-Py outside ArcGIS Pro using an IDE like
 **PyCharm**, follow the steps below:
 
 1. | **Create a new PyCharm project**
-   | You can either create a new project or open an existing one, then
+   | You can create a new project, then
      copy the ``ArcNLET-Py-Source-Code`` folder into your project
      directory. For details, refer to the official guide:
    | `Creating and running your first Python
@@ -124,6 +124,12 @@ To run or debug ArcNLET-Py outside ArcGIS Pro using an IDE like
 2. **Configure the Python interpreter**
 
    - | Go to **File → Settings**
+  
+   - | Under **Project: \<Your Project Name\> → Python Interpreter**, click the interpreter dropdown on the right and select **"Add..."**.
+
+   - | Browse to the Python interpreter path from **Step 2** (i.e., the one from the `arcgispro-py3` environment).
+
+   - | Click **Apply**, then **OK** to confirm the environment setup.  
 
 
 .. image:: ./media/runningwithIDE/media/image-2.png
@@ -131,13 +137,6 @@ To run or debug ArcNLET-Py outside ArcGIS Pro using an IDE like
    :alt: alt text
 
 
-   - Under **Project: <Your Project Name> → Python Interpreter**, click
-     the interpreter dropdown on the right and select **“Add…”**.
-
-   - Browse to the Python interpreter path from **Step 2** (i.e., the
-     one from the ``arcgispro-py3`` environment).
-
-   - | Click **Apply**, then **OK** to confirm the environment setup.
   
 .. image:: ./media/runningwithIDE/media/image-3.png
    :align: center
@@ -156,5 +155,39 @@ To run or debug ArcNLET-Py outside ArcGIS Pro using an IDE like
    :align: center
    :alt: alt text
 
+
+If the Python Console returns the ArcPy version, the setup was successful.
+
 Running ArcNLET-Py from other IDEs is similar.
+
+5. Running Lakeshore demo
+----------------------------------
+
+When running ArcNLET-Py outside the ArcGIS Pro interface (e.g., with a demo), it is not necessary to open the GUI*.py files. Instead, you can directly work with the tool*.py files. Each of the six modules in ArcNLET-Py is independent, so they can be executed separately.
+
+For example, to run the pre-processing module, follow these steps (the process for other modules is similar):
+
+- | Open ``tool0_preprocessing.py`` in PyCharm.
+
+- | Scroll to the bottom of the file, where you will find the main entry point:
+
+.. code:: python
+
+   if __name__ == "__main__":
+      pass
+
+- | Modify the input and output parameter values as needed.
+
+- | Right-click anywhere inside the file and select Run from the context menu.
+
+This will execute the selected module using your customized inputs.
+
+
+
+.. image:: ./media/runningwithIDE/media/image-5.png
+   :align: center
+   :alt: alt text
+
+
+
 

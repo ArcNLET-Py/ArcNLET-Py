@@ -1545,6 +1545,7 @@ class Preprocessing(object):
 # ======================================================================
 # Main program for debugging
 if __name__ == '__main__':
+    # Inputs
     arcpy.env.workspace = "C:\\Users\\Wei\\OneDrive - Florida State University\\Work\\06-USF\\02-LucieRiver"
     area = os.path.join(arcpy.env.workspace, "County_buffer_Project.shp")
     pcs = arcpy.SpatialReference(26917)
@@ -1553,6 +1554,7 @@ if __name__ == '__main__':
     method = "harmonic mean for ks"
     cell_size = 10
 
+    # Outputs
     hydr = os.path.join(arcpy.env.workspace, "hydr")
     poro = os.path.join(arcpy.env.workspace, "poro")
     solt = os.path.join(arcpy.env.workspace, "solt")
