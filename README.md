@@ -118,7 +118,7 @@ George Box, a British statistician, wrote in 1976 that “[all models are wrong,
 
 2. **Water Table as a Subdue Replica of Topography**
 
-   ArcNLET-Py assumes that water table is a subdue replica of topography, and generates the shape of water table through topographic smoothing. This assumption is valid when the water table is controlled primarily by surface features, as described by Haitjema and Mitchell-Bruker (2005). The condition for validity is $ \frac{RL^2\ }{mkHd}>1 $  , where $ R $ [m/d] is the recharge rate, $ L $ [m] is the average distance between two surface water bodies, $ m $ [-] is a dimensionless shape factor related to aquifer geometry,  $ K $ [m/d] is the hydraulic conductivity, $ H $ [m] is average aquifer thickness, $ d $ [m] is the maximum terrain rise between water bodies. 
+   ArcNLET-Py assumes that water table is a subdue replica of topography, and generates the shape of water table through topographic smoothing. This assumption is valid when the water table is controlled primarily by surface features, as described by Haitjema and Mitchell-Bruker (2005). The condition for validity is (R·L²) / (m·k·H·d) > 1 , where R [m/d] is the recharge rate, L [m] is the average distance between two surface water bodies, m [-] is a dimensionless shape factor related to aquifer geometry, K [m/d] is the hydraulic conductivity, H [m] is average aquifer thickness, d [m] is the maximum terrain rise between water bodies. 
 
 3. **1-D Vertical Model with Homogeneous Parameter Values in Vadose Zone Model**
 
