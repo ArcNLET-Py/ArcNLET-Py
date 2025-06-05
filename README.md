@@ -6,7 +6,7 @@ Visit the [ArcNLET YouTube Channel](https://www.youtube.com/@ArcNLET "click to o
 
 ## Disclaimer
 
-ArcNLET-Py is intended as a screening-level tool. While ArcNLET-Py is designed to provide a practical and computationally efficient tool for nutrient fate assessment, it inevitably makes assumptions and simplifications that may not hold true in all hydrogeological or biogeochemical settings. Users should therefore be cautious when applying the model. The details are provided in the Simplications and Assumptions section.
+While ArcNLET-Py is designed to provide a practical and computationally efficient tool for nutrient fate assessment, it inevitably makes assumptions and simplifications that may not hold true in all hydrogeological or biogeochemical settings. Users should therefore be cautious when applying the model. The details are provided in the Simplications and Assumptions section.
 
 ## ArcNLET Assistant
 
@@ -112,24 +112,25 @@ A practical example, the Lakeshore case, is provided to demonstrate the applicat
 
 George Box, a British statistician, wrote in 1976 that “[all models are wrong, but some are useful](https://en.wikipedia.org/wiki/All_models_are_wrong "click to open wiki")”, meaning that (statistical) models “always fall short of the complexity of reality but can still be useful nonetheless”. It is the case for ArcNLET-Py, which is based on a simplified conceptualization about the reactive transport of nutrients from onsite sewage treatment and disposal systems (OSTDS) to surface water bodies. Below are the major simplifications and assumptions made by ArcNLET-Py: 
 
-1. Steady-State Water Flow and Solute Transport
+1. **Steady-State Water Flow and Solute Transport**
 
    ArcNLET-Py assumes that the water flow (of unsaturated soil water and saturated groundwater) and solute transport (of nitrogen and phosphorus) from OSTDS drainfields to surface water bodies are under steady-state conditions. As a result, the model results generally reflect long-term average conditions. If one is interested in an acute event (e.g., OSTDS nutrient transport after a hurricane), ArcNLET-Py is not a suitable tool for simulating the acute events. If monitoring data are available, it is necessary to examine whether the data exhibit trends in hydraulic heads and/or nutrient concentrations. If trends are observed, ArcNLET-Py is not a suitable tool for simulating the data. 
 
-2. Water Table as a Subdue Replica of Topography
+2. **Water Table as a Subdue Replica of Topography**
+
    ArcNLET-Py assumes that water table is a subdue replica of topography, and generates the shape of water table through topographic smoothing. This assumption is valid when the water table is controlled primarily by surface features, as described by Haitjema and Mitchell-Bruker (2005). The condition for validity is $ \frac{RL^2\ }{mkHd}>1 $  , where $ R $ [m/d] is the recharge rate, $ L $ [m] is the average distance between two surface water bodies, $ m $ [-] is a dimensionless shape factor related to aquifer geometry,  $ K $ [m/d] is the hydraulic conductivity, $ H $ [m] is average aquifer thickness, $ d $ [m] is the maximum terrain rise between water bodies. 
 
-3. 1-D Vertical Model with Homogeneous Parameter Values in Vadose Zone Model
+3. **1-D Vertical Model with Homogeneous Parameter Values in Vadose Zone Model**
 
    In the vadose zone between the OSTDS drainfields and water table, ArcNLET-Py assumes that the soil water flow and solute transport are assumed to be one dimensional in the vertical direction. ArcNLET-Py uses hydraulic loading rate as a lump-sum parameter for water entering the vadose zone through the drainfields, and does not explicitly account for precipitation and evapotranspiration, and other processes occurring at the drainfields. 
 
    All the soil hydraulic parameters (e.g., saturated hydraulic conductivity and soil retention parameters) are assumed to be homogeneous in the vertical direction (i.e., constant over depth). The parameters, however, are heterogeneous in the horizontal direction. When simulating multiple OSTDS, ArcNLET-Py can use a soil type file that specifies soil types in the horizontal direction, and each soil type has its own parameters. All parameters related to nitrification and denitrification modeling are homogeneous in space. For example, the nitrification rate has only one value for the entire modeling domain regardless of the number of OSTDS and soil types. 
 
-4. 2-D Horizontal Model with Analytical Solutions and Homogeneous Parameter Values in Groundwater Aquifer 
+4. **2-D Horizontal Model with Analytical Solutions and Homogeneous Parameter Values in Groundwater Aquifer**
 
    In the surficial aquifer below the water table, the groundwater flow and solute transport are assumed to be two dimensional. In other words, groundwater velocity and nutrient concentrations produced by ArcNLET-Py are assumed to be constant over aquifer depth. In order to estimate the amount of nutrient load, ArcNLET-Py users can either specify the plume depth or estimate it using ArcNLET-Py. Except hydraulic conductivity and porosity, all the parameters of the groundwater flow and solute transport model are assumed to be homogeneous.
 
-5. Simplified Nutrient Reactive Transport Models
+5. **Simplified Nutrient Reactive Transport Models**
 
    The nutrient reactive transport is complex, depending on a large number of environmental factors such as carbon and oxygen availability between OSTDS drainfields and surface water bodies. ArcNLET-Py does not consider all the factors, but uses simplified models for nutrient reactive transport. For example, the nitrification process is modeled using a first-order kinetics characterized by nitrification rates, without explicitly considering carbon and oxygen availability in soils. 
 
