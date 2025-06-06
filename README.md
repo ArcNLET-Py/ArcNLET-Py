@@ -6,7 +6,7 @@ Visit the [ArcNLET YouTube Channel](https://www.youtube.com/@ArcNLET "click to o
 
 ## Disclaimer
 
-While ArcNLET-Py is designed to provide a practical and computationally efficient tool for nutrient load assessment, it inevitably makes assumptions and simplifications that may not hold true in all hydro- or bio-geochemical settings. Users should therefore be cautious when applying the model. The details are provided in the [Simplications and Assumptions](#simplifications-and-assumptions) section.
+While ArcNLET-Py is designed to provide a practical and computationally efficient tool for nutrient load assessment, it inevitably makes assumptions and simplifications that may not hold true in all hydro-geological or bio-geochemical settings. Users should therefore be cautious when applying the model. The details are provided in the [Simplications and Assumptions](#simplifications-and-assumptions) section.
 
 ## ArcNLET Assistant
 
