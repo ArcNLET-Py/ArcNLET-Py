@@ -122,7 +122,7 @@ class InterfaceParticleTracking(object):
         """Modify the values and properties of parameters before internal
         validation is performed.  This method is called whenever a parameter
         has been changed."""
-        if parameters[3].altered:
+        if parameters[3].altered and (not parameters[7].altered):
             if not parameters[3].hasBeenValidated:
                 veld = parameters[3].value
                 desc = arcpy.Describe(veld)
