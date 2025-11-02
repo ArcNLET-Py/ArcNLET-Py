@@ -148,6 +148,7 @@ class VZMOD:
         self.multi_soil_type = multi_soil_type
 
         self.septic_tank = None
+        self.hetero_hlr = False
         self.hydraulic_conductivity = None
         self.soil_porosity = None
         self.DEM = None
@@ -197,11 +198,11 @@ class VZMOD:
             print(f"An error occurred: {e}")
 
         if self.multi_ostds:
-            DTW_hete, hydr_hete, poro_hete, soil_hete = self.arcgis_map(self.septic_tank, self.hydraulic_conductivity,
-                                                                        self.soil_porosity, self.dist, self.DEM,
-                                                                        self.smoothed_DEM, self.soil_type)
-            if self.hetero_ks_theta or self.calc_DTW or self.multi_soil_type:
-                if (self.hetero_ks_theta or self.calc_DTW) and (not self.multi_soil_type):
+            DTW_hete, hydr_hete, poro_hete, soil_hete, hlr_hete = self.arcgis_map(self.septic_tank, self.hydraulic_conductivity,
+                                                                                  self.soil_porosity, self.dist, self.DEM,
+                                                                                  self.smoothed_DEM, self.soil_type)
+            if self.hetero_ks_theta or self.calc_DTW or self.multi_soil_type or self.hetero_hlr:
+                if (self.hetero_ks_theta or self.calc_DTW or self.hetero_hlr) and (not self.multi_soil_type):
                     para = self.get_parameters()
                 if self.hetero_ks_theta:
                     nlen = len(hydr_hete)
@@ -212,6 +213,8 @@ class VZMOD:
                     out_depth = self.DTW
                 if self.multi_soil_type:
                     nlen = len(soil_hete)
+                if self.hetero_hlr:
+                    nlen = len(hlr_hete)
 
                 for i in range(nlen):
                     arcpy.AddMessage("Calculating for septic tank {}\n".format(i))
@@ -224,6 +227,12 @@ class VZMOD:
                         para['thetas'] = poro_hete[i]
                     if self.calc_DTW:
                         para['newDTW'] = DTW_hete[i] * 100
+                    if self.hetero_hlr:
+                        para['hlr'] = hlr_hete[i]
+                        if para['hlr'] < 0:
+                            para['hlr'] = 0
+                        if para['hlr'] > para['ks']:
+                            para['hlr'] = para['ks']
 
                     theta = self.singlflow(para)
 
@@ -740,6 +749,11 @@ class VZMOD:
             arcpy.sa.ExtractMultiValuesToPoints(self.tmp_septictank, [[soilfile, "soiltype"]], "NONE")
             field.append("soiltype")
 
+        field_names = [f.name.lower() for f in arcpy.ListFields(self.tmp_septictank)]
+        if "hlr" in field_names:
+            self.hetero_hlr = True
+            field.append("hlr")
+
         data = []
         if bool(field):
             with arcpy.da.SearchCursor(self.tmp_septictank, field) as cursor:
@@ -751,6 +765,7 @@ class VZMOD:
             hydr_hete = data["hydro_con"].to_numpy() if self.hetero_ks_theta else None
             poro_hete = data["porosity"].to_numpy() if self.hetero_ks_theta else None
             soil_hete = data["soiltype"] if self.multi_soil_type else None
+            hlr_hete  = data["hlr"].to_numpy() if self.hetero_hlr else None
 
             if hydr_hete is not None:
                 hydr_hete[hydr_hete < 0] = 10
@@ -758,9 +773,9 @@ class VZMOD:
                 poro_hete[poro_hete < 0] = 0.4
 
             # arcpy.management.Delete(tmp)
-            return DTW_hete, hydr_hete, poro_hete, soil_hete
+            return DTW_hete, hydr_hete, poro_hete, soil_hete, hlr_hete
         else:
-            return None, None, None, None
+            return None, None, None, None, None
 
     def add_shapefile(self, CH4, CO3, CP, depth):
         fieldnameNO3 = "no3_conc"
@@ -779,7 +794,7 @@ class VZMOD:
 
             with arcpy.da.UpdateCursor(self.tmp_septictank, ["OSTDS_ID", fieldnameNO3, fieldnameNH4, depthname]) as cursor:
                 for row in cursor:
-                    if self.multi_soil_type or self.calc_DTW or self.hetero_ks_theta:
+                    if self.multi_soil_type or self.calc_DTW or self.hetero_ks_theta or self.hetero_hlr:
                         fid = row[0]
                         row[1] = max(CO3[fid], self.minimum_value)
                         row[2] = max(CH4[fid], self.minimum_value)
@@ -807,7 +822,7 @@ class VZMOD:
 
             with arcpy.da.UpdateCursor(self.tmp_septictank, ["OSTDS_ID", fieldnameP, depthname]) as cursor:
                 for row in cursor:
-                    if self.multi_soil_type or self.calc_DTW or self.hetero_ks_theta:
+                    if self.multi_soil_type or self.calc_DTW or self.hetero_ks_theta or self.hetero_hlr:
                         fid = row[0]
                         row[1] = max(CP[fid], self.minimum_value)
                         if self.keep_parameters:
@@ -843,7 +858,7 @@ class VZMOD:
             with arcpy.da.UpdateCursor(self.tmp_septictank, ["OSTDS_ID", fieldnameNO3,
                                                           fieldnameNH4, fieldnameP, depthname]) as cursor:
                 for row in cursor:
-                    if self.multi_soil_type or self.calc_DTW or self.hetero_ks_theta:
+                    if self.multi_soil_type or self.calc_DTW or self.hetero_ks_theta or self.hetero_hlr:
                         fid = row[0]
                         row[1] = max(CO3[fid], self.minimum_value)
                         row[2] = max(CH4[fid], self.minimum_value)
@@ -903,17 +918,17 @@ def tridiagonal_matrix(a, b, c, f, n=Nlayer + 1):
 # ======================================================================
 # Main program for debugging
 if __name__ == '__main__':
-    arcpy.env.workspace = "C:\\Users\\Wei\\Downloads\\lakeshore_example\\1_lakeshore_example_complex\\3_VZMOD_module\\Inputs"
+    arcpy.env.workspace = "C:\\Users\\Wei\\Downloads\\lakeshore_example\\2_lakeshore_example_ArcNLET-Py_NO3+NH4\\3_VZMOD_module\\Inputs"
     # arcpy.env.workspace = ".\\test_pro"
 
     types_of_contaminants = "nitrogen and phosphorus"
 
-    options = False
+    options = True
     hetero_Ks_thetas = False
     calc_DTW = False
     multi_soil_type = False
 
-    septic_tank = os.path.join(arcpy.env.workspace, "PotentialSepticTankLocations.shp")
+    septic_tank = os.path.join(arcpy.env.workspace, "output.shp")
     hydraulic_conductivity = os.path.join(arcpy.env.workspace, "hydr_cond")
     soil_porosity = os.path.join(arcpy.env.workspace, "porosity")
     DEM = None  # os.path.join(arcpy.env.workspace, "01-islanddem_3m.tif")
@@ -987,26 +1002,31 @@ if __name__ == '__main__':
     pmax = 237
     phos = 10
 
-    path = "C:\\Users\\Wei\\Downloads\\lakeshore_example\\2_lakeshore_example_phosphorus\\3_VZMOD_module\\Outputs"
-    for ii in range(100):
-        phoskd = phoskd_array[ii]
-        filename = "output_{:02d}.txt".format(ii)
-        output_file_name = os.path.join(path, filename)
+    # path = "C:\\Users\\Wei\\Downloads\\lakeshore_example\\2_lakeshore_example_phosphorus\\3_VZMOD_module\\Outputs"
+    # for ii in range(100):
+    #     phoskd = phoskd_array[ii]
+    #     filename = "output_{:02d}.txt".format(ii)
+    #     output_file_name = os.path.join(path, filename)
+    #
+    #     vzmod = VZMOD(types_of_contaminants, soiltype, hlr, alpha, ks, thetar, thetas, n,
+    #                   knit, toptnit, beltanit, e2, e3, fs, fwp, Swp, Sl, Sh, kdnt, toptdnt, beltadnt, e1, Sdnt,
+    #                   kd, rho, Temp, disp, NH4, NO3, DTW, dist,
+    #                   phoschoice, rprep, kl, pmax, phoskd, phos,
+    #                   options, output_file_name, hetero_Ks_thetas, calc_DTW, multi_soil_type,
+    #                   septic_tank, hydraulic_conductivity, soil_porosity, DEM, smoothed_DEM, soiltypefile)
+    #     vzmod.runVZMOD()
 
-        vzmod = VZMOD(types_of_contaminants, soiltype, hlr, alpha, ks, thetar, thetas, n,
-                      knit, toptnit, beltanit, e2, e3, fs, fwp, Swp, Sl, Sh, kdnt, toptdnt, beltadnt, e1, Sdnt,
-                      kd, rho, Temp, disp, NH4, NO3, DTW, dist,
-                      phoschoice, rprep, kl, pmax, phoskd, phos,
-                      options, output_file_name, hetero_Ks_thetas, calc_DTW, multi_soil_type,
-                      septic_tank, hydraulic_conductivity, soil_porosity, DEM, smoothed_DEM, soiltypefile)
-        vzmod.runVZMOD()
+    phoskd = phoskd_array[30]
+    output_file_name = os.path.join(arcpy.env.workspace, "output11.shp")
+    output_txt_name = os.path.join(arcpy.env.workspace, "output11.txt")
 
-    # vzmod = VZMOD(types_of_contaminants, soiltype, hlr, alpha, ks, thetar, thetas, n,
-    #               knit, toptnit, beltanit, e2, e3, fs, fwp, Swp, Sl, Sh, kdnt, toptdnt, beltadnt, e1, Sdnt,
-    #               kd, rho, Temp, disp, NH4, NO3, DTW, dist,
-    #               rprep, kl, pmax, phos,
-    #               options, output_file_name, hetero_Ks_thetas, calc_DTW, multi_soil_type,
-    #               septic_tank, hydraulic_conductivity, soil_porosity, DEM, smoothed_DEM, soiltypefile)
-    # vzmod.runVZMOD()
+    vzmod = VZMOD(types_of_contaminants, soiltype, hlr, alpha, ks, thetar, thetas, n,
+                  knit, toptnit, beltanit, e2, e3, fs, fwp, Swp, Sl, Sh, kdnt, toptdnt, beltadnt, e1, Sdnt,
+                  kd, rho, Temp, disp, NH4, NO3, DTW, dist,
+                  phoschoice, rprep, kl, pmax, phoskd, phos,
+                  options, output_file_name, output_txt_name,
+                  hetero_Ks_thetas, calc_DTW, multi_soil_type,
+                  septic_tank, hydraulic_conductivity, soil_porosity, DEM, smoothed_DEM, soiltypefile)
+    vzmod.runVZMOD()
 
     print("Tests successful!")

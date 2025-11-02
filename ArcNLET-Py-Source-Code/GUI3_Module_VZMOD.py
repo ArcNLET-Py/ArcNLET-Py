@@ -786,6 +786,16 @@ class InterfaceVZMOD(object):
                 parameters[45].enabled = True
                 parameters[46].enabled = False
                 parameters[47].enabled = False
+
+        if parameters[5].altered:
+            source_location = parameters[5].value
+            desc = arcpy.Describe(source_location)
+            field_list = desc.fields
+            hlr_exists = any(field.name.lower() == "hlr" for field in field_list)
+            if not hlr_exists:
+                parameters[12].enabled = True
+            else:
+                parameters[12].enabled = False
         return
 
     def updateMessages(self, parameters) -> None:
