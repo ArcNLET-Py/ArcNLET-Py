@@ -448,6 +448,18 @@ Options and Parameters
    the average daily volume of effluent discharged for an OSTDS during a
    specified period.
 
+   If “multiple OSTDS" is selected, and the OSTDS location shapefile contains a column named 
+   "hlr" (case-insensitive),this input field will automatically be hidden. The
+   program will then use the spatially distributed hlr values from the shapefile
+   for calculation.
+
+   Each OSTDS's hlr value will be constrained within the range O to Ks. Any
+   values below 0.0 or above Ks will be automatically adjusted to 0 or Ks,
+   respectively.
+
+   The a single hlr value is the default and recommended approach, unless
+   site-specific hlr values for each OSTDS are available.
+
 -  **α (-):** This is the parameter of the van Genuchten water retention
    function.
 
