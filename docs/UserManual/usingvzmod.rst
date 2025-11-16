@@ -313,6 +313,14 @@ you run VZMOD to aid in data organization.
 3. The [Results.txt] file can be modified so that it is compatible with Excel. To see the verticle 
    profile for one OSTDS in Excel you must located the desired septic tank number in the [Results.txt] file. 
    
+   Note that when using the multiple OSTDS option, the Results.txt file contains the simulation outcomes for
+   all OSTDS locations. Even if the same initial concentration is assigned to each drainfield, the final 
+   concentrations entering the groundwater through the unsaturated zone may still differ significantly. 
+   This is because soil properties—such as soil type, hydraulic conductivity, and porosity—vary among OSTDS
+   locations, leading to substantial differences in nitrogen nitrification and denitrification processes within
+   the unsaturated zone. Based on the output results in [Results.txt], please select several representative OSTDS
+   locations for further analysis and plotting.
+   
     a. Next, you must copy and paste the headers and data for a given location into a new text file. 
    
     b. Afterwards, you may import the text file into Excel using the [Text Import Wizard] with [Fixed width]
