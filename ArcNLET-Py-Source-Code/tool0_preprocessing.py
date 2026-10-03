@@ -161,7 +161,7 @@ class Preprocessing(object):
                     "sandy clay loam": 7, "sandy loam": 8, "silt": 9, "silt clay": 10,
                     "silt clay loam": 11, "silt loam": 12}
         merged_df['soiltype'] = merged_df['texture'].map(soil_map)
-        merged_df['soiltype'].fillna(0, inplace=True)
+        merged_df['soiltype'] = merged_df['soiltype'].fillna(0)
         merged_df['soiltype'].replace([np.inf, -np.inf], 0, inplace=True)
         merged_df['soiltype'] = merged_df['soiltype'].astype(int)
 
@@ -177,7 +177,7 @@ class Preprocessing(object):
         field_name = list(merged_df.columns)
         field_name.remove('geom')
         for field in field_name:
-            field_type = "TEXT" if merged_df[field].dtype == 'object' else "DOUBLE"
+            field_type = "TEXT" if pd.api.types.is_string_dtype(merged_df[field].dtype) else "DOUBLE"
             arcpy.management.AddField(output_shapefile, field, field_type)
 
         no_data_value = -9999
