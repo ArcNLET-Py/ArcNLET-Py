@@ -762,8 +762,8 @@ class VZMOD:
 
             data = pd.DataFrame(data, columns=field)
             DTW_hete = (dist / 100 + data["DEM"] - data["smthDEM"]).to_numpy() if self.calc_DTW else None
-            hydr_hete = data["hydro_con"].to_numpy() if self.hetero_ks_theta else None
-            poro_hete = data["porosity"].to_numpy() if self.hetero_ks_theta else None
+            hydr_hete = data["hydro_con"].to_numpy(copy=True) if self.hetero_ks_theta else None
+            poro_hete = data["porosity"].to_numpy(copy=True) if self.hetero_ks_theta else None
             soil_hete = data["soiltype"] if self.multi_soil_type else None
             hlr_hete  = data["hlr"].to_numpy() if self.hetero_hlr else None
 
